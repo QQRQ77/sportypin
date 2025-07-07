@@ -26,13 +26,14 @@ type Companion = Models.DocumentList<Models.Document> & {
   bookmarked: boolean;
 };
 
-interface CreateCompanion {
-  name: string;
-  subject: string;
-  topic: string;
-  voice: string;
-  style: string;
-  duration: number;
+interface CreateAthlete {
+  first_name: string;
+  second_name?: string;
+  teams?: string[];
+  home_team?: string;
+  birth_day?: number;
+  birth_month?: number;
+  birth_year?: number;
 }
 
 interface GetAllCompanions {
