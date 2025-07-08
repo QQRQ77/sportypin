@@ -5,6 +5,8 @@
 //   accountId: string;
 // };
 
+import { EmailOtpType } from "@supabase/supabase-js";
+
 enum Subject {
   maths = "maths",
   language = "language",
@@ -34,6 +36,30 @@ interface CreateAthlete {
   birth_day?: number;
   birth_month?: number;
   birth_year?: number;
+}
+
+interface CreateTeam {
+  name: string;
+  host_city?: string;
+  members?: string[];
+  zip_code?: string;
+  birth_day?: number;
+  birth_month?: number;
+  birth_year?: number;
+}
+
+interface CreateEvent{
+  name: string;
+  description?: string;
+  start_date: timestamp;
+  end_date?: timestamp;
+  sports: string[];
+  cathegories?: string[];
+  contact_email?: string;
+  contact_phone?: string;
+  city: string;
+  address?: string;
+  zip_code?: string;
 }
 
 interface GetAllCompanions {
