@@ -1,15 +1,11 @@
 'use client'
 
-import { EnvelopeIcon, EyeIcon, EyeSlashIcon, KeyIcon, UserIcon } from "@heroicons/react/20/solid"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordStrength } from "check-password-strength";
-// import { registerUser } from "@/lib/actions/authActions";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
-import PassStrengthBar from "../PassStrengthBar";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -20,16 +16,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Tooltip } from "@heroui/tooltip";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
-import Link from "next/link";
-import { createTeam } from "@/lib/teams.actions";
+import { createEvent } from "@/lib/events.actions";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(500, "Nazwa wydarzenia jest zbyt długa (maksymalnie 500 znaków)."),
+  event_type: z.string().min(3, "Typ wydarzenia jest zbyt krótki (minimum 3 znaki).").max(100, "Typ wydarzenia jest zbyt długi (maksymalnie 100 znaków).").optional(),
   description: z.string().min(3, "Opis wydarzenia jest zbyt krótki (minimum 3 znaki).").max(5000, "Opis Wydarzenia jest zbyt długi (maksymalnie 5000 znaków).").optional(),
+  organizator: z.string().min(3, "Nazwa organizatora jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa organizatora jest zbyt długa (maksymalnie 100 znaków).").optional(),
   sports: z.array(
     z.string()
     .min(2, "Nazwa sportu są jest zbyt krótka (minimum 2 znaki).")
@@ -53,6 +48,7 @@ const FormSchema = z.object({
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie XX-XXX, gdzie X to cyfry.")
     .optional(),
   address: z.string().min(3, "Adres jest zbyt krótki (minimum 3 znaki).").max(200, "Adres jest zbyt długi (maksymalnie 200 znaków).").optional(),
+  place_name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków).").optional(),
 })
 
 type InputType = z.infer<typeof FormSchema>
@@ -64,50 +60,53 @@ export default function CreateEventForm() {
     });
 
     const router = useRouter();
-    const [visiblePass, setVisiblePass] = useState(false);
-    const [buttonsVis, setButtonsVis] = useState(true)
-    
-    const [isPasswordVisible, setIsPassVisible] = useState(false)
-    const [passStrength, setPassStrength] = useState(0)
-    const [buttonSpinnerVis, setButtonSpinnerVis] = useState(false)
-    const [infoMessageVisible, setInfoMessageVisible] = useState(false)
-    const [infoMessage, setInfoMessage] = useState("Link aktywacyjny został wysłany na adres email.")
+
+    const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
+    const [sportInput, setSportInput] = useState("");
+    const [cathegoryInput, setCathegoryInput] = useState("");
 
     const addEvent: SubmitHandler<InputType> = async (data) => {
 
-      try {
-            const team = await createEvent({...data}) 
+      setSubmitButtonDisactive(true);
 
-            if(team) {console.log("ZESPÓŁ DODANY: ", team)} else {redirect("/")}
+      if (sportInput != "") {
+          const trimmed = sportInput.trim();
+          if (trimmed.length >= 3 && !data.sports?.includes(trimmed)) {
+            data.sports = [...(data.sports || []), trimmed];
+            setSportInput("");
+          } else {
+            toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            return;
+          }
+      }
+
+      if (cathegoryInput != "") {
+          const trimmed = cathegoryInput.trim();
+          if (trimmed.length >= 3 && !data.cathegories?.includes(trimmed)) {
+            data.cathegories = [...(data.cathegories || []), trimmed];
+            setCathegoryInput("");
+          } else {
+            toast.error("Nazwa kategorii musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            return;
+          }
+      }
+
+      try {
+            if (data.start_date) {
+                  data.start_date = new Date(data.start_date).toISOString();
+                }
+                if (data.end_date) {
+                  data.end_date = new Date(data.end_date).toISOString();
+                }
+            
+          console.log("dane eventu: ", data);
+            const event = await createEvent({...data})
+            
+            if(event) {router.push(`/events/${event.id}`)} else {router.push("/")}
                        
-            // if (result === "success") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika zostało pomyślnie zarejestrowane. Link aktywacyjny został wysłany na adres email.")
-            //     toast.success("Konto użytkownika zostało pomyślnie zarejestrowane.")
-            //     toast.success("Link aktywacyjny został wysłany na adres email.")
-            //     form.reset()
-            //     router.push("/login")}
-            // if (result === "errorUserExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika o tej nazwie już istnieje.")
-            //     toast.error("Konto użytkownika o tej nazwie już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "errorEmailExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto z tym adresem email już istnieje.")
-            //     toast.error("Konto z tym adresem email już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "sendError") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     toast.error("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     setButtonSpinnerVis(false)
-            // }
         } catch (error) {
+            setSubmitButtonDisactive(false);
             toast.error("Upps!. Coś poszło nie tak...")
-            setButtonSpinnerVis(false)
             console.error(error)
         }
     } 
@@ -135,6 +134,40 @@ export default function CreateEventForm() {
 
                   <FormField
                       control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Nazwa wydarzenia</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz nazwę wydarzenia" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest nazwa wydarzenia sportowego, które dodajesz do bazy.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+
+                  <FormField
+                      control={form.control}
+                      name="event_type"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Rodzaj wydarzenia</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz rodzaj wydarzenia np. turniej, mecz, wyścig" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest rodzaj wydarzenia, które dodajesz do bazy.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+
+                  <FormField
+                      control={form.control}
                       name="description"
                       render={({ field }) => (
                           <FormItem>
@@ -154,7 +187,6 @@ export default function CreateEventForm() {
                     control={form.control}
                     name="sports"
                     render={({ field }) => {
-                      const [sportInput, setSportInput] = useState("");
                       const sports = field.value || [];
 
                       const addSport = () => {
@@ -178,7 +210,7 @@ export default function CreateEventForm() {
                                 <Input
                                   value={sportInput}
                                   onChange={e => setSportInput(e.target.value)}
-                                  placeholder="Dodaj zawodnika"
+                                  placeholder="Dodaj sport"
                                   onKeyDown={e => {
                                     if (e.key === "Enter") {
                                       e.preventDefault();
@@ -220,7 +252,6 @@ export default function CreateEventForm() {
                     control={form.control}
                     name="cathegories"
                     render={({ field }) => {
-                      const [cathegoryInput, setCathegoryInput] = useState("");
                       const cathegories = field.value || [];
 
                       const addCathegory = () => {
@@ -244,7 +275,7 @@ export default function CreateEventForm() {
                                 <Input
                                   value={cathegoryInput}
                                   onChange={e => setCathegoryInput(e.target.value)}
-                                  placeholder="Dodaj kategorie"
+                                  placeholder="Dodaj kategorię"
                                   onKeyDown={e => {
                                     if (e.key === "Enter") {
                                       e.preventDefault();
@@ -284,44 +315,147 @@ export default function CreateEventForm() {
 
                   <FormField
                       control={form.control}
-                      name="city"
+                      name="place_name"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel>Miasto - </FormLabel>
+                              <FormLabel>Nazwa obiektu</FormLabel>
                               <FormControl>
-                                  <Input placeholder="Wpisz miasto" {...field} />
+                                  <Input placeholder="Wpisz nazwę obiektu" {...field} />
                               </FormControl>
                               <FormDescription>
-                                  To jest miasto, w którym zespół ma swoją siedzibę.
+                                  To jest nazwa obiektu, w którym odbywają się zawody.
                               </FormDescription>
                               <FormMessage />
                           </FormItem>
                   )}
                   />
+
+                  <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Miasto</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz miasto" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest miasto, w którym odbywają się zawody.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                  )}
+                  />
+
                   <FormField
                       control={form.control}
                       name="zip_code"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel>Kod pocztowy miasta - siedziby</FormLabel>
+                              <FormLabel>Kod pocztowy miasta</FormLabel>
                               <FormControl>
                                   <Input placeholder="Wpisz kod pocztowy: XX-XXX" {...field} />
                               </FormControl>
                               <FormDescription>
-                                  To jest kod pocztowy miasta, w którym zespół ma swoją siedzibę.
+                                  To jest kod pocztowy miasta, w którym odbywają się zawody.
                               </FormDescription>
                               <FormMessage />
                           </FormItem>
                        )}
+                  />
+
+                  <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Ulica i numer</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz ulicę i numer" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest dokładny adres miejsca, gdzie odbędą się zawody.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+
+                  <FormField
+                      control={form.control}
+                      name="start_date"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Data i godzina rozpoczęcia</FormLabel>
+                              <FormControl>
+                                  <Input type="datetime-local" placeholder="Wybierz datę i godzinę rozpoczęcia" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest data i godzina rozpoczęcia wydarzenia.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+
+                  <FormField
+                      control={form.control}
+                      name="end_date"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Data i godzina zakończenia</FormLabel>
+                              <FormControl>
+                                  <Input type="datetime-local" placeholder="Wybierz datę i godzinę zakończenia" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest data i godzina zakończenia wydarzenia.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+                  
+                  <FormLabel>Kontakt z organizatorem</FormLabel>
+                  <FormField
+                      control={form.control}
+                      name="contact_email"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Adres email</FormLabel>
+                              <FormControl>
+                                  <Input type="email" placeholder="Wpisz adres email" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest adres email do kontaktu z organizatorem.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+                  <FormField
+                      control={form.control}
+                      name="contact_phone"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Numer telefonu</FormLabel>
+                              <FormControl>
+                                  <Input type="tel" placeholder="Wpisz numer telefonu" {...field} />  
+                              </FormControl>
+                              <FormDescription>
+                                  To jest numer telefonu do kontaktu z organizatorem.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
                   />
                   
                   <div className="flex items-center justify-center gap-2">
                       <Button 
                           color="warning" 
                           type="submit" 
-                          disabled={form.formState.isSubmitting} 
+                          disabled={form.formState.isSubmitting || submitButtonDisactive} 
                           className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">
-                          {form.formState.isSubmitting ? "Zapisywanie..." : "Dodaj zespół"}
+                          {form.formState.isSubmitting ? "Zapisywanie..." : "Dodaj wydarzenie"}
                       </Button>
                   </div>
               </form>

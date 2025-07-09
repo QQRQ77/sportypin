@@ -50,13 +50,16 @@ interface CreateTeam {
 
 interface CreateEvent{
   name: string;
+  event_type: string;
   description?: string;
+  organizator?: string;
   start_date: timestamp;
   end_date?: timestamp;
   sports: string[];
   cathegories?: string[];
   contact_email?: string;
   contact_phone?: string;
+  place_name?: string;
   city: string;
   address?: string;
   zip_code?: string;

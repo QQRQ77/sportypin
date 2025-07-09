@@ -1,15 +1,11 @@
 'use client'
 
-import { EnvelopeIcon, EyeIcon, EyeSlashIcon, KeyIcon, UserIcon } from "@heroicons/react/20/solid"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordStrength } from "check-password-strength";
-// import { registerUser } from "@/lib/actions/authActions";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
-import PassStrengthBar from "../PassStrengthBar";
+import { useRouter } from "next/navigation";
 
 import {
   Form,
@@ -20,11 +16,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Tooltip } from "@heroui/tooltip";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { createAthlete } from "@/lib/athletes.actions";
 
 const FormSchema = z.object({
@@ -36,9 +29,12 @@ const FormSchema = z.object({
         .max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków).")
     ).optional(),
     home_team: z.string().min(3, "Nazwa drużyny domowej jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 50 znaków).").optional(),
-    birth_day: z.number().min(1, "Dzień musi być większy niż 0.").max(31, "Dzień musi być mniejszy lub równy 31."),
-    birth_month: z.number().min(1, "Miesiąc musi być większy niż 0.").max(12, "Miesiąc musi być mniejszy lub równy 12."),
-    birth_year: z.number().min(1900, "Rok musi być większy niż 1900.").max(new Date().getFullYear(), `Rok musi być mniejszy lub równy ${new Date().getFullYear()}.`),
+    birth_day: z.number().min(1, "Dzień musi być większy niż 0.").max(31, "Dzień musi być mniejszy lub równy 31.").optional(),
+    birth_month: z.string().optional().refine(value => {
+        const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
+        return value ? months.includes(value) : true;},
+       "Miesiąc musi być jednym z: styczeń, luty, marzec, kwiecień, maj, czerwiec, lipiec, sierpień, wrzesień, październik, listopad, grudzień."),
+    birth_year: z.number().min(1900, "Rok musi być większy niż 1900.").max(new Date().getFullYear(), `Rok musi być mniejszy lub równy ${new Date().getFullYear()}.`).optional(),
   })
 
 type InputType = z.infer<typeof FormSchema>
@@ -49,53 +45,34 @@ export default function CreateAthleteForm() {
         resolver: zodResolver(FormSchema)
     });
 
-    const router = useRouter();
-    const [visiblePass, setVisiblePass] = useState(false);
-    const [buttonsVis, setButtonsVis] = useState(true)
-    
-    const [isPasswordVisible, setIsPassVisible] = useState(false)
-    const [passStrength, setPassStrength] = useState(0)
-    const [buttonSpinnerVis, setButtonSpinnerVis] = useState(false)
-    const [infoMessageVisible, setInfoMessageVisible] = useState(false)
-    const [infoMessage, setInfoMessage] = useState("Link aktywacyjny został wysłany na adres email.")
+    const router = useRouter()
+
+    const [teamInput, setTeamInput] = useState("");
+    const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
 
     const addAthlete: SubmitHandler<InputType> = async (data) => {
-        console.log("Form data: ", data)
-        // setButtonSpinnerVis(true)
+
+      setSubmitButtonDisactive(true);
+
+      if (teamInput != "") {
+          const trimmed = teamInput.trim();
+          if (trimmed.length >= 3 && !data.teams?.includes(trimmed)) {
+            data.teams = [...(data.teams || []), trimmed];
+            setTeamInput("");
+          } else {
+            toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            return;
+          }
+      }
+          
         try {
-            // const result = await registerUser(user)
             const athlete = await createAthlete({...data}) 
 
-            if(athlete) {console.log("PROFIL DODANY: ", athlete)} else {redirect("/")}
+            if(athlete) {router.push(`/athlete/${athlete.id}`)} else {router.push("/")}
                        
-            // if (result === "success") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika zostało pomyślnie zarejestrowane. Link aktywacyjny został wysłany na adres email.")
-            //     toast.success("Konto użytkownika zostało pomyślnie zarejestrowane.")
-            //     toast.success("Link aktywacyjny został wysłany na adres email.")
-            //     form.reset()
-            //     router.push("/login")}
-            // if (result === "errorUserExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika o tej nazwie już istnieje.")
-            //     toast.error("Konto użytkownika o tej nazwie już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "errorEmailExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto z tym adresem email już istnieje.")
-            //     toast.error("Konto z tym adresem email już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "sendError") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     toast.error("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     setButtonSpinnerVis(false)
-            // }
         } catch (error) {
+            setSubmitButtonDisactive(false);
             toast.error("Upps!. Coś poszło nie tak...")
-            setButtonSpinnerVis(false)
             console.error(error)
         }
     } 
@@ -118,7 +95,7 @@ export default function CreateAthleteForm() {
                               </FormDescription>
                               <FormMessage />
                           </FormItem>
-                  )}
+                        )}
                   />
                   <FormField
                       control={form.control}
@@ -140,7 +117,6 @@ export default function CreateAthleteForm() {
                     control={form.control}
                     name="teams"
                     render={({ field }) => {
-                      const [teamInput, setTeamInput] = useState("");
                       const teams = field.value || [];
 
                       const addTeam = () => {
@@ -194,7 +170,7 @@ export default function CreateAthleteForm() {
                             </div>
                           </FormControl>
                           <FormDescription>
-                            Dodaj jeden lub więcej zespołów, do których należy zawodnik.
+                            Dodaj jeden lub więcej zespołów, w których występuje zawodnik.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -217,100 +193,81 @@ export default function CreateAthleteForm() {
                           </FormItem>
                        )}
                   />
+                  <FormLabel>Data urodzenia zawodnika</FormLabel>
+                  <div className="flex justify-start gap-3">
                   <FormField
-                    control={form.control}
-                    name="birth_day"
-                    render={({ field: dayField }) => (
-                      <FormField
-                        control={form.control}
-                        name="birth_month"
-                        render={({ field: monthField }) => (
-                          <FormField
-                            control={form.control}
-                            name="birth_year"
-                            render={({ field: yearField }) => {
-                              // Helper to get days in selected month/year
-                              const getDaysInMonth = (month: number, year: number) => {
-                                if (!month || !year) return 31;
-                                return new Date(year, month, 0).getDate();
-                              };
+                      control={form.control}
+                      name="birth_day"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormControl>
+                                <select
+                                  value={field.value ?? ""}
+                                  onChange={e => field.onChange(Number(e.target.value))}
+                                  className="w-20 border rounded px-2 py-1 mr-2"
+                                >
+                                  <option value="">Dzień</option>
+                                  {Array.from({ length: 31 }, (_, i) => (
+                                    <option key={i + 1} value={i + 1}>
+                                      {i + 1}
+                                    </option>
+                                  ))}
+                                </select>
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                      )}/>
+                  <FormField
+                      control={form.control}
+                      name="birth_month"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormControl>
+                                <select
+                                  value={field.value ?? ""}
+                                  onChange={e => field.onChange(e.target.value)}
+                                  className="w-32 border rounded px-2 py-1 mr-2"
+                                >
+                                  <option value="">Miesiąc</option>
+                                  {["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"].map((month, index) => (
+                                    <option key={index} value={month}>
+                                      {month.charAt(0).toUpperCase() + month.slice(1)}
+                                    </option>
+                                  ))}
+                                </select>
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                      )}/>
+                    <FormField
+                      control={form.control}
+                      name="birth_year"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormControl>
+                                <select
+                                  value={field.value ?? ""}
+                                  onChange={e => field.onChange(Number(e.target.value))}
+                                  className="w-22 border rounded px-2 py-1 mr-2"
+                                >
+                                  <option value="">Rok</option>
+                                    {Array.from({ length: new Date().getFullYear() - 1899 }, (_, i) => (
+                                    <option key={new Date().getFullYear() - i} value={new Date().getFullYear() - i}>
+                                      {new Date().getFullYear() - i}
+                                    </option>
+                                    ))}
+                                </select>
+                              </FormControl>
+                              <FormMessage />
+                          </FormItem>
+                      )}/>
+                      </div>
 
-                              const selectedMonth = monthField.value || 1;
-                              const selectedYear = yearField.value || new Date().getFullYear();
-                              const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
-
-                              // Generate options
-                              const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-                              const months = Array.from({ length: 12 }, (_, i) => i + 1);
-                              const currentYear = new Date().getFullYear();
-                              const years = Array.from({ length: currentYear - 1899 }, (_, i) => currentYear - i);
-
-                              return (
-                                <FormItem>
-                                  <FormLabel>Data urodzenia</FormLabel>
-                                  <FormControl>
-                                    <div className="flex gap-2">
-                                      <select
-                                        className="border rounded px-2 py-1"
-                                        value={dayField.value || ""}
-                                        onChange={e => dayField.onChange(Number(e.target.value))}
-                                      >
-                                        <option value="">Dzień</option>
-                                        {days.map(day => (
-                                          <option key={day} value={day}>{day}</option>
-                                        ))}
-                                      </select>
-                                      <select
-                                        className="border rounded px-2 py-1"
-                                        value={monthField.value || ""}
-                                        onChange={e => {
-                                          monthField.onChange(Number(e.target.value));
-                                          // Reset day if out of range
-                                          if (dayField.value > getDaysInMonth(Number(e.target.value), yearField.value)) {
-                                            dayField.onChange("");
-                                          }
-                                        }}
-                                      >
-                                        <option value="">Miesiąc</option>
-                                        {months.map(month => (
-                                          <option key={month} value={month}>{month}</option>
-                                        ))}
-                                      </select>
-                                      <select
-                                        className="border rounded px-2 py-1"
-                                        value={yearField.value || ""}
-                                        onChange={e => {
-                                          yearField.onChange(Number(e.target.value));
-                                          // Reset day if out of range
-                                          if (dayField.value > getDaysInMonth(monthField.value, Number(e.target.value))) {
-                                            dayField.onChange("");
-                                          }
-                                        }}
-                                      >
-                                        <option value="">Rok</option>
-                                        {years.map(year => (
-                                          <option key={year} value={year}>{year}</option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                  </FormControl>
-                                  <FormDescription>
-                                    Wybierz dzień, miesiąc i rok urodzenia zawodnika.
-                                  </FormDescription>
-                                  <FormMessage />
-                                </FormItem>
-                              );
-                            }}
-                          />
-                        )}
-                      />
-                    )}
-                  />
                   <div className="flex items-center justify-center gap-2">
                       <Button 
                           color="warning" 
                           type="submit" 
-                          disabled={form.formState.isSubmitting} 
+                          disabled={form.formState.isSubmitting || submitButtonDisactive} 
                           className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">
                           {form.formState.isSubmitting ? "Zapisywanie..." : "Dodaj zawodnika"}
                       </Button>

@@ -5,10 +5,41 @@ import {
   SignedOut,
   UserButton,
 } from '@clerk/nextjs'
+import Image from "next/image";
+import Link from 'next/link';
+
+const size = 60; // Size for the logos
 
 export default function NavItems() {
   return (
     <nav className="flex items-center gap-6">
+      <Link href="/events" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
+        <Image
+          src="/images/logo_events.png"
+          alt="Sport Event Logo"
+          width={size}
+          height={size}
+        />
+        <p className='hidden sm:block text-lg font-semibold underline mr-3'>Wydarzenia</p>
+      </Link>
+      <Link href="/teams" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
+        <Image
+          src="/images/logo_team.png"
+          alt="Sport Event Logo"
+          width={size}
+          height={size}
+        />
+        <p className='hidden sm:block text-lg font-semibold underline mr-3'>Zespoły</p>
+      </Link>
+      <Link href="/athlete" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
+        <Image
+          src="/images/logo_athlete.png"
+          alt="Sport Event Logo"
+          width={size}
+          height={size}
+        />
+        <p className='hidden sm:block text-lg font-semibold underline mr-3'>Zawodnicy</p>
+      </Link>
       <SignedOut>
         <SignInButton >
           <button className="bg-[#184217] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">

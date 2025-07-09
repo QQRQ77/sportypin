@@ -10,8 +10,8 @@ const bricolage = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "SportyPin",
-  description: "Cały sport w jednym miejscu",
+  title: "SportPin",
+  description: "Twój sport w jednym miejscu",
 };
 
 export default function RootLayout({

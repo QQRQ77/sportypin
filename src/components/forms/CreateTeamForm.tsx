@@ -154,14 +154,14 @@ export default function CreateTeamForm() {
                     control={form.control}
                     name="members"
                     render={({ field }) => {
-                      const [memberInput, setTeamInput] = useState("");
+                      const [memberInput, setMemberInput] = useState("");
                       const members = field.value || [];
 
                       const addMember = () => {
                         const trimmed = memberInput.trim();
                         if (trimmed.length >= 3 && !members.includes(trimmed)) {
                           field.onChange([...members, trimmed]);
-                          setTeamInput("");
+                          setMemberInput("");
                         }
                       };
 
@@ -177,7 +177,7 @@ export default function CreateTeamForm() {
                               <div className="flex gap-2 mb-2">
                                 <Input
                                   value={memberInput}
-                                  onChange={e => setTeamInput(e.target.value)}
+                                  onChange={e => setMemberInput(e.target.value)}
                                   placeholder="Dodaj zawodnika"
                                   onKeyDown={e => {
                                     if (e.key === "Enter") {
