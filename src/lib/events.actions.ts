@@ -16,3 +16,18 @@ export async function createEvent(formData: CreateTeam) {
 
   return data[0];
 }
+
+export async function getEventsSmall() {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Events')
+    .select('*')
+    // .select('id, name, start, city'); // podaj tutaj tylko potrzebne kolumny
+
+  if (error) {
+    console.error('Error fetching events:', error);
+    throw new Error(error.message || 'Failed to fetch events');
+  }
+
+  return data;
+}

@@ -1,5 +1,4 @@
 import SignUpForm from "@/components/forms/SingUpForm"
-import Link from "next/link"
 
 export const dynamic = 'force-dynamic'
 

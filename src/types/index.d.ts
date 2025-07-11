@@ -65,6 +65,25 @@ interface CreateEvent{
   zip_code?: string;
 }
 
+type EventSmall = {
+  id: string;
+  creator: string;
+  name: string;
+  event_type: string;
+  description?: string;
+  organizator?: string;
+  start_date: timestamp;
+  end_date?: timestamp;
+  sports: string[];
+  cathegories?: string[];
+  contact_email?: string;
+  contact_phone?: string;
+  place_name?: string;
+  city: string;
+  address?: string;
+  zip_code?: string;
+}
+
 interface GetAllCompanions {
   limit?: number;
   page?: number;
