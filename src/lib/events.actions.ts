@@ -19,9 +19,11 @@ export async function createEvent(formData: CreateTeam) {
 
 export async function getEventsSmall() {
   const supabase = createSupabaseClient();
+  // Sortuj eventy według start_date rosnąco (od najwcześniejszego)
   const { data, error } = await supabase
     .from('Events')
     .select('*')
+    .order('start_date', { ascending: true });
     // .select('id, name, start, city'); // podaj tutaj tylko potrzebne kolumny
 
   if (error) {

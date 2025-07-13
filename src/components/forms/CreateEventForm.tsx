@@ -21,7 +21,7 @@ import { Button } from "../ui/button";
 import { createEvent } from "@/lib/events.actions";
 
 const FormSchema = z.object({
-  name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(500, "Nazwa wydarzenia jest zbyt długa (maksymalnie 500 znaków)."),
+  name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(500, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
   event_type: z.string().min(3, "Typ wydarzenia jest zbyt krótki (minimum 3 znaki).").max(100, "Typ wydarzenia jest zbyt długi (maksymalnie 100 znaków).").optional(),
   description: z.string().min(3, "Opis wydarzenia jest zbyt krótki (minimum 3 znaki).").max(5000, "Opis Wydarzenia jest zbyt długi (maksymalnie 5000 znaków).").optional(),
   organizator: z.string().min(3, "Nazwa organizatora jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa organizatora jest zbyt długa (maksymalnie 100 znaków).").optional(),
@@ -115,23 +115,6 @@ export default function CreateEventForm() {
         <>
           <Form {...form}>
               <form onSubmit={form.handleSubmit(addEvent)} className="space-y-8">
-                  <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel>Nazwa wydarzenia</FormLabel>
-                              <FormControl>
-                                  <Input placeholder="Wpisz nazwę wydarzenia" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                  To jest nazwa wydarzenia sportowego, które dodajesz do bazy.
-                              </FormDescription>
-                              <FormMessage />
-                          </FormItem>
-                        )}
-                  />
-
                   <FormField
                       control={form.control}
                       name="name"
@@ -416,6 +399,24 @@ export default function CreateEventForm() {
                   />
                   
                   <FormLabel>Kontakt z organizatorem</FormLabel>
+
+                    <FormField
+                      control={form.control}
+                      name="organizator"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Organizator</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz organizatora wydarzenia" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest nazwa/dane organizatora.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                  />
+
                   <FormField
                       control={form.control}
                       name="contact_email"
