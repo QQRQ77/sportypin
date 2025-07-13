@@ -19,9 +19,10 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createEvent } from "@/lib/events.actions";
+import { Textarea } from "../ui/textarea";
 
 const FormSchema = z.object({
-  name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(500, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
+  name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
   event_type: z.string().min(3, "Typ wydarzenia jest zbyt krótki (minimum 3 znaki).").max(100, "Typ wydarzenia jest zbyt długi (maksymalnie 100 znaków).").optional(),
   description: z.string().min(3, "Opis wydarzenia jest zbyt krótki (minimum 3 znaki).").max(5000, "Opis Wydarzenia jest zbyt długi (maksymalnie 5000 znaków).").optional(),
   organizator: z.string().min(3, "Nazwa organizatora jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa organizatora jest zbyt długa (maksymalnie 100 znaków).").optional(),
@@ -41,12 +42,10 @@ const FormSchema = z.object({
     message: "Data zakończenia jest nieprawidłowa."}).optional(),
   contact_email: z.string().email("Podaj poprawny adres email.").optional(),
   contact_phone: z.string()
-    .regex(/^\+?\d{9,15}$/, "Numer telefonu musi zawierać od 9 do 15 cyfr i może zaczynać się od znaku +.")
-    .optional(),
+    .regex(/^\+?\d{9,15}$/, "Numer telefonu musi zawierać od 9 do 15 cyfr i może zaczynać się od znaku +.").optional(),
   city: z.string().min(3, "Nazwa miasta jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa miasta jest zbyt długa (maksymalnie 100 znaków)."),
   zip_code: z.string()
-    .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie XX-XXX, gdzie X to cyfry.")
-    .optional(),
+    .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie XX-XXX, gdzie X to cyfry.").optional(),
   address: z.string().min(3, "Adres jest zbyt krótki (minimum 3 znaki).").max(200, "Adres jest zbyt długi (maksymalnie 200 znaków).").optional(),
   place_name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków).").optional(),
 })
@@ -99,7 +98,6 @@ export default function CreateEventForm() {
                   data.end_date = new Date(data.end_date).toISOString();
                 }
             
-          console.log("dane eventu: ", data);
             const event = await createEvent({...data})
             
             if(event) {router.push(`/events/${event.id}`)} else {router.push("/")}
@@ -156,7 +154,7 @@ export default function CreateEventForm() {
                           <FormItem>
                               <FormLabel>Opis wydarzenia</FormLabel>
                               <FormControl>
-                                  <Input placeholder="Wpisz opis wydarzenia" {...field} />
+                                  <Textarea placeholder="Wpisz opis wydarzenia" {...field} />
                               </FormControl>
                               <FormDescription>
                                   To jest krótki opis wydarzenia, które dodajesz do bazy.

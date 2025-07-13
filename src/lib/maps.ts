@@ -48,7 +48,28 @@ function validatePolishAddress(address: string): { isValid: boolean; hasPostalCo
 }
 
 // 7. FUNKCJA POMOCNICZA DO FORMATOWANIA ADRESU
-function formatAddressForGeocoding(street: string, city: string, postalCode: string, country = 'Polska') {
-  const parts = [street, city, postalCode, country].filter(part => part && part.trim());
+export async function formatAddressForGeocoding(address: string, city: string, zip_code: string, country = 'Polska') {
+  const parts = [address, city, zip_code, country].filter(part => part && part.trim());
   return parts.join(', ');
+}
+
+export async function googleGeocodeAddress(address: string) {
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
+    throw new Error('Google Maps API key is not set');
+  }
+  const response = await fetch(
+    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`
+  );
+
+  const data = await response.json();
+  if (data.status === 'OK' && data.results.length > 0) {
+    const result = data.results[0].geometry.location;
+    return {
+      lat: result.lat || 0,
+      lng: result.lng || 0,
+    };
+  } else {
+    throw new Error('Geocoding failed: ' + data.status);
+  }
 }

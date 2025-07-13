@@ -63,6 +63,7 @@ interface CreateEvent{
   city: string;
   address?: string;
   zip_code?: string;
+  country?: string;
 }
 
 type EventSmall = {
