@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import EventsList from "./EventsList";
 import { useState } from "react";
 
-type Event = {
+export type Event = {
     id: string;
     name: string;
     start_date: string;
@@ -15,6 +15,8 @@ type Event = {
     description?: string;
     sports?: string[];
     cathegories?: string[];
+    creator_name?: string;
+    followers?: string[];
 };
 
 interface EventsTabProps {
@@ -22,10 +24,10 @@ interface EventsTabProps {
     usersEvents?: Array<Event>;
     upcomingEvents?: Array<Event>;
     pastEvents?: Array<Event>;
-    isUserId: boolean;
+    userId?: string | null;
 }
 
-export default function EventsTab({ likedEvents, usersEvents, upcomingEvents, pastEvents, isUserId }: EventsTabProps) {
+export default function EventsTab({ likedEvents, usersEvents, upcomingEvents, pastEvents, userId }: EventsTabProps) {
   const [activeTab, setActiveTab] = useState((likedEvents && likedEvents.length > 0) ? 'likedEvents' : 'upcomingEvents');
 
   return (
@@ -33,26 +35,26 @@ export default function EventsTab({ likedEvents, usersEvents, upcomingEvents, pa
       <h1 className="text-2xl font-bold mb-4">Wydarzenia</h1>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex gap-2">
         <TabsList className="bg-gray-300">
-          {isUserId && <TabsTrigger value="likedEvents">Obserwowane</TabsTrigger>}
-          {isUserId && <TabsTrigger value="userEvents">Twoje</TabsTrigger>}
+          {userId && <TabsTrigger value="likedEvents">Obserwowane</TabsTrigger>}
+          {userId && <TabsTrigger value="userEvents">Twoje</TabsTrigger>}
           <TabsTrigger value="upcomingEvents">Nadchodzące</TabsTrigger>
           <TabsTrigger value="pastEvents">Archiwalne</TabsTrigger>
         </TabsList>
-        {isUserId && <TabsContent value="likedEvents">
+        {userId && <TabsContent value="likedEvents">
           <h2 className="my-2">Wydarzenia obserwowane przez ciebie.</h2>
-          <EventsList events={likedEvents} />
+          <EventsList events={likedEvents} userId={userId}/>
         </TabsContent>}
-        {isUserId && <TabsContent value="userEvents">
+        {userId && <TabsContent value="userEvents">
           <h2 className="my-2">Wydarzenia stworzone przez ciebie.</h2>
-          <EventsList events={usersEvents} />
+          <EventsList events={usersEvents} userId={userId}/>
         </TabsContent>}
         <TabsContent value="upcomingEvents">
           <h2 className="my-2">Wydarzenia aktualne i nadchodzące.</h2>
-          <EventsList events={upcomingEvents} />
+          <EventsList events={upcomingEvents} userId={userId}/>
         </TabsContent>
         <TabsContent value="pastEvents">
           <h2 className="my-2">Wydarzenia zakończone i archiwalne.</h2>
-          <EventsList events={pastEvents} />
+          <EventsList events={pastEvents} userId={userId}/>
         </TabsContent>
       </Tabs>
     </div>

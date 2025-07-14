@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button'
+import { auth } from '@clerk/nextjs/server';
 
-const Page = () => {
+const Page = async () => {
+  const session = await auth();
+  console.log("Session: ", session);
+
   return (
     <div className='mx-auto'>
       <h1 className='mx-auto text-2xl font-bold'>SportyPin</h1>

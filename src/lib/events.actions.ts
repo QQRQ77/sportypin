@@ -6,10 +6,12 @@ import { CreateEvent, CreateTeam } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 
 export async function createEvent(formData: CreateEvent) {
-  const { userId: creator } = await auth();
+  const session = await auth();
+  const creator = session.userId;
   if (!creator) {
     throw new Error("User not authenticated");
   }
+  const creator_name = session.sessionClaims.userFullName || session.sessionClaims.userName || creator.slice(0, 16); // Fallback to first 8 characters of userId if fullName is not available
 
   const supabase = createSupabaseClient();
 
@@ -24,7 +26,7 @@ export async function createEvent(formData: CreateEvent) {
   const lat = Number(geocodeResult?.lat || 0);
   const lng = Number(geocodeResult?.lng || 0);
 
-  const { data, error } = await supabase.from('Events').insert({...formData, creator, lat, lng}).select();
+  const { data, error } = await supabase.from('Events').insert({...formData, creator, lat, lng, creator_name}).select();
   if (error || !data || data.length === 0) {
     console.error('Error creating athlete:', error);
     throw new Error(error?.message || 'Failed to create athlete');

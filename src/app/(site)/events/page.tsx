@@ -33,7 +33,7 @@ export default async function Page() {
               usersEvents={usersEvents}
               upcomingEvents={upcomingEvents}
               pastEvents={pastEvents}
-              isUserId={userId ? true : false}
+              userId={userId}
             />
           </div>
         </div>
