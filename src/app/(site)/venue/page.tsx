@@ -2,8 +2,7 @@ import Image from "next/image";
 
 export default async function Page() {
   return (
-    <main className="container min-h-[100vh-96px] bg-gray-400">
-      <div className="w-full h-full flex justify-center items-center">
+      <main className="flex items-center justify-center flex-col w-11/12 mx-auto mt-10 gap-4 mb-20">
         <Image
           src="/images/logo_place.png"
           alt="Sport Venues Logo"
@@ -11,7 +10,7 @@ export default async function Page() {
           height={500}
         />
         <h1>OBIEKTY SPORTOWE</h1>
-      </div>
-    </main>
+        <p className="text-lg">Lista obiektów sportowych</p>
+      </main>
   )
 }

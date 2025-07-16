@@ -93,3 +93,26 @@ export async function toggleObserveEvent({
     revalidatePath("/events"); 
   }
 }
+
+export async function getUserObservedEventsIds() {
+  const { userId } = await auth();
+  {if (!userId) {
+    throw new Error("User not authenticated");
+  }}
+
+  const supabase = createSupabaseClient();
+
+  // 1. Pobierz aktualną tablicę
+  const { data, error: fetchError } = await supabase
+    .from("Users")
+    .select("observedEvents")
+    .eq("userId", userId)
+    .single();
+      
+  if (fetchError || !data) {
+    console.error(fetchError);
+    return;
+  }
+
+  return data.observedEvents || []
+}

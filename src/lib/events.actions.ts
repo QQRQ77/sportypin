@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
 import { CreateEvent } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
+import { getUserObservedEventsIds } from "./users.actions";
 
 export async function createEvent(formData: CreateEvent) {
   const session = await auth();
@@ -98,6 +99,33 @@ export async function getUserEvents() {
   }
 
   return data;
+}
+
+export async function getObservedEvents() {
+    const { userId } = await auth();
+    if (!userId) {
+      throw new Error("User not authenticated");
+    }
+
+    const observedEvents = await getUserObservedEventsIds()
+
+    if (!observedEvents || observedEvents.length === 0) return []
+
+    const supabase = createSupabaseClient();
+  
+    const { data, error } = await supabase
+      .from('Events')
+      .select('*')
+      .in('id', observedEvents)
+      .order('start_date', { ascending: false })
+      .limit(20); // Pobierz maksymalnie 20 nadchodzących wydarzeń stworzonych przez usera
+
+    if (error) {
+      console.error('Error fetching events:', error);
+      throw new Error(error.message || 'Failed to fetch events');
+    }
+
+    return data;
 }
 
 export async function ToggleEventFollower(eventId: string, followerId: string) {
