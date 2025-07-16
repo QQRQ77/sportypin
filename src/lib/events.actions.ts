@@ -2,7 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { CreateEvent, CreateTeam } from "@/types";
+import { CreateEvent } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 
 export async function createEvent(formData: CreateEvent) {
@@ -84,8 +84,6 @@ export async function getUserEvents() {
   }
 
   const supabase = createSupabaseClient();
-  // Sortuj eventy według start_date rosnąco (od najwcześniejszego)
-  const today = new Date().toISOString().split('T')[0];
   
   const { data, error } = await supabase
     .from('Events')
@@ -100,4 +98,40 @@ export async function getUserEvents() {
   }
 
   return data;
+}
+
+export async function ToggleEventFollower(eventId: string, followerId: string) {
+  
+  const supabase = createSupabaseClient();
+
+// 1. Pobierz aktualną tablicę
+  const { data: event, error: fetchError } = await supabase
+    .from("Events")
+    .select("followers")
+    .eq("id", eventId)
+    .single();
+
+  if (fetchError || !event) {
+    console.error(fetchError);
+    return;
+  }
+
+  const followers: string[] = event.followers || [];
+
+  // 2. Przełącz obecność userId
+  const updatedFollowers = followers.includes(followerId)
+    ? followers.filter((id) => id !== followerId)
+    : [...followers, followerId];
+
+  // 3. Zapisz
+  const { error: updateError } = await supabase
+    .from("Events")
+    .update({ followers: updatedFollowers })
+    .eq("id", eventId);
+
+  if (updateError) {
+    console.error(updateError);
+  } else return "success"
+
+
 }

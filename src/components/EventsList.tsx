@@ -18,7 +18,7 @@ export default function EventsList({ events, userId }: EventsListProps) {
     <div className="w-full flex flex-col gap-2">
       {events.map((event) => {
         return (
-          <EventCard event={event} key={event.id} userId={userId} />
+          <EventCard event={event} eventKey={event.id} userId={userId} key={event.id} />
         );
       })}
     </div>

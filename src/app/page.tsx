@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button'
+import { createUser } from '@/lib/users.actions';
 import { auth } from '@clerk/nextjs/server';
 
 const Page = async () => {
   const session = await auth();
-  console.log("Session: ", session);
+  if ( session.userId ) {await createUser()}
 
   return (
     <div className='mx-auto'>

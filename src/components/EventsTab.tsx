@@ -35,10 +35,10 @@ export default function EventsTab({ likedEvents, usersEvents, upcomingEvents, pa
       <h1 className="text-2xl font-bold mb-4">Wydarzenia</h1>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex gap-2">
         <TabsList className="bg-gray-300">
-          {userId && <TabsTrigger value="likedEvents">Obserwowane</TabsTrigger>}
-          {userId && <TabsTrigger value="userEvents">Twoje</TabsTrigger>}
-          <TabsTrigger value="upcomingEvents">Nadchodzące</TabsTrigger>
-          <TabsTrigger value="pastEvents">Archiwalne</TabsTrigger>
+          {userId && <TabsTrigger value="likedEvents" className="cursor-pointer">Obserwowane</TabsTrigger>}
+          {userId && <TabsTrigger value="userEvents" className="cursor-pointer">Twoje</TabsTrigger>}
+          <TabsTrigger value="upcomingEvents" className="cursor-pointer">Nadchodzące</TabsTrigger>
+          <TabsTrigger value="pastEvents" className="cursor-pointer">Archiwalne</TabsTrigger>
         </TabsList>
         {userId && <TabsContent value="likedEvents">
           <h2 className="my-2">Wydarzenia obserwowane przez ciebie.</h2>

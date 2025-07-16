@@ -85,6 +85,13 @@ type EventSmall = {
   zip_code?: string;
 }
 
+type CreateUser = {
+  userId: string;
+  userName?: string;
+  userFullName?: string;
+  userEmail: string;
+}
+
 interface GetAllCompanions {
   limit?: number;
   page?: number;

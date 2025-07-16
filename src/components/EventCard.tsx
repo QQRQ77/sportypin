@@ -3,15 +3,16 @@ import Link from "next/link";
 import StarSolidIcon from "../../public/icons/star-solid";
 import StarOutlineIcon from "../../public/icons/star-outline";
 import { Event } from "./EventsTab";
+import { toggleObserveEvent } from "@/lib/users.actions";
 
 interface EventCardProps {
   event: Event;
-  key: string;
+  eventKey: string;
   userId?: string | null;
 }
 
 
-export default function EventCard({ event, key, userId }: EventCardProps) {
+export default function EventCard({ event, eventKey, userId }: EventCardProps) {
 
         const month = new Date(event.start_date).toLocaleString('default', { month: 'long' });
         const day = new Date(event.start_date).getDate();
@@ -37,7 +38,7 @@ export default function EventCard({ event, key, userId }: EventCardProps) {
 
         return (
           <Link href={`/events/${event.id}`}
-            key={key}
+            key={eventKey}
             className={`relative w-full min-h-fit lg:min-h-[144px] rounded-lg shadow-md flex flex-col md:flex-row hover:shadow-lg hover:border-2 border-1 border-gray-900 transition-shadow ${monthColor.bg100}`}
           >
             <div className={`w-full lg:w-1/5 py-2 text-white flex flex-col gap-2 items-center justify-center font-bold border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 rounded-t-lg lg:rounded-t-none lg:rounded-l-lg  ${monthColor.bg500}`}>
@@ -84,7 +85,14 @@ export default function EventCard({ event, key, userId }: EventCardProps) {
               <div className="absolute bottom-0 right-0 p-1 text-xs text-gray-700">
                 Dodane przez: <span className="font-medium">{event.creator_name}</span>
               </div>
-            <div className="absolute top-0 right-0 p-1 flex flex-row">{isEventObserved ? <div className="text-pink-500"><StarSolidIcon/></div> : <StarOutlineIcon/>}</div>
+            <div className="absolute top-0 right-0 p-1 flex flex-row"
+              onClick={async (e) => {
+                  e.preventDefault();     
+                  e.stopPropagation();     
+                  await toggleObserveEvent({ eventId: event.id });
+                }}>
+              {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
+            </div>
           </Link>
         )
   }

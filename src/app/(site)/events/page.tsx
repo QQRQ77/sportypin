@@ -2,10 +2,12 @@ import MultipleMarkersMap from "@/components/GoogleMapsComponent";
 import { getPastEvents, getUpcomingEvents, getUserEvents } from "@/lib/events.actions";
 import { auth } from "@clerk/nextjs/server";
 import EventsTab from "@/components/EventsTab";
+import { createUser } from "@/lib/users.actions";
 
 export default async function Page() {
-  
+
   const { userId } = await auth();
+  if ( userId ) {await createUser()}
     
   const upcomingEvents = await getUpcomingEvents();
   const pastEvents = await getPastEvents();

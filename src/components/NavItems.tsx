@@ -23,10 +23,19 @@ export default function NavItems() {
         />
         <p className='hidden sm:block text-lg font-semibold underline mr-3'>Wydarzenia</p>
       </Link>
+      <Link href="/venue" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
+        <Image
+          src="/images/logo_place.png"
+          alt="Sport Places Logo"
+          width={size}
+          height={size}
+        />
+        <p className='hidden sm:block text-lg font-semibold underline mr-3'>Obiekty</p>
+      </Link>
       <Link href="/teams" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
         <Image
           src="/images/logo_team.png"
-          alt="Sport Event Logo"
+          alt="Sport Teams Logo"
           width={size}
           height={size}
         />
@@ -35,7 +44,7 @@ export default function NavItems() {
       <Link href="/athlete" className='flex items-center gap-2 border rounded-lg hover:bg-gray-100 transition-colors'>
         <Image
           src="/images/logo_athlete.png"
-          alt="Sport Event Logo"
+          alt="Sport Athlete Logo"
           width={size}
           height={size}
         />
