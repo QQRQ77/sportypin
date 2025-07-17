@@ -80,3 +80,4 @@ export function monthNameToColorClass(monthName: string) {
   const normalizedMonth = monthName.toLowerCase() as PolishMonth;
   return monthColors[normalizedMonth] || { bg100: 'bg-gray-100', bg500: 'bg-gray-500', bg200: 'bg-gray-200', hex500: '#9CA3AF' };
 }
+

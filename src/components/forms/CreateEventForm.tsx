@@ -23,6 +23,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createEvent } from "@/lib/events.actions";
 import { Textarea } from "../ui/textarea";
+import { convertBlobUrlToFile } from "@/lib/file.actions";
+import { uploadImage } from "@/lib/supabase.storage";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
@@ -96,6 +98,23 @@ export default function CreateEventForm() {
           }
       }
 
+      let urls = [];
+      for (const url of imageUrls) {
+        const imageFile = await convertBlobUrlToFile(url);
+
+        const { imageUrl, error } = await uploadImage({
+          file: imageFile,
+          bucket: "sportpin",
+        });
+
+        if (error) {
+          console.error(error);
+          return;
+        }
+
+        urls.push(imageUrl);
+      }
+
       try {
             if (data.start_date) {
                   data.start_date = new Date(data.start_date).toISOString();
@@ -104,7 +123,7 @@ export default function CreateEventForm() {
                   data.end_date = new Date(data.end_date).toISOString();
                 }
             
-            const event = await createEvent({...data})
+            const event = await createEvent({...data, imageUrls: urls})
             
             if(event) {router.push(`/events/${event.id}`)} else {router.push("/")}
                        
@@ -183,7 +202,7 @@ export default function CreateEventForm() {
                   />
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
-                    <div className="flex flex-wrap gap-2 justify-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
                       {imageUrls.map((url, index)=> 
                         <div key={index} className="relative">
                           <Image
