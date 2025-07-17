@@ -1,11 +1,14 @@
 'use client'
 
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+
 
 import {
   Form,
@@ -53,6 +56,9 @@ const FormSchema = z.object({
 type InputType = z.infer<typeof FormSchema>
 
 export default function CreateEventForm() {
+
+    const imageInputRef = useRef<HTMLInputElement>(null)
+    const [imageUrls, setImageUrls] = useState<string[]>([])
 
     const form = useForm<InputType>({
         resolver: zodResolver(FormSchema)
@@ -107,7 +113,19 @@ export default function CreateEventForm() {
             toast.error("Upps!. Coś poszło nie tak...")
             console.error(error)
         }
-    } 
+    }
+
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        const filesArray = Array.from(e.target.files);
+        const newImagesUrls = filesArray.map(file => URL.createObjectURL(file)); 
+        setImageUrls([...imageUrls, ... newImagesUrls])
+      }
+    }
+    
+    const removeImage = (index: number) => {
+      setImageUrls((prev) => prev.filter((_, i) => i !== index));
+    };
 
     return (
         <>
@@ -163,7 +181,33 @@ export default function CreateEventForm() {
                           </FormItem>
                         )}
                   />
-
+                  <div className="w-full flex flex-col gap-2 justify-center">
+                    <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {imageUrls.map((url, index)=> 
+                        <div key={index} className="relative">
+                          <Image
+                            src={url}
+                            alt={`image-${index}`}
+                            width={300}
+                            height={300}
+                            className="object-cover rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {e.preventDefault(); removeImage(index)}}
+                            className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer"
+                            aria-label="Usuń zdjęcie"
+                          >
+                            <XMarkIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
+                  </div>
+                  
+                  
                   <FormField
                     control={form.control}
                     name="sports"
@@ -450,7 +494,6 @@ export default function CreateEventForm() {
                   
                   <div className="flex items-center justify-center gap-2">
                       <Button 
-                          color="warning" 
                           type="submit" 
                           disabled={form.formState.isSubmitting || submitButtonDisactive} 
                           className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">

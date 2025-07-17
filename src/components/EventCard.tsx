@@ -1,9 +1,13 @@
+'use client'
+
 import { monthNameToColorClass } from "@/lib/utils";
 import Link from "next/link";
 import StarSolidIcon from "../../public/icons/star-solid";
 import StarOutlineIcon from "../../public/icons/star-outline";
 import { Event } from "./EventsTab";
 import { toggleObserveEvent } from "@/lib/users.actions";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 
 interface EventCardProps {
   event: Event;
@@ -13,6 +17,9 @@ interface EventCardProps {
 
 
 export default function EventCard({ event, eventKey, userId }: EventCardProps) {
+
+        const [closeModal, setCloseModal] = useState(false)
+        const [modalBgVis, setModalBgVis] = useState(false)
 
         const month = new Date(event.start_date).toLocaleString('default', { month: 'long' });
         const day = new Date(event.start_date).getDate();
@@ -82,17 +89,79 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
                 <p className=" text-gray-600 text-base font-medium">{event.place_name}</p>
               </div>
             </div>
-              <div className="absolute bottom-0 right-0 p-1 text-xs text-gray-700">
-                Dodane przez: <span className="font-medium">{event.creator_name}</span>
+                <div className="absolute top-0 right-0 p-1 flex flex-row"
+                  onClick={async (e) => {
+                      e.preventDefault();     
+                      e.stopPropagation();     
+                      await toggleObserveEvent({ eventId: event.id });
+                    }}>
+                  {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
+                </div>
+              {!closeModal && 
+                <div className={`absolute bottom-0 right-0 p-1 text-xs text-gray-700 flex flex-col ${modalBgVis ? 'bg-gray-100 rounded-lg' : ""} `}>
+                  <button
+                    onClick={(e)=> {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setCloseModal(!closeModal)}}
+                    onMouseEnter={() => setModalBgVis(true)}
+                    onMouseLeave={() => setModalBgVis(false)}
+                    className="text-gray-500 hover:text-gray-800 cursor-pointer ml-auto mr-1 mb-2"
+                    aria-label="Zamknij"
+                    >
+                    <XMarkIcon className="w-6 h-6" />
+                  </button>
+                  <p>Dodane przez: <span className="font-medium">{event.creator_name}</span></p>
+                  {event.contact_email && <p className="">email: <span className="font-medium">{event.contact_email}</span></p>}
+                  {event.contact_phone && <p className="">telefon: <span className="font-medium">{event.contact_phone}</span></p>}
+                </div>}
+            {/* {!closeModal && <div className="absolute top-0 right-0 z-50 flex items-center justify-center bg-black/40">
+              <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
+                {/* Przycisk zamknięcia 
+                <button
+                  onClick={()=> setCloseModal(!closeModal)}
+                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
+                  aria-label="Zamknij"
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+
+                <div className="text-sm text-gray-700 space-y-2">
+                  <p>
+                    Dodane przez:{" "}
+                    <span className="font-medium">{event.creator_name}</span>
+                  </p>
+                  {event.contact_email && (
+                    <p>
+                      email:{" "}
+                      <span className="font-medium">{event.contact_email}</span>
+                    </p>
+                  )}
+                  {event.contact_phone && (
+                    <p>
+                      telefon:{" "}
+                      <span className="font-medium">{event.contact_phone}</span>
+                    </p>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  className="mt-4 flex items-center gap-1 text-sm"
+                  onClick={async () => {
+                    await toggleObserveEvent({ eventId: event.id });
+                    // opcjonalnie: odśwież kartę lub zamknij
+                  }}
+                >
+                  {isEventObserved ? (
+                    <StarSolidIcon />
+                  ) : (
+                    <StarOutlineIcon />
+                  )}
+                  <span>{isEventObserved ? "Obserwujesz" : "Obserwuj"}</span>
+                </button>
               </div>
-            <div className="absolute top-0 right-0 p-1 flex flex-row"
-              onClick={async (e) => {
-                  e.preventDefault();     
-                  e.stopPropagation();     
-                  await toggleObserveEvent({ eventId: event.id });
-                }}>
-              {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
-            </div>
+            </div>} */}
           </Link>
         )
   }

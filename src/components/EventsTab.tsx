@@ -16,6 +16,8 @@ export type Event = {
     sports?: string[];
     cathegories?: string[];
     creator_name?: string;
+    contact_email?: string;
+    contact_phone?: string;
     followers?: string[];
 };
 
@@ -45,7 +47,7 @@ export default function EventsTab({ likedEvents, usersEvents, upcomingEvents, pa
           <EventsList events={likedEvents} userId={userId}/>
         </TabsContent>}
         {userId && <TabsContent value="userEvents">
-          <h2 className="my-2">Wydarzenia stworzone przez ciebie.</h2>
+          <h2 className="my-2">Wydarzenia dodane przez ciebie.</h2>
           <EventsList events={usersEvents} userId={userId}/>
         </TabsContent>}
         <TabsContent value="upcomingEvents">
