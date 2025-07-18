@@ -2,6 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
+import { CreateAthlete } from "@/types";
 
 export async function createAthlete(formData: CreateAthlete) {
   const { userId: creator } = await auth();

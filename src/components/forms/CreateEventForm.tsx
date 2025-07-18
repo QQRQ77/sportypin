@@ -25,6 +25,7 @@ import { createEvent } from "@/lib/events.actions";
 import { Textarea } from "../ui/textarea";
 import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
+import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
@@ -61,6 +62,7 @@ export default function CreateEventForm() {
 
     const imageInputRef = useRef<HTMLInputElement>(null)
     const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [imageError, setImageError] = useState<string>("")
 
     const form = useForm<InputType>({
         resolver: zodResolver(FormSchema)
@@ -135,11 +137,32 @@ export default function CreateEventForm() {
     }
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        const filesArray = Array.from(e.target.files);
-        const newImagesUrls = filesArray.map(file => URL.createObjectURL(file)); 
-        setImageUrls([...imageUrls, ... newImagesUrls])
-      }
+      const files = e.target.files;
+      if (!files) return;
+
+      const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+      if (remainingSlots <= 0) return;
+
+      const validFiles = Array.from(files)
+        .filter((f) => {
+          const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+          if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+          return ok;
+        })
+        .slice(0, remainingSlots);
+
+      validFiles.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        setImageUrls((prev) => [...prev, url]);
+      });
+
+      e.target.value = ""; // reset inputa
+
+      // if (e.target.files) {
+      //   const filesArray = Array.from(e.target.files);
+      //   const newImagesUrls = filesArray.map(file => URL.createObjectURL(file)); 
+      //   setImageUrls([...imageUrls, ... newImagesUrls])
+      // }
     }
     
     const removeImage = (index: number) => {
@@ -200,6 +223,7 @@ export default function CreateEventForm() {
                           </FormItem>
                         )}
                   />
+
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
@@ -223,9 +247,10 @@ export default function CreateEventForm() {
                         </div>
                       )}
                     </div>
+                    <p className="text-red-700 text-center">{imageError}</p>
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
+                    <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
                   </div>
-                  
                   
                   <FormField
                     control={form.control}

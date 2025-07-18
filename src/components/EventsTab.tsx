@@ -19,6 +19,7 @@ export type Event = {
     contact_email?: string;
     contact_phone?: string;
     followers?: string[];
+    imageUrls?: string[]
 };
 
 interface EventsTabProps {

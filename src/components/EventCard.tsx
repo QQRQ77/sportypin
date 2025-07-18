@@ -8,6 +8,9 @@ import { Event } from "./EventsTab";
 import { toggleObserveEvent } from "@/lib/users.actions";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import Image from "next/image";
+import AutoSlider from "./ui/autoslider";
+
 
 interface EventCardProps {
   event: Event;
@@ -55,23 +58,50 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
               {!endTime && startTime && <p className="text-lg font-normal">rozpoczęcie o godz. {startTime}</p>}
             </div>
 
-            <div className={`w-full lg:w-1/5 flex flex-col justify-between items-center border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 ${monthColor.bg200}`}>
-              <h2 className="text-xl font-semibold text-gray-800 mt-1 mx-auto text-center break-words w-full">{event.name}</h2>
-              <h2 className="text-gray-700 mx-auto text-xl font-semibold mt-4 lg:my-3">{event.city}</h2>
-              <p className="md:hidden text-gray-600 text-base mx-auto">{event.address}</p>
-              <p className="md:hidden text-gray-600 text-base mx-auto">{event.place_name}</p>
-            </div>
+            {(event.imageUrls && event.imageUrls?.length > 0) ? 
+            ((event.imageUrls && event.imageUrls.length === 1) ?
+              <div className="relative w-full lg:w-1/5"> {/* lub dowolne w/h */}
+                <Image
+                  src={event.imageUrls[0]}
+                  alt={`Image ${event.name}`}
+                  fill
+                  className="object-cover"
+                />
+              </div> :
+              <AutoSlider imageUrls={event.imageUrls} altBase={event.name} />
+            )
+            :
+              <div className={`w-full lg:w-1/5 flex flex-col justify-between items-center border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 ${monthColor.bg200}`}>
+                <h2 className="text-xl font-semibold text-gray-800 mt-1 mx-auto text-center break-words w-full">{event.name}</h2>
+                <h2 className="text-gray-700 mx-auto text-xl font-semibold mt-4 lg:my-3">{event.city}</h2>
+                <p className="md:hidden text-gray-600 text-base mx-auto">{event.address}</p>
+                <p className="md:hidden text-gray-600 text-base mx-auto">{event.place_name}</p>
+              </div>    
+            }
 
             <div className="w-full lg:w-3/5 flex flex-col justify-between items-start pl-2">
-              <div className="lg:h-10 my-2 ml-2 lg:ml-0">
+              {(event.imageUrls && event.imageUrls.length > 0) ? <>
+              <h2 className="text-xl font-semibold text-gray-800 mt-1 mx-auto text-center break-words w-full">{event.name}</h2>
+              <div className="lg:h-6 my-2 ml-2 lg:ml-0">
                 {event.description && (
                   <div className="w-full text-gray-700 text-sm">
-                    {event.description.length > 200
-                    ? event.description.slice(0, 200) + "..."
+                    {event.description.length > 100
+                    ? event.description.slice(0, 100) + "..."
                     : event.description}
                   </div>
                 )}
               </div>
+              </>
+              : <div className="lg:h-10 my-2 ml-2 lg:ml-0">
+                  {event.description && (
+                    <div className="w-full text-gray-700 text-sm">
+                      {event.description.length > 200
+                      ? event.description.slice(0, 200) + "..."
+                      : event.description}
+                    </div>
+                  )}
+                </div>}
+              
               <div className="flex flex-wrap flex-row gap-2 my-2 ml-2 lg:ml-0">
                   {event.sports && event.sports.map((sport, index) => (
                     <span key={index} className="bg-gray-700 text-white px-2 py-1 rounded-full text-sm">
@@ -85,10 +115,13 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
                   ))}
               </div>
               <div className="hidden lg:flex flex-wrap gap-2 mt-2 ml-2 lg:ml-0 mb-3">
+                {(event.imageUrls && event.imageUrls.length > 0) && 
+                <p className="text-gray-700 text-base font-semibold">{event.city}</p>}
                 <p className=" text-gray-600 text-base">{event.address}</p>
                 <p className=" text-gray-600 text-base font-medium">{event.place_name}</p>
               </div>
             </div>
+
                 <div className="absolute top-0 right-0 p-1 flex flex-row"
                   onClick={async (e) => {
                       e.preventDefault();     
@@ -115,53 +148,6 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
                   {event.contact_email && <p className="">email: <span className="font-medium">{event.contact_email}</span></p>}
                   {event.contact_phone && <p className="">telefon: <span className="font-medium">{event.contact_phone}</span></p>}
                 </div>}
-            {/* {!closeModal && <div className="absolute top-0 right-0 z-50 flex items-center justify-center bg-black/40">
-              <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
-                {/* Przycisk zamknięcia 
-                <button
-                  onClick={()=> setCloseModal(!closeModal)}
-                  className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-                  aria-label="Zamknij"
-                >
-                  <XMarkIcon className="w-6 h-6" />
-                </button>
-
-                <div className="text-sm text-gray-700 space-y-2">
-                  <p>
-                    Dodane przez:{" "}
-                    <span className="font-medium">{event.creator_name}</span>
-                  </p>
-                  {event.contact_email && (
-                    <p>
-                      email:{" "}
-                      <span className="font-medium">{event.contact_email}</span>
-                    </p>
-                  )}
-                  {event.contact_phone && (
-                    <p>
-                      telefon:{" "}
-                      <span className="font-medium">{event.contact_phone}</span>
-                    </p>
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  className="mt-4 flex items-center gap-1 text-sm"
-                  onClick={async () => {
-                    await toggleObserveEvent({ eventId: event.id });
-                    // opcjonalnie: odśwież kartę lub zamknij
-                  }}
-                >
-                  {isEventObserved ? (
-                    <StarSolidIcon />
-                  ) : (
-                    <StarOutlineIcon />
-                  )}
-                  <span>{isEventObserved ? "Obserwujesz" : "Obserwuj"}</span>
-                </button>
-              </div>
-            </div>} */}
           </Link>
         )
   }
