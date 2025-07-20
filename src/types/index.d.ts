@@ -1,32 +1,4 @@
-// type User = {
-//   name: string;
-//   email: string;
-//   image?: string;
-//   accountId: string;
-// };
-
 import { EmailOtpType } from "@supabase/supabase-js";
-
-enum Subject {
-  maths = "maths",
-  language = "language",
-  science = "science",
-  history = "history",
-  coding = "coding",
-  geography = "geography",
-  economics = "economics",
-  finance = "finance",
-  business = "business",
-}
-
-type Companion = Models.DocumentList<Models.Document> & {
-  $id: string;
-  name: string;
-  subject: Subject;
-  topic: string;
-  duration: number;
-  bookmarked: boolean;
-};
 
 interface CreateAthlete {
   first_name: string;
@@ -34,8 +6,9 @@ interface CreateAthlete {
   teams?: string[];
   home_team?: string;
   birth_day?: number;
-  birth_month?: number;
+  birth_month?: string;
   birth_year?: number;
+  imageUrls?: string[];
 }
 
 interface CreateTeam {
@@ -46,16 +19,17 @@ interface CreateTeam {
   birth_day?: number;
   birth_month?: number;
   birth_year?: number;
+  imageUrls?: string[];
 }
 
 interface CreateEvent{
   name: string;
-  event_type: string;
+  event_type?: string;
   description?: string;
   organizator?: string;
   start_date: timestamp;
   end_date?: timestamp;
-  sports: string[];
+  sports?: string[];
   cathegories?: string[];
   contact_email?: string;
   contact_phone?: string;
@@ -86,6 +60,22 @@ type EventSmall = {
   zip_code?: string;
 }
 
+interface CreateVenue{
+  name: string;
+  venue_type?: string;
+  description?: string;
+  organizator?: string;
+  sports?: string[];
+  contact_email?: string;
+  contact_phone?: string;
+  accessibility?: string;
+  city: string;
+  address?: string;
+  zip_code?: string;
+  country?: string;
+  imageUrls?: string[];
+}
+
 type CreateUser = {
   userId: string;
   userName?: string;
@@ -93,17 +83,6 @@ type CreateUser = {
   userEmail: string;
 }
 
-interface GetAllCompanions {
-  limit?: number;
-  page?: number;
-  subject?: string | string[];
-  topic?: string | string[];
-}
-
-interface BuildClient {
-  key?: string;
-  sessionToken?: string;
-}
 
 interface CreateUser {
   email: string;
@@ -116,26 +95,4 @@ interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-interface Avatar {
-  userName: string;
-  width: number;
-  height: number;
-  className?: string;
-}
 
-
-interface SavedMessage {
-  role: "user" | "system" | "assistant";
-  content: string;
-}
-
-interface CompanionComponentProps {
-  companionId: string;
-  subject: string;
-  topic: string;
-  name: string;
-  userName: string;
-  userImage: string;
-  voice: string;
-  style: string;
-}

@@ -10,8 +10,8 @@ export async function createTeam(formData: CreateTeam) {
 
   const { data, error } = await supabase.from('Teams').insert({...formData, creator}).select();
   if (error || !data || data.length === 0) {
-    console.error('Error creating athlete:', error);
-    throw new Error(error?.message || 'Failed to create athlete');
+    console.error('Error creating team:', error);
+    throw new Error(error?.message || 'Failed to create team');
   }
 
   return data[0];

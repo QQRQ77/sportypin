@@ -1,15 +1,13 @@
 'use client'
 
-import { EnvelopeIcon, EyeIcon, EyeSlashIcon, KeyIcon, UserIcon } from "@heroicons/react/20/solid"
-import { useEffect, useState } from "react";
+import { XMarkIcon } from "@heroicons/react/20/solid"
+import { ChangeEvent, useRef, useState } from "react";
 import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordStrength } from "check-password-strength";
-// import { registerUser } from "@/lib/actions/authActions";
 import { toast } from "react-toastify";
-import { redirect, useRouter } from "next/navigation";
-import PassStrengthBar from "../PassStrengthBar";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import {
   Form,
@@ -20,12 +18,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Tooltip } from "@heroui/tooltip";
 import { Input } from "../ui/input";
-import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { createTeam } from "@/lib/teams.actions";
+import { convertBlobUrlToFile } from "@/lib/file.actions";
+import { uploadImage } from "@/lib/supabase.storage";
+import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa zespołu jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków)."),
@@ -48,55 +46,86 @@ export default function CreateTeamForm() {
         resolver: zodResolver(FormSchema)
     });
 
+    const imageInputRef = useRef<HTMLInputElement>(null)
     const router = useRouter();
-    const [visiblePass, setVisiblePass] = useState(false);
-    const [buttonsVis, setButtonsVis] = useState(true)
-    
-    const [isPasswordVisible, setIsPassVisible] = useState(false)
-    const [passStrength, setPassStrength] = useState(0)
-    const [buttonSpinnerVis, setButtonSpinnerVis] = useState(false)
-    const [infoMessageVisible, setInfoMessageVisible] = useState(false)
-    const [infoMessage, setInfoMessage] = useState("Link aktywacyjny został wysłany na adres email.")
 
+    const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
+    const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [imageError, setImageError] = useState<string>("")
+    const [memberInput, setMemberInput] = useState("");
+        
     const addTeam: SubmitHandler<InputType> = async (data) => {
-        console.log("Form data: ", data)
-        // setButtonSpinnerVis(true)
-        try {
-            const team = await createTeam({...data}) 
 
-            if(team) {console.log("ZESPÓŁ DODANY: ", team)} else {redirect("/")}
-                       
-            // if (result === "success") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika zostało pomyślnie zarejestrowane. Link aktywacyjny został wysłany na adres email.")
-            //     toast.success("Konto użytkownika zostało pomyślnie zarejestrowane.")
-            //     toast.success("Link aktywacyjny został wysłany na adres email.")
-            //     form.reset()
-            //     router.push("/login")}
-            // if (result === "errorUserExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto użytkownika o tej nazwie już istnieje.")
-            //     toast.error("Konto użytkownika o tej nazwie już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "errorEmailExist") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Konto z tym adresem email już istnieje.")
-            //     toast.error("Konto z tym adresem email już istnieje.")
-            //     setButtonSpinnerVis(false)
-            // }
-            // if (result === "sendError") {
-            //     setInfoMessageVisible(true)
-            //     setInfoMessage("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     toast.error("Wystąpił błąd podczas wysyłania wiadomości email.")
-            //     setButtonSpinnerVis(false)
-            // }
+        setSubmitButtonDisactive(true);
+
+        if (memberInput != "") {
+            const trimmed = memberInput.trim();
+            if (trimmed.length >= 3 && !data.members?.includes(trimmed)) {
+              data.members = [...(data.members || []), trimmed];
+              setMemberInput("");
+            } else {
+              toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+              return;
+            }
+        }
+
+        let urls = [];
+        for (const url of imageUrls) {
+          const imageFile = await convertBlobUrlToFile(url);
+
+          const { imageUrl, error } = await uploadImage({
+            file: imageFile,
+            bucket: "sportpin",
+            folder: "teams"
+          });
+
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          urls.push(imageUrl);
+        }
+
+
+        try {
+            const team = await createTeam({...data, imageUrls: urls}) 
+
+            if(team) {router.push(`/teams/${team.id}`)} else {router.push("/")}
+
         } catch (error) {
+            setSubmitButtonDisactive(false);
             toast.error("Upps!. Coś poszło nie tak...")
-            setButtonSpinnerVis(false)
             console.error(error)
         }
     } 
+
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+          const files = e.target.files;
+          if (!files) return;
+    
+          const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+          if (remainingSlots <= 0) return;
+    
+          const validFiles = Array.from(files)
+            .filter((f) => {
+              const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+              if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+              return ok;
+            })
+            .slice(0, remainingSlots);
+    
+          validFiles.forEach((file) => {
+            const url = URL.createObjectURL(file);
+            setImageUrls((prev) => [...prev, url]);
+          });
+    
+          e.target.value = ""; // reset inputa   
+        }
+        
+        const removeImage = (index: number) => {
+          setImageUrls((prev) => prev.filter((_, i) => i !== index));
+        };
 
     return (
         <>
@@ -118,6 +147,35 @@ export default function CreateTeamForm() {
                           </FormItem>
                   )}
                   />
+
+                  <div className="w-full flex flex-col gap-2 justify-center">
+                    <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
+                      {imageUrls.map((url, index)=> 
+                        <div key={index} className="relative">
+                          <Image
+                            src={url}
+                            alt={`image-${index}`}
+                            width={300}
+                            height={300}
+                            className="object-cover rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {e.preventDefault(); removeImage(index)}}
+                            className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer"
+                            aria-label="Usuń zdjęcie"
+                          >
+                            <XMarkIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-red-700 text-center">{imageError}</p>
+                    <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
+                    <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
+                  </div>
+
                   <FormField
                       control={form.control}
                       name="host_city"
@@ -154,7 +212,6 @@ export default function CreateTeamForm() {
                     control={form.control}
                     name="members"
                     render={({ field }) => {
-                      const [memberInput, setMemberInput] = useState("");
                       const members = field.value || [];
 
                       const addMember = () => {
@@ -208,7 +265,7 @@ export default function CreateTeamForm() {
                             </div>
                           </FormControl>
                           <FormDescription>
-                            Dodaj jeden lub więcej zespołów, do których należy zawodnik.
+                            Dodaj jednego lub więcej zawodników, którzy należą do klubu.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -219,9 +276,9 @@ export default function CreateTeamForm() {
                       <Button 
                           color="warning" 
                           type="submit" 
-                          disabled={form.formState.isSubmitting} 
+                          disabled={form.formState.isSubmitting || submitButtonDisactive} 
                           className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">
-                          {form.formState.isSubmitting ? "Zapisywanie..." : "Dodaj zespół"}
+                          {(form.formState.isSubmitting || submitButtonDisactive) ? "Zapisywanie..." : "Dodaj zespół"}
                       </Button>
                   </div>
               </form>

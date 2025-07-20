@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import {
   Form,
@@ -19,6 +20,10 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createAthlete } from "@/lib/athletes.actions";
+import { convertBlobUrlToFile } from "@/lib/file.actions";
+import { uploadImage } from "@/lib/supabase.storage";
+import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 
 const FormSchema = z.object({
     first_name: z.string().min(3, "Imię zawodnika jest zbyt krótkie (minimum 3 znaki).").max(50, "Imię zawodnika jest zbyt długie (maksymalnie 50 znaków)."),
@@ -45,6 +50,10 @@ export default function CreateAthleteForm() {
         resolver: zodResolver(FormSchema)
     });
 
+    const imageInputRef = useRef<HTMLInputElement>(null)   
+    const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [imageError, setImageError] = useState<string>("")
+
     const router = useRouter()
 
     const [teamInput, setTeamInput] = useState("");
@@ -64,9 +73,27 @@ export default function CreateAthleteForm() {
             return;
           }
       }
+
+        let urls = [];
+        for (const url of imageUrls) {
+          const imageFile = await convertBlobUrlToFile(url);
+
+          const { imageUrl, error } = await uploadImage({
+            file: imageFile,
+            bucket: "sportpin",
+            folder: "athletes",
+          });
+
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          urls.push(imageUrl);
+        }
           
         try {
-            const athlete = await createAthlete({...data}) 
+            const athlete = await createAthlete({...data, imageUrls: urls}) 
 
             if(athlete) {router.push(`/athlete/${athlete.id}`)} else {router.push("/")}
                        
@@ -76,6 +103,33 @@ export default function CreateAthleteForm() {
             console.error(error)
         }
     } 
+
+        const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+          const files = e.target.files;
+          if (!files) return;
+    
+          const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+          if (remainingSlots <= 0) return;
+    
+          const validFiles = Array.from(files)
+            .filter((f) => {
+              const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+              if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+              return ok;
+            })
+            .slice(0, remainingSlots);
+    
+          validFiles.forEach((file) => {
+            const url = URL.createObjectURL(file);
+            setImageUrls((prev) => [...prev, url]);
+          });
+    
+          e.target.value = ""; // reset inputa   
+        }
+        
+      const removeImage = (index: number) => {
+        setImageUrls((prev) => prev.filter((_, i) => i !== index));
+      };
 
     return (
         <>
@@ -113,6 +167,34 @@ export default function CreateAthleteForm() {
                           </FormItem>
                   )}
                   />
+
+                  <div className="w-full flex flex-col gap-2 justify-center">
+                    <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
+                      {imageUrls.map((url, index)=> 
+                        <div key={index} className="relative">
+                          <Image
+                            src={url}
+                            alt={`image-${index}`}
+                            width={300}
+                            height={300}
+                            className="object-cover rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {e.preventDefault(); removeImage(index)}}
+                            className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer"
+                            aria-label="Usuń zdjęcie"
+                          >
+                            <XMarkIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-red-700 text-center">{imageError}</p>
+                    <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
+                    <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
+                  </div>
                   <FormField
                     control={form.control}
                     name="teams"
@@ -269,7 +351,7 @@ export default function CreateAthleteForm() {
                           type="submit" 
                           disabled={form.formState.isSubmitting || submitButtonDisactive} 
                           className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">
-                          {form.formState.isSubmitting ? "Zapisywanie..." : "Dodaj zawodnika"}
+                          {(form.formState.isSubmitting || submitButtonDisactive) ? "Zapisywanie..." : "Dodaj zawodnika"}
                       </Button>
                   </div>
               </form>

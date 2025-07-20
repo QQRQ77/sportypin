@@ -22,7 +22,6 @@ export default function UserMenu() {
         <Button variant="outline" className="bg-red-100 cursor-pointer">Twoje menu</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuLabel>Moje menu</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <Link href="/user_page">
@@ -32,6 +31,11 @@ export default function UserMenu() {
           <DropdownMenuItem>
             <Link href="/events/new_event">
               <span className="text-sm">Dodaj wydarzenie</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/venue/new_venue">
+              <span className="text-sm">Dodaj obiekt</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
