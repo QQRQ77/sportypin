@@ -16,6 +16,7 @@ import { Button } from "../ui/button"
 import { useState } from "react"
 import { Input } from "../ui/input"
 import SearchButton from "../ui/submitButton"
+import { searchVenuesRanked } from "@/lib/venue.actions"
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków).").optional(),
@@ -30,10 +31,18 @@ export default function VenueSearchFormAndCards() {
       });
     
     const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
+    const [venueData, setVenueData] = useState([])
 
     const searchVenues: SubmitHandler<InputType> = async (data) => {
-
       setSubmitButtonDisactive(true);
+
+      const result = await searchVenuesRanked(data.name, data.address)
+
+      console.log("Search Data: ", result)
+
+      setSubmitButtonDisactive(false);
+
+
     }
   
   return (
@@ -45,12 +54,12 @@ export default function VenueSearchFormAndCards() {
               name="name"
               render={({ field }) => (
                   <FormItem>
-                      <FormLabel>Nazwa obiektu sportowego</FormLabel>
+                      <FormLabel>Opis obiektu sportowego</FormLabel>
                       <FormControl>
-                          <Input placeholder="Wpisz nazwę obiektu" {...field} />
+                          <Input placeholder="Wpisz nazwę obiektu, rodzaj sportu" {...field} />
                       </FormControl>
                       <FormDescription>
-                          Podaj nazwę lub rodzaj obiektu sportowego.
+                          Podaj nazwę lub rodzaj obiektu sportowego, sport jakiego szukasz itp.
                       </FormDescription>
                       <FormMessage />
                   </FormItem>

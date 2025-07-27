@@ -136,3 +136,22 @@ export async function ToggleVenueFollower(eventId: string, followerId: string) {
 
 
 }
+
+export async function searchVenuesRanked(name = "", address = "") {
+  const supabase = createSupabaseClient();
+
+  // wszystkie słowa z nazwy i adresu
+  const words = [...new Set([...name.split(/\s+/), ...address.split(/\s+/)])]
+    .filter(Boolean)
+    .map(w => w.toLowerCase());
+
+  if (!words.length) return [];
+
+  // jedno wywołanie RPC – ranking po stronie bazy
+  const { data, error } = await supabase
+    .rpc("venues_search_ranked", { search_terms: words });
+
+  if (error) throw error;
+  return data; // już posortowane po hits DESC
+}
+
