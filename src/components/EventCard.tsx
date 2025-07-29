@@ -4,12 +4,12 @@ import { monthNameToColorClass } from "@/lib/utils";
 import Link from "next/link";
 import StarSolidIcon from "../../public/icons/star-solid";
 import StarOutlineIcon from "../../public/icons/star-outline";
-import { Event } from "./EventsTab";
 import { toggleObserveEvent } from "@/lib/users.actions";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import Image from "next/image";
 import AutoSlider from "./ui/autoslider";
+import { Event } from "@/types";
 
 
 interface EventCardProps {
@@ -60,7 +60,7 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
 
             {(event.imageUrls && event.imageUrls?.length > 0) ? 
             ((event.imageUrls && event.imageUrls.length === 1) ?
-              <div className="relative w-full lg:w-1/5"> {/* lub dowolne w/h */}
+              <div className="relative w-full lg:w-1/4"> {/* lub dowolne w/h */}
                 <Image
                   src={event.imageUrls[0]}
                   alt={`Image ${event.name}`}
@@ -71,7 +71,7 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
               <AutoSlider imageUrls={event.imageUrls} altBase={event.name} />
             )
             :
-              <div className={`w-full lg:w-1/5 flex flex-col justify-between items-center border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 ${monthColor.bg200}`}>
+              <div className={`w-full lg:w-1/4 flex flex-col justify-between items-center border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 ${monthColor.bg200}`}>
                 <h2 className="text-xl font-semibold text-gray-800 mt-1 mx-auto text-center break-words w-full">{event.name}</h2>
                 <h2 className="text-gray-700 mx-auto text-xl font-semibold mt-4 lg:my-3">{event.city}</h2>
                 <p className="md:hidden text-gray-600 text-base mx-auto">{event.address}</p>

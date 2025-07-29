@@ -3,24 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import EventsList from "./EventsList";
 import { useState } from "react";
-
-export type Event = {
-    id: string;
-    name: string;
-    start_date: string;
-    end_date?: string;
-    city: string;
-    address: string;
-    place_name: string;
-    description?: string;
-    sports?: string[];
-    cathegories?: string[];
-    creator_name?: string;
-    contact_email?: string;
-    contact_phone?: string;
-    followers?: string[];
-    imageUrls?: string[]
-};
+import { Event } from "@/types";
 
 interface EventsTabProps {
     likedEvents?: Array<Event>;

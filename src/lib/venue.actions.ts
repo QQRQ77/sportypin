@@ -137,11 +137,11 @@ export async function ToggleVenueFollower(eventId: string, followerId: string) {
 
 }
 
-export async function searchVenuesRanked(name = "", address = "") {
+export async function searchVenuesRanked(name = "") {
   const supabase = createSupabaseClient();
 
   // wszystkie słowa z nazwy i adresu
-  const words = [...new Set([...name.split(/\s+/), ...address.split(/\s+/)])]
+  const words = [...new Set([...name.split(/\s+/)])]
     .filter(Boolean)
     .map(w => w.toLowerCase());
 

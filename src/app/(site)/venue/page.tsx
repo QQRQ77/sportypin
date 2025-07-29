@@ -8,16 +8,17 @@ export default async function Page() {
     if ( userId ) {await createUser()} 
     
     return (
-      <main className="flex items-center justify-center flex-col w-11/12 mx-auto mt-10 gap-4 mb-20">
-        <Image
+      <main className="flex items-center justify-center flex-col w-11/12 mx-auto mt-4 gap-4 mb-20">
+        <div className="w-full flex items-center justify-center gap-5 flex-col lg:flex-row">
+          <Image
           src="/images/logo_place.png"
           alt="Sport Venues Logo"
           width={300}
           height={300}
-        />
-        <h1>OBIEKTY SPORTOWE</h1>
-        <p className="text-lg">Lista obiektów sportowych w twojej okolicy</p>
-        <VenueSearchFormAndCards />
+          />
+          <h1>OBIEKTY SPORTOWE</h1>
+        </div>
+        <VenueSearchFormAndCards userId={userId || ""}/>
       </main>
   )
 }

@@ -23,7 +23,7 @@ export default function AutoSlider({ imageUrls, altBase }: AutoSliderProps) {
   if (!imageUrls.length) return null;
 
   return (
-    <div className="relative w-full lg:w-1/5 overflow-hidden">
+    <div className="relative w-full lg:w-1/4 overflow-hidden">
       {imageUrls.map((url, idx) => (
         <div
           key={url}

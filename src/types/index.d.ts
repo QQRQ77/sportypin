@@ -95,4 +95,44 @@ interface SearchParams {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
+export type Venue = {
+    id: string;
+    name: string;
+    venue_type?: string;
+    organizator?: string;
+    city: string;
+    zip_code?: string;
+    address?: string;
+    lng: number;
+    lat: number;
+    description?: string;
+    accessibility?: string;
+    sports?: string[];
+    creator?: string;
+    creator_name?: string;
+    contact_email?: string;
+    contact_phone?: string;
+    followers?: string[];
+    imageUrls?: string[]
+};
+
+export type Event = {
+    id: string;
+    name: string;
+    start_date: string;
+    end_date?: string;
+    city: string;
+    zip_code?: string;
+    address?: string;
+    place_name?: string;
+    description?: string;
+    sports?: string[];
+    cathegories?: string[];
+    creator_name?: string;
+    contact_email?: string;
+    contact_phone?: string;
+    followers?: string[];
+    imageUrls?: string[]
+};
+
 

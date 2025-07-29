@@ -1,7 +1,5 @@
-import { monthNameToColorClass } from "@/lib/utils";
-import Link from "next/link";
+import { Event } from "@/types";
 import EventCard from "./EventCard";
-import { Event } from "./EventsTab";
 
 interface EventsListProps {
   events?: Array<Event>;
