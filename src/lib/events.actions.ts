@@ -163,3 +163,20 @@ export async function ToggleEventFollower(eventId: string, followerId: string) {
 
 
 }
+
+export async function getEventById(eventId: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+  .from('Events')
+  .select('*')
+  .eq('id', eventId)
+
+  if (error) {
+    console.error('Error fetching events:', error);
+    throw new Error(error.message || 'Failed to fetch events');
+  }
+
+  return data;
+
+}
