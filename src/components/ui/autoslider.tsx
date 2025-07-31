@@ -6,9 +6,12 @@ import Image from "next/image";
 interface AutoSliderProps {
   imageUrls: string[];
   altBase: string;
+  navBullets?: boolean;
+  className?: string
+  time?: number
 }
 
-export default function AutoSlider({ imageUrls, altBase }: AutoSliderProps) {
+export default function AutoSlider({ imageUrls, altBase, navBullets = false, className, time = 2000 }: AutoSliderProps) {
   const [current, setCurrent] = useState(0);
 
   /* ---------- auto-play ---------- */
@@ -16,14 +19,14 @@ export default function AutoSlider({ imageUrls, altBase }: AutoSliderProps) {
     if (!imageUrls.length) return;
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % imageUrls.length);
-    }, 2000);
+    }, time);
     return () => clearInterval(timer);
   }, [imageUrls.length]);
 
   if (!imageUrls.length) return null;
 
   return (
-    <div className="relative w-full lg:w-1/4 overflow-hidden">
+    <div className={`relative w-full overflow-hidden h-full ${className}`}>
       {imageUrls.map((url, idx) => (
         <div
           key={url}
@@ -41,7 +44,7 @@ export default function AutoSlider({ imageUrls, altBase }: AutoSliderProps) {
       ))}
 
       {/* kropki nawigacyjne (opcjonalnie) */}
-      {/* <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+      {navBullets && <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
         {imageUrls.map((_, idx) => (
           <button
             key={idx}
@@ -52,7 +55,7 @@ export default function AutoSlider({ imageUrls, altBase }: AutoSliderProps) {
             aria-label={`Przejdź do slajdu ${idx + 1}`}
           />
         ))}
-      </div> */}
+      </div>}
     </div>
   );
 }

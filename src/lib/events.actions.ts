@@ -5,6 +5,7 @@ import createSupabaseClient from "./supabase";
 import { CreateEvent } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
+import { Event } from "@/types";
 
 export async function createEvent(formData: CreateEvent) {
   const session = await auth();
@@ -177,6 +178,6 @@ export async function getEventById(eventId: string) {
     throw new Error(error.message || 'Failed to fetch events');
   }
 
-  return data;
+  return data[0];
 
 }
