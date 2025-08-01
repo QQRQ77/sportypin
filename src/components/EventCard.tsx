@@ -60,7 +60,7 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
 
             {(event.imageUrls && event.imageUrls?.length > 0) ? 
             ((event.imageUrls && event.imageUrls.length === 1) ?
-              <div className="relative w-full lg:w-1/4"> {/* lub dowolne w/h */}
+              <div className="relative w-full lg:w-1/4 overflow-hidden"> {/* lub dowolne w/h */}
                 <Image
                   src={event.imageUrls[0]}
                   alt={`Image ${event.name}`}
@@ -68,7 +68,9 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
                   className="object-cover"
                 />
               </div> :
-              <AutoSlider imageUrls={event.imageUrls} altBase={event.name} />
+              <div className="w-full lg:w-1/4">
+                <AutoSlider imageUrls={event.imageUrls} altBase={event.name} />
+              </div>
             )
             :
               <div className={`w-full lg:w-1/4 flex flex-col justify-between items-center border-b-1 lg:border-b-0 lg:border-r-1 border-gray-400 ${monthColor.bg200}`}>
@@ -122,7 +124,7 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
               </div>
             </div>
 
-                <div className="absolute top-0 right-0 p-1 flex flex-row"
+                <div className="absolute top-0 right-0 p-1 flex flex-row cursor-pointer"
                   onClick={async (e) => {
                       e.preventDefault();     
                       e.stopPropagation();     

@@ -118,6 +118,7 @@ export type Venue = {
 
 export type Event = {
     id: string;
+    creator: string;
     name: string;
     start_date: string;
     end_date?: string;
@@ -131,8 +132,12 @@ export type Event = {
     creator_name?: string;
     contact_email?: string;
     contact_phone?: string;
+    organizator?: string;
+    event_type?: string;
     followers?: string[];
-    imageUrls?: string[]
+    imageUrls?: string[];
+    lat: number;
+    lng: number;
 };
 
 

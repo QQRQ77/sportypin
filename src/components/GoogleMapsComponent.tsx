@@ -2,11 +2,10 @@
 import React from 'react';
 import { GoogleMap, LoadScript, Marker, MarkerClusterer } from '@react-google-maps/api';
 import { monthNameToColorClass } from '@/lib/utils';
-import { Venue } from '@/types';
 
 const containerStyle = {
   width: '100%',
-  height: '600px',
+  height: '100%',
   border: '1px solid #ccc',
   borderRadius: '8px',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
@@ -17,14 +16,6 @@ const center = {
   lat: 52.066939870994034,
   lng: 19.486062964770905
 };
-
-const locations = [
-  { lat: 51.21371426217124, lng: 18.57941644883682 },
-  { lat: 53.014561350489885, lng: 18.604353929728845 },
-  // Add more locations here
-];
-
-const iconColor = '#00FF00'; // Example color, you can change it
 
 export interface MultipleMarkersMapProps {
   events: Array<{
@@ -47,8 +38,11 @@ const MultipleMarkersMap = ({events}: MultipleMarkersMapProps) => {
       
       <GoogleMap
         mapContainerStyle={containerStyle}
-        center={center}
-        zoom={6}
+        center={events.length > 1 ? center : {
+          lat: events[0].lat,
+          lng: events[0].lng
+        }}
+        zoom={events.length > 1? 6 : 10}
       >
         <MarkerClusterer>
           {(clusterer) => (
