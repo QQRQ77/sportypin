@@ -8,6 +8,8 @@ import StarSolidIcon from "../../public/icons/star-solid";
 import StarOutlineIcon from "../../public/icons/star-outline";
 import MultipleMarkersMap from "./GoogleMapsComponent";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
 }
 
 export default function EventCard({ event, userId = "" }: Props) {
+  const router = useRouter()
   const start = new Date(event.start_date);
   const day = start.toLocaleDateString("pl-PL", { day: "2-digit" });
   const month = start.toLocaleDateString("pl-PL", { month: "long" });
@@ -55,18 +58,34 @@ export default function EventCard({ event, userId = "" }: Props) {
           <p className="mt-2 text-lg">
             {event.event_type}
           </p>
-          <div className="absolute bottom-0 right-0 p-1 flex flex-row cursor-pointer"
+          <div className="absolute bottom-0 right-0 p-1 flex flex-row gap-4 cursor-pointer">
+              {userId === event.creator && (
+                <div className="w-full flex justify-center mt-6">
+                  <Button
+                    onClick={() => router.push(`/events/${event.id}/edit`)}
+                    className="cursor-pointer"
+                  >
+                    Edytuj
+                  </Button>
+                </div>
+              )}
+            <div
               onClick={async (e) => {
                   e.preventDefault();     
                   e.stopPropagation();     
                   await toggleObserveEvent({ eventId: event.id });
                 }}>
-              {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{isEventObserved ? "Obserwujesz" : "Nie obserwujesz"}</p>
+                  </TooltipContent>
+                </Tooltip>
+            </div>
           </div>
-          {userId === event.creator &&
-          <div className="w-full flex justify-center">
-            <Button className="cursor-pointer">Edycja zaawansowana</Button>
-          </div>}
+
         </header>
 
         <div className="flex flex-col gap-4 lg:flex-row items-center lg:h-42 border-t border-slate-300 mt-4">

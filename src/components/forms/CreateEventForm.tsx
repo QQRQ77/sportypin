@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
-
+import { Event } from "@/types";
 
 import {
   Form,
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { createEvent } from "@/lib/events.actions";
+import { createEvent, updateEvent } from "@/lib/events.actions";
 import { Textarea } from "../ui/textarea";
 import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
@@ -55,18 +55,44 @@ const FormSchema = z.object({
   address: z.string().min(3, "Adres jest zbyt krótki (minimum 3 znaki).").max(200, "Adres jest zbyt długi (maksymalnie 200 znaków).").optional(),
   place_name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków).").optional(),
 })
+interface Props {
+  eventToEdit?: Event;
+}
 
 type InputType = z.infer<typeof FormSchema>
 
-export default function CreateEventForm() {
+export default function CreateEventForm({ eventToEdit }: Props) {
+
     const form = useForm<InputType>({
-          resolver: zodResolver(FormSchema)
-      });
+      resolver: zodResolver(FormSchema),
+      defaultValues: eventToEdit
+        ? {
+            name: eventToEdit.name,
+            description: eventToEdit.description ?? "",
+            event_type: eventToEdit.event_type ?? "",
+            start_date: eventToEdit.start_date
+              ? new Date(eventToEdit.start_date).toISOString().slice(0, 16)
+              : "",
+            end_date: eventToEdit.end_date
+              ? new Date(eventToEdit.end_date).toISOString().slice(0, 16)
+              : "",
+            city: eventToEdit.city,
+            zip_code: eventToEdit.zip_code ?? "",
+            address: eventToEdit.address ?? "",
+            place_name: eventToEdit.place_name ?? "",
+            sports: eventToEdit.sports ?? [],
+            cathegories: eventToEdit.cathegories ?? [],
+            contact_email: eventToEdit.contact_email ?? "",
+            contact_phone: eventToEdit.contact_phone ?? "",
+            organizator: eventToEdit.organizator ?? "",
+          }
+        : {},
+    });
 
     const imageInputRef = useRef<HTMLInputElement>(null)
     const router = useRouter();
 
-    const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [imageUrls, setImageUrls] = useState<string[]>(eventToEdit?.imageUrls ?? []);
     const [imageError, setImageError] = useState<string>("")
     const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
     const [sportInput, setSportInput] = useState("");
@@ -123,12 +149,16 @@ export default function CreateEventForm() {
                 if (data.end_date) {
                   data.end_date = new Date(data.end_date).toISOString();
                 }
-            
-            const event = await createEvent({...data, imageUrls: urls})
-            
-            if(event) {router.push(`/events/${event.id}`)} else {router.push("/")}
-                       
-        } catch (error) {
+            if (eventToEdit) {
+              const updatedEvent = await updateEvent({...data, imageUrls: urls}, eventToEdit.id, eventToEdit.creator)
+              if(updatedEvent) {router.push(`/events/${updatedEvent.id}`)} else {router.push("/")}
+            } 
+            else {
+              const event = await createEvent({...data, imageUrls: urls})
+              if(event) {router.push(`/events/${event.id}`)} else {router.push("/")}
+            }
+
+          } catch (error) {
             setSubmitButtonDisactive(false);
             toast.error("Upps!. Coś poszło nie tak...")
             console.error(error)
@@ -165,7 +195,7 @@ export default function CreateEventForm() {
     return (
         <>
           <Form {...form}>
-              <form onSubmit={form.handleSubmit(addEvent)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(addEvent)} className="space-y-8 w-full lg:w-1/2">
                   <FormField
                       control={form.control}
                       name="name"
@@ -530,12 +560,15 @@ export default function CreateEventForm() {
                   />
                   
                   <div className="flex items-center justify-center gap-2">
-                      <Button 
-                          type="submit" 
-                          disabled={form.formState.isSubmitting || submitButtonDisactive} 
-                          className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer">
-                          {(form.formState.isSubmitting || submitButtonDisactive) ? "Zapisywanie..." : "Dodaj wydarzenie"}
-                      </Button>
+                    <Button type="submit"
+                      disabled={form.formState.isSubmitting || submitButtonDisactive}
+                      className="cursor-pointer" >
+                      {form.formState.isSubmitting || submitButtonDisactive
+                        ? "Zapisywanie..."
+                        : eventToEdit
+                        ? "Zapisz zmiany"
+                        : "Dodaj wydarzenie"}
+                    </Button>
                   </div>
               </form>
           </Form>

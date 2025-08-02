@@ -30,8 +30,8 @@ export async function createEvent(formData: CreateEvent) {
 
   const { data, error } = await supabase.from('Events').insert({...formData, creator, lat, lng, creator_name}).select();
   if (error || !data || data.length === 0) {
-    console.error('Error creating athlete:', error);
-    throw new Error(error?.message || 'Failed to create athlete');
+    console.error('Error creating event:', error);
+    throw new Error(error?.message || 'Failed to create event');
   }
 
   return data[0];
@@ -180,4 +180,38 @@ export async function getEventById(eventId: string) {
 
   return data[0];
 
+}
+
+export async function updateEvent(formData: CreateEvent, eventId: string, eventCreatorId: string) {
+  const session = await auth();
+  const creator = session.userId;
+  if (!creator) {
+      throw new Error("User not authenticated");
+  }
+
+  if (creator != eventCreatorId) {
+    throw new Error("User is not event's creator")
+  }
+
+  const adress = formData.address || "";
+  const city = formData.city || "";
+  const postalCode = formData.zip_code || "";
+  const country = formData.country || "Polska"; 
+
+  const fullAdress = await formatAddressForGeocoding(adress, city, postalCode, country);
+
+  const geocodeResult = await googleGeocodeAddress(fullAdress);
+  const lat = Number(geocodeResult?.lat || 0);
+  const lng = Number(geocodeResult?.lng || 0);
+
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase.from('Events').update({...formData, creator, lat, lng}).eq('id', eventId).select('*');
+  
+  if (error || !data || data.length === 0) {
+    console.error('Error updating event:', error);
+    throw new Error(error?.message || 'Failed to update event');
+  }
+
+  return data[0];
 }

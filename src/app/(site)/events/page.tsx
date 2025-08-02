@@ -26,7 +26,7 @@ export default async function Page() {
   if (upcomingEvents.length > 0) {
       return (
         <div className="flex flex-col lg:flex-row items-start justify-center w-11/12 mx-auto my-10 gap-4 mb-20">
-          <div className='w-full mx-2 lg:w-1/3 flex justify-center'>
+          <div className='w-full lg:w-1/3 h-96 lg:h-[600px] mx-2 flex justify-center'>
             <MultipleMarkersMap events={upcomingEvents}/>
           </div>
           <div className="flex flex-col justify-center items-start gap-2 w-full h-96 lg:h-fit">

@@ -13,10 +13,14 @@ export default function AutoSliderAndModal({ imageUrls, altBase }: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (!open) return;
-    const timer = setInterval(() => setCurrent((c) => (c + 1) % imageUrls.length), 3000);
+    if (!imageUrls.length) return;
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % imageUrls.length);
+    }, 3000);
     return () => clearInterval(timer);
-  }, [open, imageUrls.length]);
+  }, [imageUrls.length]);
+
+  if (!imageUrls.length) return null;
 
   return (
     <>
@@ -26,21 +30,23 @@ export default function AutoSliderAndModal({ imageUrls, altBase }: Props) {
         onClick={() => setOpen(true)}
       >
         <Image
-          src={imageUrls[0]}
+          src={imageUrls[current]}
           alt={`${altBase} miniatura`}
           fill
           className="object-cover rounded-t-2xl"
         />
-        {imageUrls.length > 1 && (
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
-            {imageUrls.map((_, i) => (
-              <span
-                key={i}
-                className={`w-2 h-2 rounded-full ${i === 0 ? "bg-sky-400" : "bg-white/50"}`}
-              />
-            ))}
-          </div>
-        )}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+          {imageUrls.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {e.stopPropagation(); setCurrent(idx)}}
+              className={`w-2.5 h-2.5 rounded-full transition ${
+                idx === current ? "bg-white" : "bg-white/50"
+              } cursor-pointer`}
+              aria-label={`Przejdź do slajdu ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* MODAL PEŁNOEKRANOWY */}
@@ -50,7 +56,7 @@ export default function AutoSliderAndModal({ imageUrls, altBase }: Props) {
           onClick={() => setOpen(false)}
         >
           <button
-            className="absolute top-4 right-4 text-white"
+            className="absolute top-4 right-4 text-white cursor-pointer"
             onClick={(e) => {
               e.stopPropagation();
               setOpen(false);
@@ -76,7 +82,7 @@ export default function AutoSliderAndModal({ imageUrls, altBase }: Props) {
                   e.stopPropagation();
                   setCurrent(i);
                 }}
-                className={`w-3 h-3 rounded-full ${i === current ? "bg-white" : "bg-white/40"}`}
+                className={`w-3 h-3 rounded-full ${i === current ? "bg-white" : "bg-white/40"} cursor-pointer`}
               />
             ))}
           </div>
