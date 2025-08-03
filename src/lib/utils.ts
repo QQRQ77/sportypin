@@ -81,3 +81,13 @@ export function monthNameToColorClass(monthName: string) {
   return monthColors[normalizedMonth] || { bg100: 'bg-gray-100', bg500: 'bg-gray-500', bg200: 'bg-gray-200', hex500: '#9CA3AF' };
 }
 
+export function minutesBetween(start: string, end: string): number {
+  const [sh, sm] = start.split(':').map(Number);
+  const [eh, em] = end.split(':').map(Number);
+
+  const startMin = sh * 60 + sm;
+  const endMin   = eh * 60 + em;
+
+  return endMin - startMin;
+}
+

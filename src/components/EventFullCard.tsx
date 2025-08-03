@@ -1,6 +1,6 @@
 "use client";
-import { Calendar, Mail, Phone } from "lucide-react";
-import { Event } from "@/types";
+import { Mail, Phone } from "lucide-react";
+import { Event, HarmonogramItem } from "@/types";
 import AutoSliderAndModal from "./AutosliderAndModal";
 import { monthNameToColorClass } from "@/lib/utils";
 import { toggleObserveEvent } from "@/lib/users.actions";
@@ -10,7 +10,10 @@ import MultipleMarkersMap from "./GoogleMapsComponent";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-
+import { useState } from "react";
+import HarmonogramForm from "./forms/EventHarmonogramForm";
+import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
+import JsonViewer from "./utils/JSONviewer";
 
 interface Props {
   event: Event;
@@ -19,25 +22,22 @@ interface Props {
 
 export default function EventCard({ event, userId = "" }: Props) {
   const router = useRouter()
-  const start = new Date(event.start_date);
-  const day = start.toLocaleDateString("pl-PL", { day: "2-digit" });
-  const month = start.toLocaleDateString("pl-PL", { month: "long" });
-  const weekDay = start.toLocaleDateString("pl-PL", { weekday: "long" });
+ 
+  const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
+  const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>([])
 
-           const year = new Date(event.start_date).getFullYear();
-          const startTime = event.start_date ? new Date(event.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""
-            
-            const now = new Date();
-            const end = event.end_date ? new Date(event.end_date) : null;
+  const now = new Date();
+  const start = new Date(event.start_date);
+  const end = event.end_date ? new Date(event.end_date) : null;
   
-            const isPast = end
-              ? end < now
-              : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
+  const isPast = end
+    ? end < now
+    : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
+
+  const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
+  const monthColor = monthNameToColorClass(monthName);
   
-            const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
-            const monthColor = monthNameToColorClass(monthName);
-           
-          const isEventObserved = event.followers?.includes(userId || "")
+  const isEventObserved = event.followers?.includes(userId || "")
 
   return (
     <article className="relative max-w-5xl mx-auto my-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
@@ -85,12 +85,11 @@ export default function EventCard({ event, userId = "" }: Props) {
                 </Tooltip>
             </div>
           </div>
-
         </header>
 
         <div className="flex flex-col gap-4 lg:flex-row items-center lg:h-42 border-t border-slate-300 mt-4">
           <div className="w-full lg:w-1/2">
-            <div className="">
+            <div className="mb-10">
               <p className="mt-2 text-lg font-semibold">
                 {event.place_name}
               </p>
@@ -98,18 +97,9 @@ export default function EventCard({ event, userId = "" }: Props) {
                 {event.city} • {event.zip_code} • {event.address}
               </p>
             </div>
-            <div className="flex items-center gap-4 mt-2">
-              <Calendar size={24} />
-              <div>
-                <span className="font-semibold">{weekDay}, {day} {month} {year}</span>
-                <span className="ml-2">{startTime}</span>
-                {event.end_date && (
-                  <span className="ml-2">– {new Date(event.end_date).toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit" })}</span>
-                )}
-              </div>
-            </div>
+            <StartAndEndTimeViewer start_date={event.start_date} end_date={event.end_date} />    
           </div>
-          <div className="w-full h-38 lg:w-1/2">
+          <div className="w-full h-42 lg:w-1/2">
             <MultipleMarkersMap events={[event]}/>    
           </div>      
         </div>        
@@ -146,7 +136,7 @@ export default function EventCard({ event, userId = "" }: Props) {
         </section>
 
         {/* DANE KONTAKTOWE */}
-        <section className="pt-4 border-t border-slate-300">
+        <section className="relative pt-4 border-t border-slate-300">
           <h2 className="mb-2 text-xl font-bold text-sky-600">Organizator</h2>
           <p className="font-semibold">{event.organizator}</p>
 
@@ -170,10 +160,56 @@ export default function EventCard({ event, userId = "" }: Props) {
               </a>
             )}
           </div>
+          <div className="absolute bottom-0 right-5 p-1 flex flex-row">
+            <p><span className="text-sky-600 mr-2">Dodane przez:</span><span className="cursor-pointer hover:text-slate-500">{event.creator_name}</span></p>
+          </div>
         </section>
-      </div>
-      <div className="absolute bottom-0 right-5 p-1 flex flex-row cursor-pointer">
-        <p><span className="text-sky-600 mr-2">Dodane przez:</span>{event.creator_name}</p>
+
+        {/* Harmonogram */}
+        <section className="relative pt-4 border-t border-slate-300">
+          <div className="w-full flex justify-between">
+            <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
+            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>Dodaj/Edytuj</Button>  
+          </div>
+          {openHarmonogramForm && 
+            <HarmonogramForm 
+              eventId={event.id} 
+              start_date={event.start_date} 
+              end_date={event.end_date}
+              setItems={addHarmonogramItems}/>}
+          <div className={`w-full flex gap-2 mb-2 rounded-xl shadow-xl font-semibold`}>
+              <div className="w-1/12 text-center">Lp.</div>
+              <div className="w-1/12 text-center">Początek</div>
+              <div className="w-1/12 text-center">Koniec</div>
+              <div className="w-3/4">Opis</div>
+          </div>
+          {harmonogramItems.map((item, idx) => {
+          return (
+            <div className={`w-full flex gap-2 mb-2 rounded-xl shadow-xl ${idx%2 == 0? "bg-sky-200" : "bg-gray-200"}`} key={idx}>
+              <div className="w-1/12 text-center">{idx + 1}.</div>
+              <div className="w-1/12 text-center">{item.start_time}</div>
+              <div className="w-1/12 text-center">{item.end_time}</div>
+              <div className="w-3/4">{item.description}</div>
+            </div>
+          )}
+          )}
+        </section>
+
+        {/* Uczestnicy     */}
+        <section className="relative pt-4 border-t border-slate-300">
+          <div className="w-full flex justify-between">
+            <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
+            <Button className="cursor-pointer">Dodaj/Edytuj</Button>  
+          </div>
+        </section>
+
+        {/* Wyniki */}
+        <section className="relative pt-4 border-t border-slate-300">
+          <div className="w-full flex justify-between">
+            <h2 className="mb-2 text-xl font-bold text-sky-600">Wyniki</h2>
+            <Button className="cursor-pointer">Dodaj/Edytuj</Button>  
+          </div>
+        </section>      
       </div>
     </article>
   );

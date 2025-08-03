@@ -2,7 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { CreateEvent } from "@/types";
+import { CreateEvent, HarmonogramItem } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 import { Event } from "@/types";
@@ -214,4 +214,15 @@ export async function updateEvent(formData: CreateEvent, eventId: string, eventC
   }
 
   return data[0];
+}
+
+export async function reorderHarmonogram(eventId: string, newHarmonogram: HarmonogramItem[]) {
+  const session = await auth();
+  const creator = session.userId;
+  if (!creator) {
+      throw new Error("User not authenticated");
+  }
+
+
+  
 }
