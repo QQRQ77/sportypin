@@ -14,6 +14,7 @@ import { useState } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import JsonViewer from "./utils/JSONviewer";
+import SortableHarmonogram from "./SortableHarmonogram";
 
 interface Props {
   event: Event;
@@ -177,22 +178,13 @@ export default function EventCard({ event, userId = "" }: Props) {
               start_date={event.start_date} 
               end_date={event.end_date}
               setItems={addHarmonogramItems}/>}
-          <div className={`w-full flex gap-2 mb-2 rounded-xl shadow-xl font-semibold`}>
-              <div className="w-1/12 text-center">Lp.</div>
-              <div className="w-1/12 text-center">Początek</div>
-              <div className="w-1/12 text-center">Koniec</div>
-              <div className="w-3/4">Opis</div>
+          <div className={`w-full flex flex-wrap lg:flex-nowrap p-4 gap-2 mb-2 rounded-xl shadow-xl font-semibold`}>
+              <div className="w-10 lg:w-1/12 text-center border">Lp.</div>
+              <div className="w-1/4 lg:w-1/12 text-center border">Początek</div>
+              <div className="w-1/4 lg:w-1/12 text-center border">Koniec</div>
+              <div className="w-full lg:w-3/4 border">Opis</div>
           </div>
-          {harmonogramItems.map((item, idx) => {
-          return (
-            <div className={`w-full flex gap-2 mb-2 rounded-xl shadow-xl ${idx%2 == 0? "bg-sky-200" : "bg-gray-200"}`} key={idx}>
-              <div className="w-1/12 text-center">{idx + 1}.</div>
-              <div className="w-1/12 text-center">{item.start_time}</div>
-              <div className="w-1/12 text-center">{item.end_time}</div>
-              <div className="w-3/4">{item.description}</div>
-            </div>
-          )}
-          )}
+          <SortableHarmonogram items={harmonogramItems} eventId={event.id}/>
         </section>
 
         {/* Uczestnicy     */}

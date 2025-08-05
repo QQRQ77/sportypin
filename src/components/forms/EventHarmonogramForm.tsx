@@ -3,7 +3,6 @@
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   Form,
   FormControl,
@@ -23,25 +22,47 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { HarmonogramItem } from "@/types";
-import { createId } from '@paralleldrive/cuid2';
+import { createId } from "@paralleldrive/cuid2";
+import { useEffect } from "react";
 
-const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;   // HH:MM (00:00–23:59)
+/* -------------------------------------------------- */
+/* helper – dodaje N minut do HH:MM                   */
+function addMinutesToTime(time: string, minutes: number): string {
+  const [h, m] = time.split(":").map(Number);
+  const date = new Date();
+  date.setHours(h, m + minutes);
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+/* -------------------------------------------------- */
+
+const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
   description: z.string().min(3).max(200),
   date: z.string().min(1, "Wybierz datę").or(z.literal("")),
+  pause: z.coerce
+    .number({ invalid_type_error: "Podaj liczbę" })
+    .int()
+    .nonnegative(),
+  defaultItemTime: z.coerce
+    .number({ invalid_type_error: "Podaj liczbę" })
+    .int()
+    .nonnegative(),
+
   start_time: z
     .string()
-    .regex(timeRegex, "Podaj godzinę w formacie HH:MM")
+    .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
   end_time: z
     .string()
-    .regex(timeRegex, "Podaj godzinę w formacie HH:MM")
+    .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
 }).superRefine((val, ctx) => {
   if (val.start_time && val.end_time) {
-    const timeLap = minutesBetween(val.start_time, val.end_time)
-    if (!(timeLap > 0)) {
+    const diff = minutesBetween(val.start_time, val.end_time);
+    if (diff <= 0) {
       ctx.addIssue({
         code: "custom",
         path: ["end_time"],
@@ -50,107 +71,96 @@ const FormSchema = z.object({
     }
   }
 });
- 
+
 type FormValues = z.infer<typeof FormSchema>;
 
 interface HarmonogramFormProps {
   eventId: string;
   start_date?: string;
   end_date?: string;
-  setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>
+  setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
-// Funkcja formatująca datę w formacie: {weekday} - DD {month} YYYY
+/* -------------------------------------------------- */
+/* formatowanie daty oraz generowanie opcji – bez zmian */
+/* -------------------------------------------------- */
 const formatDate = (date: Date) => {
-  const formatter = new Intl.DateTimeFormat('pl-PL', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const fmt = new Intl.DateTimeFormat("pl-PL", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
-  
-  const parts = formatter.formatToParts(date);
-  let weekday = '';
-  let day = '';
-  let month = '';
-  let year = '';
-  
-  for (const part of parts) {
-    if (part.type === 'weekday') weekday = part.value;
-    if (part.type === 'day') day = part.value;
-    if (part.type === 'month') month = part.value;
-    if (part.type === 'year') year = part.value;
-  }
-  
-  return `${weekday} - ${day} ${month} ${year}`;
+  const parts = fmt.formatToParts(date);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value || "";
+  return `${get("weekday")} - ${get("day")} ${get("month")} ${get("year")}`;
 };
 
-// Funkcja generująca opcje dat między start_date a end_date
-const generateDateOptions = (startDate?: string, endDate?: string) => {
-  // Jeśli nie ma startDate, zwracamy pustą tablicę
-  if (!startDate) return [];
-  
-  const dates = [];
-  const start = new Date(startDate);
-  
-  // Sprawdzenie poprawności daty
-  if (isNaN(start.getTime())) return [];
-  
-  // Jeśli nie ma endDate, dodajemy tylko startDate
-  if (!endDate) {
-    return [{
-      value: start.toISOString().split('T')[0],
-      label: formatDate(start),
-    }];
-  }
-  
-  const end = new Date(endDate);
-  
-  // Sprawdzenie poprawności końcowej daty
-  if (isNaN(end.getTime())) {
-    return [{
-      value: start.toISOString().split('T')[0],
-      label: formatDate(start),
-    }];
-  }
-  
-  const current = new Date(start);
-  
-  while (current <= end) {
-    dates.push({
-      value: current.toISOString().split('T')[0], // format YYYY-MM-DD
-      label: formatDate(current),
+const generateDateOptions = (start?: string, end?: string) => {
+  if (!start) return [];
+  const s = new Date(start);
+  if (isNaN(s.getTime())) return [];
+  const e = end ? new Date(end) : s;
+  if (isNaN(e.getTime())) return [{ value: s.toISOString().split("T")[0], label: formatDate(s) }];
+  const out = [];
+  for (let d = new Date(s); d <= e; d.setDate(d.getDate() + 1)) {
+    out.push({
+      value: d.toISOString().split("T")[0],
+      label: formatDate(new Date(d)),
     });
-    
-    current.setDate(current.getDate() + 1);
   }
-  
-  return dates;
+  return out;
 };
 
-export default function HarmonogramForm({eventId, start_date, end_date, setItems}: HarmonogramFormProps) {
-  // Sprawdzenie czy pokazać pole wyboru daty
-  const showDateField = !!start_date;
+export default function HarmonogramForm({
+  eventId,
+  start_date,
+  end_date,
+  setItems,
+}: HarmonogramFormProps) {
   
-  // Generowanie opcji dat
   const dateOptions = generateDateOptions(start_date, end_date);
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       description: "",
-      date: dateOptions.length > 0 ? dateOptions[0].value : undefined,
+      date: dateOptions[0]?.value ?? "",
+      pause: 0,
+      defaultItemTime: 15,
       start_time: "",
       end_time: "",
     },
   });
 
+const startTime = form.watch("start_time");
+const duration  = form.watch("defaultItemTime");
+
+useEffect(() => {
+  if (startTime && duration && duration > 0) {
+    const newEnd = addMinutesToTime(startTime, duration);
+    form.setValue("end_time", newEnd, { shouldValidate: true });
+  }
+}, [startTime, duration, form.setValue]);
+
   const handleSubmit: SubmitHandler<FormValues> = (data) => {
-    const submissionData = {...data, id: createId()};
-    setItems(prev => [...prev, submissionData]);
+    const { start_time, defaultItemTime } = data;
+    const computedEnd = addMinutesToTime(start_time, defaultItemTime);
+    const submissionData = {
+      ...data,
+      id: createId(),
+      // end_time: computedEnd,
+    };
+    setItems((prev) => [...prev, submissionData]);
+
+    /* następny domyślny start = koniec + przerwa */
+    const nextStart = addMinutesToTime(data.end_time, data.pause);
     form.reset({
       description: "",
-      start_time: "",
+      date: data.date,
+      pause: data.pause,
+      defaultItemTime: data.defaultItemTime,
+      start_time: nextStart,
       end_time: "",
     });
   };
@@ -164,46 +174,84 @@ export default function HarmonogramForm({eventId, start_date, end_date, setItems
         <h2 className="text-2xl font-bold text-sky-600 text-center">
           Dodaj punkt harmonogramu
         </h2>
+        <div className="w-full flex gap-4 flex-col lg:flex-row justify-between">
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Wybierz datę" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {dateOptions.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        {/* Data - wyświetlana tylko gdy start_date istnieje */}
-        {showDateField && (
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-slate-600">Data</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+          <div className="flex gap-4">
+            <FormField
+              control={form.control}
+              name="pause"
+              render={({ field }) => (
+                <FormItem className="w-1/2 lg:w-32">
+                  <FormLabel>Przerwa (min)</FormLabel>
                   <FormControl>
-                    <SelectTrigger className="shadow-xl">
-                      <SelectValue placeholder="Wybierz datę" />
-                    </SelectTrigger>
+                    <Input
+                      className="shadow-xl"
+                      type="number"
+                      min={0}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
-                  <SelectContent>
-                    {dateOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
+            <FormField
+              control={form.control}
+              name="defaultItemTime"
+              render={({ field }) => (
+                <FormItem className="w-1/2 lg:w-32">
+                  <FormLabel className="">Czas trwania (min)</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="shadow-xl"
+                      type="number"
+                      min={0}
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
+          
+
+        {/* OPIS + START/END – bez zmian */}
         <div className="flex flex-col lg:flex-row gap-2">
-          {/* Opis */}
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem className="w-full lg:w-3/5">
-                <FormLabel className="text-slate-600">Opis punktu</FormLabel>
+                <FormLabel>Opis punktu</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="np. mecz: GKS vs. LSZ"
@@ -216,51 +264,50 @@ export default function HarmonogramForm({eventId, start_date, end_date, setItems
             )}
           />
 
-          {/* Godzina rozpoczęcia */}
-          <FormField
-            control={form.control}
-            name="start_time"
-            render={({ field }) => (
-              <FormItem className="w-full lg:w-1/5">
-                <FormLabel className="text-slate-600">Godzina rozpoczęcia</FormLabel>
-                <FormControl>
-                  <Input
-                    type="time"
-                    className="shadow-xl"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4 w-full lg:w-2/5">
+            <FormField
+              control={form.control}
+              name="start_time"
+              render={({ field }) => (
+                <FormItem className="w-1/2">
+                  <FormLabel>Godzina rozpoczęcia</FormLabel>
+                  <FormControl>
+                    <Input type="time" className="shadow-xl" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          {/* Godzina zakończenia */}
-          <FormField
-            control={form.control}
-            name="end_time"
-            render={({ field }) => (
-              <FormItem className="w-full lg:w-1/5">
-                <FormLabel className="text-slate-600">Godzina zakończenia</FormLabel>
-                <FormControl>
-                  <Input
-                    type="time"
-                    className="shadow-xl"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <FormField
+              control={form.control}
+              name="end_time"
+              render={({ field }) => (
+                <FormItem className="w-1/2">
+                  <FormLabel>Godzina zakończenia</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="time"
+                      className="shadow-xl"
+                      {...field}
+                      value={field.value}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
         </div>
 
-        <Button
-          type="submit"
-          className="w-42 bg-sky-500 hover:bg-sky-600 text-white font-semibold mx-auto"
-        >
-          Dodaj
-        </Button>
+        <div className="w-full flex justify-center">
+          <Button
+            type="submit"
+            className="w-42 bg-sky-500 hover:bg-sky-600 text-white font-semibold"
+          >
+            Dodaj
+          </Button>
+        </div>
       </form>
     </Form>
   );
