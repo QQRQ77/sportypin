@@ -1,6 +1,8 @@
 'use client'
 
 import { reorderHarmonogram } from "@/lib/events.actions";
+import { recalculateTimesAfterReorder } from "@/lib/harmonogramShuffle";
+import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import { HarmonogramItem } from "@/types";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
@@ -16,6 +18,7 @@ interface SortableItineraryProps {
   items: HarmonogramItem[];
   eventId: string;
 }
+
 
 function SortableItem({ item, idx }: { item: HarmonogramItem, idx: number}) {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -48,26 +51,48 @@ export default function SortableHarmonogram({
     setHarmonogramItems(items);
   }, [items]);
 
+// ---------------------------------------------------
+// SortableHarmonogram – handleDragEnd
+// ---------------------------------------------------
+
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-    if (active.id !== over?.id) {
-      const oldIndex = harmonogramItems.findIndex((item) => item.id === active.id);
-      const newIndex = harmonogramItems.findIndex((item) => item.id === over!.id);
+    const oldIndex = harmonogramItems.findIndex((i) => i.id === active.id);
+    const newIndex = harmonogramItems.findIndex((i) => i.id === over.id);
 
-      const newHarmonogramOrder = arrayMove(
-        harmonogramItems,
-        oldIndex,
-        newIndex
-      ).map((item, index) => ({ ...item, order: index }));
+    const firstPause = minutesBetween(harmonogramItems[0].end_time, harmonogramItems[1].start_time );
+    const lastPause = minutesBetween(harmonogramItems[harmonogramItems.length - 2].end_time,
+                                     harmonogramItems[harmonogramItems.length - 1].start_time)
 
-      setHarmonogramItems(newHarmonogramOrder);
+    /* 1. Ustal, które elementy faktycznie zmieniły kolejność */
+    const affected = arrayMove(harmonogramItems, oldIndex, newIndex);
 
-      await reorderHarmonogram(
-        eventId,
-        newHarmonogramOrder
-      );
+    console.log("affected:", affected);
+
+    if (newIndex === 0) {
+      const itemShift = minutesBetween(affected[0].start_time, affected[0].end_time);
+      affected[0].start_time = affected[1].start_time;
+      affected[0].end_time = addMinutesToTime(affected[0].start_time, itemShift);
+
+      for (let i = 1; i <= oldIndex; i++) {
+        affected[i].start_time = addMinutesToTime(affected[i].start_time, itemShift + firstPause);
+        affected[i].end_time = addMinutesToTime(affected[i].end_time, itemShift + firstPause);
+      }
     }
+
+    console.log("affected after time change: ", affected);
+  
+    // if (newIndex < oldIndex) {
+    //   const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+    //   affected[newIndex].start_time = affected[newIndex + 1].start_time;
+    //   affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
+    // }  
+
+    /* 4. Aktualizuj stan i backend */
+    setHarmonogramItems(affected);
+    await reorderHarmonogram(eventId, affected);
   };
 
   return (

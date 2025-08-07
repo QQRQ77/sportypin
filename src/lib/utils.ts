@@ -81,7 +81,8 @@ export function monthNameToColorClass(monthName: string) {
   return monthColors[normalizedMonth] || { bg100: 'bg-gray-100', bg500: 'bg-gray-500', bg200: 'bg-gray-200', hex500: '#9CA3AF' };
 }
 
-export function minutesBetween(start: string, end: string): number {
+export function minutesBetween(start?: string, end?: string): number {
+  if (!start || !end) return 0;
   const [sh, sm] = start.split(':').map(Number);
   const [eh, em] = end.split(':').map(Number);
 
@@ -91,3 +92,12 @@ export function minutesBetween(start: string, end: string): number {
   return endMin - startMin;
 }
 
+export function addMinutesToTime(time?: string, minutes = 0): string {
+  if (!time) return '00:00';
+  const [h, m] = time.split(":").map(Number);
+  const date = new Date();
+  date.setHours(h, m + minutes);
+  const hh = String(date.getHours()).padStart(2, "0");
+  const mm = String(date.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}

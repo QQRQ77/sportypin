@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { minutesBetween } from "@/lib/utils";
+import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -24,18 +24,6 @@ import {
 import { HarmonogramItem } from "@/types";
 import { createId } from "@paralleldrive/cuid2";
 import { useEffect } from "react";
-
-/* -------------------------------------------------- */
-/* helper – dodaje N minut do HH:MM                   */
-function addMinutesToTime(time: string, minutes: number): string {
-  const [h, m] = time.split(":").map(Number);
-  const date = new Date();
-  date.setHours(h, m + minutes);
-  const hh = String(date.getHours()).padStart(2, "0");
-  const mm = String(date.getMinutes()).padStart(2, "0");
-  return `${hh}:${mm}`;
-}
-/* -------------------------------------------------- */
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -82,7 +70,7 @@ interface HarmonogramFormProps {
 }
 
 /* -------------------------------------------------- */
-/* formatowanie daty oraz generowanie opcji – bez zmian */
+/* formatowanie daty oraz generowanie opcji */
 /* -------------------------------------------------- */
 const formatDate = (date: Date) => {
   const fmt = new Intl.DateTimeFormat("pl-PL", {
