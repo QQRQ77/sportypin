@@ -101,3 +101,5 @@ export function addMinutesToTime(time?: string, minutes = 0): string {
   const mm = String(date.getMinutes()).padStart(2, "0");
   return `${hh}:${mm}`;
 }
+
+

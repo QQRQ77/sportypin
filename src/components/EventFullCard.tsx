@@ -26,11 +26,11 @@ export default function EventCard({ event, userId = "" }: Props) {
  
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>([
-    {date: "2025-11-06", description: "Ostrów - Wieluń", end_time: "08:15", id: "fqhhpzo1cmy1gvgj014kndk7", start_time: "08:00"},
-    {date: "2025-11-06", description: "MKS - ChKS", end_time: "08:35", id: "fqhhpzo1cmy1gvgj014kndk8", start_time: "08:20"},
-    {date: "2025-11-06", description: "DZIK - ŁKS", end_time: "09:00", id: "fqhhpzo1cmy1gvgj014kndk9", start_time: "08:45"},
-    {date: "2025-11-06", description: "SKRA - OLIMP", end_time: "09:20", id: "fqhhpzo1cmy1gvgj014kndk10", start_time: "09:05"},
-    {date: "2025-11-06", description: "Widzew - Górnik", end_time: "09:45", id: "fqhhpzo1cmy1gvgj014kndk11", start_time: "09:30"},
+    {date: "2025-11-06", description: "15 minut", end_time: "08:15", id: "fqhhpzo1cmy1gvgj014kndk7", start_time: "08:00"},
+    {date: "2025-11-06", description: "20 minut", end_time: "08:40", id: "fqhhpzo1cmy1gvgj014kndk8", start_time: "08:20"},
+    {date: "2025-11-06", description: "25 minut", end_time: "09:10", id: "fqhhpzo1cmy1gvgj014kndk9", start_time: "08:45"},
+    {date: "2025-11-06", description: "30 minut", end_time: "09:45", id: "fqhhpzo1cmy1gvgj014kndk10", start_time: "09:15"},
+    {date: "2025-11-06", description: "35 minut", end_time: "10:25", id: "fqhhpzo1cmy1gvgj014kndk11", start_time: "09:50"},
   ])
 
   const now = new Date();
