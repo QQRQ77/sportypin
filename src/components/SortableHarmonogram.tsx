@@ -69,7 +69,7 @@ export default function SortableHarmonogram({
     /* 1. Ustal, które elementy faktycznie zmieniły kolejność */
     const affected = arrayMove(harmonogramItems, oldIndex, newIndex);
 
-    // Time Shift w kierunku wcześniejszych czasów
+    //*****/ Time Shift w kierunku wcześniejszych czasów /*****//
     // Przesunięcie na najwcześniejszy termin, ale nie z pozycji bezpośrednio po pierwszym
     if (newIndex === 0) {
       const itemShift = minutesBetween(affected[0].start_time, affected[0].end_time);
@@ -93,7 +93,7 @@ export default function SortableHarmonogram({
     // }
 
     // Przesunięcie na wcześniejszy termin, ale nie z pozycji bezpośrednio po pierwszym
-    if (newIndex > 0 && affected.length > 2 && newIndex < oldIndex) {
+    if (newIndex > 0 && newIndex < oldIndex) {
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       const pauseShift = minutesBetween(affected[newIndex - 1].end_time, affected[newIndex + 1].start_time);
       affected[newIndex].start_time = affected[newIndex + 1].start_time;
@@ -104,14 +104,26 @@ export default function SortableHarmonogram({
         affected[i].end_time = addMinutesToTime(affected[i].end_time, itemShift + pauseShift);
       }
     }
-    
-    // Time shift w kierunku późniejszych czasów
-    // Przesunięcie na najpóźniejszy termin, ale nie z pozycji bezpośrednio przed ostatnim
-    if (newIndex === affected.length - 1 && affected.length > 2 && newIndex - oldIndex > 1) {
+
+    //*****/ Time Shift w kierunku późniejszych czasów /*****//
+
+    if (newIndex === affected.length - 1) {
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
-      const pauseShift = minutesBetween(affected[oldIndex].end_time, affected[oldIndex + 1].start_time);
-      affected[newIndex].start_time = affected[newIndex - 1].start_time;
-      affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
+      affected[newIndex].end_time = affected[newIndex - 1].end_time;
+      affected[newIndex].start_time = addMinutesToTime(affected[newIndex].end_time, -itemShift);
+
+      for (let i = newIndex - 1; i >= oldIndex; i--) {
+        affected[i].start_time = addMinutesToTime(affected[i].start_time, -(itemShift + lastPause));
+        affected[i].end_time = addMinutesToTime(affected[i].end_time, -(itemShift + lastPause));
+      }
+    }
+
+    // Przesunięcie na wcześniejszy termin, ale nie z pozycji bezpośrednio po pierwszym
+    if (newIndex < affected.length - 1 && newIndex > oldIndex) {
+      const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+      const pauseShift = minutesBetween(affected[newIndex - 1].end_time, affected[newIndex + 1].start_time);
+      affected[newIndex].end_time = affected[newIndex - 1].end_time;
+      affected[newIndex].start_time = addMinutesToTime(affected[newIndex].end_time, -(itemShift));
 
       for (let i = newIndex - 1; i >= oldIndex; i--) {
         affected[i].start_time = addMinutesToTime(affected[i].start_time, -(itemShift + pauseShift));
@@ -119,30 +131,48 @@ export default function SortableHarmonogram({
       }
     }
     
-    // Przesunięcie na późniejszy termin, ale nie zamiana sąsiednich elementów
-    if (newIndex < affected.length - 1 && affected.length > 2 && newIndex - oldIndex > 1) {
-      const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
-      const pauseShift = minutesBetween(affected[oldIndex].end_time, affected[oldIndex + 1].start_time);
-      affected[newIndex].start_time = affected[newIndex - 1].start_time;
-      affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
+    // //*****/ Time shift w kierunku późniejszych czasów/*****//
+    // // Przesunięcie na najpóźniejszy termin, ale nie z pozycji sąsiadującej
+    // if (newIndex - oldIndex > 1) {
+    //   const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+    //   const pauseShift = minutesBetween(affected[oldIndex].end_time, affected[oldIndex + 1].start_time);
+    //   affected[newIndex].end_time = affected[newIndex - 1].end_time;
+    //   affected[newIndex].start_time = addMinutesToTime(affected[newIndex].end_time, -itemShift);
 
-      for (let i = newIndex - 1; i >= oldIndex; i--) {
-        affected[i].start_time = addMinutesToTime(affected[i].start_time, -(itemShift + pauseShift));
-        affected[i].end_time = addMinutesToTime(affected[i].end_time, -(itemShift + pauseShift));
-      }
-    }  
+    //   for (let i = newIndex - 1; i >= oldIndex; i--) {
+    //     const thisItemShift = minutesBetween(affected[i].start_time, affected[i].end_time);
+    //     console.log("Shift", itemShift, "Pause: ", pauseShift);
+    //     console.log(`affected[${i}].start_time`, affected[i].start_time);
+    //     affected[i].start_time = addMinutesToTime(affected[i].start_time, -(itemShift + pauseShift));
+    //     console.log(`affected[${i}].start_time`, affected[i].start_time);
+    //     affected[i].end_time = addMinutesToTime(affected[i].start_time, thisItemShift);
+    //   }
+    // }
+    
+    // // Przesunięcie na późniejszy termin, ale nie zamiana sąsiednich elementów
+    // // if (newIndex < affected.length - 1 && affected.length > 2 && newIndex - oldIndex > 1) {
+    // //   const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+    // //   const pauseShift = minutesBetween(affected[oldIndex].end_time, affected[oldIndex + 1].start_time);
+    // //   affected[newIndex].start_time = affected[newIndex - 1].start_time;
+    // //   affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
 
-    // Zamiana sąsiednich elementów ruch w kierunku późniejszych czasów
-    if (newIndex - oldIndex === 1) {
-      const newIndexShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
-      const oldIndexShift = minutesBetween(affected[oldIndex].start_time, affected[oldIndex].end_time);
-      const newStartTime = affected[newIndex].start_time;
-      const oldStartTime = affected[oldIndex].start_time;
-      affected[newIndex].start_time = oldStartTime;
-      affected[newIndex].end_time = addMinutesToTime(oldStartTime, newIndexShift) 
-      affected[oldIndex].start_time = newStartTime;
-      affected[oldIndex].end_time = addMinutesToTime(newStartTime, oldIndexShift);
-    } 
+    // //   for (let i = newIndex - 1; i >= oldIndex; i--) {
+    // //     affected[i].start_time = addMinutesToTime(affected[i].start_time, -(itemShift + pauseShift));
+    // //     affected[i].end_time = addMinutesToTime(affected[i].end_time, -(itemShift + pauseShift));
+    // //   }
+    // // }  
+
+    // // Zamiana sąsiednich elementów ruch w kierunku późniejszych czasów
+    // if (newIndex - oldIndex === 1) {
+    //   const newIndexShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+    //   const oldIndexShift = minutesBetween(affected[oldIndex].start_time, affected[oldIndex].end_time);
+    //   const newStartTime = affected[newIndex].start_time;
+    //   const oldStartTime = affected[oldIndex].start_time;
+    //   affected[newIndex].start_time = oldStartTime;
+    //   affected[newIndex].end_time = addMinutesToTime(oldStartTime, newIndexShift) 
+    //   affected[oldIndex].start_time = newStartTime;
+    //   affected[oldIndex].end_time = addMinutesToTime(newStartTime, oldIndexShift);
+    // } 
 
     /* 4. Aktualizuj stan i backend */
     setHarmonogramItems(affected);
