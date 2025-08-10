@@ -139,3 +139,14 @@ export async function getUserObservedVenuesIds() {
 
   return data.observedVenues || []
 }
+
+export async function isUserFollowingEvent(eventId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const observedEvents = await getUserObservedEventsIds();
+
+  return observedEvents.includes(eventId);
+}

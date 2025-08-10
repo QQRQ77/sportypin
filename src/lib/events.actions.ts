@@ -169,9 +169,15 @@ export async function getEventById(eventId: string) {
   const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
-  .from('Events')
-  .select('*')
-  .eq('id', eventId)
+    .from('Events')
+    .select('*')
+    .eq('id', eventId);
+
+  // Usuń pole "creator" z wyniku
+  if (data && data.length > 0) {
+    delete data[0].creator;
+    delete data[0].followers; // Usuń również creator_name, jeśli istnieje
+  }
 
   if (error) {
     console.error('Error fetching events:', error);
@@ -218,11 +224,60 @@ export async function updateEvent(formData: CreateEvent, eventId: string, eventC
 
 export async function reorderHarmonogram(eventId: string, newHarmonogram: HarmonogramItem[]) {
   const session = await auth();
-  const creator = session.userId;
-  if (!creator) {
+  const user = session.userId;
+  if (!user) {
       throw new Error("User not authenticated");
   }
 
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+  
 
   
 }
+
+export async function findEventCreatorId(eventId: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('creator')
+    .eq('id', eventId)
+    .single();
+
+  if (error || !data) {
+    console.error('Error fetching event creator:', error);
+    throw new Error(error?.message || 'Failed to fetch event creator');
+  }
+
+  return data.creator || "";
+}
+
+export async function saveHarmonogram(eventId: string, harmonogram: HarmonogramItem[]) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+  }
+
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+
+  const supabase = createSupabaseClient();
+
+  const {data, error} = await supabase
+    .from('Events')
+    .update({ harmonogram })
+    .eq('id', eventId);
+ 
+  if (error || !data) {
+    console.error('Error fetching event creator:', error);
+    throw new Error(error?.message || 'Failed to fetch event creator');
+  }
+
+  return "success";
+} 

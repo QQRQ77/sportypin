@@ -134,6 +134,7 @@ export type Event = {
     contact_phone?: string;
     organizator?: string;
     event_type?: string;
+    harmonogram?: HarmonogramItem[];
     followers?: string[];
     imageUrls?: string[];
     lat: number;

@@ -1,7 +1,6 @@
 import EventFullCard from "@/components/EventFullCard";
-import JsonViewer from "@/components/utils/JSONviewer";
-import { getEventById } from "@/lib/events.actions";
-import { createUser } from "@/lib/users.actions";
+import { findEventCreatorId, getEventById } from "@/lib/events.actions";
+import { createUser, isUserFollowingEvent } from "@/lib/users.actions";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function EventPage(
@@ -14,10 +13,12 @@ export default async function EventPage(
   if ( userId ) {await createUser()}
 
   const event = await getEventById(event_id);
+  const isUserFollowing = event && userId ? await isUserFollowingEvent(event_id) : false;
+  const isUserCreator = event && userId ? await findEventCreatorId(event_id) === userId : false;
 
   return (
     <>
-        <EventFullCard event={event} userId={userId}/>
+      <EventFullCard event={event} userId={userId} isUserCreator={isUserCreator} isUserFollowing={isUserFollowing}/>
     </>
   )
 }

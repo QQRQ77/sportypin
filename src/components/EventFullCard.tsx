@@ -13,25 +13,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useState } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
-import JsonViewer from "./utils/JSONviewer";
 import SortableHarmonogram from "./SortableHarmonogram";
+import Harmonogram from "./Harmonogram";
 
 interface Props {
   event: Event;
   userId?: string | null;
+  isUserFollowing?: boolean;
+  isUserCreator?: boolean;
 }
 
-export default function EventCard({ event, userId = "" }: Props) {
+export default function EventCard({ event, userId = "", isUserFollowing = false, isUserCreator = false }: Props) {
   const router = useRouter()
  
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
-  const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>([
-    {date: "2025-11-06", description: "15 minut", end_time: "08:15", id: "fqhhpzo1cmy1gvgj014kndk7", start_time: "08:00"},
-    {date: "2025-11-06", description: "20 minut", end_time: "08:40", id: "fqhhpzo1cmy1gvgj014kndk8", start_time: "08:20"},
-    {date: "2025-11-06", description: "25 minut", end_time: "09:10", id: "fqhhpzo1cmy1gvgj014kndk9", start_time: "08:45"},
-    {date: "2025-11-06", description: "30 minut", end_time: "09:45", id: "fqhhpzo1cmy1gvgj014kndk10", start_time: "09:15"},
-    {date: "2025-11-06", description: "35 minut", end_time: "10:25", id: "fqhhpzo1cmy1gvgj014kndk11", start_time: "09:50"},
-  ])
+  const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
 
   const now = new Date();
   const start = new Date(event.start_date);
@@ -44,7 +40,7 @@ export default function EventCard({ event, userId = "" }: Props) {
   const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
   const monthColor = monthNameToColorClass(monthName);
   
-  const isEventObserved = event.followers?.includes(userId || "")
+  const isEventObserved = isUserFollowing
 
   return (
     <article className="relative max-w-5xl mx-auto my-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
@@ -66,7 +62,7 @@ export default function EventCard({ event, userId = "" }: Props) {
             {event.event_type}
           </p>
           <div className="absolute bottom-0 right-0 p-1 flex flex-row gap-4 cursor-pointer">
-              {userId === event.creator && (
+              {isUserCreator && (
                 <div className="w-full flex justify-center mt-6">
                   <Button
                     onClick={() => router.push(`/events/${event.id}/edit`)}
@@ -174,23 +170,24 @@ export default function EventCard({ event, userId = "" }: Props) {
 
         {/* Harmonogram */}
         <section className="relative pt-4 border-t border-slate-300">
-          <div className="w-full flex justify-between">
+          {isUserCreator && <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
-            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>Dodaj/Edytuj</Button>  
-          </div>
+            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>Dodaj</Button>  
+          </div>}
           {openHarmonogramForm && 
             <HarmonogramForm 
               eventId={event.id} 
               start_date={event.start_date} 
               end_date={event.end_date}
               setItems={addHarmonogramItems}/>}
-          <div className={`w-full flex flex-wrap lg:flex-nowrap p-4 gap-2 mb-2 rounded-xl shadow-xl font-semibold`}>
-              <div className="w-10 lg:w-1/12 text-center border">Lp.</div>
-              <div className="w-1/4 lg:w-1/12 text-center border">Początek</div>
-              <div className="w-1/4 lg:w-1/12 text-center border">Koniec</div>
-              <div className="w-full lg:w-3/4 border">Opis</div>
+          <div className={`w-full lg:w-11/12 flex flex-wrap lg:flex-nowrap gap-2 mb-2 p-4 rounded-xl shadow-xl`}>
+              <div className="w-1/4 lg:w-1/12 text-center">Lp.</div>
+              <div className="w-1/4 lg:w-1/12 text-center">Początek</div>
+              <div className="w-1/4 lg:w-1/12 text-center">Koniec</div>
+              <div className="w-full lg:w-3/4 text-center lg:text-left">Opis</div>
           </div>
-          <SortableHarmonogram items={harmonogramItems} eventId={event.id}/>
+          {isUserCreator ? <SortableHarmonogram items={harmonogramItems} eventId={event.id}/>
+            : <Harmonogram items={harmonogramItems}/>}
         </section>
 
         {/* Uczestnicy     */}

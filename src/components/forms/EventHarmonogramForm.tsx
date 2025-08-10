@@ -24,6 +24,7 @@ import {
 import { HarmonogramItem } from "@/types";
 import { createId } from "@paralleldrive/cuid2";
 import { useEffect } from "react";
+import { saveHarmonogram } from "@/lib/events.actions";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -131,15 +132,20 @@ useEffect(() => {
   }
 }, [startTime, duration, form.setValue]);
 
-  const handleSubmit: SubmitHandler<FormValues> = (data) => {
-    const { start_time, defaultItemTime } = data;
-    const computedEnd = addMinutesToTime(start_time, defaultItemTime);
+  const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
+
     const submissionData = {
       ...data,
       id: createId(),
       // end_time: computedEnd,
     };
-    setItems((prev) => [...prev, submissionData]);
+
+    setItems((prev) => {
+      const newItems = [...prev, submissionData];
+      // Save harmonogram as a side effect
+      saveHarmonogram(eventId, newItems);
+      return newItems;
+    });
 
     /* następny domyślny start = koniec + przerwa */
     const nextStart = addMinutesToTime(data.end_time, data.pause);
