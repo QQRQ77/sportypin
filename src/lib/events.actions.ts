@@ -272,8 +272,9 @@ export async function saveHarmonogram(eventId: string, harmonogram: HarmonogramI
   const {data, error} = await supabase
     .from('Events')
     .update({ harmonogram })
-    .eq('id', eventId);
- 
+    .eq('id', eventId)
+    .select('harmonogram');
+  
   if (error || !data) {
     console.error('Error fetching event creator:', error);
     throw new Error(error?.message || 'Failed to fetch event creator');

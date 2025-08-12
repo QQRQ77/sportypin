@@ -36,11 +36,25 @@ export default function SortableHarmonogram({
   }, [items]);
 
   const deleteHarmonogramItem = (id: string) => {
-    setHarmonogramItems((prev) => prev.filter((item) => item.id !== id));
+    const itemIndex = harmonogramItems.findIndex((i) => i.id === id);
     //logika poprawiania czasów start_time i end_time
-    //zapisywanie zmian do bazy danych, użycie saveHarmonogram
-    saveHarmonogram(eventId, harmonogramItems.filter((item) => item.id !== id));
-  };
+    if (itemIndex === harmonogramItems.length - 1) {
+      saveHarmonogram(eventId, harmonogramItems.filter((item) => item.id !== id))}
+    else {
+      const itemShift = minutesBetween(harmonogramItems[itemIndex].start_time, harmonogramItems[itemIndex].end_time);
+      const firstPause = minutesBetween(harmonogramItems[itemIndex].end_time, harmonogramItems[itemIndex + 1].start_time);
+
+      for (let i = itemIndex + 1; i < harmonogramItems.length; i++) {
+        harmonogramItems[i].start_time = addMinutesToTime(harmonogramItems[i].start_time, -(itemShift + firstPause));
+        harmonogramItems[i].end_time = addMinutesToTime(harmonogramItems[i].end_time, -(itemShift + firstPause));
+      }
+    }
+    
+    const newHarmonogramItems = harmonogramItems.filter((item) => item.id !== id);
+      setHarmonogramItems(newHarmonogramItems);
+      saveHarmonogram(eventId, newHarmonogramItems);
+    }
+  
 
   function SortableItem({ item, idx }: { item: HarmonogramItem, idx: number}) {
     const { attributes, listeners, setNodeRef, transform, transition } =
