@@ -172,7 +172,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
         <section className="relative pt-4 border-t border-slate-300">
           {isUserCreator && <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
-            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>Dodaj</Button>  
+            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>{openHarmonogramForm? "Zamknij" : "Dodaj"}</Button>  
           </div>}
           {openHarmonogramForm && 
             <HarmonogramForm 
@@ -180,12 +180,12 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
               start_date={event.start_date} 
               end_date={event.end_date}
               setItems={addHarmonogramItems}/>}
-          <div className={`w-full lg:w-11/12 flex flex-wrap lg:flex-nowrap gap-2 mb-2 p-4 rounded-xl shadow-xl`}>
-              <div className="w-1/4 lg:w-1/12 text-center">Lp.</div>
-              <div className="w-1/4 lg:w-1/12 text-center">Początek</div>
-              <div className="w-1/4 lg:w-1/12 text-center">Koniec</div>
-              <div className="w-full lg:w-3/4 text-center lg:text-left">Opis</div>
-          </div>
+            <div className="w-11/12 flex flex-wrap gap-2 mb-2 p-4 rounded-xl shadow-xl">
+              <div className="w-[80px] text-center">Lp.</div>
+              <div className="w-[100px] text-center">Początek</div>
+              <div className="w-[100px] text-center">Koniec</div>
+              <div className="flex-1 text-center lg:text-left">Opis</div>
+            </div>
           {isUserCreator ? <SortableHarmonogram items={harmonogramItems} eventId={event.id}/>
             : <Harmonogram items={harmonogramItems}/>}
         </section>

@@ -282,3 +282,33 @@ export async function saveHarmonogram(eventId: string, harmonogram: HarmonogramI
 
   return "success";
 } 
+
+
+export async function saveHarmonogramItem(eventId: string, itemId: string, updatedItem: HarmonogramItem ) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+    }
+
+  const creator = await findEventCreatorId(eventId);
+    if (user !== creator) {
+      throw new Error("User is not event's creator");
+    }
+
+  const supabase = createSupabaseClient();
+
+  // Update the specific item in the harmonogram
+  const { data, error } = await supabase
+    .from('HarmonogramItems')
+    .update(updatedItem)
+    .eq('id', itemId)
+    .select('*');
+
+  if (error || !data || data.length === 0) {
+    console.error('Error updating harmonogram item:', error);
+    throw new Error(error?.message || 'Failed to update harmonogram item');
+  }
+
+  return data[0];
+}

@@ -297,7 +297,7 @@ useEffect(() => {
         <div className="w-full flex justify-center">
           <Button
             type="submit"
-            className="w-42 bg-sky-500 hover:bg-sky-600 text-white font-semibold"
+            className="w-42 bg-sky-500 hover:bg-sky-600 text-white font-semibold cursor-pointer"
           >
             Dodaj
           </Button>

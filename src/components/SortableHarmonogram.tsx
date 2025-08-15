@@ -14,15 +14,12 @@ import { CSS } from "@dnd-kit/utilities";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useEffect, useId, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import HarmonogramItemEditForm from "./forms/HarmonogramItemEditForm";
 
 interface SortableHarmonogramProps {
   items: HarmonogramItem[];
   eventId: string;
 }
-
-
-
-
 
 export default function SortableHarmonogram({
   items,
@@ -30,17 +27,20 @@ export default function SortableHarmonogram({
 }: SortableHarmonogramProps) {
   const id = useId();
   const [harmonogramItems, setHarmonogramItems] = useState(items);
+  const [showEditForm, setShowEditForm] = useState("");
 
   useEffect(() => {
     setHarmonogramItems(items);
   }, [items]);
 
-  const deleteHarmonogramItem = (id: string) => {
+  //TODO: Coś jest nie tak ze stanem formularza, po skasowaniu gdy dodajeszesz nowy element
+  const deleteHarmonogramItem = async (id: string) => {
     const itemIndex = harmonogramItems.findIndex((i) => i.id === id);
     //logika poprawiania czasów start_time i end_time
     if (itemIndex === harmonogramItems.length - 1) {
-      saveHarmonogram(eventId, harmonogramItems.filter((item) => item.id !== id))}
-    else {
+      await saveHarmonogram(eventId, harmonogramItems.filter((item) => item.id !== id))
+      setHarmonogramItems([]);
+    } else {
       const itemShift = minutesBetween(harmonogramItems[itemIndex].start_time, harmonogramItems[itemIndex].end_time);
       const firstPause = minutesBetween(harmonogramItems[itemIndex].end_time, harmonogramItems[itemIndex + 1].start_time);
 
@@ -48,74 +48,83 @@ export default function SortableHarmonogram({
         harmonogramItems[i].start_time = addMinutesToTime(harmonogramItems[i].start_time, -(itemShift + firstPause));
         harmonogramItems[i].end_time = addMinutesToTime(harmonogramItems[i].end_time, -(itemShift + firstPause));
       }
-    }
-    
-    const newHarmonogramItems = harmonogramItems.filter((item) => item.id !== id);
+      const newHarmonogramItems = harmonogramItems.filter((item) => item.id !== id);
+      await saveHarmonogram(eventId, newHarmonogramItems);
       setHarmonogramItems(newHarmonogramItems);
-      saveHarmonogram(eventId, newHarmonogramItems);
+      }
     }
   
 
   function SortableItem({ item, idx }: { item: HarmonogramItem, idx: number}) {
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({ id: item.id });
-
+    
     return (
-      <div className="w-full flex flex-col lg:flex-row gap-2 justify-between items-center">
-        <div
-          ref={setNodeRef}
-          {...attributes}
-          {...listeners}
-          style={{ transform: CSS.Transform.toString(transform), transition }}
-          className={`relative w-full lg:w-11/12 flex flex-wrap lg:flex-nowrap gap-2 p-4 rounded-xl shadow-xl ${idx%2 == 0? "bg-sky-200" : "bg-gray-200"} cursor-grab`}
-        >
-          <div className="w-1/4 lg:w-1/12 text-center">{idx + 1}.</div>
-          <div className="w-1/4 lg:w-1/12 text-center">{item.start_time}</div>
-          <div className="w-1/4 lg:w-1/12 text-center">{item.end_time}</div>
-          <div className="w-full lg:w-3/4 text-center lg:text-left font-medium">{item.description}</div>
-        </div>
-        <div className="w-1/12 flex justify-center items-center gap-4">
-          <div className="text-gray-500 hover:text-gray-800">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={(e)=> {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    console.log("Item ID: ", item.id)
-                    }}
-                  className=""
-                  aria-label="Edytuj">
-                    <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>"Edytuj"</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-          <div className="text-gray-500 hover:text-gray-800">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  onClick={(e)=> {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    deleteHarmonogramItem(item.id)
-                    }}
-                  className=""
-                  aria-label="Zamknij">
-                    <TrashIcon className="w-6 h-6 cursor-pointer" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>"Usuń"</p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
+      <div className="w-full flex flex-col lg:flex-row justify-between items-center">
+        {(showEditForm && showEditForm === item.id) ? (
+          <HarmonogramItemEditForm
+            eventId={eventId}
+            itemIdx={idx}
+            items={harmonogramItems}
+            setItems={setHarmonogramItems}
+            onClose={() => setShowEditForm("")}
+          />
+        ) : (
+            <div className="w-full flex flex-col lg:flex-row gap-2">  
+              <div 
+                ref={setNodeRef}
+                {...attributes}
+                {...listeners}
+                style={{ transform: CSS.Transform.toString(transform), transition }}
+                className={`w-11/12 flex flex-wrap p-4 gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} cursor-grab items-center`}>
+                  <div className="w-[80px] text-center">{idx + 1}.</div>
+                  <div className="w-[100px] text-center">{item.start_time}</div>
+                  <div className="w-[100px] text-center">{item.end_time}</div>
+                  <div className="flex-1 text-center lg:text-left font-medium">{item.description}</div>
+              </div>
+              <div className="flex flex-row justify-center items-center gap-4">
+                <div className="text-gray-500 hover:text-gray-800">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setShowEditForm(item.id);
+                          }}
+                        aria-label="Edytuj"
+                      >
+                        <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Edytuj</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <div className="text-gray-500 hover:text-gray-800">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                          onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            deleteHarmonogramItem(item.id);
+                              }}
+                          aria-label="Usuń"
+                        >
+                        <TrashIcon className="w-6 h-6 cursor-pointer" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Usuń</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </div>
+            </div>
+        )}
       </div>
-      
     );
   }
 
