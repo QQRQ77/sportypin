@@ -14,7 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { Input } from "../ui/input"
-import SearchButton from "../ui/submitButton"
+import SubmitButton from "../ui/submitButton"
 import { searchVenuesRanked } from "@/lib/venue.actions"
 import VenueList from "../VenueList"
 import MultipleMarkersMap from "../GoogleMapsComponent"
@@ -79,7 +79,7 @@ export default function VenueSearchFormAndCards({ userId }: VenueSearchProps) {
             </div>
 
             <div className="flex items-center justify-center">
-              <SearchButton 
+              <SubmitButton 
                 isSubmitting={form.formState.isSubmitting || submitButtonDisactive}
                 baseText="Wyszukaj obiekt"
                 submittingText="Wyszukiwanie..." />

@@ -23,8 +23,9 @@ import {
 } from "@/components/ui/select";
 import { HarmonogramItem } from "@/types";
 import { createId } from "@paralleldrive/cuid2";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { saveHarmonogram } from "@/lib/events.actions";
+import SubmitButton from "../ui/submitButton";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -67,6 +68,7 @@ interface HarmonogramFormProps {
   eventId: string;
   start_date?: string;
   end_date?: string;
+  items: HarmonogramItem[];
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
@@ -106,6 +108,7 @@ export default function HarmonogramForm({
   start_date,
   end_date,
   setItems,
+  items,
 }: HarmonogramFormProps) {
   
   const dateOptions = generateDateOptions(start_date, end_date);
@@ -122,17 +125,20 @@ export default function HarmonogramForm({
     },
   });
 
-const startTime = form.watch("start_time");
-const duration  = form.watch("defaultItemTime");
+  const [buttonSubmitting, setButtonSubmitting] = useState(false);
 
-useEffect(() => {
-  if (startTime && duration && duration > 0) {
-    const newEnd = addMinutesToTime(startTime, duration);
-    form.setValue("end_time", newEnd, { shouldValidate: true });
-  }
-}, [startTime, duration, form.setValue]);
+  const startTime = form.watch("start_time");
+  const duration  = form.watch("defaultItemTime");
+
+  useEffect(() => {
+    if (startTime && duration && duration > 0) {
+      const newEnd = addMinutesToTime(startTime, duration);
+      form.setValue("end_time", newEnd, { shouldValidate: true });
+    }
+  }, [startTime, duration, form.setValue]);
 
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
+    setButtonSubmitting(true);
 
     const submissionData = {
       ...data,
@@ -140,12 +146,9 @@ useEffect(() => {
       // end_time: computedEnd,
     };
 
-    setItems((prev) => {
-      const newItems = [...prev, submissionData];
-      // Save harmonogram as a side effect
-      saveHarmonogram(eventId, newItems);
-      return newItems;
-    });
+    const newItems = [...items, submissionData];
+    setItems(newItems);
+    await saveHarmonogram(eventId, newItems);
 
     /* następny domyślny start = koniec + przerwa */
     const nextStart = addMinutesToTime(data.end_time, data.pause);
@@ -157,6 +160,7 @@ useEffect(() => {
       start_time: nextStart,
       end_time: "",
     });
+    setButtonSubmitting(false);
   };
 
   return (
@@ -295,12 +299,11 @@ useEffect(() => {
         </div>
 
         <div className="w-full flex justify-center">
-          <Button
-            type="submit"
-            className="w-42 bg-sky-500 hover:bg-sky-600 text-white font-semibold cursor-pointer"
-          >
-            Dodaj
-          </Button>
+          <SubmitButton
+            isSubmitting={buttonSubmitting}
+            submittingText="Dodawanie..."
+            baseText="Dodaj"
+          />
         </div>
       </form>
     </Form>

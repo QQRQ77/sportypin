@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import { Button } from "@/components/ui/button"; // Twój Button z shadcn/ui lub własny
 
-export default function SearchButton({
+export default function SubmitButton({
   isSubmitting,
   submittingText,
   baseText,
@@ -32,7 +32,7 @@ export default function SearchButton({
     <Button
       type="submit"
       disabled={isSubmitting}
-      className="font-semibold text-lg text-white hover:-translate-y-1 cursor-pointer"
+      className="font-normal text-white hover:-translate-y-1 cursor-pointer"
     >
       {isSubmitting ? letters : baseText}
     </Button>

@@ -19,38 +19,35 @@ import HarmonogramItemEditForm from "./forms/HarmonogramItemEditForm";
 interface SortableHarmonogramProps {
   items: HarmonogramItem[];
   eventId: string;
+  setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
 export default function SortableHarmonogram({
   items,
   eventId,
+  setItems
 }: SortableHarmonogramProps) {
   const id = useId();
-  const [harmonogramItems, setHarmonogramItems] = useState(items);
   const [showEditForm, setShowEditForm] = useState("");
 
-  useEffect(() => {
-    setHarmonogramItems(items);
-  }, [items]);
-
-  //TODO: Coś jest nie tak ze stanem formularza, po skasowaniu gdy dodajeszesz nowy element
   const deleteHarmonogramItem = async (id: string) => {
-    const itemIndex = harmonogramItems.findIndex((i) => i.id === id);
+    const itemIndex = items.findIndex((i) => i.id === id);
     //logika poprawiania czasów start_time i end_time
-    if (itemIndex === harmonogramItems.length - 1) {
-      await saveHarmonogram(eventId, harmonogramItems.filter((item) => item.id !== id))
-      setHarmonogramItems([]);
+    if (itemIndex === items.length - 1) {
+      await saveHarmonogram(eventId, items.filter((item) => item.id !== id))
+      setItems(prev => prev.filter((item) => item.id !== id));
     } else {
-      const itemShift = minutesBetween(harmonogramItems[itemIndex].start_time, harmonogramItems[itemIndex].end_time);
-      const firstPause = minutesBetween(harmonogramItems[itemIndex].end_time, harmonogramItems[itemIndex + 1].start_time);
+      const itemShift = minutesBetween(items[itemIndex].start_time, items[itemIndex].end_time);
+      const firstPause = minutesBetween(items[itemIndex].end_time, items[itemIndex + 1].start_time);
 
-      for (let i = itemIndex + 1; i < harmonogramItems.length; i++) {
-        harmonogramItems[i].start_time = addMinutesToTime(harmonogramItems[i].start_time, -(itemShift + firstPause));
-        harmonogramItems[i].end_time = addMinutesToTime(harmonogramItems[i].end_time, -(itemShift + firstPause));
-      }
-      const newHarmonogramItems = harmonogramItems.filter((item) => item.id !== id);
+      for (let i = itemIndex + 1; i < items.length; i++) {
+        items[i].start_time = addMinutesToTime(items[i].start_time, -(itemShift + firstPause));
+        items[i].end_time = addMinutesToTime(items[i].end_time, -(itemShift + firstPause));
+        }
+
+      const newHarmonogramItems = items.filter((item) => item.id !== id);
+      setItems(newHarmonogramItems);
       await saveHarmonogram(eventId, newHarmonogramItems);
-      setHarmonogramItems(newHarmonogramItems);
       }
     }
   
@@ -65,8 +62,8 @@ export default function SortableHarmonogram({
           <HarmonogramItemEditForm
             eventId={eventId}
             itemIdx={idx}
-            items={harmonogramItems}
-            setItems={setHarmonogramItems}
+            items={items}
+            setItems={setItems}
             onClose={() => setShowEditForm("")}
           />
         ) : (
@@ -136,15 +133,15 @@ export default function SortableHarmonogram({
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = harmonogramItems.findIndex((i) => i.id === active.id);
-    const newIndex = harmonogramItems.findIndex((i) => i.id === over.id);
+    const oldIndex = items.findIndex((i) => i.id === active.id);
+    const newIndex = items.findIndex((i) => i.id === over.id);
 
-    const firstPause = minutesBetween(harmonogramItems[0].end_time, harmonogramItems[1].start_time );
-    const lastPause = minutesBetween(harmonogramItems[harmonogramItems.length - 2].end_time,
-                                     harmonogramItems[harmonogramItems.length - 1].start_time)
+    const firstPause = minutesBetween(items[0].end_time, items[1].start_time );
+    const lastPause = minutesBetween(items[items.length - 2].end_time,
+                                     items[items.length - 1].start_time)
 
     /* 1. Ustal, które elementy faktycznie zmieniły kolejność */
-    const affected = arrayMove(harmonogramItems, oldIndex, newIndex);
+    const affected = arrayMove(items, oldIndex, newIndex);
 
     //*****/ Time Shift w kierunku wcześniejszych czasów /*****//
     // Przesunięcie na najwcześniejszy termin
@@ -199,7 +196,7 @@ export default function SortableHarmonogram({
     }
     
     /* 4. Aktualizuj stan i backend */
-    setHarmonogramItems(affected);
+    setItems(affected);
     await saveHarmonogram(eventId, affected); 
   };
 
@@ -210,11 +207,11 @@ export default function SortableHarmonogram({
       onDragEnd={handleDragEnd}
     >
       <SortableContext
-        items={harmonogramItems.map((item) => item.id)}
+        items={items.map((item) => item.id)}
         strategy={verticalListSortingStrategy}
       >
         <div className="space-y-4">
-          {harmonogramItems.map((item, key) => (
+          {items.map((item, key) => (
             <SortableItem key={key} item={item} idx={key} />
           ))}
         </div>

@@ -10,7 +10,7 @@ import MultipleMarkersMap from "./GoogleMapsComponent";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import SortableHarmonogram from "./SortableHarmonogram";
@@ -32,7 +32,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const now = new Date();
   const start = new Date(event.start_date);
   const end = event.end_date ? new Date(event.end_date) : null;
-  
+
   const isPast = end
     ? end < now
     : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
@@ -176,7 +176,8 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
           </div>}
           {openHarmonogramForm && 
             <HarmonogramForm 
-              eventId={event.id} 
+              eventId={event.id}
+              items={harmonogramItems} 
               start_date={event.start_date} 
               end_date={event.end_date}
               setItems={addHarmonogramItems}/>}
@@ -186,7 +187,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
               <div className="w-[100px] text-center">Koniec</div>
               <div className="flex-1 text-center lg:text-left">Opis</div>
             </div>
-          {isUserCreator ? <SortableHarmonogram items={harmonogramItems} eventId={event.id}/>
+          {isUserCreator ? <SortableHarmonogram items={harmonogramItems} eventId={event.id} setItems={addHarmonogramItems}/>
             : <Harmonogram items={harmonogramItems}/>}
         </section>
 
