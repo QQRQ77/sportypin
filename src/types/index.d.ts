@@ -147,5 +147,7 @@ export type HarmonogramItem = {
       date: string,
       start_time?: string,
       end_time?: string,
+      cathegory?: string,
+      itemType?: string,
 }
 

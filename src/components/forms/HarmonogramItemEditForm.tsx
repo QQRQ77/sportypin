@@ -40,6 +40,7 @@ const FormSchema = z.object({
     .string()
     .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
+  cathegory: z.string().or(z.literal("")).optional(),
 }).superRefine((val, ctx) => {
   if (val.start_time && val.end_time) {
     const diff = minutesBetween(val.start_time, val.end_time);
@@ -59,11 +60,12 @@ interface HarmonogramFormProps {
   items: HarmonogramItem[];
   itemIdx: number;
   eventId: string;
+  cathegories?: string[];
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
   onClose: () => void;
 }
 
-export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, onClose }: HarmonogramFormProps) {
+export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, onClose, cathegories = [] }: HarmonogramFormProps) {
   
   const item = items[itemIdx];
 
@@ -77,6 +79,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       description: item.description,
       start_time: item.start_time,
       end_time: item.end_time,
+      cathegory: item.cathegory,
     },
   });
 
@@ -88,23 +91,25 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
   };
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log("Data from item edit: ", data)
     // Update the item with new values
     const updatedItem = {
         ...item,
         ...data,
       };
     
-    if (item.start_time === data.start_time && item.end_time === data.end_time && item.description === data.description) return;
+    if (item.start_time === data.start_time && item.end_time === data.end_time && item.description === data.description && item.cathegory === data.cathegory) return;
     
     if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) === 0) {
       setSubmitMessage("Zmiana czasu rozpoczęcia. Czy poprawić czas zakończenia?");
-      const userConfirmed = await confirmAction();
-      if (userConfirmed) {
+      const userConfirmed1 = await confirmAction();
+      if (userConfirmed1) {
         updatedItem.end_time = addMinutesToTime(data.start_time, item.end_time ? minutesBetween(item.start_time, item.end_time) : 0);
         form.setValue("end_time", updatedItem.end_time);
         setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
-        const userConfirmed = await confirmAction();
-        if (userConfirmed) {
+        const userConfirmed2 = await confirmAction();
+        if (userConfirmed2) {
+          console.log("Zmiana czasu rozpoczęcia - aktualizacja harmonogramu 2");
           const pastItems = items.map((i, idx) => {
             if (idx < itemIdx) {
               i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
@@ -127,8 +132,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         }
       } else {
           setSubmitMessage("Czy chcesz zmienić automatycznie wcześniejsze punkty harmonogramu?");
-          const userConfirmed = await confirmAction();
-          if (userConfirmed) {
+          const userConfirmed3 = await confirmAction();
+          if (userConfirmed3) {
               for (let i = 0; i < itemIdx; i++) {
                 items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.start_time, data.start_time));
                 items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.start_time, data.start_time));
@@ -146,24 +151,24 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
 
     if (minutesBetween(data.start_time, item.start_time) === 0 && minutesBetween(data.end_time, item.end_time) != 0) {
       setSubmitMessage("Zmiana czasu zakończenia. Czy poprawić czas rozpoczęcia?");
-      const userConfirmed = await confirmAction();
-      if (userConfirmed) {
+      const userConfirmed1 = await confirmAction();
+      if (userConfirmed1) {
         updatedItem.start_time = addMinutesToTime(data.end_time, item.end_time ? minutesBetween(item.end_time, item.start_time) : 0);
         form.setValue("start_time", updatedItem.start_time);
         setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
-        const userConfirmed = await confirmAction();
-        if (userConfirmed) {
+        const userConfirmed2 = await confirmAction();
+        if (userConfirmed2) {
           const pastItems = items.map((i, idx) => {
             if (idx < itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
               return i
             }
           });
           const futureItems = items.map((i, idx) => {
             if (idx > itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
               return i
             }
           });
@@ -175,11 +180,11 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         }
       } else {
           setSubmitMessage("Czy chcesz zmienić automatycznie późniejsze punkty harmonogramu?");
-          const userConfirmed = await confirmAction();
-            if (userConfirmed) {
+          const userConfirmed3 = await confirmAction();
+            if (userConfirmed3) {
               for (let i = itemIdx + 1; i < items.length; i++) {
-                items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.start_time, data.start_time));
-                items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.start_time, data.start_time));
+                items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.end_time, data.end_time));
+                items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.end_time, data.end_time));
               }
             };
             items[itemIdx] = updatedItem;
@@ -188,6 +193,32 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             onClose();
             return;
       }
+    }
+
+    if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) != 0) {
+      setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
+      const userConfirmed = await confirmAction();
+      if (userConfirmed) {
+        const pastItems = items.map((i, idx) => {
+          if (idx < itemIdx) {
+            i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
+            i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+            return i
+          }
+        });
+        const futureItems = items.map((i, idx) => {
+          if (idx > itemIdx) {
+            i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+            i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
+            return i
+          }
+        });
+        const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
+        setItems(newItems); 
+        saveHarmonogram(eventId, newItems);
+        onClose();
+        return;
+      } 
     }
     
     // Save the updated harmonogram
@@ -230,7 +261,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                       Nie
                     </Button>
                     <Button
-                      type="submit"
+                      type="button"
                       className="cursor-pointer hover:bg-gray-600"
                       onClick={() => {
                         if (showModalPromise) showModalPromise(true);
@@ -291,6 +322,56 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="w-[120px] text-center hidden lg:block">
+                <FormField
+                  control={form.control}
+                  name="cathegory"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="shadow-xl">
+                            <SelectValue placeholder="kategoria..." />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                            <SelectItem key={idx} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="block lg:hidden w-full text-center mt-1">
+                <FormField
+                  control={form.control}
+                  name="cathegory"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="shadow-xl">
+                            <SelectValue placeholder="kategoria" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                            <SelectItem key={idx} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -10,11 +10,12 @@ import MultipleMarkersMap from "./GoogleMapsComponent";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import SortableHarmonogram from "./SortableHarmonogram";
 import Harmonogram from "./Harmonogram";
+import ChangeAllHarmonogramForm from "./forms/ChangeAllHarmonogramForm";
 
 interface Props {
   event: Event;
@@ -27,6 +28,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const router = useRouter()
  
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
+  const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
 
   const now = new Date();
@@ -172,22 +174,36 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
         <section className="relative pt-4 border-t border-slate-300">
           {isUserCreator && <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
-            <Button className="cursor-pointer" onClick={()=>setOpenHarmonogramForm(prev => !prev)}>{openHarmonogramForm? "Zamknij" : "Dodaj"}</Button>  
+            <div className="flex gap-4">
+              <Button className="cursor-pointer" onClick={()=>{setOpenChangeAllForm(false); setOpenHarmonogramForm(prev => !prev)}}>{openHarmonogramForm? "Zamknij" : "Dodaj"}</Button>  
+              <Button className="cursor-pointer" onClick={()=>{setOpenHarmonogramForm(false); setOpenChangeAllForm(prev => !prev)}}>Zmień całość</Button>  
+            </div>
           </div>}
+          {openChangeAllForm && 
+            <ChangeAllHarmonogramForm 
+              cathegories={event.cathegories}/>}
           {openHarmonogramForm && 
             <HarmonogramForm 
               eventId={event.id}
               items={harmonogramItems} 
               start_date={event.start_date} 
               end_date={event.end_date}
+              cathegories={event.cathegories}
               setItems={addHarmonogramItems}/>}
             <div className="w-11/12 flex flex-wrap gap-2 mb-2 p-4 rounded-xl shadow-xl">
               <div className="w-[80px] text-center">Lp.</div>
               <div className="w-[100px] text-center">Początek</div>
               <div className="w-[100px] text-center">Koniec</div>
               <div className="flex-1 text-center lg:text-left">Opis</div>
+              <div className="w-[100px] text-center hidden lg:block">Kategoria</div>
+              <div className="block lg:hidden w-full text-center mt-1">Kategoria</div>
             </div>
-          {isUserCreator ? <SortableHarmonogram items={harmonogramItems} eventId={event.id} setItems={addHarmonogramItems}/>
+          {isUserCreator ? 
+            <SortableHarmonogram 
+              items={harmonogramItems} 
+              eventId={event.id} 
+              setItems={addHarmonogramItems} 
+              cathegories={event.cathegories}/>
             : <Harmonogram items={harmonogramItems}/>}
         </section>
 

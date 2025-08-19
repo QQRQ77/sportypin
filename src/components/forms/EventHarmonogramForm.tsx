@@ -12,7 +12,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import {
   Select,
@@ -40,7 +39,6 @@ const FormSchema = z.object({
     .number({ invalid_type_error: "Podaj liczbę" })
     .int()
     .nonnegative(),
-
   start_time: z
     .string()
     .regex(timeRegex, "HH:MM")
@@ -49,6 +47,13 @@ const FormSchema = z.object({
     .string()
     .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
+  cathegory: z.string().or(z.literal("")).optional(),
+  itemType: z.string().refine(
+    (val) => ["mecz", "pojedynek", "wyścig", "konkurs", "inny"].includes(val),
+    {
+      message: "Wybierz typ punktu",
+    }
+  ),
 }).superRefine((val, ctx) => {
   if (val.start_time && val.end_time) {
     const diff = minutesBetween(val.start_time, val.end_time);
@@ -68,6 +73,7 @@ interface HarmonogramFormProps {
   eventId: string;
   start_date?: string;
   end_date?: string;
+  cathegories?: string[];
   items: HarmonogramItem[];
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
@@ -108,6 +114,7 @@ export default function HarmonogramForm({
   start_date,
   end_date,
   setItems,
+  cathegories,
   items,
 }: HarmonogramFormProps) {
   
@@ -120,6 +127,7 @@ export default function HarmonogramForm({
       date: dateOptions[0]?.value ?? "",
       pause: 0,
       defaultItemTime: 15,
+      itemType: "mecz",
       start_time: "",
       end_time: "",
     },
@@ -129,6 +137,7 @@ export default function HarmonogramForm({
 
   const startTime = form.watch("start_time");
   const duration  = form.watch("defaultItemTime");
+  const itemType = form.watch("itemType");
 
   useEffect(() => {
     if (startTime && duration && duration > 0) {
@@ -159,6 +168,8 @@ export default function HarmonogramForm({
       defaultItemTime: data.defaultItemTime,
       start_time: nextStart,
       end_time: "",
+      cathegory: data.cathegory || "",
+      itemType: data.itemType,
     });
     setButtonSubmitting(false);
   };
@@ -172,6 +183,32 @@ export default function HarmonogramForm({
         <h2 className="text-2xl font-bold text-sky-600 text-center">
           Dodaj punkt harmonogramu
         </h2>
+            <FormField
+              control={form.control}
+              name="itemType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Typ punktu</FormLabel>
+                  <FormControl>
+                    <div className="flex gap-4">
+                      {["mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((option) => (
+                        <label key={option} className="flex items-center gap-1 text-sm">
+                          <input
+                            type="radio"
+                            value={option}
+                            checked={field.value === option}
+                            onChange={() => field.onChange(option)}
+                            className="accent-sky-600"
+                          />
+                          {option.charAt(0).toUpperCase() + option.slice(1)}
+                        </label>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
         <div className="w-full flex gap-4 flex-col lg:flex-row justify-between">
             <FormField
               control={form.control}
@@ -189,6 +226,31 @@ export default function HarmonogramForm({
                       {dateOptions.map((opt) => (
                         <SelectItem key={opt.value} value={opt.value}>
                           {opt.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="cathegory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kategoria</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Wybierz kategorię" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
                         </SelectItem>
                       ))}
                     </SelectContent>

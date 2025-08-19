@@ -12,20 +12,23 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import HarmonogramItemEditForm from "./forms/HarmonogramItemEditForm";
+import DateViewer from "./DataViewer";
 
 interface SortableHarmonogramProps {
   items: HarmonogramItem[];
   eventId: string;
+  cathegories?: string[];
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
 export default function SortableHarmonogram({
   items,
   eventId,
-  setItems
+  setItems,
+  cathegories = [],
 }: SortableHarmonogramProps) {
   const id = useId();
   const [showEditForm, setShowEditForm] = useState("");
@@ -64,62 +67,92 @@ export default function SortableHarmonogram({
             itemIdx={idx}
             items={items}
             setItems={setItems}
+            cathegories={cathegories}
             onClose={() => setShowEditForm("")}
           />
         ) : (
-            <div className="w-full flex flex-col lg:flex-row gap-2">  
-              <div 
-                ref={setNodeRef}
-                {...attributes}
-                {...listeners}
-                style={{ transform: CSS.Transform.toString(transform), transition }}
-                className={`w-11/12 flex flex-wrap p-4 gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} cursor-grab items-center`}>
-                  <div className="w-[80px] text-center">{idx + 1}.</div>
-                  <div className="w-[100px] text-center">{item.start_time}</div>
-                  <div className="w-[100px] text-center">{item.end_time}</div>
-                  <div className="flex-1 text-center lg:text-left font-medium">{item.description}</div>
-              </div>
-              <div className="flex flex-row justify-center items-center gap-4">
-                <div className="text-gray-500 hover:text-gray-800">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={e => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setShowEditForm(item.id);
-                          }}
-                        aria-label="Edytuj"
-                      >
-                        <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Edytuj</p>
-                    </TooltipContent>
-                  </Tooltip>
+            <div className="w-full flex flex-col gap-2">
+              {idx === 0 && <div className="w-11/12 flex justify-center">
+                <DateViewer date={item.date}/>    
+              </div>}
+              <div className="w-full flex flex-col lg:flex-row gap-2">  
+                <div 
+                  ref={setNodeRef}
+                  {...attributes}
+                  {...listeners}
+                  style={{ transform: CSS.Transform.toString(transform), transition }}
+                  className={`w-11/12 flex flex-col lg:flex-row lg:flex-wrap p-4 gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} cursor-grab items-center`}>
+                    <div className="flex gap-2">  
+                      <div className="w-[80px] text-center">{idx + 1}.</div>
+                      <div className="w-[100px] text-center">{item.start_time}</div>
+                      <div className="w-[100px] text-center">{item.end_time}</div>
+                    </div>
+                    <div className="flex-1 text-center lg:text-left font-medium">{item.description}</div>
+                    {/* Kategoria: desktop - obok opisu, mobile - pod opisem */}
+                    <div className="hidden lg:block">
+                      <div className="flex gap-2 justify-center items-center">
+                        <div className="w-[100px] text-center">
+                          {item.itemType || ""}
+                        </div>
+                        <div className="w-[100px] text-center">
+                          {item.cathegory || ""}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="block lg:hidden mx-auto">
+                      <div className="flex gap-2 justify-center items-center">
+                        <div className="w-[100px] text-center">
+                          {item.itemType || ""}
+                        </div>
+                        <div className="w-[100px] text-center">
+                          {item.cathegory || ""}
+                        </div>
+                      </div>
+                    </div>
                 </div>
-                <div className="text-gray-500 hover:text-gray-800">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
+                <div className="flex flex-row justify-center items-center gap-4">
+                  <div className="text-gray-500 hover:text-gray-800">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
                           onClick={e => {
                             e.preventDefault();
                             e.stopPropagation();
-                            deleteHarmonogramItem(item.id);
-                              }}
-                          aria-label="Usuń"
+                            setShowEditForm(item.id);
+                            }}
+                          aria-label="Edytuj"
                         >
-                        <TrashIcon className="w-6 h-6 cursor-pointer" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Usuń</p>
-                    </TooltipContent>
-                  </Tooltip>
+                          <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edytuj</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <div className="text-gray-500 hover:text-gray-800">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                            onClick={e => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              deleteHarmonogramItem(item.id);
+                                }}
+                            aria-label="Usuń"
+                          >
+                          <TrashIcon className="w-6 h-6 cursor-pointer" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Usuń</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                 </div>
               </div>
             </div>
+            
         )}
       </div>
     );

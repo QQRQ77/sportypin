@@ -190,13 +190,14 @@ export async function getEventById(eventId: string) {
 
 export async function updateEvent(formData: CreateEvent, eventId: string, eventCreatorId: string) {
   const session = await auth();
-  const creator = session.userId;
-  if (!creator) {
+  const user = session.userId;
+  if (!user) {
       throw new Error("User not authenticated");
   }
 
-  if (creator != eventCreatorId) {
-    throw new Error("User is not event's creator")
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
   }
 
   const adress = formData.address || "";
