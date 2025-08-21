@@ -176,12 +176,17 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
             <div className="flex gap-4">
               <Button className="cursor-pointer" onClick={()=>{setOpenChangeAllForm(false); setOpenHarmonogramForm(prev => !prev)}}>{openHarmonogramForm? "Zamknij" : "Dodaj"}</Button>  
-              <Button className="cursor-pointer" onClick={()=>{setOpenHarmonogramForm(false); setOpenChangeAllForm(prev => !prev)}}>Zmień całość</Button>  
+              <Button className="cursor-pointer" onClick={()=>{setOpenHarmonogramForm(false); setOpenChangeAllForm(prev => !prev)}}>{openChangeAllForm? "Zamknij" : "Zmień całość"}</Button>  
             </div>
           </div>}
           {openChangeAllForm && 
             <ChangeAllHarmonogramForm 
-              cathegories={event.cathegories}/>}
+              eventId={event.id}
+              items={harmonogramItems} 
+              start_date={event.start_date} 
+              end_date={event.end_date}
+              cathegories={event.cathegories}
+              setItems={addHarmonogramItems}/>}
           {openHarmonogramForm && 
             <HarmonogramForm 
               eventId={event.id}

@@ -41,6 +41,12 @@ const FormSchema = z.object({
     .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
   cathegory: z.string().or(z.literal("")).optional(),
+  itemType: z.string().refine(
+    (val) => ["mecz", "pojedynek", "wyścig", "konkurs", "inny"].includes(val),
+    {
+      message: "Wybierz typ punktu",
+    }
+  ),
 }).superRefine((val, ctx) => {
   if (val.start_time && val.end_time) {
     const diff = minutesBetween(val.start_time, val.end_time);
@@ -80,6 +86,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       start_time: item.start_time,
       end_time: item.end_time,
       cathegory: item.cathegory,
+      itemType: item.itemType || "mecz", 
     },
   });
 
@@ -327,55 +334,105 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                   )}
                 />
               </div>
-              <div className="w-[120px] text-center hidden lg:block">
-                <FormField
-                  control={form.control}
-                  name="cathegory"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="shadow-xl">
-                            <SelectValue placeholder="kategoria..." />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
-                            <SelectItem key={idx} value={opt}>
-                              {opt}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <div className="text-center hidden lg:block">
+                <div className="flex gap-2">
+                  <FormField
+                      control={form.control}
+                      name="itemType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="shadow-xl">
+                                <SelectValue placeholder="typ..." />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {["mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((opt, idx) => (
+                                <SelectItem key={idx} value={opt}>
+                                  {opt}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="cathegory"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="shadow-xl">
+                                  <SelectValue placeholder="kategoria..." />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                                  <SelectItem key={idx} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                </div>
               </div>
               <div className="block lg:hidden w-full text-center mt-1">
-                <FormField
-                  control={form.control}
-                  name="cathegory"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger className="shadow-xl">
-                            <SelectValue placeholder="kategoria" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
-                            <SelectItem key={idx} value={opt}>
-                              {opt}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="w-full flex gap-2 justify-center">
+                  <FormField
+                    control={form.control}
+                    name="itemType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="shadow-xl">
+                              <SelectValue placeholder="typ..." />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {["mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((opt, idx) => (
+                              <SelectItem key={idx} value={opt}>
+                                {opt}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="cathegory"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="shadow-xl">
+                              <SelectValue placeholder="kategoria..." />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                              <SelectItem key={idx} value={opt}>
+                                {opt}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
             <div className="flex justify-center items-center gap-4">

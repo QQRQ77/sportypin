@@ -1,6 +1,6 @@
 'use client'
 
-import { Event } from "@/types";
+import { Event, HarmonogramItem } from "@/types";
 
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -23,6 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import SubmitButton from "../ui/submitButton";
 import { useState } from "react";
+import { generateDateOptions } from "./EventHarmonogramForm";
+import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -44,11 +46,23 @@ const FormSchema = z.object({
       message: "Wybierz typ punktu",
     }
   ),
+  date: z.string().min(1, "Wybierz datę").or(z.literal("")),
 })
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ChangeAllHarmonogramForm({ cathegories }: { cathegories?: string[] }) {
+interface ChangeAllHarmonogramFormProps {
+  eventId: string;
+  start_date?: string;
+  end_date?: string;
+  items: HarmonogramItem[];
+  cathegories?: string[];
+  setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
+}
+
+export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_date, eventId, items, setItems }: ChangeAllHarmonogramFormProps) {
+  const dateOptions = generateDateOptions(start_date, end_date);
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -56,6 +70,7 @@ export default function ChangeAllHarmonogramForm({ cathegories }: { cathegories?
       defaultItemTime: 15,
       itemType: "wszystkie",
       cathegory: "wszystkie",
+      date: dateOptions.length === 1 ? dateOptions[0]?.value : "wszystkie",
     },
   });
 
@@ -64,7 +79,17 @@ export default function ChangeAllHarmonogramForm({ cathegories }: { cathegories?
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("Form data:", data);
     const { pause, defaultItemTime, cathegory, itemType } = data;
+
     //TODO: Implement the logic to change all harmonogram items
+    if (pause && pause > 0) {
+      for ( let i = 1; i < items.length; i++) {
+        const itemTime = minutesBetween(items[i].start_time, items[i].end_time);
+        items[i].start_time = addMinutesToTime(items[i-1].end_time, pause);
+        items[i].end_time = addMinutesToTime(items[i].start_time, itemTime);
+      }
+      console.log("Zmiana przerwy między puntami harmonogramu.")
+      setItems(items);
+    }
     setButtonSubmitting(true);
   }
 
@@ -158,6 +183,30 @@ export default function ChangeAllHarmonogramForm({ cathegories }: { cathegories?
                         {cathegories && ["wszystkie", "mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((opt, idx) => (
                           <SelectItem key={idx} value={opt}>
                             {opt}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Data</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="shadow-xl">
+                          <SelectValue placeholder="Wybierz datę" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {[{value: "wszystkie", label: "wszystkie"}, ...dateOptions].map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>
+                            {opt.label}
                           </SelectItem>
                         ))}
                       </SelectContent>

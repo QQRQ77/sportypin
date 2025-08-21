@@ -81,7 +81,7 @@ interface HarmonogramFormProps {
 /* -------------------------------------------------- */
 /* formatowanie daty oraz generowanie opcji */
 /* -------------------------------------------------- */
-const formatDate = (date: Date) => {
+export const formatDate = (date: Date) => {
   const fmt = new Intl.DateTimeFormat("pl-PL", {
     weekday: "long",
     year: "numeric",
@@ -93,7 +93,7 @@ const formatDate = (date: Date) => {
   return `${get("weekday")} - ${get("day")} ${get("month")} ${get("year")}`;
 };
 
-const generateDateOptions = (start?: string, end?: string) => {
+export const generateDateOptions = (start?: string, end?: string) => {
   if (!start) return [];
   const s = new Date(start);
   if (isNaN(s.getTime())) return [];
