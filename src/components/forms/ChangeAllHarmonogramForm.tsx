@@ -29,15 +29,25 @@ import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
-  pause: z.coerce
-    .number({ invalid_type_error: "Podaj liczbę" })
-    .int()
-    .nonnegative()
+  pause: z
+    .union([
+      z.coerce
+        .number({ invalid_type_error: "Podaj liczbę" })
+        .int()
+        .nonnegative(),
+      z.undefined(),
+      z.null(),
+    ])
     .optional(),
-  defaultItemTime: z.coerce
-    .number({ invalid_type_error: "Podaj liczbę" })
-    .int()
-    .nonnegative()
+  defaultItemTime: z
+    .union([
+      z.coerce
+        .number({ invalid_type_error: "Podaj liczbę" })
+        .int()
+        .nonnegative(),
+      z.undefined(),
+      z.null(),
+    ])
     .optional(),
   cathegory: z.string().or(z.literal("")).optional(),
   itemType: z.string().refine(
@@ -66,8 +76,6 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      pause: 0,
-      defaultItemTime: 15,
       itemType: "wszystkie",
       cathegory: "wszystkie",
       date: dateOptions.length === 1 ? dateOptions[0]?.value : "wszystkie",
@@ -77,20 +85,35 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log("Form data:", data);
+    setButtonSubmitting(true);
     const { pause, defaultItemTime, cathegory, itemType } = data;
 
     //TODO: Implement the logic to change all harmonogram items
-    if (pause && pause > 0) {
+    if (pause || pause === 0) {
       for ( let i = 1; i < items.length; i++) {
         const itemTime = minutesBetween(items[i].start_time, items[i].end_time);
         items[i].start_time = addMinutesToTime(items[i-1].end_time, pause);
         items[i].end_time = addMinutesToTime(items[i].start_time, itemTime);
       }
-      console.log("Zmiana przerwy między puntami harmonogramu.")
-      setItems(items);
     }
-    setButtonSubmitting(true);
+
+    if (defaultItemTime && defaultItemTime > 0) {
+      const lastPause = minutesBetween(items[items.length - 2].end_time, items[items.length - 1].start_time);
+      for ( let i = 0; i < items.length; i++) {        
+        let pauseBetweenItems = 0
+        if (i < items.length - 1) pauseBetweenItems = minutesBetween(items[i].end_time, items[i+1].start_time);
+        if (i === items.length - 1 ) pauseBetweenItems = lastPause
+        if (i === 0) {
+          items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
+        } else {
+          items[i].start_time = addMinutesToTime(items[i-1].end_time, pauseBetweenItems)
+          items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
+        }
+      }
+    }
+
+    setItems([...items]);
+    setButtonSubmitting(false);
   }
 
   return (
@@ -115,7 +138,8 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
                       type="number"
                       min={0}
                       {...field}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(e.target.value === "" ? undefined : e.target.valueAsNumber)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -136,7 +160,8 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
                         type="number"
                         min={0}
                         {...field}
-                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        value={field.value ?? ""}
+                        onChange={(e) => field.onChange(e.target.value === "" ? undefined : e.target.valueAsNumber)}
                       />
                     </FormControl>
                     <FormMessage />
