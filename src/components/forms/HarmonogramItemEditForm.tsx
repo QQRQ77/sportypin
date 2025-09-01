@@ -98,7 +98,6 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
   };
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log("Data from item edit: ", data)
     // Update the item with new values
     const updatedItem = {
         ...item,
@@ -116,7 +115,6 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
         const userConfirmed2 = await confirmAction();
         if (userConfirmed2) {
-          console.log("Zmiana czasu rozpoczęcia - aktualizacja harmonogramu 2");
           const pastItems = items.map((i, idx) => {
             if (idx < itemIdx) {
               i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));

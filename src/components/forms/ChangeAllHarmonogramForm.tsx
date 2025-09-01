@@ -1,8 +1,8 @@
 'use client'
 
-import { Event, HarmonogramItem } from "@/types";
+import { HarmonogramItem } from "@/types";
 
-import { z } from "zod";
+import { date, z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -25,8 +25,6 @@ import SubmitButton from "../ui/submitButton";
 import { useState } from "react";
 import { generateDateOptions } from "./EventHarmonogramForm";
 import { addMinutesToTime, minutesBetween } from "@/lib/utils";
-
-const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
   pause: z
@@ -86,7 +84,9 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
   
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);
-    const { pause, defaultItemTime, cathegory, itemType } = data;
+
+    console.log("Data: ", data)
+    const { pause, defaultItemTime, cathegory, itemType, date } = data;
 
     //TODO: Implement the logic to change all harmonogram items
     if (pause || pause === 0) {
@@ -99,15 +99,26 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
 
     if (defaultItemTime && defaultItemTime > 0) {
       const lastPause = minutesBetween(items[items.length - 2].end_time, items[items.length - 1].start_time);
-      for ( let i = 0; i < items.length; i++) {        
-        let pauseBetweenItems = 0
-        if (i < items.length - 1) pauseBetweenItems = minutesBetween(items[i].end_time, items[i+1].start_time);
-        if (i === items.length - 1 ) pauseBetweenItems = lastPause
-        if (i === 0) {
-          items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
-        } else {
-          items[i].start_time = addMinutesToTime(items[i-1].end_time, pauseBetweenItems)
-          items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
+      for ( let i = 0; i < items.length; i++) {   
+        if (cathegory === "wszystkie" || cathegory === items[i].cathegory) {
+          if (itemType === "wszystkie" || itemType === items[i].itemType) {
+            if (date === "wszystkie" || date === items[i].date) {    
+              let pauseBetweenItems = 0;
+              const durationChange = defaultItemTime - minutesBetween(items[i].start_time, items[i].end_time);
+              if (i < items.length - 1) pauseBetweenItems = minutesBetween(items[i].end_time, items[i+1].start_time);
+              if (i === items.length - 1 ) pauseBetweenItems = lastPause
+              if (i === 0) {
+                items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
+              } else {
+                items[i].start_time = addMinutesToTime(items[i-1].end_time, pauseBetweenItems)
+                items[i].end_time = addMinutesToTime(items[i].start_time, defaultItemTime)
+              }
+              for (let a = i + 1; a < items.length; a++) {
+                items[a].start_time = addMinutesToTime(items[a].start_time, durationChange);
+                items[a].end_time = addMinutesToTime(items[a].end_time, durationChange);
+              }
+            }
+          }
         }
       }
     }
