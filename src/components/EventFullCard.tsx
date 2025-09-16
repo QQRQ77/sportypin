@@ -26,7 +26,7 @@ interface Props {
 
 export default function EventCard({ event, userId = "", isUserFollowing = false, isUserCreator = false }: Props) {
   const router = useRouter()
- 
+
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
@@ -172,13 +172,14 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
 
         {/* Harmonogram */}
         <section className="relative pt-4 border-t border-slate-300">
-          {isUserCreator && <div className="w-full flex justify-between">
+          <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
+            {isUserCreator && 
             <div className="flex gap-4">
               <Button className="cursor-pointer" onClick={()=>{setOpenChangeAllForm(false); setOpenHarmonogramForm(prev => !prev)}}>{openHarmonogramForm? "Zamknij" : "Dodaj"}</Button>  
               <Button className="cursor-pointer" onClick={()=>{setOpenHarmonogramForm(false); setOpenChangeAllForm(prev => !prev)}}>{openChangeAllForm? "Zamknij" : "Zmień całość"}</Button>  
-            </div>
-          </div>}
+            </div>}
+          </div>
           {openChangeAllForm && 
             <ChangeAllHarmonogramForm 
               eventId={event.id}
@@ -195,14 +196,6 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
               end_date={event.end_date}
               cathegories={event.cathegories}
               setItems={addHarmonogramItems}/>}
-            <div className="w-11/12 flex flex-wrap gap-2 mb-2 p-4 rounded-xl shadow-xl">
-              <div className="w-[80px] text-center">Lp.</div>
-              <div className="w-[100px] text-center">Początek</div>
-              <div className="w-[100px] text-center">Koniec</div>
-              <div className="flex-1 text-center lg:text-left">Opis</div>
-              <div className="w-[100px] text-center hidden lg:block">Kategoria</div>
-              <div className="block lg:hidden w-full text-center mt-1">Kategoria</div>
-            </div>
           {isUserCreator ? 
             <SortableHarmonogram 
               items={harmonogramItems} 

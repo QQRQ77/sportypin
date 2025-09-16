@@ -116,18 +116,22 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         const userConfirmed2 = await confirmAction();
         if (userConfirmed2) {
           const pastItems = items.map((i, idx) => {
-            if (idx < itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-              return i
+            if (i.date === updatedItem.date) {
+              if (idx < itemIdx) {
+                i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
+                i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+              }
             }
+            return i
           });
           const futureItems = items.map((i, idx) => {
-            if (idx > itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-              return i
+            if (i.date === updatedItem.date) {
+              if (idx > itemIdx) {
+                i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
+                i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+              }
             }
+            return i
           });
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
           setItems(newItems); 
@@ -140,8 +144,10 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
           const userConfirmed3 = await confirmAction();
           if (userConfirmed3) {
               for (let i = 0; i < itemIdx; i++) {
-                items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.start_time, data.start_time));
-                items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.start_time, data.start_time));
+                if (items[i].date === updatedItem.date) {
+                  items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.start_time, data.start_time));
+                  items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.start_time, data.start_time));
+                }
               }
             };
             items[itemIdx].start_time = data.start_time;
@@ -164,18 +170,22 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         const userConfirmed2 = await confirmAction();
         if (userConfirmed2) {
           const pastItems = items.map((i, idx) => {
-            if (idx < itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-              return i
+            if (i.date === updatedItem.date) {
+              if (idx < itemIdx) {
+                i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+                i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
+              }
             }
+            return i
           });
           const futureItems = items.map((i, idx) => {
-            if (idx > itemIdx) {
-              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
-              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-              return i
+            if (i.date === updatedItem.date) {
+              if (idx > itemIdx) {
+                i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+                i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
+              }
             }
+            return i
           });
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
           setItems(newItems); 
@@ -188,8 +198,10 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
           const userConfirmed3 = await confirmAction();
             if (userConfirmed3) {
               for (let i = itemIdx + 1; i < items.length; i++) {
-                items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.end_time, data.end_time));
-                items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.end_time, data.end_time));
+                if (items[i].date === updatedItem.date) {
+                  items[i].start_time = addMinutesToTime(items[i].start_time, minutesBetween(item.end_time, data.end_time));
+                  items[i].end_time = addMinutesToTime(items[i].end_time, minutesBetween(item.end_time, data.end_time));
+                }
               }
             };
             items[itemIdx] = updatedItem;
@@ -205,18 +217,22 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       const userConfirmed = await confirmAction();
       if (userConfirmed) {
         const pastItems = items.map((i, idx) => {
-          if (idx < itemIdx) {
-            i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
-            i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-            return i
+          if (i.date === updatedItem.date) {
+            if (idx < itemIdx) {
+              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
+              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
+            }
           }
+          return i
         });
         const futureItems = items.map((i, idx) => {
           if (idx > itemIdx) {
-            i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
-            i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-            return i
+            if (i.date === updatedItem.date) {
+              i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
+              i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
+            }
           }
+          return i
         });
         const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
         setItems(newItems); 
@@ -228,7 +244,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
     
     // Save the updated harmonogram
     items[itemIdx] = updatedItem;
-    saveHarmonogram(eventId, items);
+    // saveHarmonogram(eventId, items);
     onClose();
   };
 
@@ -280,7 +296,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
               </div>
             )}  
             <div className="w-11/12 flex flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2">
-              <div className="w-[80px] text-center">{itemIdx + 1}.</div>
+              <div className="w-[80px] text-center">{item.LP}.</div>
               <div className="w-[100px]">
                 <FormField
                   control={form.control}
@@ -369,7 +385,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                                {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
                                   <SelectItem key={idx} value={opt}>
                                     {opt}
                                   </SelectItem>

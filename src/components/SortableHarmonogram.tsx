@@ -32,6 +32,20 @@ export default function SortableHarmonogram({
 }: SortableHarmonogramProps) {
   const id = useId();
   const [showEditForm, setShowEditForm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("")
+
+  function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
+    // licznik dla każdej daty
+    const counter: Record<string, number> = {};
+
+    return items.map(item => {
+      const date = item.date;
+      counter[date] = (counter[date] || 0) + 1;
+      return { ...item, LP: counter[date] };
+    });
+  }
+
+  items = addLP(items)
 
   const deleteHarmonogramItem = async (id: string) => {
     const itemIndex = items.findIndex((i) => i.id === id);
@@ -53,9 +67,8 @@ export default function SortableHarmonogram({
       await saveHarmonogram(eventId, newHarmonogramItems);
       }
     }
-  
-
-  function SortableItem({ item, idx }: { item: HarmonogramItem, idx: number}) {
+ 
+  function SortableItem({ item, idx, dateStats }: { item: HarmonogramItem, idx: number, dateStats?: Record<string, number>}) {
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({ id: item.id });
     
@@ -72,9 +85,6 @@ export default function SortableHarmonogram({
           />
         ) : (
             <div className="w-full flex flex-col gap-2">
-              {idx === 0 && <div className="w-11/12 flex justify-center">
-                <DateViewer date={item.date}/>    
-              </div>}
               <div className="w-full flex flex-col lg:flex-row gap-2">  
                 <div 
                   ref={setNodeRef}
@@ -83,7 +93,7 @@ export default function SortableHarmonogram({
                   style={{ transform: CSS.Transform.toString(transform), transition }}
                   className={`w-11/12 flex flex-col lg:flex-row lg:flex-wrap p-4 gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} cursor-grab items-center`}>
                     <div className="flex gap-2">  
-                      <div className="w-[80px] text-center">{idx + 1}.</div>
+                      <div className="w-[80px] text-center">{item.LP}.</div>
                       <div className="w-[100px] text-center">{item.start_time}</div>
                       <div className="w-[100px] text-center">{item.end_time}</div>
                     </div>
@@ -92,20 +102,20 @@ export default function SortableHarmonogram({
                     <div className="hidden lg:block">
                       <div className="flex gap-2 justify-center items-center">
                         <div className="w-[100px] text-center">
-                          {item.itemType || ""}
+                          {item.itemType !== "inny" ? item.itemType : ""}
                         </div>
                         <div className="w-[100px] text-center">
-                          {item.cathegory || ""}
+                          {item.cathegory !== "wszystkie" ? item.cathegory : ""}
                         </div>
                       </div>
                     </div>
                     <div className="block lg:hidden mx-auto">
                       <div className="flex gap-2 justify-center items-center">
                         <div className="w-[100px] text-center">
-                          {item.itemType || ""}
+                          {item.itemType !== "inny" ? item.itemType : ""}
                         </div>
                         <div className="w-[100px] text-center">
-                          {item.cathegory || ""}
+                          {item.cathegory !== "wszystkie" ? item.cathegory : ""}
                         </div>
                       </div>
                     </div>
@@ -169,28 +179,32 @@ export default function SortableHarmonogram({
     const oldIndex = items.findIndex((i) => i.id === active.id);
     const newIndex = items.findIndex((i) => i.id === over.id);
 
-    const firstPause = minutesBetween(items[0].end_time, items[1].start_time );
-    const lastPause = minutesBetween(items[items.length - 2].end_time,
-                                     items[items.length - 1].start_time)
+    //TODO: zmiana daty wydarzenia poprzez edycję punktu (rozwiązanie tymczasowe - docelowo zmiania poprzez przeciągnięcie)  
+    if (items[oldIndex].date != items[newIndex].date) {setErrorMessage("Zmień datę elementu poprzez edytuję danego punktu."); return};
 
-    /* 1. Ustal, które elementy faktycznie zmieniły kolejność */
+    const firstPause = minutesBetween(items[0].end_time, items[1].start_time );
+    const lastPause = minutesBetween(items[items.length - 2].end_time, items[items.length - 1].start_time);
+
+        /* 1. Ustal, które elementy faktycznie zmieniły kolejność */
     const affected = arrayMove(items, oldIndex, newIndex);
 
     //*****/ Time Shift w kierunku wcześniejszych czasów /*****//
-    // Przesunięcie na najwcześniejszy termin
-    if (newIndex === 0) {
-      const itemShift = minutesBetween(affected[0].start_time, affected[0].end_time);
-      affected[0].start_time = affected[1].start_time;
-      affected[0].end_time = addMinutesToTime(affected[0].start_time, itemShift);
+    // Przesunięcie na najwcześniejszy termin w danym dniu
+    console.log("NewIndex LP: ", items[newIndex].LP, "Nowy index: ", newIndex)
+    if (items[newIndex].LP === 1) {
+      console.log("pierwsza pozycja danego dnia.")
+      const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
+      affected[newIndex].start_time = affected[newIndex + 1].start_time;
+      affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
 
-      for (let i = 1; i <= oldIndex; i++) {
+      for (let i = newIndex + 1; i <= oldIndex; i++) {
         affected[i].start_time = addMinutesToTime(affected[i].start_time, itemShift + firstPause);
         affected[i].end_time = addMinutesToTime(affected[i].end_time, itemShift + firstPause);
       }
     }
 
     // Przesunięcie na wcześniejszy termin, ale nie na najwcześniejszą pozycję
-    if (newIndex > 0 && newIndex < oldIndex) {
+    if (items[newIndex].LP && items[newIndex].LP > 1 && newIndex < oldIndex) {
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       const pauseShift = minutesBetween(affected[newIndex - 1].end_time, affected[newIndex + 1].start_time);
       affected[newIndex].start_time = affected[newIndex + 1].start_time;
@@ -203,8 +217,12 @@ export default function SortableHarmonogram({
     }
 
     //*****/ Time Shift w kierunku późniejszych czasów /*****//
-    // Przesunięcie na najpóźniejszy termin
-    if (newIndex === affected.length - 1) {
+    // Przesunięcie na najpóźniejszy termin w danym dniu
+    if (
+      newIndex === affected.length - 1 ||
+      (items[newIndex + 1] && (items[newIndex + 1].LP || 0) < (items[newIndex].LP || 1))
+    ) {
+      console.log("Przesunięcie na najpóźniejszą pozycję w danym dniu.")
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       affected[newIndex].end_time = affected[newIndex - 1].end_time;
       affected[newIndex].start_time = addMinutesToTime(affected[newIndex].end_time, -itemShift);
@@ -216,7 +234,7 @@ export default function SortableHarmonogram({
     }
 
     // Przesunięcie na wcześniejszy termin, ale nie na najpóźniejszą pozycję
-    if (newIndex < affected.length - 1 && newIndex > oldIndex) {
+    if (newIndex < affected.length - 1 && newIndex > oldIndex && (items[newIndex + 1].LP || 0) > (items[newIndex].LP || 1)) {
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       const pauseShift = minutesBetween(affected[newIndex - 1].end_time, affected[newIndex + 1].start_time);
       affected[newIndex].end_time = affected[newIndex - 1].end_time;
@@ -230,7 +248,7 @@ export default function SortableHarmonogram({
     
     /* 4. Aktualizuj stan i backend */
     setItems(affected);
-    await saveHarmonogram(eventId, affected); 
+    // await saveHarmonogram(eventId, affected); 
   };
 
   return (
@@ -244,8 +262,24 @@ export default function SortableHarmonogram({
         strategy={verticalListSortingStrategy}
       >
         <div className="space-y-4">
+          <div className="w-11/12 flex flex-wrap gap-2 mb-2 p-4 rounded-xl shadow-xl">
+            <div className="w-[80px] text-center">Lp.</div>
+            <div className="w-[100px] text-center">Początek</div>
+            <div className="w-[100px] text-center">Koniec</div>
+            <div className="flex-1 text-center lg:text-left">Opis</div>
+            <div className="w-[100px] text-center hidden lg:block">Kategoria</div>
+            <div className="block lg:hidden w-full text-center mt-1">Kategoria</div>
+          </div>
           {items.map((item, key) => (
-            <SortableItem key={key} item={item} idx={key} />
+            <div key={key}>
+              {key === 0 && <div className="w-11/12 flex justify-center mb-2">
+                <DateViewer date={item.date}/>    
+              </div>}
+              {key > 0 && items[key].date !== items[key - 1].date && <div className="w-11/12 flex justify-center mb-2">
+                <DateViewer date={item.date}/>    
+              </div>}
+              <SortableItem item={item} idx={key}/>
+            </div>
           ))}
         </div>
       </SortableContext>

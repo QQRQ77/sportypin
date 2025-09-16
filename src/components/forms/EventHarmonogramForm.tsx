@@ -78,6 +78,12 @@ interface HarmonogramFormProps {
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
+function sortByDate(items: HarmonogramItem[]): HarmonogramItem[] {
+  return [...items].sort((a, b) =>
+    a.date.localeCompare(b.date)          // po dacie
+  );
+}
+
 /* -------------------------------------------------- */
 /* formatowanie daty oraz generowanie opcji */
 /* -------------------------------------------------- */
@@ -156,8 +162,9 @@ export default function HarmonogramForm({
     };
 
     const newItems = [...items, submissionData];
-    setItems(newItems);
-    await saveHarmonogram(eventId, newItems);
+    const sortedNewItems = sortByDate(newItems);
+    setItems(sortedNewItems);
+    await saveHarmonogram(eventId, sortedNewItems);
 
     /* następny domyślny start = koniec + przerwa */
     const nextStart = addMinutesToTime(data.end_time, data.pause);
@@ -248,7 +255,7 @@ export default function HarmonogramForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                      {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
                         <SelectItem key={idx} value={opt}>
                           {opt}
                         </SelectItem>
