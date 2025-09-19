@@ -1,6 +1,6 @@
 "use client";
 import { Mail, Phone } from "lucide-react";
-import { Event, HarmonogramItem } from "@/types";
+import { Event, HarmonogramItem, Participant } from "@/types";
 import AutoSliderAndModal from "./AutosliderAndModal";
 import { monthNameToColorClass } from "@/lib/utils";
 import { toggleObserveEvent } from "@/lib/users.actions";
@@ -16,6 +16,7 @@ import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import SortableHarmonogram from "./SortableHarmonogram";
 import Harmonogram from "./Harmonogram";
 import ChangeAllHarmonogramForm from "./forms/ChangeAllHarmonogramForm";
+import AddParticipantForm from "./forms/AddParticipantForm";
 
 interface Props {
   event: Event;
@@ -29,7 +30,9 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
 
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
+  const [openParticipantsForm, setOpenParticipantsForm] = useState(false)
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
+  const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
 
   const now = new Date();
   const start = new Date(event.start_date);
@@ -209,8 +212,17 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
-            <Button className="cursor-pointer">Dodaj/Edytuj</Button>  
+            {isUserCreator && 
+              <div className="flex gap-4">
+                <Button className="cursor-pointer" onClick={()=>{setOpenParticipantsForm(prev => !prev)}}>{openParticipantsForm? "Zamknij" : "Dodaj"}</Button>  
+              </div>}
           </div>
+          {openParticipantsForm && 
+            <AddParticipantForm
+              eventId={event.id} 
+              setItems={setParticipants} 
+              cathegories={event.cathegories}
+              participants={participants}/>}
         </section>
 
         {/* Wyniki */}

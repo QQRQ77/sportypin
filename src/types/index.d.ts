@@ -135,6 +135,7 @@ export type Event = {
     organizator?: string;
     event_type?: string;
     harmonogram?: HarmonogramItem[];
+    participants?: Participant[];
     followers?: string[];
     imageUrls?: string[];
     lat: number;
@@ -150,5 +151,18 @@ export type HarmonogramItem = {
       cathegory?: string,
       itemType?: string,
       LP?: number,
+}
+
+export type Participant = {
+      id?: string,
+      athlete_id?: string,
+      team_id?: string,
+      first_name?: string,
+      second_name?: string,
+      team_name?: string,
+      birth_date?: string,
+      cathegory?: string,
+      name?: string,
+      start_number?: string,   
 }
 

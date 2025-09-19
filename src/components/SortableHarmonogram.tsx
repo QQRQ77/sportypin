@@ -248,7 +248,7 @@ export default function SortableHarmonogram({
     
     /* 4. Aktualizuj stan i backend */
     setItems(affected);
-    // await saveHarmonogram(eventId, affected); 
+    await saveHarmonogram(eventId, affected); 
   };
 
   return (

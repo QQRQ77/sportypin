@@ -27,6 +27,7 @@ import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import { saveHarmonogram } from "@/lib/events.actions";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
+import { RedirectType } from "next/navigation";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -47,18 +48,19 @@ const FormSchema = z.object({
       message: "Wybierz typ punktu",
     }
   ),
-}).superRefine((val, ctx) => {
-  if (val.start_time && val.end_time) {
-    const diff = minutesBetween(val.start_time, val.end_time);
-    if (diff <= 0) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["end_time"],
-        message: "Godzina końca musi być późniejsza niż startu",
-      });
-    }
-  }
-});
+})
+// .superRefine((val, ctx) => {
+//   if (val.start_time && val.end_time) {
+//     const diff = minutesBetween(val.start_time, val.end_time);
+//     if (diff <= 0) {
+//       ctx.addIssue({
+//         code: "custom",
+//         path: ["end_time"],
+//         message: "Godzina końca musi być późniejsza niż startu",
+//       });
+//     }
+//   }
+// });
 
 type FormValues = z.infer<typeof FormSchema>;
 
@@ -103,8 +105,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         ...item,
         ...data,
       };
-    
-    if (item.start_time === data.start_time && item.end_time === data.end_time && item.description === data.description && item.cathegory === data.cathegory) return;
+
+    if (item.start_time === data.start_time && item.end_time === data.end_time && item.description === data.description && item.cathegory === data.cathegory && item.itemType === data.itemType) return;
     
     if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) === 0) {
       setSubmitMessage("Zmiana czasu rozpoczęcia. Czy poprawić czas zakończenia?");
@@ -115,27 +117,30 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
         const userConfirmed2 = await confirmAction();
         if (userConfirmed2) {
+
           const pastItems = items.map((i, idx) => {
-            if (i.date === updatedItem.date) {
-              if (idx < itemIdx) {
+            if (idx < itemIdx) {
+              if (i.date === updatedItem.date) {
                 i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
                 i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-              }
+                return i
+              } else return i
             }
-            return i
           });
+
           const futureItems = items.map((i, idx) => {
-            if (i.date === updatedItem.date) {
-              if (idx > itemIdx) {
+            if (idx > itemIdx) {
+              if (i.date === updatedItem.date) {
                 i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
                 i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-              }
-            }
-            return i
-          });
+                return i
+              } else return i;
+            }});
+
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
+          
           setItems(newItems); 
-          saveHarmonogram(eventId, newItems);
+          // saveHarmonogram(eventId, newItems);
           onClose();
           return;
         }
@@ -154,7 +159,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             items[itemIdx].end_time = updatedItem.end_time;
             items[itemIdx].description = data.description;
             setItems(items); 
-            saveHarmonogram(eventId, items);
+            // saveHarmonogram(eventId, items);
             onClose();
             return;
           } 
@@ -169,27 +174,30 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
         const userConfirmed2 = await confirmAction();
         if (userConfirmed2) {
+
           const pastItems = items.map((i, idx) => {
-            if (i.date === updatedItem.date) {
-              if (idx < itemIdx) {
+            if (idx < itemIdx) {
+              if (i.date === updatedItem.date) {
                 i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
                 i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-              }
+                return i;
+              } else return i;
             }
-            return i
           });
+
           const futureItems = items.map((i, idx) => {
-            if (i.date === updatedItem.date) {
-              if (idx > itemIdx) {
+            if (idx > itemIdx) {
+              if (i.date === updatedItem.date) {
                 i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
                 i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-              }
+                return i;
+              } else return i;
             }
-            return i
           });
+
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
           setItems(newItems); 
-          saveHarmonogram(eventId, newItems);
+          // saveHarmonogram(eventId, newItems);
           onClose();
           return;
         }
@@ -206,7 +214,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             };
             items[itemIdx] = updatedItem;
             setItems(items); 
-            saveHarmonogram(eventId, items);
+            // saveHarmonogram(eventId, items);
             onClose();
             return;
       }
@@ -216,27 +224,30 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       setSubmitMessage("Czy chcesz zmienić automatycznie pozostałe punkty harmonogramu?");
       const userConfirmed = await confirmAction();
       if (userConfirmed) {
+
         const pastItems = items.map((i, idx) => {
-          if (i.date === updatedItem.date) {
-            if (idx < itemIdx) {
+          if (idx < itemIdx) {
+            if (i.date === updatedItem.date) {
               i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.start_time, data.start_time));
               i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.start_time, data.start_time));
-            }
+              return i;
+            } else return i;
           }
-          return i
         });
+
         const futureItems = items.map((i, idx) => {
           if (idx > itemIdx) {
             if (i.date === updatedItem.date) {
               i.start_time = addMinutesToTime(i.start_time, minutesBetween(item.end_time, data.end_time));
               i.end_time = addMinutesToTime(i.end_time, minutesBetween(item.end_time, data.end_time));
-            }
+              return i;
+            } else return i;
           }
-          return i
         });
+
         const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
         setItems(newItems); 
-        saveHarmonogram(eventId, newItems);
+        // saveHarmonogram(eventId, newItems);
         onClose();
         return;
       } 
@@ -244,6 +255,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
     
     // Save the updated harmonogram
     items[itemIdx] = updatedItem;
+    setItems(items);
     // saveHarmonogram(eventId, items);
     onClose();
   };
