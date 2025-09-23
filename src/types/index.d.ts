@@ -150,6 +150,7 @@ export type HarmonogramItem = {
       end_time?: string,
       cathegory?: string,
       itemType?: string,
+      score?: string,
       LP?: number,
 }
 

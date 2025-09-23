@@ -89,7 +89,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
             className="space-y-6 w-full mx-auto my-4 p-4 rounded-xl shadow-2xl"
           >
             <h2 className="text-2xl font-bold text-sky-600 text-center">
-              Dodaj punkt harmonogramu
+              Dodaj uczestnika
             </h2>
                 
             <div className="w-full flex gap-4 flex-col lg:flex-row justify-between">

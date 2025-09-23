@@ -41,6 +41,9 @@ const FormSchema = z.object({
     .string()
     .regex(timeRegex, "HH:MM")
     .or(z.literal("")),
+  score: z
+    .string()
+    .or(z.literal("")),
   cathegory: z.string().or(z.literal("")).optional(),
   itemType: z.string().refine(
     (val) => ["mecz", "pojedynek", "wyścig", "konkurs", "inny"].includes(val),
@@ -69,11 +72,12 @@ interface HarmonogramFormProps {
   itemIdx: number;
   eventId: string;
   cathegories?: string[];
+  score?: boolean;
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
   onClose: () => void;
 }
 
-export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, onClose, cathegories = [] }: HarmonogramFormProps) {
+export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, score = false, onClose, cathegories = [] }: HarmonogramFormProps) {
   
   const item = items[itemIdx];
 
@@ -87,6 +91,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       description: item.description,
       start_time: item.start_time,
       end_time: item.end_time,
+      score: item.score || "",
       cathegory: item.cathegory,
       itemType: item.itemType || "mecz", 
     },
@@ -100,13 +105,20 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
   };
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+
     // Update the item with new values
     const updatedItem = {
         ...item,
         ...data,
-      };
+    };
 
-    if (item.start_time === data.start_time && item.end_time === data.end_time && item.description === data.description && item.cathegory === data.cathegory && item.itemType === data.itemType) return;
+    if (item.start_time === data.start_time 
+        && item.end_time === data.end_time 
+        && item.description === data.description 
+        && item.cathegory === data.cathegory 
+        && item.itemType === data.itemType
+        && item.score === updatedItem.score
+      ) return;
     
     if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) === 0) {
       setSubmitMessage("Zmiana czasu rozpoczęcia. Czy poprawić czas zakończenia?");
@@ -140,7 +152,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
           
           setItems(newItems); 
-          // saveHarmonogram(eventId, newItems);
+          saveHarmonogram(eventId, newItems);
           onClose();
           return;
         }
@@ -159,7 +171,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             items[itemIdx].end_time = updatedItem.end_time;
             items[itemIdx].description = data.description;
             setItems(items); 
-            // saveHarmonogram(eventId, items);
+            saveHarmonogram(eventId, items);
             onClose();
             return;
           } 
@@ -197,7 +209,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
 
           const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
           setItems(newItems); 
-          // saveHarmonogram(eventId, newItems);
+          saveHarmonogram(eventId, newItems);
           onClose();
           return;
         }
@@ -214,7 +226,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             };
             items[itemIdx] = updatedItem;
             setItems(items); 
-            // saveHarmonogram(eventId, items);
+            saveHarmonogram(eventId, items);
             onClose();
             return;
       }
@@ -247,7 +259,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
 
         const newItems = [...pastItems, updatedItem, ...futureItems].filter((i): i is HarmonogramItem => i !== undefined);
         setItems(newItems); 
-        // saveHarmonogram(eventId, newItems);
+        saveHarmonogram(eventId, newItems);
         onClose();
         return;
       } 
@@ -256,7 +268,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
     // Save the updated harmonogram
     items[itemIdx] = updatedItem;
     setItems(items);
-    // saveHarmonogram(eventId, items);
+    saveHarmonogram(eventId, items);
     onClose();
   };
 
@@ -309,39 +321,42 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
             )}  
             <div className="w-11/12 flex flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2">
               <div className="w-[80px] text-center">{item.LP}.</div>
-              <div className="w-[100px]">
-                <FormField
-                  control={form.control}
-                  name="start_time"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <FormControl>
-                        <Input type="time" className="shadow-xl" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="w-[100px]">
-                <FormField
-                  control={form.control}
-                  name="end_time"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <FormControl>
-                        <Input
-                          type="time"
-                          className="shadow-xl"
-                          {...field}
-                          value={field.value}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                    )}
-                />
-              </div>
+              {!score && 
+                <>
+                  <div className="w-[100px]">
+                    <FormField
+                      control={form.control}
+                      name="start_time"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input type="time" className="shadow-xl" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <div className="w-[100px]">
+                    <FormField
+                      control={form.control}
+                      name="end_time"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              type="time"
+                              className="shadow-xl"
+                              {...field}
+                              value={field.value}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                  </div>
+                </>}
               <div className="flex-1">
                 <FormField
                   control={form.control}
@@ -360,9 +375,61 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                   )}
                 />
               </div>
-              <div className="text-center hidden lg:block">
-                <div className="flex gap-2">
-                  <FormField
+              {!score && 
+                <>
+                  <div className="text-center hidden lg:block">
+                  <div className="flex gap-2">
+                    <FormField
+                        control={form.control}
+                        name="itemType"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="shadow-xl">
+                                  <SelectValue placeholder="typ..." />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {["mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((opt, idx) => (
+                                  <SelectItem key={idx} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="cathegory"
+                          render={({ field }) => (
+                            <FormItem>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="shadow-xl">
+                                    <SelectValue placeholder="kategoria..." />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
+                                    <SelectItem key={idx} value={opt}>
+                                      {opt}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                  </div>
+                </div>
+                <div className="block lg:hidden w-full text-center mt-1">
+                  <div className="w-full flex gap-2 justify-center">
+                    <FormField
                       control={form.control}
                       name="itemType"
                       render={({ field }) => (
@@ -383,83 +450,56 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                           </Select>
                           <FormMessage />
                         </FormItem>
-                        )}
-                      />
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="cathegory"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="shadow-xl">
+                                <SelectValue placeholder="kategoria..." />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
+                                <SelectItem key={idx} value={opt}>
+                                  {opt}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+                </>}
+                {score && 
+                  <>
+                    <div>{"wynik: "}</div>
+                    <div className="w-[100px]">
                       <FormField
                         control={form.control}
-                        name="cathegory"
+                        name="score"
                         render={({ field }) => (
-                          <FormItem>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="shadow-xl">
-                                  <SelectValue placeholder="kategoria..." />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
-                                  <SelectItem key={idx} value={opt}>
-                                    {opt}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                          <FormItem className="">
+                            <FormControl>
+                              <Input
+                                className="shadow-xl"
+                                {...field}
+                              />
+                            </FormControl>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                </div>
-              </div>
-              <div className="block lg:hidden w-full text-center mt-1">
-                <div className="w-full flex gap-2 justify-center">
-                  <FormField
-                    control={form.control}
-                    name="itemType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="shadow-xl">
-                              <SelectValue placeholder="typ..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {["mecz", "pojedynek", "wyścig", "konkurs", "inny"].map((opt, idx) => (
-                              <SelectItem key={idx} value={opt}>
-                                {opt}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="cathegory"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="shadow-xl">
-                              <SelectValue placeholder="kategoria..." />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {cathegories && ["Wszystkie", ...cathegories].map((opt, idx) => (
-                              <SelectItem key={idx} value={opt}>
-                                {opt}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
+                    </div>
+                  </>
+                }
             </div>
             <div className="flex justify-center items-center gap-4">
               <div className="text-gray-500 hover:text-gray-800">

@@ -17,6 +17,7 @@ import SortableHarmonogram from "./SortableHarmonogram";
 import Harmonogram from "./Harmonogram";
 import ChangeAllHarmonogramForm from "./forms/ChangeAllHarmonogramForm";
 import AddParticipantForm from "./forms/AddParticipantForm";
+import CompetitorsList from "./CompetitorsList";
 
 interface Props {
   event: Event;
@@ -48,7 +49,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const isEventObserved = isUserFollowing
 
   return (
-    <article className="relative max-w-5xl mx-auto my-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
+    <article className="relative w-full mx-5 lg:w-2/3 lg:mx-auto my-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
       {/* GALERIA / SLIDER */}
       {event.imageUrls && event.imageUrls.length > 0 && (
         <div className="relative h-64 md:h-80">
@@ -223,9 +224,12 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
               setItems={setParticipants} 
               cathegories={event.cathegories}
               participants={participants}/>}
+          <CompetitorsList participants={participants}/>
         </section>
 
-        {/* Wyniki */}
+        {/* Wyniki 
+        TODO: dodawania wyników do harmonogramu jeśli itemType to mecz itp. i wyświetlanie ich tutaj
+        */}
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Wyniki</h2>

@@ -11,7 +11,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon, TrashIcon, TrophyIcon } from "@heroicons/react/20/solid";
 import { useId, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import HarmonogramItemEditForm from "./forms/HarmonogramItemEditForm";
@@ -32,7 +32,8 @@ export default function SortableHarmonogram({
 }: SortableHarmonogramProps) {
   const id = useId();
   const [showEditForm, setShowEditForm] = useState("");
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("");
+  const [scoreForm, setScoreForm] = useState("");
 
   function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
     // licznik dla każdej daty
@@ -80,8 +81,9 @@ export default function SortableHarmonogram({
             itemIdx={idx}
             items={items}
             setItems={setItems}
+            score={scoreForm === item.id}
             cathegories={cathegories}
-            onClose={() => setShowEditForm("")}
+            onClose={() => {setShowEditForm("");setScoreForm(""); setErrorMessage("")}}
           />
         ) : (
             <div className="w-full flex flex-col gap-2">
@@ -97,7 +99,7 @@ export default function SortableHarmonogram({
                       <div className="w-[100px] text-center">{item.start_time}</div>
                       <div className="w-[100px] text-center">{item.end_time}</div>
                     </div>
-                    <div className="flex-1 text-center lg:text-left font-medium">{item.description}</div>
+                    <div className="flex-1 text-center lg:text-left font-medium">{`${item.description} ${item.score ? `(${item.score})` : ""}`}</div>
                     {/* Kategoria: desktop - obok opisu, mobile - pod opisem */}
                     <div className="hidden lg:block">
                       <div className="flex gap-2 justify-center items-center">
@@ -121,6 +123,26 @@ export default function SortableHarmonogram({
                     </div>
                 </div>
                 <div className="flex flex-row justify-center items-center gap-4">
+                  <div className="text-gray-500 hover:text-gray-800">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <button
+                          onClick={e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setScoreForm(item.id);
+                            setShowEditForm(item.id);
+                            }}
+                          aria-label="Dodaj wynik"
+                        >
+                          <TrophyIcon className="w-6 h-6 cursor-pointer" />
+                        </button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Dodaj wynik</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                   <div className="text-gray-500 hover:text-gray-800">
                     <Tooltip>
                       <TooltipTrigger asChild>
