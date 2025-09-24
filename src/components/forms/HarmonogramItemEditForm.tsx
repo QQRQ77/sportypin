@@ -27,7 +27,6 @@ import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import { saveHarmonogram } from "@/lib/events.actions";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import { RedirectType } from "next/navigation";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -43,7 +42,8 @@ const FormSchema = z.object({
     .or(z.literal("")),
   score: z
     .string()
-    .or(z.literal("")),
+    .or(z.literal(""))
+    .optional(),
   cathegory: z.string().or(z.literal("")).optional(),
   itemType: z.string().refine(
     (val) => ["mecz", "pojedynek", "wyścig", "konkurs", "inny"].includes(val),

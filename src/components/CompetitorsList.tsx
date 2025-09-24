@@ -41,7 +41,7 @@ export default function CompetitorsList({participants = [],}: CompetitorsProps) 
       {categoryKeys.map((category, index) => (
         <AccordionItem key={category} value={`item-${index + 1}`}>
           <AccordionTrigger>
-            <div className="text-lg font-medium">
+            <div className="text-lg font-medium cursor-pointer">
               {category} ({participantsByCategory[category].length})
             </div>
           </AccordionTrigger>

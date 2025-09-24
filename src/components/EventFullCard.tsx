@@ -18,6 +18,7 @@ import Harmonogram from "./Harmonogram";
 import ChangeAllHarmonogramForm from "./forms/ChangeAllHarmonogramForm";
 import AddParticipantForm from "./forms/AddParticipantForm";
 import CompetitorsList from "./CompetitorsList";
+import EventScores from "./EventScores";
 
 interface Props {
   event: Event;
@@ -32,6 +33,7 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [openParticipantsForm, setOpenParticipantsForm] = useState(false)
+  const [showClasificationForm, setShowClasificationForm] = useState(false)
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
 
@@ -231,10 +233,11 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
         TODO: dodawania wyników do harmonogramu jeśli itemType to mecz itp. i wyświetlanie ich tutaj
         */}
         <section className="relative pt-4 border-t border-slate-300">
-          <div className="w-full flex justify-between">
-            <h2 className="mb-2 text-xl font-bold text-sky-600">Wyniki</h2>
+          <div className="w-full mb-2 flex justify-between">
+            <h2 className="text-xl font-bold text-sky-600">Wyniki</h2>
             <Button className="cursor-pointer">Dodaj/Edytuj</Button>  
           </div>
+          <EventScores harmonogramItems={harmonogramItems}/>
         </section>      
       </div>
     </article>
