@@ -18,14 +18,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import SubmitButton from "../ui/submitButton";
 import { Input } from "@/components/ui/input";
-import EventScores from "../EventScores";
+import { ClassificationItem } from "@/types";
+import { useState } from "react";
+import { createId } from "@paralleldrive/cuid2";
+import { saveClassification } from "@/lib/events.actions";
+
 
 interface Props {
   eventId: string;
   cathegories?: string[];
-  setItems: React.Dispatch<React.SetStateAction<[]>>;
-  onClose: () => void;
+  setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
 }
 
 const FormSchema = z.object({
@@ -42,7 +46,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ClassificationForm({ eventId, cathegories = [], setItems, onClose }: Props) {
+export default function ClassificationForm({ eventId, cathegories = [], setItems }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {  
@@ -53,17 +57,37 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
     },
   });
 
+  const [buttonSubmitting, setButtonSubmitting] = useState(false);
+
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
+    setButtonSubmitting(true);
+    
+    const submissionData: ClassificationItem = {
+      ...data,
+      id: createId(),
+    };
+
+    console.log(submissionData);
+
+    await saveClassification(eventId, submissionData);
+        
+    form.reset({
+      description: "",
+      place: "",
+      score: "",
+      cathegory: data.cathegory || "",
+    });
+    
+    setButtonSubmitting(false);
     }
   
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="w-full"
+        className="w-full mb-2"
       >
-        <div className="w-11/12 flex flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2">
+        <div className="w-full flex flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2">
           <div className="w-[100px]">
             <FormField
               control={form.control}
@@ -100,7 +124,7 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
               )}
             />
           </div>
-          <div className="w-[100px]">
+          <div className="w-[150px]">
             <FormField
               control={form.control}
               name="score"
@@ -118,6 +142,34 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
               )}
             />
           </div>
+          <FormField
+            control={form.control}
+            name="cathegory"
+            render={({ field }) => (
+              <FormItem>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="shadow-xl">
+                      <SelectValue placeholder="kategoria..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
+                      <SelectItem key={idx} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SubmitButton
+            isSubmitting={buttonSubmitting}
+            submittingText="Dodawanie..."
+            baseText="Dodaj"
+          />
         </div>
       </form>
     </Form>

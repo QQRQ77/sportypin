@@ -2,7 +2,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { CreateEvent, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, CreateEvent, HarmonogramItem, Participant } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 import { Event } from "@/types";
@@ -337,6 +337,34 @@ export async function saveNewParticipant(eventId: string, participants: Particip
   if (error || !data) {
     console.error('Error adding new participant:', error);
     throw new Error(error?.message || 'Failed to save new participant');
+  }
+
+  return "success";
+} 
+
+export async function saveClassification(eventId: string, classification: ClassificationItem[]) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+  }
+
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+
+  const supabase = createSupabaseClient();
+
+  const {data, error} = await supabase
+    .from('Events')
+    .update({ classification })
+    .eq('id', eventId)
+    .select('classification');
+  
+  if (error || !data) {
+    console.error('Error saving event classification:', error);
+    throw new Error(error?.message || 'Failed to save event classification');
   }
 
   return "success";

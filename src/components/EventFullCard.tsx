@@ -1,6 +1,6 @@
 "use client";
 import { Mail, Phone } from "lucide-react";
-import { Event, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, Event, HarmonogramItem, Participant } from "@/types";
 import AutoSliderAndModal from "./AutosliderAndModal";
 import { monthNameToColorClass } from "@/lib/utils";
 import { toggleObserveEvent } from "@/lib/users.actions";
@@ -19,6 +19,7 @@ import ChangeAllHarmonogramForm from "./forms/ChangeAllHarmonogramForm";
 import AddParticipantForm from "./forms/AddParticipantForm";
 import CompetitorsList from "./CompetitorsList";
 import EventScores from "./EventScores";
+import ClassificationForm from "./forms/AddClassificationForm";
 
 interface Props {
   event: Event;
@@ -33,9 +34,10 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [openParticipantsForm, setOpenParticipantsForm] = useState(false)
-  const [showClasificationForm, setShowClasificationForm] = useState(false)
+  const [showClassificationForm, setShowClassificationForm] = useState(false)
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
+  const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
 
   const now = new Date();
   const start = new Date(event.start_date);
@@ -235,8 +237,17 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-xl font-bold text-sky-600">Wyniki</h2>
-            <Button className="cursor-pointer">Dodaj/Edytuj</Button>  
+            {isUserCreator &&
+            <div>
+                <Button className="cursor-pointer" onClick={()=>{setShowClassificationForm(prev => !prev)}}>{showClassificationForm? "Zamknij" : "Dodaj"}</Button>  
+            </div>} 
           </div>
+          {showClassificationForm && 
+            <ClassificationForm
+              eventId={event.id} 
+              setItems={setClassification} 
+              cathegories={event.cathegories}
+              />}
           <EventScores harmonogramItems={harmonogramItems}/>
         </section>      
       </div>
