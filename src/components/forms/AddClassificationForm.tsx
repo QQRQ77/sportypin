@@ -29,14 +29,16 @@ import { saveClassification } from "@/lib/events.actions";
 interface Props {
   eventId: string;
   cathegories?: string[];
+  classification: ClassificationItem[];
   setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
 }
 
 const FormSchema = z.object({
   description: z.string().min(3).max(200),
-  place: z
-    .string()
-    .or(z.literal("")),
+  place: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę" })
+      .int()
+      .nonnegative(),
   score: z
     .string()
     .or(z.literal(""))
@@ -46,14 +48,14 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ClassificationForm({ eventId, cathegories = [], setItems }: Props) {
+export default function ClassificationForm({ eventId, cathegories = [], setItems, classification }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {  
       description: "",
-      place: "",
       score: "",
-      cathegory: "",
+      place: undefined,
+      cathegory: cathegories[0] || "",
     },
   });
 
@@ -67,13 +69,12 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
       id: createId(),
     };
 
-    console.log(submissionData);
-
-    await saveClassification(eventId, submissionData);
+    setItems((prev) => [...prev, submissionData]);
+    await saveClassification(eventId, [...classification, submissionData]);
         
     form.reset({
       description: "",
-      place: "",
+      place: undefined,
       score: "",
       cathegory: data.cathegory || "",
     });
@@ -96,7 +97,7 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
                 <FormItem className="">
                   <FormControl>
                     <Input
-                      placeholder="pozycja np. 4 lub IV"
+                      placeholder="pozycja"
                       className="shadow-xl"
                       {...field}
                     />

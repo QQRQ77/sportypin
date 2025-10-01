@@ -212,9 +212,7 @@ export default function SortableHarmonogram({
 
     //*****/ Time Shift w kierunku wcześniejszych czasów /*****//
     // Przesunięcie na najwcześniejszy termin w danym dniu
-    console.log("NewIndex LP: ", items[newIndex].LP, "Nowy index: ", newIndex)
     if (items[newIndex].LP === 1) {
-      console.log("pierwsza pozycja danego dnia.")
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       affected[newIndex].start_time = affected[newIndex + 1].start_time;
       affected[newIndex].end_time = addMinutesToTime(affected[newIndex].start_time, itemShift);
@@ -244,7 +242,6 @@ export default function SortableHarmonogram({
       newIndex === affected.length - 1 ||
       (items[newIndex + 1] && (items[newIndex + 1].LP || 0) < (items[newIndex].LP || 1))
     ) {
-      console.log("Przesunięcie na najpóźniejszą pozycję w danym dniu.")
       const itemShift = minutesBetween(affected[newIndex].start_time, affected[newIndex].end_time);
       affected[newIndex].end_time = affected[newIndex - 1].end_time;
       affected[newIndex].start_time = addMinutesToTime(affected[newIndex].end_time, -itemShift);

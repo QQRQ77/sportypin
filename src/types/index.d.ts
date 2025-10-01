@@ -171,7 +171,7 @@ export type Participant = {
 export type ClassificationItem = {
       id: string,
       description: string,
-      place?: string,
+      place?: number,
       score?: string,
       cathegory?: string,
 }
