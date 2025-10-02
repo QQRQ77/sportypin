@@ -253,7 +253,11 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-lg font-semibold text-sky-600">Klasifikacja końcowa:</h2>
           </div>
-          <Classification classifaction={classification} isUserCreator={isUserCreator} setItems={setClassification} />
+          <Classification 
+            classification={classification} 
+            isUserCreator={isUserCreator} 
+            setItems={setClassification}
+            eventId={event.id} />
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-lg font-semibold text-sky-600">Wyniki szczegółowe:</h2>
           </div>

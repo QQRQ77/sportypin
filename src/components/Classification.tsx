@@ -12,8 +12,9 @@ import ClassificationSingleItem from "./ClassificationItem";
 
 
 interface ClassificationProps {
-  classifaction?: ClassificationItem[];
+  classification?: ClassificationItem[];
   isUserCreator?: boolean;
+  eventId: string;
   setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
 }
 
@@ -32,12 +33,12 @@ function getCategoryKeys(obj: Record<string, ClassificationItem[]>) {
     return Object.keys(obj);
   }
 
-export default function Classification({isUserCreator = false, classifaction = [], setItems}: ClassificationProps) {
+export default function Classification({eventId, isUserCreator = false, classification = [], setItems}: ClassificationProps) {
 
-  const classificationByCategory = groupByCategory(classifaction);
+  const classificationByCategory = groupByCategory(classification);
 
   const categoryKeys = getCategoryKeys(classificationByCategory);
-  
+
   return (
     <Accordion
       type="single"
@@ -57,10 +58,11 @@ export default function Classification({isUserCreator = false, classifaction = [
               {classificationByCategory[category].map((place) => (
                 <ClassificationSingleItem 
                   key={place.id} 
-                  item={place} 
+                  item={place}
+                  eventId={eventId} 
                   isUserCreator={isUserCreator} 
                   setItems={setItems} 
-                  classification={classifaction}
+                  classification={classification}
                   cathegories={categoryKeys}
                   />
               ))}

@@ -61,6 +61,8 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
 
+
+
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);
     
@@ -69,8 +71,10 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
       id: createId(),
     };
 
-    setItems((prev) => [...prev, submissionData]);
-    await saveClassification(eventId, [...classification, submissionData]);
+    const newClassification = [...classification, submissionData].sort((a, b) => (a.place ?? 0) - (b.place ?? 0));
+
+    setItems(newClassification);
+    await saveClassification(eventId, newClassification);
         
     form.reset({
       description: "",

@@ -5,25 +5,33 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import ClassificationItemForm from "./forms/ClassificationItemForm";
+import { saveClassification } from "@/lib/events.actions";
 
 interface ClassificationItemProps {
   item: ClassificationItem;
   isUserCreator?: boolean;
+  eventId: string;
   classification?: ClassificationItem[];
   cathegories?: string[];
   setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
 }
 
-export default function ClassificationSingleItem({item, isUserCreator = false, classification = [], setItems, cathegories}: ClassificationItemProps) {
+export default function ClassificationSingleItem({eventId, item, isUserCreator = false, classification = [], setItems, cathegories}: ClassificationItemProps) {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
+
+  const deleteItem = async (id: string) => {
+    const newClassification = classification.filter(item => item.id !== id);
+    setItems(newClassification);
+    await saveClassification(eventId, newClassification);
+  }
 
  return (
   <div className="flex flex-row w-full text-base">
     {showEditForm ? 
       <ClassificationItemForm 
         item={item} 
-        eventId="" 
+        eventId={eventId} 
         classification={classification}
         cathegories={cathegories} 
         setItems={setItems} 
@@ -66,6 +74,7 @@ export default function ClassificationSingleItem({item, isUserCreator = false, c
                   onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
+                    deleteItem(item.id);
                       }}
                   aria-label="Usuń"
                 >

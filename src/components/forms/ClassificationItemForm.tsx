@@ -68,9 +68,15 @@ export default function ClassificationItemForm({item, eventId, cathegories = [],
           ...item,
           ...data,
         };
-    
-        setItems((prev) => [...prev, submissionData]);
-        await saveClassification(eventId, [...classification, submissionData]);
+
+        const newClassification = classification.map((ci) =>
+          ci.id === submissionData.id ? submissionData : ci
+        );
+
+        const newClassificationOrdered = newClassification.sort((a, b) => (a.place ?? 0) - (b.place ?? 0));
+
+        setItems(newClassificationOrdered);
+        await saveClassification(eventId, newClassificationOrdered);
         setButtonSubmitting(false);
         
         onClose();
