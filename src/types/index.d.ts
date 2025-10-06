@@ -1,5 +1,3 @@
-import { EmailOtpType } from "@supabase/supabase-js";
-
 interface CreateAthlete {
   first_name: string;
   second_name?: string;
@@ -158,11 +156,13 @@ export type HarmonogramItem = {
 export type Participant = {
       id?: string,
       athlete_id?: string,
+      itemType?: string,
       team_id?: string,
       first_name?: string,
       second_name?: string,
       team_name?: string,
       birth_date?: string,
+      start_number?: number,
       cathegory?: string,
       name?: string,
       start_number?: string,   

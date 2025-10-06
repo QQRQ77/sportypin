@@ -26,7 +26,7 @@ import { createId } from "@paralleldrive/cuid2";
 import { saveNewParticipant } from "@/lib/events.actions";
 
 
-interface HarmonogramFormProps {
+interface CompetitorFormProps {
   eventId: string;
   cathegories?: string[];
   participants?: Participant[];
@@ -35,8 +35,13 @@ interface HarmonogramFormProps {
 
 const FormSchema = z.object({
   name: z.string().min(2).max(100).optional(),
-  firstName: z.string().min(2).max(100).optional(),
-  lastName: z.string().min(2).max(100).optional(),
+  start_number: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę" })
+      .int()
+      .nonnegative()
+      .optional(),
+  first_name: z.string().min(2).max(100).optional(),
+  second_name: z.string().min(2).max(100).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
   itemType: z.string().refine(
     (val) => ["zawodnik", "zespół", "inny"].includes(val),
@@ -48,7 +53,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function AddParticipantForm({cathegories, eventId, participants = [], setItems}: HarmonogramFormProps) {
+export default function AddParticipantForm({cathegories, eventId, participants = [], setItems}: CompetitorFormProps) {
 
    const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -67,14 +72,20 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         id: createId(),
       };
 
+      if (submissionData.name === "" && submissionData.first_name === "" && submissionData.second_name === "") {
+        setButtonSubmitting(false);
+        return;
+      }
+
       const newParticipants = [...participants, submissionData];
       setItems(newParticipants);
       await saveNewParticipant(eventId, newParticipants);
   
       form.reset({
         name: "",
-        firstName: "",
-        lastName: "",
+        start_number: undefined,
+        first_name: "",
+        second_name: "",
         cathegory: data.cathegory || "",
         itemType: data.itemType,
       });
@@ -98,7 +109,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                   name="itemType"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Typ punktu</FormLabel>
+                      <FormLabel>Typ uczestnika</FormLabel>
                       <FormControl>
                         <div className="flex gap-4">
                           {["zespół", "zawodnik", "inny"].map((option) => (
@@ -150,7 +161,23 @@ export default function AddParticipantForm({cathegories, eventId, participants =
             </div>
 
             <div className="flex flex-col lg:flex-row gap-2">
-              
+              <FormField
+                control={form.control}
+                name="start_number"
+                render={({ field }) => (
+                  <FormItem className="w-32">
+                    <FormLabel>Numer startowy</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="np. 23 (opcjonalne)"
+                        className="shadow-xl"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             {(itemType === "zespół" || itemType === "inny") &&  
               <FormField
                 control={form.control}
@@ -172,7 +199,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
               {itemType === "zawodnik" &&
               <FormField
                 control={form.control}
-                name="firstName"
+                name="first_name"
                 render={({ field }) => (
                   <FormItem className="w-full lg:w-3/5">
                     <FormLabel>Imię zawodnika</FormLabel>
@@ -189,7 +216,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
               {itemType === "zawodnik" &&
               <FormField
                 control={form.control}
-                name="lastName"
+                name="second_name"
                 render={({ field }) => (
                   <FormItem className="w-full lg:w-3/5">
                     <FormLabel>Nazwisko zawodnika</FormLabel>

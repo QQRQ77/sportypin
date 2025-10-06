@@ -18,7 +18,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Link from "next/link"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
@@ -30,13 +29,11 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
       }),
     });
 
-  type InputType = z.infer<typeof formSchema>;
 
   export default function LoginForm() {
 
-    const router = useRouter();
     const [visiblePass, setVisiblePass] = useState(false);
-    const [buttonsVis, setButtonsVis] = useState(true)
+    const buttonsVis = true;
     
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),

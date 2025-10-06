@@ -4,8 +4,9 @@ interface NominatimResponseItem {
   lat: string;
   lon: string;
   display_name: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
+
 
 export interface GeocodeResult {
   lat: number;
@@ -35,17 +36,6 @@ export async function geocodeWithNominatim(address: string): Promise<GeocodeResu
   }
 }
 
-function validatePolishAddress(address: string): { isValid: boolean; hasPostalCode: boolean; suggestion: string } {
-  // Podstawowa walidacja polskiego adresu
-  const postalCodeRegex = /\d{2}-\d{3}/;
-  const hasPostalCode = postalCodeRegex.test(address);
-  
-  return {
-    isValid: hasPostalCode,
-    hasPostalCode: hasPostalCode,
-    suggestion: hasPostalCode ? address : `${address}, Polska`
-  };
-}
 
 // 7. FUNKCJA POMOCNICZA DO FORMATOWANIA ADRESU
 export async function formatAddressForGeocoding(address: string, city: string, zip_code: string, country = 'Polska') {

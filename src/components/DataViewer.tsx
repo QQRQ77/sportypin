@@ -16,7 +16,7 @@ function dateEndTimeString(date: string) {
 
 export default function DateViewer({ date }: Props) {
   
-  let date_string = date ? dateEndTimeString(date) : ""
+  const date_string = date ? dateEndTimeString(date) : ""
   
   return (
     <>

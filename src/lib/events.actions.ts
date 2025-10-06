@@ -5,7 +5,6 @@ import createSupabaseClient from "./supabase";
 import { ClassificationItem, CreateEvent, HarmonogramItem, Participant } from "@/types";
 import { formatAddressForGeocoding, googleGeocodeAddress } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
-import { Event } from "@/types";
 
 export async function createEvent(formData: CreateEvent) {
   const session = await auth();
@@ -188,7 +187,7 @@ export async function getEventById(eventId: string) {
 
 }
 
-export async function updateEvent(formData: CreateEvent, eventId: string, eventCreatorId: string) {
+export async function updateEvent(formData: CreateEvent, eventId: string) {
   const session = await auth();
   const user = session.userId;
   if (!user) {
@@ -223,21 +222,21 @@ export async function updateEvent(formData: CreateEvent, eventId: string, eventC
   return data[0];
 }
 
-export async function reorderHarmonogram(eventId: string, newHarmonogram: HarmonogramItem[]) {
-  const session = await auth();
-  const user = session.userId;
-  if (!user) {
-      throw new Error("User not authenticated");
-  }
+// export async function reorderHarmonogram(eventId: string, newHarmonogram: HarmonogramItem[]) {
+//   const session = await auth();
+//   const user = session.userId;
+//   if (!user) {
+//       throw new Error("User not authenticated");
+//   }
 
-  const creator = await findEventCreatorId(eventId);
-  if (user !== creator) {
-    throw new Error("User is not event's creator");
-  }
+//   const creator = await findEventCreatorId(eventId);
+//   if (user !== creator) {
+//     throw new Error("User is not event's creator");
+//   }
   
 
   
-}
+// }
 
 export async function findEventCreatorId(eventId: string) {
   const supabase = createSupabaseClient();

@@ -32,7 +32,7 @@ export default function SortableHarmonogram({
 }: SortableHarmonogramProps) {
   const id = useId();
   const [showEditForm, setShowEditForm] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
   const [scoreForm, setScoreForm] = useState("");
 
   function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
@@ -69,7 +69,7 @@ export default function SortableHarmonogram({
       }
     }
  
-  function SortableItem({ item, idx, dateStats }: { item: HarmonogramItem, idx: number, dateStats?: Record<string, number>}) {
+  function SortableItem({ item, idx }: { item: HarmonogramItem, idx: number, dateStats?: Record<string, number>}) {
     const { attributes, listeners, setNodeRef, transform, transition } =
       useSortable({ id: item.id });
     
@@ -83,7 +83,7 @@ export default function SortableHarmonogram({
             setItems={setItems}
             score={scoreForm === item.id}
             cathegories={cathegories}
-            onClose={() => {setShowEditForm("");setScoreForm(""); setErrorMessage("")}}
+            onClose={() => {setShowEditForm("");setScoreForm("")}}
           />
         ) : (
             <div className="w-full flex flex-col gap-2">
@@ -202,7 +202,7 @@ export default function SortableHarmonogram({
     const newIndex = items.findIndex((i) => i.id === over.id);
 
     //TODO: zmiana daty wydarzenia poprzez edycję punktu (rozwiązanie tymczasowe - docelowo zmiania poprzez przeciągnięcie)  
-    if (items[oldIndex].date != items[newIndex].date) {setErrorMessage("Zmień datę elementu poprzez edytuję danego punktu."); return};
+    // if (items[oldIndex].date != items[newIndex].date) {setErrorMessage("Zmień datę elementu poprzez edytuję danego punktu."); return};
 
     const firstPause = minutesBetween(items[0].end_time, items[1].start_time );
     const lastPause = minutesBetween(items[items.length - 2].end_time, items[items.length - 1].start_time);

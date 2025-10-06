@@ -2,7 +2,6 @@
 import { Mail, Phone } from "lucide-react";
 import { ClassificationItem, Event, HarmonogramItem, Participant } from "@/types";
 import AutoSliderAndModal from "./AutosliderAndModal";
-import { monthNameToColorClass } from "@/lib/utils";
 import { toggleObserveEvent } from "@/lib/users.actions";
 import StarSolidIcon from "../../public/icons/star-solid";
 import StarOutlineIcon from "../../public/icons/star-outline";
@@ -29,7 +28,7 @@ interface Props {
   isUserCreator?: boolean;
 }
 
-export default function EventCard({ event, userId = "", isUserFollowing = false, isUserCreator = false }: Props) {
+export default function EventCard({ event, isUserFollowing = false, isUserCreator = false }: Props) {
   const router = useRouter()
 
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
@@ -40,16 +39,16 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
   const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
 
-  const now = new Date();
-  const start = new Date(event.start_date);
-  const end = event.end_date ? new Date(event.end_date) : null;
+  // const now = new Date();
+  // const start = new Date(event.start_date);
+  // const end = event.end_date ? new Date(event.end_date) : null;
 
-  const isPast = end
-    ? end < now
-    : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
+  // const isPast = end
+  //   ? end < now
+  //   : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
 
-  const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
-  const monthColor = monthNameToColorClass(monthName);
+  // const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
+  // const monthColor = monthNameToColorClass(monthName);
   
   const isEventObserved = isUserFollowing
 
@@ -229,12 +228,9 @@ export default function EventCard({ event, userId = "", isUserFollowing = false,
               setItems={setParticipants} 
               cathegories={event.cathegories}
               participants={participants}/>}
-          <CompetitorsList participants={participants}/>
+          <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
         </section>
 
-        {/* Wyniki 
-        TODO: dodawania wyników do harmonogramu jeśli itemType to mecz itp. i wyświetlanie ich tutaj
-        */}
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-xl font-bold text-sky-600">Wyniki</h2>

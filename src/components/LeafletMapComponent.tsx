@@ -5,9 +5,11 @@ import React, { useEffect, useRef } from 'react';
 // Declare Leaflet on the window object for TypeScript
 declare global {
   interface Window {
-    L: any;
+    L: typeof import('leaflet');
   }
 }
+
+
 
 type Address = {
   lat: number;
@@ -34,7 +36,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   width = '100%'
 }) => {
   const mapRef = useRef<HTMLDivElement | null>(null);
-  const mapInstanceRef = useRef<any>(null); // Use 'any' or a more specific Leaflet map type if available
+  const mapInstanceRef = useRef<import('leaflet').Map | null>(null); // Use a specific Leaflet map type
 
   useEffect(() => {
     // Sprawdź czy Leaflet jest dostępny
@@ -53,7 +55,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
       }).addTo(map);
 
       // Dodaj pinezki dla każdego adresu
-      addresses.forEach((address, index) => {
+      addresses.forEach((address) => {
         if (address.lat && address.lng) {
           const marker = window.L.marker([address.lat, address.lng]).addTo(map);
           
@@ -84,7 +86,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
       if (addresses.length > 1) {
         const validAddresses = addresses.filter(addr => addr.lat && addr.lng);
         if (validAddresses.length > 0) {
-          const group = new window.L.featureGroup(
+          const group = window.L.featureGroup(
             validAddresses.map(addr => window.L.marker([addr.lat, addr.lng]))
           );
           map.fitBounds(group.getBounds().pad(0.1));
@@ -119,7 +121,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
         // Wymuś re-render po załadowaniu Leaflet
         if (mapRef.current) {
           mapRef.current.style.display = 'none';
-          mapRef.current.offsetHeight; // Trigger reflow
+          void mapRef.current.offsetHeight; // Trigger reflow
           mapRef.current.style.display = 'block';
         }
       };

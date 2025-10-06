@@ -29,8 +29,8 @@ function dateEndTimeString(date: string) {
 
 export default function StartAndEndTimeViewer({start_date, end_date}: Props) {
   
-  let start_time = start_date ? dateEndTimeString(start_date) : ""
-  let end_time = (start_date && end_date) ?
+  const start_time = start_date ? dateEndTimeString(start_date) : ""
+  const end_time = (start_date && end_date) ?
                  (areDifferentDates(start_date, end_date) ?
                   dateEndTimeString(end_date) :
                   new Date(end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })

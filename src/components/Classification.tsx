@@ -5,8 +5,6 @@ import {
     AccordionTrigger,
   } from "@/components/ui/accordion";
 import { ClassificationItem } from "@/types";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import ClassificationSingleItem from "./ClassificationItem";
 
 

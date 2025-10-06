@@ -124,7 +124,7 @@ export default function CreateEventForm({ eventToEdit }: Props) {
           }
       }
 
-      let urls = [];
+      const urls = [];
       for (const url of imageUrls) {
         const imageFile = await convertBlobUrlToFile(url);
 
@@ -150,7 +150,7 @@ export default function CreateEventForm({ eventToEdit }: Props) {
                   data.end_date = new Date(data.end_date).toISOString();
                 }
             if (eventToEdit) {
-              const updatedEvent = await updateEvent({...data, imageUrls: urls}, eventToEdit.id, eventToEdit.creator)
+              const updatedEvent = await updateEvent({...data, imageUrls: urls}, eventToEdit.id)
               if(updatedEvent) {router.push(`/events/${updatedEvent.id}`)} else {router.push("/")}
             } 
             else {

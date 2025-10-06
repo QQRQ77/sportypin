@@ -6,9 +6,9 @@ import Image from "next/image";
 export default async function EditEventPage({
   params,
 }: {
-  params: { event_id: string };
+  params: Promise<{ event_id: string }>;
 }) {
-
+  
   const { event_id } = await params;
 
   const event = await getEventById(event_id);
@@ -28,3 +28,4 @@ export default async function EditEventPage({
         <CreateEventForm eventToEdit={event} />
       </div>)
 }
+

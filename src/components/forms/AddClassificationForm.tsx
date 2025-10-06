@@ -8,7 +8,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -60,8 +59,6 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
   });
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
-
-
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);

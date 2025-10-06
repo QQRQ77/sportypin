@@ -143,14 +143,13 @@ export default function HarmonogramForm({
 
   const startTime = form.watch("start_time");
   const duration  = form.watch("defaultItemTime");
-  const itemType = form.watch("itemType");
 
   useEffect(() => {
     if (startTime && duration && duration > 0) {
       const newEnd = addMinutesToTime(startTime, duration);
       form.setValue("end_time", newEnd, { shouldValidate: true });
     }
-  }, [startTime, duration, form.setValue]);
+  }, [startTime, duration, form.setValue, form]);
 
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);

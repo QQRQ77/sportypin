@@ -1,6 +1,5 @@
 import { Venue } from "@/types";
 import VenueCard from "./VenueCard";
-import MultipleMarkersMap from "./GoogleMapsComponent";
 
 interface VenuesListProps {
   venues?: Array<Venue>;

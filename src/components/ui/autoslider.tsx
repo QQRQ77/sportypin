@@ -21,7 +21,7 @@ export default function AutoSlider({ imageUrls, altBase, navBullets = false, cla
       setCurrent((prev) => (prev + 1) % imageUrls.length);
     }, time);
     return () => clearInterval(timer);
-  }, [imageUrls.length]);
+  }, [imageUrls.length, time]);
 
   if (!imageUrls.length) return null;
 

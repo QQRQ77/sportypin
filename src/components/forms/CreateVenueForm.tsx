@@ -95,7 +95,7 @@ export default function CreateVenueForm() {
           }
       }
 
-      let urls = [];
+      const urls = [];
       for (const url of imageUrls) {
         const imageFile = await convertBlobUrlToFile(url);
 

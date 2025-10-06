@@ -2,7 +2,7 @@
 
 import { HarmonogramItem } from "@/types";
 
-import { date, z } from "zod";
+import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -68,7 +68,7 @@ interface ChangeAllHarmonogramFormProps {
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
-export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_date, eventId, items, setItems }: ChangeAllHarmonogramFormProps) {
+export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_date, items, setItems }: ChangeAllHarmonogramFormProps) {
   const dateOptions = generateDateOptions(start_date, end_date);
   
   const form = useForm<FormValues>({

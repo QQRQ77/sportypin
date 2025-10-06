@@ -15,7 +15,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({ data, name = "root" }) => {
 
   if (data === null) return <span className="text-slate-500">null</span>;
   if (typeof data === "undefined") return <span className="text-slate-500">undefined</span>;
-  if (typeof data === "string") return <span className="text-emerald-600">"{data}"</span>;
+  if (typeof data === "string") return <span className="text-emerald-600">`&quot;`{data}`&quot;`</span>;
   if (typeof data === "number" || typeof data === "boolean")
     return <span className="text-sky-600">{String(data)}</span>;
 

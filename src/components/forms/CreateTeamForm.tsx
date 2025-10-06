@@ -69,7 +69,7 @@ export default function CreateTeamForm() {
             }
         }
 
-        let urls = [];
+        const urls = [];
         for (const url of imageUrls) {
           const imageFile = await convertBlobUrlToFile(url);
 

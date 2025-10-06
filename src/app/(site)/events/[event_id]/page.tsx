@@ -4,7 +4,7 @@ import { createUser, isUserFollowingEvent } from "@/lib/users.actions";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function EventPage(
-  { params }: { params: { event_id: string } }
+  { params }: { params: Promise<{ event_id: string }> }
 ) {
 
   const { event_id } = await params;

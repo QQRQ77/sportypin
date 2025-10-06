@@ -1,9 +1,9 @@
 'use client'
 
-import { EnvelopeIcon, EyeIcon, EyeSlashIcon, KeyIcon, UserIcon } from "@heroicons/react/20/solid"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid"
 import { useEffect, useState } from "react";
 import { z } from "zod";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordStrength } from "check-password-strength";
 // import { registerUser } from "@/lib/actions/authActions";
@@ -49,13 +49,9 @@ export default function SignUpForm() {
 
     const router = useRouter();
     const [visiblePass, setVisiblePass] = useState(false);
-    const [buttonsVis, setButtonsVis] = useState(true)
     
-    const [isPasswordVisible, setIsPassVisible] = useState(false)
     const [passStrength, setPassStrength] = useState(0)
-    const [buttonSpinnerVis, setButtonSpinnerVis] = useState(false)
-    const [infoMessageVisible, setInfoMessageVisible] = useState(false)
-    const [infoMessage, setInfoMessage] = useState("Link aktywacyjny został wysłany na adres email.")
+    // const [infoMessage, setInfoMessage] = useState("Link aktywacyjny został wysłany na adres email.")
 
     const password = form.watch("password")
 
@@ -67,20 +63,16 @@ export default function SignUpForm() {
     //     setPassStrength(watch()?.password?.length ? passwordStrength(watch().password || "").id : 0);
     // }, [watch().password, watch]);
 
-    const togglePasswordVisibility = () => {setIsPassVisible(prev=>!prev)}
-
     const saveUser: SubmitHandler<InputType> = async (data) => {
         console.log("Form data: ", data)
-        const {confirmPassword, accepted, ...user} = data
-        setButtonSpinnerVis(true)
+        // const {confirmPassword, accepted, ...user} = data
         try {
             // const result = await registerUser(user)
             const result = "success"
 
             
             if (result === "success") {
-                setInfoMessageVisible(true)
-                setInfoMessage("Konto użytkownika zostało pomyślnie zarejestrowane. Link aktywacyjny został wysłany na adres email.")
+                // setInfoMessage("Konto użytkownika zostało pomyślnie zarejestrowane. Link aktywacyjny został wysłany na adres email.")
                 toast.success("Konto użytkownika zostało pomyślnie zarejestrowane.")
                 toast.success("Link aktywacyjny został wysłany na adres email.")
                 form.reset()
@@ -105,7 +97,6 @@ export default function SignUpForm() {
             // }
         } catch (error) {
             toast.error("Upps!. Coś poszło nie tak...")
-            setButtonSpinnerVis(false)
             console.error(error)
         }
     } 
