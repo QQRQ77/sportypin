@@ -99,7 +99,7 @@ export default function SortableHarmonogram({
                       <div className="w-[100px] text-center">{item.start_time}</div>
                       <div className="w-[100px] text-center">{item.end_time}</div>
                     </div>
-                    <div className="flex-1 text-center lg:text-left font-medium">{`${item.description} ${item.score ? `(${item.score})` : ""}`}</div>
+                    <div className="flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description} ${item.score ? `(${item.score})` : ""}`}</div>
                     {/* Kategoria: desktop - obok opisu, mobile - pod opisem */}
                     <div className="hidden lg:block">
                       <div className="flex gap-2 justify-center items-center">

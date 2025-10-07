@@ -203,6 +203,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               start_date={event.start_date} 
               end_date={event.end_date}
               cathegories={event.cathegories}
+              participants={participants}
               setItems={addHarmonogramItems}/>}
           {isUserCreator ? 
             <SortableHarmonogram 

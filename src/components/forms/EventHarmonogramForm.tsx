@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { HarmonogramItem } from "@/types";
+import { HarmonogramItem, Participant } from "@/types";
 import { createId } from "@paralleldrive/cuid2";
 import { useEffect, useState } from "react";
 import { saveHarmonogram } from "@/lib/events.actions";
@@ -29,7 +29,9 @@ import SubmitButton from "../ui/submitButton";
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
-  description: z.string().min(3).max(200),
+  description: z.string().max(200).optional(),
+  team_1: z.string().max(100).optional(),
+  team_2: z.string().max(100).optional(),
   date: z.string().min(1, "Wybierz datę").or(z.literal("")),
   pause: z.coerce
     .number({ invalid_type_error: "Podaj liczbę" })
@@ -74,8 +76,18 @@ interface HarmonogramFormProps {
   start_date?: string;
   end_date?: string;
   cathegories?: string[];
+  participants?: Participant[];
   items: HarmonogramItem[];
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
+}
+
+const transformationParticipants = (participants?: Participant[]) => {
+  if (!participants) return [];
+  return participants.map(p => {
+  if (p.itemType === "zawodnik") return `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim();
+  if (p.itemType === "drużyna") return p.team_name || "";
+  return p.name || "";
+  });
 }
 
 function sortByDate(items: HarmonogramItem[]): HarmonogramItem[] {
@@ -121,12 +133,13 @@ export default function HarmonogramForm({
   end_date,
   setItems,
   cathegories,
+  participants,
   items,
 }: HarmonogramFormProps) {
   
   const dateOptions = generateDateOptions(start_date, end_date);
 
-  const form = useForm<FormValues>({
+    const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       description: "",
@@ -139,10 +152,22 @@ export default function HarmonogramForm({
     },
   });
 
+  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
 
   const startTime = form.watch("start_time");
   const duration  = form.watch("defaultItemTime");
+  const cathegorySelected = form.watch("cathegory");
+  const item_type = form.watch("itemType");
+
+  useEffect(() => {
+    if (cathegorySelected && cathegorySelected !== "wszystkie") {
+      const filtered = participants ? participants.filter(p => p.cathegory === cathegorySelected) : [];
+      setParticipantsToSelect(transformationParticipants(filtered));
+    } else {
+      setParticipantsToSelect(transformationParticipants(participants));
+    }
+  }, [participants, cathegorySelected]);
 
   useEffect(() => {
     if (startTime && duration && duration > 0) {
@@ -169,6 +194,8 @@ export default function HarmonogramForm({
     const nextStart = addMinutesToTime(data.end_time, data.pause);
     form.reset({
       description: "",
+      team_1: "",
+      team_2: "",
       date: data.date,
       pause: data.pause,
       defaultItemTime: data.defaultItemTime,
@@ -312,6 +339,57 @@ export default function HarmonogramForm({
 
         {/* OPIS + START/END – bez zmian */}
         <div className="flex flex-col lg:flex-row gap-2">
+          {item_type != "inny" && <>
+          <FormField
+              control={form.control}
+              name="team_1"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pierwszy zespół</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Pierwszy zespół" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {participants && participantsToSelect.map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="team_2"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Drugi zespół</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Drugi zespół" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {participants && participantsToSelect.map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </>}
+                    
           <FormField
             control={form.control}
             name="description"
@@ -320,7 +398,7 @@ export default function HarmonogramForm({
                 <FormLabel>Opis punktu</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="np. mecz: GKS vs. LSZ"
+                    placeholder="np. mecz o pierwsze miejsce"
                     className="shadow-xl"
                     {...field}
                   />
@@ -329,13 +407,14 @@ export default function HarmonogramForm({
               </FormItem>
             )}
           />
+        </div>
 
-          <div className="flex gap-4 w-full lg:w-2/5">
+        <div className="flex gap-4 w-full lg:w-2/5 mx-auto">
             <FormField
               control={form.control}
               name="start_time"
               render={({ field }) => (
-                <FormItem className="w-1/2">
+                <FormItem className="w-24">
                   <FormLabel>Godzina rozpoczęcia</FormLabel>
                   <FormControl>
                     <Input type="time" className="shadow-xl" {...field} />
@@ -349,7 +428,7 @@ export default function HarmonogramForm({
               control={form.control}
               name="end_time"
               render={({ field }) => (
-                <FormItem className="w-1/2">
+                <FormItem className="w-24">
                   <FormLabel>Godzina zakończenia</FormLabel>
                   <FormControl>
                     <Input
@@ -364,7 +443,6 @@ export default function HarmonogramForm({
               )}
             />
           </div>
-        </div>
 
         <div className="w-full flex justify-center">
           <SubmitButton

@@ -143,7 +143,9 @@ export type Event = {
 
 export type HarmonogramItem = {
       id: string,
-      description: string,
+      description?: string,
+      team_1?: string,
+      team_2?: string,
       date: string,
       start_time?: string,
       end_time?: string,
