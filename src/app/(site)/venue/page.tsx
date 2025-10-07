@@ -1,4 +1,4 @@
-import VenueSearchFormAndCards from "@/components/forms/VenueSearchFormAndCards";
+// import VenueSearchFormAndCards from "@/components/forms/VenueSearchFormAndCards";
 import { createUser } from "@/lib/users.actions";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
@@ -18,7 +18,7 @@ export default async function Page() {
           />
           <h1>OBIEKTY SPORTOWE</h1>
         </div>
-        <VenueSearchFormAndCards userId={userId || ""}/>
+        {/* <VenueSearchFormAndCards userId={userId || ""}/> */}
       </main>
   )
 }
