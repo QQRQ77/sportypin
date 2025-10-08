@@ -44,7 +44,7 @@ export default function Harmonogram({items}: HarmonogramProps) {
               <div className="w-[100px] text-center">{item.start_time}</div>
               <div className="w-[100px] text-center">{item.end_time}</div>
             </div>
-            <div className="flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
+            <div className="hidden lg:block flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
             <div className="hidden lg:block">
                 <div className="flex gap-2 justify-center items-center">
                   <div className="w-[100px] text-center">
@@ -55,7 +55,8 @@ export default function Harmonogram({items}: HarmonogramProps) {
                   </div>
                 </div>
               </div>
-              <div className="block lg:hidden mx-auto">
+              <div className="flex flex-col lg:hidden mx-auto">
+                <div className="text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
                 <div className="flex gap-2 justify-center items-center">
                   <div className="w-[100px] text-center">
                     {item.itemType !== "inny" ? item.itemType : ""}
