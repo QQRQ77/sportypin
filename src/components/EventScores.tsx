@@ -15,7 +15,7 @@ export default function EventScores({ harmonogramItems = []}: EventScoresProps) 
             <div className="flex gap-2">
               <div className="w-[80px] text-center">{idx + 1}.</div>
             </div>
-            <div className="flex-1 text-center lg:text-left font-medium">{item.description}</div>
+            <div className="flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
             <div className="w-[100px] text-center">
               {item.score}
             </div>
