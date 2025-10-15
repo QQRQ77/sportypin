@@ -20,6 +20,7 @@ import CompetitorsList from "./CompetitorsList";
 import EventScores from "./EventScores";
 import ClassificationForm from "./forms/AddClassificationForm";
 import Classification from "./Classification";
+import HarmonogramSearchAndFilters from "./HarmonogramSearchandFilters";
 
 interface Props {
   event: Event;
@@ -38,6 +39,10 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
   const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
+  const [searchHarmonogramString, setSearchHarmonogramString] = useState<string>("");
+  const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
+  const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
+  const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
 
   // const now = new Date();
   // const start = new Date(event.start_date);
@@ -211,7 +216,18 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               eventId={event.id} 
               setItems={addHarmonogramItems} 
               cathegories={event.cathegories}/>
-            : <Harmonogram items={harmonogramItems}/>}
+            : <>
+            <HarmonogramSearchAndFilters
+              // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
+              // cathegories={Array.from(new Set(harmonogramItems.map(item => item.cathegory))).filter((cat): cat is string => typeof cat === "string") || ["wszystkie"]}
+              // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
+              // setSearchString={setSearchHarmonogramString}
+              // setFilterType={setFilterHarmonogramType}
+              // setFilterCathegory={setFilterHarmonogramCathegory}
+              // setFilterTeam={setFilterHarmonogramTeam}
+            />
+            <Harmonogram items={harmonogramItems}/>
+            </>}
         </section>
 
         {/* Uczestnicy     */}

@@ -31,6 +31,8 @@ const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
   description: z.string().min(3).max(200),
+  team_1: z.string().max(100).or(z.literal("")).optional(),
+  team_2: z.string().max(100).or(z.literal("")).optional(),
   start_time: z
     .string()
     .regex(timeRegex, "HH:MM")
@@ -88,6 +90,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
     resolver: zodResolver(FormSchema),
     defaultValues: {
       description: item.description,
+      team_1: item.team_1 || "",
+      team_2: item.team_2 || "",
       start_time: item.start_time,
       end_time: item.end_time,
       score: item.score || "",
@@ -117,6 +121,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         && item.cathegory === data.cathegory 
         && item.itemType === data.itemType
         && item.score === updatedItem.score
+        && item.team_1 === updatedItem.team_1
+        && item.team_2 === updatedItem.team_2
       ) return;
     
     if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) === 0) {
@@ -356,24 +362,61 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                     />
                   </div>
                 </>}
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <FormControl>
-                        <Input
-                          placeholder="np. mecz: GKS vs. LSZ"
-                          className="shadow-xl"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+                {score? 
+                  <div className="flex-1">
+                  {`${item.team_1}${item.team_1 && " vs. "}${item.team_2}${((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}${` ${item.description}`}`}
+                  </div>
+                  :
+                  <div className="flex flex-row">
+                    <FormField
+                      control={form.control}
+                      name="team_1"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              placeholder="np. GKS, LSZ"
+                              className="shadow-xl"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="team_2"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              placeholder="np. GKS, LSZ"
+                              className="shadow-xl"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              placeholder="np. mecz: GKS vs. LSZ"
+                              className="shadow-xl"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>}
               {!score && 
                 <>
                   <div className="text-center hidden lg:block">
