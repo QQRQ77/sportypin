@@ -39,10 +39,10 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
   const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
-  const [searchHarmonogramString, setSearchHarmonogramString] = useState<string>("");
-  const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
-  const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
-  const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
+  // const [searchHarmonogramString, setSearchHarmonogramString] = useState<string>("");
+  // const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
+  // const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
+  // const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
 
   // const now = new Date();
   // const start = new Date(event.start_date);
