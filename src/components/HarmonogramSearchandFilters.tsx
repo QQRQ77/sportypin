@@ -14,7 +14,7 @@ interface HarmonogramSearchAndFiltersProps {
 export default function HarmonogramSearchAndFilters() {
   return (
     <div className="w-full flex flex-wrap gap-2 mb-2 p-4 rounded-xl shadow-xl border-2">
-      SEARCH AND FILTERS
+      Tutaj będzie w przyszłości opcja: SEARCH AND FILTERS
       {/* Tutaj dodaj komponenty do wyszukiwania i filtrowania */}
     </div>
   );
