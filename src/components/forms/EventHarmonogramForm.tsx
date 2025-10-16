@@ -81,7 +81,7 @@ interface HarmonogramFormProps {
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
-const transformationParticipants = (participants?: Participant[]) => {
+export const transformationParticipants = (participants?: Participant[]) => {
   if (!participants) return [];
   return participants.map(p => {
   if (p.itemType === "zawodnik") return `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim();

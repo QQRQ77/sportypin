@@ -1,6 +1,6 @@
 'use client';
 
-import { HarmonogramItem } from "@/types";
+import { HarmonogramItem, Participant } from "@/types";
 
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -25,7 +25,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { addMinutesToTime, minutesBetween } from "@/lib/utils";
 import { saveHarmonogram } from "@/lib/events.actions";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { transformationParticipants } from "./EventHarmonogramForm";
 
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
@@ -73,18 +74,20 @@ interface HarmonogramFormProps {
   itemIdx: number;
   eventId: string;
   cathegories?: string[];
+  participants?: Participant[];  
   score?: boolean;
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
   onClose: () => void;
 }
 
-export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, score = false, onClose, cathegories = [] }: HarmonogramFormProps) {
+export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setItems, score = false, onClose, cathegories = [], participants }: HarmonogramFormProps) {
   
   const item = items[itemIdx];
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [showModalPromise, setShowModalPromise] = useState<((value: unknown) => void) | null>(null);
+  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -99,6 +102,17 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
       itemType: item.itemType || "mecz", 
     },
   });
+
+  const cathegorySelected = form.watch("cathegory");
+
+  useEffect(() => {
+    if (cathegorySelected && cathegorySelected !== "wszystkie") {
+      const filtered = participants ? participants.filter(p => p.cathegory === cathegorySelected) : [];
+      setParticipantsToSelect(transformationParticipants(filtered));
+    } else {
+      setParticipantsToSelect(transformationParticipants(participants));
+    }
+  }, [participants, cathegorySelected]);
 
   const confirmAction = () => {
     return new Promise((resolve) => {
@@ -369,37 +383,51 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                   :
                   <div className="flex flex-row">
                     <FormField
-                      control={form.control}
-                      name="team_1"
-                      render={({ field }) => (
-                        <FormItem className="">
-                          <FormControl>
-                            <Input
-                              placeholder="np. GKS, LSZ"
-                              className="shadow-xl"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="team_2"
-                      render={({ field }) => (
-                        <FormItem className="">
-                          <FormControl>
-                            <Input
-                              placeholder="np. GKS, LSZ"
-                              className="shadow-xl"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                        control={form.control}
+                        name="team_1"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="shadow-xl">
+                                  <SelectValue placeholder="zespół 1" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {participants && participantsToSelect.map((opt, idx) => (
+                                  <SelectItem key={idx} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                          )}
+                        />
+                        <FormField
+                        control={form.control}
+                        name="team_2"
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger className="shadow-xl">
+                                  <SelectValue placeholder="zespół 2" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {participants && participantsToSelect.map((opt, idx) => (
+                                  <SelectItem key={idx} value={opt}>
+                                    {opt}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                          )}
+                        />
                     <FormField
                       control={form.control}
                       name="description"

@@ -2,7 +2,7 @@
 
 import { saveHarmonogram } from "@/lib/events.actions";
 import { addMinutesToTime, minutesBetween } from "@/lib/utils";
-import { HarmonogramItem } from "@/types";
+import { HarmonogramItem, Participant } from "@/types";
 import { DndContext, closestCenter, DragEndEvent } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -21,6 +21,7 @@ interface SortableHarmonogramProps {
   items: HarmonogramItem[];
   eventId: string;
   cathegories?: string[];
+  participants?: Participant[];  
   setItems: React.Dispatch<React.SetStateAction<HarmonogramItem[]>>;
 }
 
@@ -29,6 +30,7 @@ export default function SortableHarmonogram({
   eventId,
   setItems,
   cathegories = [],
+  participants = [],
 }: SortableHarmonogramProps) {
   const id = useId();
   const [showEditForm, setShowEditForm] = useState("");
@@ -83,6 +85,7 @@ export default function SortableHarmonogram({
             setItems={setItems}
             score={scoreForm === item.id}
             cathegories={cathegories}
+            participants={participants}
             onClose={() => {setShowEditForm("");setScoreForm("")}}
           />
         ) : (

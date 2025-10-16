@@ -215,7 +215,9 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               items={harmonogramItems} 
               eventId={event.id} 
               setItems={addHarmonogramItems} 
-              cathegories={event.cathegories}/>
+              cathegories={event.cathegories}
+              participants={participants}
+              />
             : <>
             <HarmonogramSearchAndFilters
               // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
