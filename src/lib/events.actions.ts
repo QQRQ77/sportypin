@@ -178,6 +178,7 @@ export async function getEventById(eventId: string) {
     delete data[0].followers; // Usuń również creator_name, jeśli istnieje
   }
 
+
   if (error) {
     console.error('Error fetching events:', error);
     throw new Error(error.message || 'Failed to fetch events');
