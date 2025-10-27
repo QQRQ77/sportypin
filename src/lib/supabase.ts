@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+// import { auth } from '@clerk/nextjs/server';
 import { createClient } from '@supabase/supabase-js';
 
 export default function createSupabaseClient() {
@@ -12,5 +12,6 @@ export default function createSupabaseClient() {
   return createClient(
     supabaseUrl,
     supabaseAnonKey,
-    {async accessToken() {return ((await auth()).getToken())}});
+    // {async accessToken() {return ((await auth()).getToken())}});
+  )
 }
