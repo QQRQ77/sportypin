@@ -1,5 +1,5 @@
-import MultipleMarkersMap from "@/components/GoogleMapsComponent";
-import { getPastEvents, getUpcomingEvents } from "@/lib/events.actions";
+// import MultipleMarkersMap from "@/components/GoogleMapsComponent";
+// import { getPastEvents, getUpcomingEvents } from "@/lib/events.actions";
 import { auth } from "@clerk/nextjs/server";
 // import EventsTab from "@/components/EventsTab";
 // import { createUser } from "@/lib/users.actions";
