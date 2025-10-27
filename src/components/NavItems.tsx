@@ -3,7 +3,7 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  UserButton,
+  // UserButton,
 } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from 'next/link';
@@ -64,7 +64,7 @@ export default function NavItems() {
       </SignedOut>
        <SignedIn>
         <UserMenu />
-        <UserButton />
+        {/* <UserButton /> */}
       </SignedIn>
     </nav>
   );
