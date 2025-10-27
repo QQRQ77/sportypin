@@ -3,11 +3,11 @@ import {
   SignUpButton,
   SignedIn,
   SignedOut,
-  // UserButton,
+  UserButton,
 } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from 'next/link';
-import UserMenu from './UserMenu';
+// import UserMenu from './UserMenu';
 
 const size = 60; // Size for the logos
 
@@ -63,8 +63,8 @@ export default function NavItems() {
         </SignUpButton>
       </SignedOut>
        <SignedIn>
-        <UserMenu />
-        {/* <UserButton /> */}
+        {/* <UserMenu /> */}
+        <UserButton />
       </SignedIn>
     </nav>
   );
