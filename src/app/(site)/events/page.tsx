@@ -7,7 +7,7 @@ import { createUser } from "@/lib/users.actions";
 export default async function Page() {
 
   const { userId } = await auth();
-  if ( userId ) {await createUser()}
+  if ( userId ) {const data = await createUser(); console.log(data)}
     
   // const upcomingEvents = await getUpcomingEvents();
   // const pastEvents = await getPastEvents();
