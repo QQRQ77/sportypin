@@ -2,12 +2,12 @@ import MultipleMarkersMap from "@/components/GoogleMapsComponent";
 import { getPastEvents, getUpcomingEvents } from "@/lib/events.actions";
 import { auth } from "@clerk/nextjs/server";
 // import EventsTab from "@/components/EventsTab";
-import { createUser } from "@/lib/users.actions";
+// import { createUser } from "@/lib/users.actions";
 
 export default async function Page() {
 
   const { userId } = await auth();
-  if ( userId ) {await createUser()}
+  // if ( userId ) {await createUser()}
     
   const upcomingEvents = await getUpcomingEvents();
   const pastEvents = await getPastEvents();
@@ -30,15 +30,16 @@ export default async function Page() {
           {(upcomingEvents && upcomingEvents.length === 0) && pastEvents && pastEvents.length > 0 && <div className='w-full lg:w-1/3 h-96 lg:h-[600px] mx-2 flex justify-center'>
             <MultipleMarkersMap events={pastEvents}/>
           </div>}
-          {/* <div className="flex flex-col justify-center items-start gap-2 w-full h-96 lg:h-fit">
-            <EventsTab
+          <div className="flex flex-col justify-center items-start gap-2 w-full h-96 lg:h-fit">
+            Welcome user: {userId}
+            {/* <EventsTab
               likedEvents={likedEvents}
               usersEvents={usersEvents}
               upcomingEvents={upcomingEvents}
               pastEvents={pastEvents}
               userId={userId}
-            />
-          </div> */}
+            /> */}
+          </div>
         </div>
       )
 }
