@@ -1,10 +1,10 @@
-import {
-  SignInButton,
-  SignUpButton,
-  // SignedIn,
-  SignedOut,
-  // UserButton,
-} from '@clerk/nextjs'
+// import {
+//   SignInButton,
+//   SignUpButton,
+//   SignedIn,
+//   SignedOut,
+//   UserButton,
+// } from '@clerk/nextjs'
 import Image from "next/image";
 import Link from 'next/link';
 // import UserMenu from './UserMenu';
@@ -50,7 +50,7 @@ export default function NavItems() {
         />
         <p className='hidden sm:block text-lg font-semibold underline mr-3'>Zawodnicy</p>
       </Link>
-      <SignedOut>
+      {/* <SignedOut>
         <SignInButton >
           <button className="bg-amber-600 text-white rounded-lg font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
             Zaloguj się
@@ -62,7 +62,7 @@ export default function NavItems() {
           </button>
         </SignUpButton>
       </SignedOut>
-       {/* <SignedIn>
+       <SignedIn>
         <UserMenu />
         <UserButton />
       </SignedIn> */}
