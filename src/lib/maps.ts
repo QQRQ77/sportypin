@@ -56,7 +56,7 @@ export async function googleGeocodeAddress(address: string) {
 
   console.log("ApiKey: ", apiKey)
 
-  console.log('Google Geocode response status:', data.status);
+  console.log('Google Geocode response status:', data);
 
   if (data.status === 'OK' && data.results.length > 0) {
     const result = data.results[0].geometry.location;
