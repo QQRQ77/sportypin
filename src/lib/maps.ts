@@ -14,6 +14,17 @@ export interface GeocodeResult {
   displayName: string;
 }
 
+export async function nominatimGeocode(address: string) {
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`;
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'sportpin.net/1.0 (tomaszkokot@o2.pl)' }, // wymagane
+  });
+  const data = await res.json();
+  console.log('Nominatim response data:', data);
+  if (!data.length) throw new Error('Not found');
+  return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+}
+
 export async function geocodeWithNominatim(address: string): Promise<GeocodeResult | null> {
   try {
     const encodedAddress = encodeURIComponent(address);
