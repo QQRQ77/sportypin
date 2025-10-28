@@ -108,7 +108,7 @@ export default function CreateEventForm({ eventToEdit }: Props) {
             data.sports = [...(data.sports || []), trimmed];
             setSportInput("");
           } else {
-            toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            toast.error("Nazwa sportu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
             return;
           }
       }

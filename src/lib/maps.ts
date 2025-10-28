@@ -53,6 +53,9 @@ export async function googleGeocodeAddress(address: string) {
   );
 
   const data = await response.json();
+
+  console.log('Google Geocode response status:', data.status);
+
   if (data.status === 'OK' && data.results.length > 0) {
     const result = data.results[0].geometry.location;
     return {
