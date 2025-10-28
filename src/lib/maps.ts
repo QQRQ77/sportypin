@@ -32,7 +32,9 @@ export async function geocodeWithNominatim(address: string): Promise<GeocodeResu
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1`
     );
     const data: NominatimResponseItem[] = await response.json();
-    
+
+    console.log('Nominatim geocode response data:', data);
+        
     if (data && data.length > 0) {
       return {
         lat: parseFloat(data[0].lat),
