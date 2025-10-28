@@ -27,24 +27,31 @@ export async function nominatimGeocode(address: string) {
 
 export async function geocodeWithNominatim(address: string): Promise<GeocodeResult | null> {
   try {
-    const encodedAddress = encodeURIComponent(address);
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1`
-    );
-    const data: NominatimResponseItem[] = await response.json();
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`;
 
-    console.log('Nominatim geocode response data:', data);
-        
-    if (data && data.length > 0) {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'sportpin.net/1.0 (tomaszkokot@o2.pl)', // wymagane
+      },
+    });
+
+    if (!res.ok) {
+      console.error('Nominatim HTTP error:', res.status, res.statusText);
+      return null;
+    }
+
+    const data: NominatimResponseItem[] = await res.json();
+
+    if (data?.length) {
       return {
         lat: parseFloat(data[0].lat),
         lng: parseFloat(data[0].lon),
-        displayName: data[0].display_name
+        displayName: data[0].display_name,
       };
     }
     return null;
-  } catch (error) {
-    console.error('Błąd geocoding Nominatim:', error);
+  } catch (err) {
+    console.error('Błąd geocoding Nominatim:', err);
     return null;
   }
 }
