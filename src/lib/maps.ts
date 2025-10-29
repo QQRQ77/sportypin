@@ -129,3 +129,67 @@ export async function googleGeocodeAddress(address: string) {
     throw new Error('Geocoding failed: ' + data.status);
   }
 }
+
+export async function getGeocodeFromAddressGoogle(
+  address: string,
+) {
+  try {
+
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+
+    // Formatuj adres
+    const encodedAddress = encodeURIComponent(address);
+    
+    // Wywołaj Google Maps Geocoding API
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}&language=pl&region=pl`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      console.error('Błąd HTTP:', response.status);
+      return null;
+    }
+    
+    const data = await response.json();
+    
+    // Sprawdź status odpowiedzi
+    if (data.status === 'OK' && data.results.length > 0) {
+      const result = data.results[0];
+      console.log(`✓ Google Maps znalazł: ${result.formatted_address}`);
+      
+      return {
+        lat: result.geometry.location.lat,
+        lng: result.geometry.location.lng,
+        formattedAddress: result.formatted_address,
+        placeId: result.place_id
+      };
+    }
+    
+    // Obsługa różnych statusów błędów
+    switch (data.status) {
+      case 'ZERO_RESULTS':
+        console.warn('Google Maps: Nie znaleziono wyników dla:', address);
+        break;
+      case 'OVER_QUERY_LIMIT':
+        console.error('Google Maps: Przekroczono limit zapytań');
+        break;
+      case 'REQUEST_DENIED':
+        console.error('Google Maps: Żądanie odrzucone. Sprawdź klucz API');
+        break;
+      case 'INVALID_REQUEST':
+        console.error('Google Maps: Nieprawidłowe żądanie');
+        break;
+      default:
+        console.error('Google Maps: Nieznany błąd:', data.status);
+    }
+    
+    if (data.error_message) {
+      console.error('Google Maps błąd:', data.error_message);
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Błąd podczas geocodingu Google Maps:', error);
+    return null;
+  }
+}
