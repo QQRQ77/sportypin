@@ -56,6 +56,47 @@ export async function geocodeWithNominatim(address: string): Promise<GeocodeResu
   }
 }
 
+// Funkcja pobierająca geocode używając Nominatim (OpenStreetMap)
+export async function getGeocodeFromAddress(
+  address: string,
+): Promise<GeocodeResult | null> {
+  try {
+    // Formatuj adres
+    const encodedAddress = encodeURIComponent(address);
+    
+    // Wywołaj API Nominatim
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodedAddress}&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'Sportpin/1.0' // Nominatim wymaga User-Agent
+        }
+      }
+    );
+    
+    if (!response.ok) {
+      console.error('Błąd HTTP:', response.status);
+      return null;
+    }
+    
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon),
+        displayName: data[0].display_name
+      };
+    }
+    
+    console.warn('Nie znaleziono współrzędnych dla adresu:', address);
+    return null;
+  } catch (error) {
+    console.error('Błąd podczas geocodingu:', error);
+    return null;
+  }
+}
+
 
 // 7. FUNKCJA POMOCNICZA DO FORMATOWANIA ADRESU
 export async function formatAddressForGeocoding(address: string, city: string, zip_code: string, country = 'Polska') {
