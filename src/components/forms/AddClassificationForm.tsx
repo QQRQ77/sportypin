@@ -19,16 +19,18 @@ import {
 } from "@/components/ui/select";
 import SubmitButton from "../ui/submitButton";
 import { Input } from "@/components/ui/input";
-import { ClassificationItem } from "@/types";
-import { useState } from "react";
+import { ClassificationItem, Participant } from "@/types";
+import { useEffect, useState } from "react";
 import { createId } from "@paralleldrive/cuid2";
 import { saveClassification } from "@/lib/events.actions";
+import { transformationParticipants } from "./EventHarmonogramForm";
 
 
 interface Props {
   eventId: string;
   cathegories?: string[];
   classification: ClassificationItem[];
+  participants?: Participant[];  
   setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
 }
 
@@ -47,7 +49,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function ClassificationForm({ eventId, cathegories = [], setItems, classification }: Props) {
+export default function ClassificationForm({ eventId, cathegories = [], setItems, classification, participants }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {  
@@ -59,6 +61,18 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
   });
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
+  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
+
+  const cathegorySelected = form.watch("cathegory");
+
+  useEffect(() => {
+    if (cathegorySelected && cathegorySelected !== "wszystkie") {
+      const filtered = participants ? participants.filter(p => p.cathegory === cathegorySelected) : [];
+      setParticipantsToSelect(transformationParticipants(filtered));
+    } else {
+      setParticipantsToSelect(transformationParticipants(participants));
+    }
+  }, [participants, cathegorySelected]);
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);
@@ -113,18 +127,25 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
               control={form.control}
               name="description"
               render={({ field }) => (
-                <FormItem className="">
-                  <FormControl>
-                    <Input
-                      placeholder="np. nazwa zespołu, imię i nazwisko zawodnika"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
+                <FormItem>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="zespół" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {participants && participantsToSelect.map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
-              )}
-            />
+                )}
+              />
           </div>
           <div className="w-[150px]">
             <FormField

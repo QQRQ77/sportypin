@@ -266,6 +266,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               setItems={setClassification} 
               cathegories={event.cathegories}
               classification={classification}
+              participants={participants}
               />}
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-lg font-semibold text-sky-600">Klasifikacja końcowa:</h2>
