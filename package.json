@@ -48,6 +48,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.60.0",
     "react-toastify": "^11.0.5",
+    "romans": "^3.1.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animated": "^2.0.0",
     "uuid": "^11.1.0",

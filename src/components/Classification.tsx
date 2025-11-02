@@ -7,8 +7,6 @@ import {
 import { ClassificationItem } from "@/types";
 import ClassificationSingleItem from "./ClassificationItem";
 
-
-
 interface ClassificationProps {
   classification?: ClassificationItem[];
   isUserCreator?: boolean;

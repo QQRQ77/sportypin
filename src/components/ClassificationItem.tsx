@@ -6,6 +6,7 @@ import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import ClassificationItemForm from "./forms/ClassificationItemForm";
 import { saveClassification } from "@/lib/events.actions";
+import { romanize } from 'romans';
 
 interface ClassificationItemProps {
   item: ClassificationItem;
@@ -38,7 +39,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         onClose={() => setShowEditForm(false)} />
     : <>
     <div className="w-[80px] font-medium text-center">
-      {item.place} 
+      {item.place && item.place < 11 ? romanize(item.place) : item.place} 
     </div>
     <div className="flex-1">
       {item.description}
