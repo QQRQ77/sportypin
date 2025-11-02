@@ -3,7 +3,7 @@
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
 import { ClassificationItem, CreateEvent, HarmonogramItem, Participant } from "@/types";
-import { formatAddressForGeocoding, getGeocodeFromAddressGoogle, googleGeocodeAddress } from "./maps";
+import { formatAddressForGeocoding, getGeocodeFromAddressGoogle } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 
 export async function createEvent(formData: CreateEvent) {
@@ -208,7 +208,7 @@ export async function updateEvent(formData: CreateEvent, eventId: string) {
 
   const fullAdress = await formatAddressForGeocoding(adress, city, postalCode, country);
 
-  const geocodeResult = await googleGeocodeAddress(fullAdress);
+  const geocodeResult = await getGeocodeFromAddressGoogle(fullAdress);
   const lat = Number(geocodeResult?.lat || 0);
   const lng = Number(geocodeResult?.lng || 0);
 

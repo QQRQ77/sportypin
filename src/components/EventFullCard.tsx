@@ -44,13 +44,13 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   // const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
   // const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
 
-  // const now = new Date();
-  // const start = new Date(event.start_date);
-  // const end = event.end_date ? new Date(event.end_date) : null;
+  const now = new Date();
+  const start = new Date(event.start_date);
+  const end = event.end_date ? new Date(event.end_date) : null;
 
-  // const isPast = end
-  //   ? end < now
-  //   : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
+  const isPast = end
+    ? end < now
+    : start < new Date(now.getFullYear(), now.getMonth(), now.getDate()); // start <= yesterday
 
   // const monthName = isPast ? "" : new Date(event.start_date).toLocaleString('default', { month: 'long' });
   // const monthColor = monthNameToColorClass(monthName);
@@ -184,6 +184,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
         </section>
 
         {/* Harmonogram */}
+        {(isUserCreator || (!isUserCreator && !isPast)) && 
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Harmonogram</h2>
@@ -230,9 +231,10 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             />
             <Harmonogram items={harmonogramItems}/>
             </>}
-        </section>
+        </section>}
 
         {/* Uczestnicy     */}
+        {(isUserCreator || (!isUserCreator && !isPast)) &&
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
@@ -248,7 +250,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               cathegories={event.cathegories}
               participants={participants}/>}
           <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
-        </section>
+        </section>}
 
         <section className="relative pt-4 border-t border-slate-300">
           <div className="w-full mb-2 flex justify-between">
@@ -277,7 +279,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             <h2 className="text-lg font-semibold text-sky-600">Wyniki szczegółowe:</h2>
           </div>
           <EventScores harmonogramItems={harmonogramItems}/>
-        </section>      
+        </section>     
       </div>
     </article>
   );
