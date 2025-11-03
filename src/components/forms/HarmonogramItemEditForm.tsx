@@ -381,7 +381,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                   {`${item.team_1}${item.team_1 && " vs. "}${item.team_2}${((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}${` ${item.description}`}`}
                   </div>
                   :
-                  <div className="flex flex-row">
+                  <div className="flex flex-col lg:flex-row gap-4 lg:gap-1">
                     <FormField
                         control={form.control}
                         name="team_1"
@@ -571,7 +571,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                   </>
                 }
             </div>
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex justify-center items-center gap-12 lg:gap-4">
               <div className="text-gray-500 hover:text-gray-800">
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -579,7 +579,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                       type="submit"
                       aria-label="Zapisz"
                     >
-                      <CheckIcon className="w-6 h-6 cursor-pointer" />
+                      <CheckIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -594,7 +594,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                         onClick={onClose}
                         aria-label="Zamknij"
                       >
-                      <XMarkIcon className="w-6 h-6 cursor-pointer" />
+                      <XMarkIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
                     </button>
                   </TooltipTrigger>
                   <TooltipContent>
