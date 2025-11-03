@@ -125,7 +125,7 @@ export default function SortableHarmonogram({
                       </div>
                     </div>
                 </div>
-                <div className="flex flex-row justify-center items-center gap-4">
+                <div className="flex flex-row justify-center items-center gap-14 lg:gap-4">
                   <div className="text-gray-500 hover:text-gray-800">
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -138,7 +138,7 @@ export default function SortableHarmonogram({
                             }}
                           aria-label="Dodaj wynik"
                         >
-                          <TrophyIcon className="w-6 h-6 cursor-pointer" />
+                          <TrophyIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
                         </button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -157,7 +157,7 @@ export default function SortableHarmonogram({
                             }}
                           aria-label="Edytuj"
                         >
-                          <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                          <PencilSquareIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
                         </button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -176,7 +176,7 @@ export default function SortableHarmonogram({
                                 }}
                             aria-label="Usuń"
                           >
-                          <TrashIcon className="w-6 h-6 cursor-pointer" />
+                          <TrashIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
                         </button>
                       </TooltipTrigger>
                       <TooltipContent>

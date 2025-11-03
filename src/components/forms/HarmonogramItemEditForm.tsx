@@ -300,23 +300,23 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         <div className="relative w-full flex flex-col lg:flex-row items-center gap-2">
             {isModalVisible && (
               <div className="absolute w-full top-0 right-0 z-50 flex items-center justify-center bg-gray-300/50 p-4 rounded-xl shadow-xl">
-                <div className="bg-white rounded-xl shadow-2xl p-6 w-full relative flex justify-between items-center">
+                <div className="bg-white rounded-xl shadow-2xl p-6 w-full relative flex flex-col lg:flex-row justify-between items-center">
                   <button
                     type="button"
                     className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 cursor-pointer"
                     onClick={() => setIsModalVisible(false)}
                     aria-label="Zamknij modal"
                   >
-                    <XMarkIcon className="w-5 h-5" />
+                    <XMarkIcon className="w-8 h-8 lg:w-6 lg:h-8" />
                   </button>
                   <div className="mb-4 text-lg font-semibold text-center">
                     {submitMessage}
                   </div>
-                  <div className="flex justify-center gap-4 mt-4">
+                  <div className="flex justify-center gap-16 lg:gap-4 mt-4">
                     <Button
                       type="button"
                       variant="outline"
-                      className="cursor-pointer hover:bg-gray-200"
+                      className="cursor-pointer hover:bg-gray-200 h-12 lg:h-8 text-xl lg:text-base"
                       onClick={() => {
                         if (showModalPromise) showModalPromise(false);
                         setIsModalVisible(false);
@@ -326,7 +326,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                     </Button>
                     <Button
                       type="button"
-                      className="cursor-pointer hover:bg-gray-600"
+                      className="cursor-pointer hover:bg-gray-600 h-12 lg:h-8 text-xl lg:text-base"
                       onClick={() => {
                         if (showModalPromise) showModalPromise(true);
                         setIsModalVisible(false);
