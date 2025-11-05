@@ -133,7 +133,7 @@ export default function EventCard({ event, eventKey, userId }: EventCardProps) {
                   {isEventObserved ? <div className="text-pink-500 hover:text-pink-800"><StarSolidIcon/></div> : <div className="hover:text-pink-500"><StarOutlineIcon/></div>}
                 </div>
               {!closeModal && 
-                <div className={`absolute bottom-0 right-0 p-1 text-xs text-gray-700 flex flex-col ${modalBgVis ? 'bg-gray-100 rounded-lg' : ""} `}>
+                <div className={`absolute hidden lg:flex bottom-0 right-0 p-1 text-xs text-gray-700 flex-col ${modalBgVis ? 'bg-gray-100 rounded-lg' : ""} `}>
                   <button
                     onClick={(e)=> {
                       e.preventDefault();
