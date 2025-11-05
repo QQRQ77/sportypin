@@ -58,7 +58,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const isEventObserved = isUserFollowing
 
   return (
-    <article className="relative w-full mx-5 lg:w-2/3 lg:mx-auto my-2 bg-white rounded-2xl overflow-hidden shadow-2xl">
+    <article className="relative w-full lg:w-2/3 lg:mx-auto my-2 bg-white rounded-2xl shadow-2xl">
       {/* GALERIA / SLIDER */}
       {event.imageUrls && event.imageUrls.length > 0 && (
         <div className="relative h-64 md:h-80">
