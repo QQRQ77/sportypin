@@ -16,17 +16,17 @@ export default function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <Link href="/user_page">
               <span className="text-sm">Moja strona</span>
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem>
             <Link href="/events/new_event">
               <span className="text-sm">Dodaj wydarzenie</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <Link href="/venue/new_venue">
               <span className="text-sm">Dodaj obiekt</span>
             </Link>
@@ -40,7 +40,7 @@ export default function UserMenu() {
             <Link href="/athlete/new_athlete">
               <span className="text-sm">Dodaj zawodnika</span>
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
