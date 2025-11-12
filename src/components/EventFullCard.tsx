@@ -178,7 +178,10 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               </a>
             )}
           </div>
-          <div className="absolute bottom-0 right-5 p-1 flex flex-row">
+          <div className="sm:hidden flex flex-row">
+            <p><span className="text-sky-600 mr-2">Dodane przez:</span><span className="cursor-pointer hover:text-slate-500">{event.creator_name}</span></p>
+          </div>
+          <div className="hidden absolute bottom-0 right-5 p-1 sm:flex flex-row">
             <p><span className="text-sky-600 mr-2">Dodane przez:</span><span className="cursor-pointer hover:text-slate-500">{event.creator_name}</span></p>
           </div>
         </section>
