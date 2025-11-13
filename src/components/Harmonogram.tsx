@@ -6,7 +6,7 @@ interface HarmonogramProps {
 }
 
 export default function Harmonogram({items}: HarmonogramProps) {
-  
+
   function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
     // licznik dla każdej daty
     const counter: Record<string, number> = {};

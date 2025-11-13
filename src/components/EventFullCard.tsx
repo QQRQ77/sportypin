@@ -9,7 +9,7 @@ import MultipleMarkersMap from "./GoogleMapsComponent";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import SortableHarmonogram from "./SortableHarmonogram";
@@ -41,8 +41,18 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
   // const [searchHarmonogramString, setSearchHarmonogramString] = useState<string>("");
   // const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
-  // const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
+  const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
   // const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
+
+  useEffect(() => {
+    let filteredItems = event.harmonogram || [];
+
+    // Filtrowanie po kategorii
+    if (filterHarmonogramCathegory && filterHarmonogramCathegory !== "wszystkie") {
+      filteredItems = filteredItems.filter(item => item.cathegory === filterHarmonogramCathegory);
+      addHarmonogramItems(filteredItems);
+    } else if (filterHarmonogramCathegory === "wszystkie") {addHarmonogramItems(event.harmonogram || []);}
+  }, [filterHarmonogramCathegory]);
 
   const now = new Date();
   const start = new Date(event.start_date);
@@ -214,6 +224,17 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               cathegories={event.cathegories}
               participants={participants}
               setItems={addHarmonogramItems}/>}
+
+          <HarmonogramSearchAndFilters
+            // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
+            cathegories={event.cathegories}
+            // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
+            // setSearchString={setSearchHarmonogramString}
+            // setFilterType={setFilterHarmonogramType}
+            setFilterCathegory={setFilterHarmonogramCathegory}
+            // setFilterTeam={setFilterHarmonogramTeam}
+          />
+
           {isUserCreator ? 
             <SortableHarmonogram 
               items={harmonogramItems} 
@@ -223,15 +244,6 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               participants={participants}
               />
             : <>
-            <HarmonogramSearchAndFilters
-              // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
-              // cathegories={Array.from(new Set(harmonogramItems.map(item => item.cathegory))).filter((cat): cat is string => typeof cat === "string") || ["wszystkie"]}
-              // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
-              // setSearchString={setSearchHarmonogramString}
-              // setFilterType={setFilterHarmonogramType}
-              // setFilterCathegory={setFilterHarmonogramCathegory}
-              // setFilterTeam={setFilterHarmonogramTeam}
-            />
             <Harmonogram items={harmonogramItems}/>
             </>}
         </section>}
@@ -282,6 +294,15 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-lg font-semibold text-sky-600">Wyniki szczegółowe:</h2>
           </div>
+          <HarmonogramSearchAndFilters
+            // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
+            cathegories={event.cathegories}
+            // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
+            // setSearchString={setSearchHarmonogramString}
+            // setFilterType={setFilterHarmonogramType}
+            setFilterCathegory={setFilterHarmonogramCathegory}
+            // setFilterTeam={setFilterHarmonogramTeam}
+          />
           <EventScores harmonogramItems={harmonogramItems}/>
         </section>     
       </div>
