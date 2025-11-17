@@ -31,7 +31,7 @@ import { transformationParticipants } from "./EventHarmonogramForm";
 const timeRegex = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
 
 const FormSchema = z.object({
-  description: z.string().min(3).max(200),
+  description: z.string().max(200).optional(),
   team_1: z.string().max(100).or(z.literal("")).optional(),
   team_2: z.string().max(100).or(z.literal("")).optional(),
   start_time: z
