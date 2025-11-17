@@ -52,6 +52,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
       filteredItems = filteredItems.filter(item => item.cathegory === filterHarmonogramCathegory);
       addHarmonogramItems(filteredItems);
     } else if (filterHarmonogramCathegory === "wszystkie") {addHarmonogramItems(event.harmonogram || []);}
+    console.log("Filtered by participant: ", filterHarmonogramParticipant);
   }, [filterHarmonogramCathegory]);
 
   const now = new Date();
