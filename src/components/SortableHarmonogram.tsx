@@ -86,7 +86,7 @@ export default function SortableHarmonogram({
             score={scoreForm === item.id}
             cathegories={cathegories}
             participants={participants}
-            onClose={() => {setShowEditForm("");setScoreForm("")}}
+            onClose={() => {setShowEditForm(""); setScoreForm("")}}
           />
         ) : (
             <div className="w-full flex flex-col gap-2">

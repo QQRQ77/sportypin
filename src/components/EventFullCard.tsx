@@ -42,7 +42,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   // const [searchHarmonogramString, setSearchHarmonogramString] = useState<string>("");
   // const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
   const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
-  // const [filterHarmonogramTeam, setFilterHarmonogramTeam] = useState<string>("wszystkie");
+  const [filterHarmonogramParticipant, setFilterHarmonogramParticipant] = useState<string>("wszyscy");
 
   useEffect(() => {
     let filteredItems = event.harmonogram || [];
@@ -228,11 +228,11 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
           <HarmonogramSearchAndFilters
             // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
             cathegories={event.cathegories}
-            // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
+            participants={participants}
             // setSearchString={setSearchHarmonogramString}
             // setFilterType={setFilterHarmonogramType}
             setFilterCathegory={setFilterHarmonogramCathegory}
-            // setFilterTeam={setFilterHarmonogramTeam}
+            setFilterParticipant={setFilterHarmonogramParticipant}
           />
 
           {isUserCreator ? 
@@ -297,7 +297,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
           <HarmonogramSearchAndFilters
             // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
             cathegories={event.cathegories}
-            // teams={Array.from(new Set(harmonogramItems.flatMap(item => [item.team_1, item.team_2]).filter((team): team is string => typeof team === "string"))) || ["wszystkie"]}
+            participants={participants}
             // setSearchString={setSearchHarmonogramString}
             // setFilterType={setFilterHarmonogramType}
             setFilterCathegory={setFilterHarmonogramCathegory}

@@ -129,6 +129,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         ...data,
     };
 
+    console.log("UpdatedItem: ", updatedItem)
+
     if (item.start_time === data.start_time 
         && item.end_time === data.end_time 
         && item.description === data.description 
@@ -137,7 +139,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         && item.score === updatedItem.score
         && item.team_1 === updatedItem.team_1
         && item.team_2 === updatedItem.team_2
-      ) return;
+      ) {onClose(); return};
     
     if (minutesBetween(data.start_time, item.start_time) != 0 && minutesBetween(data.end_time, item.end_time) === 0) {
       setSubmitMessage("Zmiana czasu rozpoczęcia. Czy poprawić czas zakończenia?");
@@ -405,29 +407,29 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                           </FormItem>
                           )}
                         />
-                        <FormField
-                        control={form.control}
-                        name="team_2"
-                        render={({ field }) => (
-                          <FormItem>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <FormControl>
-                                <SelectTrigger className="shadow-xl">
-                                  <SelectValue placeholder="zespół 2" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {participants && participantsToSelect.map((opt, idx) => (
-                                  <SelectItem key={idx} value={opt}>
-                                    {opt}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                          )}
-                        />
+                    <FormField
+                      control={form.control}
+                      name="team_2"
+                      render={({ field }) => (
+                        <FormItem>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="shadow-xl">
+                                <SelectValue placeholder="zespół 2" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {participants && participantsToSelect.map((opt, idx) => (
+                                <SelectItem key={idx} value={opt}>
+                                  {opt}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                        )}
+                    />
                     <FormField
                       control={form.control}
                       name="description"
