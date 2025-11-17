@@ -129,8 +129,6 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
         ...data,
     };
 
-    console.log("UpdatedItem: ", updatedItem)
-
     if (item.start_time === data.start_time 
         && item.end_time === data.end_time 
         && item.description === data.description 

@@ -40,8 +40,8 @@ const FormSchema = z.object({
       .int()
       .nonnegative()
       .optional(),
-  first_name: z.string().min(2).max(100).optional(),
-  second_name: z.string().min(2).max(100).optional(),
+  first_name: z.string().max(100).optional(),
+  second_name: z.string().max(100).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
   itemType: z.string().refine(
     (val) => ["zawodnik", "zespół", "inny"].includes(val),
