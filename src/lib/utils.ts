@@ -102,4 +102,42 @@ export function addMinutesToTime(time?: string, minutes = 0): string {
   return `${hh}:${mm}`;
 }
 
+// lib/sanitizeInput.ts
+import DOMPurify from 'dompurify'; // lub 'dompurify' na serwerze
+
+type UnknownObject = Record<PropertyKey, unknown>;
+
+/**
+ * Deep-sanitizes every string inside an object/array/value.
+ * Returns a **new** object (immutable).
+ */
+export function sanitizeStrings<T>(input: T): T {
+  if (typeof input === 'string') {
+    return DOMPurify.sanitize(input) as T;
+  }
+
+  if (input === null || input === undefined) return input;
+
+  if (Array.isArray(input)) {
+    return input.map(sanitizeStrings) as T;
+  }
+
+  if (input instanceof Date || typeof input === 'number' || typeof input === 'boolean') {
+    return input;
+  }
+
+  if (typeof input === 'object') {
+    const copy: UnknownObject = {};
+    for (const key in input) {
+      if (Object.prototype.hasOwnProperty.call(input, key)) {
+        copy[key] = sanitizeStrings((input as UnknownObject)[key]);
+      }
+    }
+    return copy as T;
+  }
+
+  /* any other primitive -> return as-is */
+  return input;
+}
+
 

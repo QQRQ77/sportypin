@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Event } from "@/types";
-import DOMPurify from 'dompurify'
 
 import {
   Form,
@@ -27,6 +26,7 @@ import { Textarea } from "../ui/textarea";
 import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa wydarzenia jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa wydarzenia jest zbyt długa (maksymalnie 200 znaków)."),
@@ -101,31 +101,12 @@ export default function CreateEventForm({ eventToEdit }: Props) {
 
     const addEvent: SubmitHandler<InputType> = async (data) => {
 
-
       setSubmitButtonDisactive(true);
 
-      try {
-        const sanitizeValue = (val: any): any => {
-          if (typeof val === "string") {
-            return DOMPurify.sanitize(val, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }).trim();
-          }
-          if (Array.isArray(val)) {
-            return val.map(sanitizeValue);
-          }
-          if (val && typeof val === "object") {
-            const out: any = {};
-            for (const k in val) out[k] = sanitizeValue(val[k]);
-            return out;
-          }
-          return val;
-        };
+      const cleanedData = sanitizeStrings(data);
 
-        const sanitized = sanitizeValue(data) as InputType;
-        Object.assign(data, sanitized);
-      } catch (err) {
-        console.warn("DOMPurify import failed, skipping sanitization", err);
-      }
-
+      data = {...cleanedData};
+      
       if (sportInput != "") {
           const trimmed = sportInput.trim();
           if (trimmed.length >= 3 && !data.sports?.includes(trimmed)) {
