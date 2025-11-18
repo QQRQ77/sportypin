@@ -196,6 +196,25 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             <p><span className="text-sky-600 mr-2">Dodane przez:</span><span className="cursor-pointer hover:text-slate-500">{event.creator_name}</span></p>
           </div>
         </section>
+        
+        {/* Uczestnicy     */}
+        {(isUserCreator || (!isUserCreator && !isPast)) &&
+        <section className="relative pt-4 border-t border-slate-300">
+          <div className="w-full flex justify-between">
+            <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
+            {isUserCreator && 
+              <div className="flex gap-4">
+                <Button className="cursor-pointer" onClick={()=>{setOpenParticipantsForm(prev => !prev)}}>{openParticipantsForm? "Zamknij" : "Dodaj"}</Button>  
+              </div>}
+          </div>
+          {openParticipantsForm && 
+            <AddParticipantForm
+              eventId={event.id} 
+              setItems={setParticipants} 
+              cathegories={event.cathegories}
+              participants={participants}/>}
+          <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
+        </section>}
 
         {/* Harmonogram */}
         {(isUserCreator || (!isUserCreator && !isPast)) && 
@@ -247,25 +266,6 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             : <>
             <Harmonogram items={harmonogramItems}/>
             </>}
-        </section>}
-
-        {/* Uczestnicy     */}
-        {(isUserCreator || (!isUserCreator && !isPast)) &&
-        <section className="relative pt-4 border-t border-slate-300">
-          <div className="w-full flex justify-between">
-            <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
-            {isUserCreator && 
-              <div className="flex gap-4">
-                <Button className="cursor-pointer" onClick={()=>{setOpenParticipantsForm(prev => !prev)}}>{openParticipantsForm? "Zamknij" : "Dodaj"}</Button>  
-              </div>}
-          </div>
-          {openParticipantsForm && 
-            <AddParticipantForm
-              eventId={event.id} 
-              setItems={setParticipants} 
-              cathegories={event.cathegories}
-              participants={participants}/>}
-          <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
         </section>}
 
         <section className="relative pt-4 border-t border-slate-300">

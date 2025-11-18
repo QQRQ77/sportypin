@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { Event } from "@/types";
+import DOMPurify from 'dompurify'
 
 import {
   Form,
@@ -100,7 +101,30 @@ export default function CreateEventForm({ eventToEdit }: Props) {
 
     const addEvent: SubmitHandler<InputType> = async (data) => {
 
+
       setSubmitButtonDisactive(true);
+
+      try {
+        const sanitizeValue = (val: any): any => {
+          if (typeof val === "string") {
+            return DOMPurify.sanitize(val, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] }).trim();
+          }
+          if (Array.isArray(val)) {
+            return val.map(sanitizeValue);
+          }
+          if (val && typeof val === "object") {
+            const out: any = {};
+            for (const k in val) out[k] = sanitizeValue(val[k]);
+            return out;
+          }
+          return val;
+        };
+
+        const sanitized = sanitizeValue(data) as InputType;
+        Object.assign(data, sanitized);
+      } catch (err) {
+        console.warn("DOMPurify import failed, skipping sanitization", err);
+      }
 
       if (sportInput != "") {
           const trimmed = sportInput.trim();
