@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import { createId } from "@paralleldrive/cuid2";
 import { saveClassification } from "@/lib/events.actions";
 import { transformationParticipants } from "./EventHarmonogramForm";
+import { sanitizeStrings } from "@/lib/utils";
 
 
 interface Props {
@@ -76,6 +77,9 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);
+
+    const cleanedData = sanitizeStrings(data);
+    data = {...cleanedData};
     
     const submissionData: ClassificationItem = {
       ...data,

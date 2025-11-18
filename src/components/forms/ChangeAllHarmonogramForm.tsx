@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "../ui/submitButton";
 import { useState } from "react";
 import { generateDateOptions } from "./EventHarmonogramForm";
-import { addMinutesToTime, minutesBetween } from "@/lib/utils";
+import { addMinutesToTime, minutesBetween, sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   pause: z
@@ -84,8 +84,10 @@ export default function ChangeAllHarmonogramForm({ cathegories, start_date, end_
   
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     setButtonSubmitting(true);
+    
+    const cleanedData = sanitizeStrings(data);
+    data = {...cleanedData};
 
-    console.log("Data: ", data)
     const { pause, defaultItemTime, cathegory, itemType, date } = data;
 
     //TODO: Implement the logic to change all harmonogram items

@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import SubmitButton from "../ui/submitButton";
 import { Input } from "@/components/ui/input";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   description: z.string().min(3).max(200),
@@ -62,6 +63,9 @@ export default function ClassificationItemForm({item, eventId, cathegories = [],
 
     const handleSubmit: SubmitHandler<FormValues> = async (data) => {
         setButtonSubmitting(true);
+
+        const cleanedData = sanitizeStrings(data);
+        data = {...cleanedData};
         
         const submissionData: ClassificationItem = {
           ...item,

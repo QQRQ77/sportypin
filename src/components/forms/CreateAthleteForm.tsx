@@ -25,6 +25,7 @@ import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
     first_name: z.string().min(3, "Imię zawodnika jest zbyt krótkie (minimum 3 znaki).").max(50, "Imię zawodnika jest zbyt długie (maksymalnie 50 znaków)."),
@@ -63,6 +64,9 @@ export default function CreateAthleteForm() {
     const addAthlete: SubmitHandler<InputType> = async (data) => {
 
       setSubmitButtonDisactive(true);
+      
+      const cleanedData = sanitizeStrings(data);
+      data = {...cleanedData};
 
       if (teamInput != "") {
           const trimmed = teamInput.trim();

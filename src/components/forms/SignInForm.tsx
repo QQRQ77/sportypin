@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import Link from "next/link"
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
+import { sanitizeStrings } from "@/lib/utils";
 
   const formSchema = z.object({
       email: z.string().email("Proszę podać poprawny adres email."),
@@ -43,10 +44,12 @@ import { EyeIcon, EyeSlashIcon } from "@heroicons/react/20/solid";
       },
     })
   
-    function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(data: z.infer<typeof formSchema>) {
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
-      console.log(values)
+      const cleanedData = sanitizeStrings(data);
+      data = {...cleanedData};
+      console.log(data)
     }
   
   return (

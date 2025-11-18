@@ -17,6 +17,7 @@ import SubmitButton from "../ui/submitButton"
 import { searchVenuesRanked } from "@/lib/venue.actions"
 import VenueList from "../VenueList"
 import MultipleMarkersMap from "../GoogleMapsComponent"
+import { sanitizeStrings } from "@/lib/utils"
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków).").optional(),
@@ -38,6 +39,9 @@ export default function VenueSearchFormAndCards({ userId }: VenueSearchProps) {
 
     const searchVenues: SubmitHandler<InputType> = async (data) => {
       setSubmitButtonDisactive(true);
+
+      const cleanedData = sanitizeStrings(data);
+      data = {...cleanedData};
 
       const result = await searchVenuesRanked(data.name)
 

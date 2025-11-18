@@ -25,6 +25,7 @@ import { Input } from "../ui/input";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
     name: z.string().min(3, "Nazwa użytkownika jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa użytkownika jest zbyt długa (maksymalnie 50 znaków)."),
@@ -64,7 +65,8 @@ export default function SignUpForm() {
     // }, [watch().password, watch]);
 
     const saveUser: SubmitHandler<InputType> = async (data) => {
-        console.log("Form data: ", data)
+        const cleanedData = sanitizeStrings(data);
+        data = {...cleanedData};
         // const {confirmPassword, accepted, ...user} = data
         try {
             // const result = await registerUser(user)

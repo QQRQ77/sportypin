@@ -104,7 +104,6 @@ export default function CreateEventForm({ eventToEdit }: Props) {
       setSubmitButtonDisactive(true);
 
       const cleanedData = sanitizeStrings(data);
-
       data = {...cleanedData};
       
       if (sportInput != "") {

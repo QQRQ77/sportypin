@@ -22,7 +22,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { addMinutesToTime, minutesBetween } from "@/lib/utils";
+import { addMinutesToTime, minutesBetween, sanitizeStrings } from "@/lib/utils";
 import { saveHarmonogram } from "@/lib/events.actions";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
@@ -122,6 +122,9 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
   };
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+
+    const cleanedData = sanitizeStrings(data);
+    data = {...cleanedData};
 
     // Update the item with new values
     const updatedItem = {

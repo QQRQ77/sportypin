@@ -24,6 +24,7 @@ import { createTeam } from "@/lib/teams.actions";
 import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa zespołu jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków)."),
@@ -57,6 +58,8 @@ export default function CreateTeamForm() {
     const addTeam: SubmitHandler<InputType> = async (data) => {
 
         setSubmitButtonDisactive(true);
+        const cleanedData = sanitizeStrings(data);
+        data = {...cleanedData};
 
         if (memberInput != "") {
             const trimmed = memberInput.trim();

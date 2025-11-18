@@ -24,6 +24,7 @@ import SubmitButton from "../ui/submitButton";
 import { useState } from "react";
 import { createId } from "@paralleldrive/cuid2";
 import { saveNewParticipant } from "@/lib/events.actions";
+import { sanitizeStrings } from "@/lib/utils";
 
 
 interface CompetitorFormProps {
@@ -67,6 +68,10 @@ export default function AddParticipantForm({cathegories, eventId, participants =
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
       setButtonSubmitting(true);
+
+      const cleanedData = sanitizeStrings(data);
+      data = {...cleanedData};
+
       const submissionData = {
         ...data,
         id: createId(),

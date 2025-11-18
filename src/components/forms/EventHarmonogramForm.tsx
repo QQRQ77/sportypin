@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { addMinutesToTime, minutesBetween } from "@/lib/utils";
+import { addMinutesToTime, minutesBetween, sanitizeStrings } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -178,6 +178,9 @@ export default function HarmonogramForm({
 
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);
+    
+    const cleanedData = sanitizeStrings(data);
+    data = {...cleanedData};
 
     const submissionData = {
       ...data,

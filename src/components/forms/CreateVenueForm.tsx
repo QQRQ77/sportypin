@@ -27,6 +27,7 @@ import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 import { createVenue } from "@/lib/venue.actions";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa obiektu jest zbyt krótka (minimum 3 znaki).").max(200, "Nazwa obiektu jest zbyt długa (maksymalnie 200 znaków)."),
@@ -72,6 +73,9 @@ export default function CreateVenueForm() {
     const addEvent: SubmitHandler<InputType> = async (data) => {
 
       setSubmitButtonDisactive(true);
+          
+      const cleanedData = sanitizeStrings(data);
+      data = {...cleanedData};
 
       if (sportInput != "") {
           const trimmed = sportInput.trim();

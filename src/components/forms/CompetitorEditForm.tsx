@@ -22,6 +22,7 @@ import {
 import SubmitButton from "../ui/submitButton";
 import { useState } from "react";
 import { saveNewParticipant } from "@/lib/events.actions";
+import { sanitizeStrings } from "@/lib/utils";
 
 interface Props {
   eventId: string;
@@ -72,6 +73,10 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
     
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);
+    
+    const cleanedData = sanitizeStrings(data);
+    data = {...cleanedData};
+
     const submissionData = {
       ...participant,
       ...data,
