@@ -245,7 +245,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               participants={participants}
               setItems={addHarmonogramItems}/>}
 
-          <HarmonogramSearchAndFilters
+          {!isUserCreator && <HarmonogramSearchAndFilters
             // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
             cathegories={event.cathegories}
             participants={participants}
@@ -253,7 +253,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             // setFilterType={setFilterHarmonogramType}
             setFilterCathegory={setFilterHarmonogramCathegory}
             setFilterParticipant={setFilterHarmonogramParticipant}
-          />
+          />}
 
           {isUserCreator ? 
             <SortableHarmonogram 
@@ -295,7 +295,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
           <div className="w-full mb-2 flex justify-between">
             <h2 className="text-lg font-semibold text-sky-600">Wyniki szczegółowe:</h2>
           </div>
-          <HarmonogramSearchAndFilters
+          {!isUserCreator && <HarmonogramSearchAndFilters
             // types={Array.from(new Set(harmonogramItems.map(item => item.itemType))).filter((type): type is string => typeof type === "string") || ["wszystkie"]}
             cathegories={event.cathegories}
             participants={participants}
@@ -303,7 +303,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             // setFilterType={setFilterHarmonogramType}
             setFilterCathegory={setFilterHarmonogramCathegory}
             // setFilterTeam={setFilterHarmonogramTeam}
-          />
+          />}
           <EventScores harmonogramItems={harmonogramItems}/>
         </section>     
       </div>
