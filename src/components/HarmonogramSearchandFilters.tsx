@@ -115,7 +115,7 @@ export default function HarmonogramSearchAndFilters({cathegories, setFilterCathe
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {participants && participantsToSelect.map((opt, idx) => (
+                      {participants && ["wszyscy", ...participantsToSelect].map((opt, idx) => (
                         <SelectItem key={idx} value={opt}>
                           {opt}
                         </SelectItem>

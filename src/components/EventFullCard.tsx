@@ -45,6 +45,8 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [filterHarmonogramParticipant, setFilterHarmonogramParticipant] = useState<string>("wszyscy");
 
   useEffect(() => {
+    console.log("filterHarmonogramCathegory changed:", filterHarmonogramCathegory);
+
     let filteredItems = event.harmonogram || [];
 
     // Filtrowanie po kategorii
@@ -52,8 +54,20 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
       filteredItems = filteredItems.filter(item => item.cathegory === filterHarmonogramCathegory);
       addHarmonogramItems(filteredItems);
     } else if (filterHarmonogramCathegory === "wszystkie") {addHarmonogramItems(event.harmonogram || []);}
-    console.log("Filtered by participant: ", filterHarmonogramParticipant);
   }, [filterHarmonogramCathegory]);
+
+  useEffect(() => {
+    let filteredItems = event.harmonogram || [];
+    // Filtrowanie po uczestniku
+    if (filterHarmonogramParticipant && filterHarmonogramParticipant !== "wszyscy") {
+      filteredItems = filteredItems.filter(item => 
+        item.team_1 === filterHarmonogramParticipant || 
+        item.team_2 === filterHarmonogramParticipant ||
+        item.description === filterHarmonogramParticipant
+      );
+      addHarmonogramItems(filteredItems);
+    } else if (filterHarmonogramParticipant === "wszyscy") {addHarmonogramItems(event.harmonogram || []);}
+  }, [filterHarmonogramParticipant]);
 
   const now = new Date();
   const start = new Date(event.start_date);
@@ -302,9 +316,11 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             // setSearchString={setSearchHarmonogramString}
             // setFilterType={setFilterHarmonogramType}
             setFilterCathegory={setFilterHarmonogramCathegory}
-            // setFilterTeam={setFilterHarmonogramTeam}
+            setFilterParticipant={setFilterHarmonogramParticipant}
           />}
-          <EventScores harmonogramItems={harmonogramItems}/>
+          <EventScores 
+            harmonogramItems={harmonogramItems}
+            participantSelected={filterHarmonogramParticipant}/>
         </section>     
       </div>
     </article>

@@ -2,9 +2,10 @@ import { HarmonogramItem } from "@/types";
 
 interface EventScoresProps {
   harmonogramItems?: HarmonogramItem[];
+  participantSelected?: string;
 }
 
-export default function EventScores({ harmonogramItems = []}: EventScoresProps) {
+export default function EventScores({ harmonogramItems = [], participantSelected}: EventScoresProps) {
 
   return (
     <>
@@ -15,7 +16,12 @@ export default function EventScores({ harmonogramItems = []}: EventScoresProps) 
             <div className="flex gap-2">
               <div className="w-[80px] text-center">{idx + 1}.</div>
             </div>
-            <div className="flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
+            <div className="flex-1 text-center lg:text-left font-medium">
+              <span className={`${item.team_1 === participantSelected && "font-bold"}`}>{item.team_1}</span>
+              {item.team_1 && " vs. "}
+              <span className={`${item.team_2 === participantSelected && "font-bold"}`}>{item.team_2}</span>
+              {((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}
+            </div>
             <div className="w-[100px] text-center">
               {item.score}
             </div>
