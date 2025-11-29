@@ -26,6 +26,12 @@ import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { sanitizeStrings } from "@/lib/utils";
+import ComboInput from "../ComboInput";
+
+const teamSchema = z.object({
+  id: z.string(),
+  name: z.string().min(3, "Nazwa drużyny domowej jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 100 znaków).")
+});
 
 const FormSchema = z.object({
     first_name: z.string().min(3, "Imię zawodnika jest zbyt krótkie (minimum 3 znaki).").max(50, "Imię zawodnika jest zbyt długie (maksymalnie 50 znaków)."),
@@ -35,7 +41,7 @@ const FormSchema = z.object({
         .min(3, "Nazwa zespołu jest zbyt krótka (minimum 3 znaki).")
         .max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków).")
     ).optional(),
-    home_team: z.string().min(3, "Nazwa drużyny domowej jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 50 znaków).").optional(),
+    home_team: teamSchema.optional(),
     birth_day: z.number().min(1, "Dzień musi być większy niż 0.").max(31, "Dzień musi być mniejszy lub równy 31.").optional(),
     birth_month: z.string().optional().refine(value => {
         const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
@@ -64,7 +70,15 @@ export default function CreateAthleteForm() {
     const addAthlete: SubmitHandler<InputType> = async (data) => {
 
       setSubmitButtonDisactive(true);
-      
+
+      // Rozdzielenie pola home_team na home_team_id i home_team_name
+      if (data.home_team) {
+        const { id: home_team_id, name: home_team_name } = data.home_team;
+        (data as any).home_team_id = home_team_id;
+        (data as any).home_team_name = home_team_name;
+        delete (data as any).home_team;
+      }
+     
       const cleanedData = sanitizeStrings(data);
       data = {...cleanedData};
 
@@ -99,9 +113,7 @@ export default function CreateAthleteForm() {
           
         try {
             const athlete = await createAthlete({...data, imageUrls: urls}) 
-
             if(athlete) {router.push(`/athlete/${athlete.id}`)} else {router.push("/")}
-                       
         } catch (error) {
             setSubmitButtonDisactive(false);
             toast.error("Upps!. Coś poszło nie tak...")
@@ -109,28 +121,28 @@ export default function CreateAthleteForm() {
         }
     } 
 
-        const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-          const files = e.target.files;
-          if (!files) return;
-    
-          const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
-          if (remainingSlots <= 0) return;
-    
-          const validFiles = Array.from(files)
-            .filter((f) => {
-              const ok = f.size <= MAX_UPLOADED_FILE_SIZE
-              if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
-              return ok;
-            })
-            .slice(0, remainingSlots);
-    
-          validFiles.forEach((file) => {
-            const url = URL.createObjectURL(file);
-            setImageUrls((prev) => [...prev, url]);
-          });
-    
-          e.target.value = ""; // reset inputa   
-        }
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (!files) return;
+
+      const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+      if (remainingSlots <= 0) return;
+
+      const validFiles = Array.from(files)
+        .filter((f) => {
+          const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+          if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+          return ok;
+        })
+        .slice(0, remainingSlots);
+
+      validFiles.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        setImageUrls((prev) => [...prev, url]);
+      });
+
+      e.target.value = ""; // reset inputa   
+    }
         
       const removeImage = (index: number) => {
         setImageUrls((prev) => prev.filter((_, i) => i !== index));
@@ -200,7 +212,7 @@ export default function CreateAthleteForm() {
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
                     <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
                   </div>
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="teams"
                     render={({ field }) => {
@@ -262,27 +274,34 @@ export default function CreateAthleteForm() {
                           <FormMessage />
                         </FormItem>
                       );
-                    }}
-                  />
-                  <FormField
+                    }}*/}
+
+                    <ComboInput
+                      control={form.control}
+                      name="home_team"
+                      label="Wybierz zespół"
+                      placeholder="Wpisz nazwę…"
+                    />
+                    
+                  {/* <FormField
                       control={form.control}
                       name="home_team"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel>Drużyna domowa</FormLabel>
+                              <FormLabel>Aktualny zespół</FormLabel>
                               <FormControl>
-                                  <Input placeholder="Wpisz nazwę drużyny domowej" {...field} />
+                                  <Input placeholder="Wpisz nazwę aktualnego zespołu" {...field} />
                               </FormControl>
                               <FormDescription>
-                                  To jest nazwa drużyny, w której zawodnik gra na co dzień.
+                                  To jest nazwa zespołu, w którym zawodnik gra na co dzień.
                               </FormDescription>
                               <FormMessage />
                           </FormItem>
                        )}
-                  />
-                  <FormLabel>Data urodzenia zawodnika</FormLabel>
+                  /> */}
+                  <FormLabel>Rok urodzenia zawodnika</FormLabel>
                   <div className="flex justify-start gap-3">
-                  <FormField
+                  {/* <FormField
                       control={form.control}
                       name="birth_day"
                       render={({ field }) => (
@@ -325,7 +344,7 @@ export default function CreateAthleteForm() {
                               </FormControl>
                               <FormMessage />
                           </FormItem>
-                      )}/>
+                      )}/> */}
                     <FormField
                       control={form.control}
                       name="birth_year"

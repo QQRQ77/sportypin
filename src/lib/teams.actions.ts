@@ -16,3 +16,14 @@ export async function createTeam(formData: CreateTeam) {
 
   return data[0];
 }
+
+export async function searchTeams(query: string): Promise<{ id: string; name: string }[]> {
+  if (!query) return [];
+  const supabase = createSupabaseClient();
+  const { data } = await supabase
+    .from('Teams')
+    .select('id, name')
+    .ilike('name', `%${query}%`)
+    .limit(8);
+  return (data ?? []).map((i) => ({ id: i.id, name: i.name }));
+}

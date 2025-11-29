@@ -16,3 +16,18 @@ export async function createAthlete(formData: CreateAthlete) {
 
   return data[0];
 }
+
+export async function getAthleteById(athleteId: string) {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Athletes')
+    .select('*')
+    .eq('id', athleteId);
+
+  if (error) {
+    console.error('Error fetching athlete:', error);
+    throw new Error(error.message || 'Failed to fetch athlete');
+  }
+
+  return data[0];
+}
