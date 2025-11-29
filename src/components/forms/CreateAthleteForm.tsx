@@ -42,6 +42,8 @@ const FormSchema = z.object({
         .max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków).")
     ).optional(),
     home_team: teamSchema.optional(),
+    home_team_id: z.string().optional(),
+    home_team_name: z.string().optional(),
     birth_day: z.number().min(1, "Dzień musi być większy niż 0.").max(31, "Dzień musi być mniejszy lub równy 31.").optional(),
     birth_month: z.string().optional().refine(value => {
         const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
@@ -74,9 +76,9 @@ export default function CreateAthleteForm() {
       // Rozdzielenie pola home_team na home_team_id i home_team_name
       if (data.home_team) {
         const { id: home_team_id, name: home_team_name } = data.home_team;
-        (data as any).home_team_id = home_team_id;
-        (data as any).home_team_name = home_team_name;
-        delete (data as any).home_team;
+        data.home_team_id = home_team_id;
+        data.home_team_name = home_team_name;
+        delete data.home_team;
       }
      
       const cleanedData = sanitizeStrings(data);

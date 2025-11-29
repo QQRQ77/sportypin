@@ -1,17 +1,22 @@
 // components/ComboInput.tsx
 import { useState, useRef, useEffect } from 'react';
-import { useController, UseControllerProps } from 'react-hook-form';
+import { useController, UseControllerProps, FieldValues } from 'react-hook-form';
 import clsx from 'clsx';
 import { useSearchTeams } from '@/lib/hooks';
 
 type Option = { id: string; name: string };
 
-type Props = UseControllerProps<any> & {
+// type Props = UseControllerProps<any> & {
+//   label?: string;
+//   placeholder?: string;
+// };
+
+type Props<TForm extends FieldValues> = UseControllerProps<TForm> & {
   label?: string;
   placeholder?: string;
 };
 
-export default function ComboInput(props: Props) {
+export default function ComboInput<TForm extends FieldValues>(props: Props<TForm>) {
   const {
     field: { onChange, value = { id: '', name: '' }, ref },
     fieldState: { error },
