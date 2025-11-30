@@ -9,9 +9,6 @@ interface AthleteCardProps {
 
 export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) {
 
-  console.log("TeamLogoURL 222: ", teamLogoURL);
-  console.log("Athlete Image: ", athlete.imageUrls);
- 
   return (
     <>
       <div className="h-[500px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
@@ -26,15 +23,13 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <h2 className="text-2xl font-bold">{athlete.first_name} {athlete.last_name}</h2>
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
           <div className="flex justify-center items-center gap-4">
-            {teamLogoURL && 
               <Image
-                src={teamLogoURL || "/images/default_team_logo.jpeg"}
+                src={teamLogoURL ? teamLogoURL : "/images/default_team_logo.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
-                className="object-contain rounded-xl"
+                className={`object-contain rounded-xl`}
               />
-            }
             {athlete.home_team_id ?  
               <Link 
                 href={`/teams/${athlete.home_team_id}`}
