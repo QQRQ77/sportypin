@@ -11,13 +11,15 @@ export default async function AthletePage({ params }: { params: Promise<{ athlet
   const { userId } = await auth();
   if ( userId ) {await createUser()}
 
-  const athlete: CreateAthlete = await getAthleteById(athlete_id);
+  console.log("Athlete id: ", athlete_id);
 
-  console.log("Athlete data in AthletePage:", athlete);
+  // const athlete: CreateAthlete = await getAthleteById(athlete_id);
+
+  // console.log("Athlete data in AthletePage:", athlete);
 
   return (
     <div className="flex items-center justify-center flex-col w-11/12 mx-auto mt-20 gap-4 mb-20">
-      {athlete ? (athlete.id) : <p>Athlete not found</p>}
+      Hello
       {/* <AthleteCard {...athlete} /> */}
     </div>
   );
