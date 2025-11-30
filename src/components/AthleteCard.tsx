@@ -26,9 +26,9 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
               <Image
                 src={teamLogoURL}
                 alt={`${athlete.home_team_name} logo`}
-                width={50}
-                height={50}
-                className="object-contain rounded-full border-2 border-white"
+                width={20}
+                height={20}
+                className="object-contain rounded-xl border-2 border-white"
               />
             }
             <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
