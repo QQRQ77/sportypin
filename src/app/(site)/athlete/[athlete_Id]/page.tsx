@@ -1,4 +1,4 @@
-import AthleteCard from "@/components/AthleteCard";
+// import AthleteCard from "@/components/AthleteCard";
 import { getAthleteById } from "@/lib/athletes.actions";
 import { createUser } from "@/lib/users.actions";
 import { CreateAthlete } from "@/types";
@@ -13,9 +13,12 @@ export default async function AthletePage({ params }: { params: Promise<{ athlet
 
   const athlete: CreateAthlete = await getAthleteById(athlete_id);
 
+  console.log("Athlete data in AthletePage:", athlete);
+
   return (
     <div className="flex items-center justify-center flex-col w-11/12 mx-auto mt-20 gap-4 mb-20">
-      <AthleteCard {...athlete} />
+      {athlete ? (athlete.id) : <p>Athlete not found</p>}
+      {/* <AthleteCard {...athlete} /> */}
     </div>
   );
 }

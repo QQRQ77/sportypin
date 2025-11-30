@@ -6,11 +6,6 @@ import { useSearchTeams } from '@/lib/hooks';
 
 type Option = { id: string; name: string };
 
-// type Props = UseControllerProps<any> & {
-//   label?: string;
-//   placeholder?: string;
-// };
-
 type Props<TForm extends FieldValues> = UseControllerProps<TForm> & {
   label?: string;
   placeholder?: string;

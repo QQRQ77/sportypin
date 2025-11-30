@@ -1,4 +1,7 @@
 interface CreateAthlete {
+  id?: string;
+  creator?: string;
+  creator_name?: string;
   first_name: string;
   last_name?: string;
   teams?: string[];
