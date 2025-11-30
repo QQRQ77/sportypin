@@ -1,6 +1,8 @@
+'use client';
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface AthleteCardProps {
   athlete: CreateAthlete;
@@ -8,6 +10,12 @@ interface AthleteCardProps {
 }
 
 export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) {
+  const [teamLogo, setTeamLogo] = useState<string>(teamLogoURL || "/images/default_team_logo.jpeg");
+
+  useEffect(() => {
+    if (teamLogoURL) {
+      setTeamLogo(teamLogoURL);
+    }}, [teamLogoURL]);
 
   return (
     <>
@@ -24,7 +32,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
           <div className="flex justify-center items-center gap-4">
               <Image
-                src={"/images/default_team_logo.jpeg"}
+                src={teamLogo}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
