@@ -27,7 +27,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <div className="flex justify-center items-center gap-4">
             {teamLogoURL && 
               <Image
-                src={teamLogoURL}
+                src={"https://aqmxliazkvtwjmsrkcpa.supabase.co/storage/v1/object/public/sportpin/teams/62336a91-956a-4225-9b90-eb244e6cb635.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={20}
                 height={20}
