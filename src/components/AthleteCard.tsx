@@ -28,7 +28,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <div className="flex justify-center items-center gap-4">
             {teamLogoURL && 
               <Image
-                src={teamLogoURL}
+                src={teamLogoURL || "/images/default_team_logo.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
