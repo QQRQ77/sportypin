@@ -27,14 +27,17 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <div className="flex justify-center items-center gap-4">
             {teamLogoURL && 
               <Image
-                src={"https://aqmxliazkvtwjmsrkcpa.supabase.co/storage/v1/object/public/sportpin/teams/62336a91-956a-4225-9b90-eb244e6cb635.jpeg"}
+                src={teamLogoURL}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
                 className="object-contain rounded-xl"
               />
             }
-            <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
+            {athlete.home_team_id ?             
+            <h2 className="text-xl font-bold cursor-pointer hover:text-gray-600">{athlete.home_team_name}</h2>
+            :
+            <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>}
           </div>
         </div>
       </div>
