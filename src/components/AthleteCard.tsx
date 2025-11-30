@@ -8,12 +8,6 @@ interface AthleteCardProps {
 }
 
 export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) {
-  // const [teamLogo, setTeamLogo] = useState<string>(teamLogoURL || "/images/default_team_logo.jpeg");
-
-  // useEffect(() => {
-  //   if (teamLogoURL) {
-  //     setTeamLogo(teamLogoURL);
-  //   }}, [teamLogoURL]);
 
   console.log("Team logo URL in AthleteCard:", teamLogoURL);
 
@@ -32,7 +26,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
           <div className="flex justify-center items-center gap-4">
               <Image
-                src="/images/default_team_logo.jpeg"
+                src={teamLogoURL || "/images/default_team_logo.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
