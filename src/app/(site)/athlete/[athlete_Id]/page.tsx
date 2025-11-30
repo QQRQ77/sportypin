@@ -1,12 +1,13 @@
 // import AthleteCard from "@/components/AthleteCard";
 // import { getAthleteById } from "@/lib/athletes.actions";
+import JsonViewer from "@/components/utils/JSONviewer";
 import { createUser } from "@/lib/users.actions";
 // import { CreateAthlete } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function AthletePage({ params }: { params: Promise<{ athlete_id: string }> }) {
 
-  const { athlete_id } = await params;
+  const athlete_id = await params;
 
   const { userId } = await auth();
   if ( userId ) {await createUser()}
@@ -20,6 +21,7 @@ export default async function AthletePage({ params }: { params: Promise<{ athlet
   return (
     <div className="flex items-center justify-center flex-col w-11/12 mx-auto mt-20 gap-4 mb-20">
       Hello
+      <JsonViewer data={athlete_id} />
       {/* <AthleteCard {...athlete} /> */}
     </div>
   );
