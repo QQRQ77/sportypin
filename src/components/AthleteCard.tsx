@@ -25,7 +25,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
           <h2 className="text-2xl font-bold">{athlete.first_name} {athlete.last_name}</h2>
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
           <div className="flex justify-center items-center gap-4">
-              <Image
+              <img
                 src={teamLogoURL || "/images/default_team_logo.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
