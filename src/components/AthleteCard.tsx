@@ -1,5 +1,6 @@
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
+import Link from "next/link";
 
 interface AthleteCardProps {
   athlete: CreateAthlete;
@@ -34,8 +35,13 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
                 className="object-contain rounded-xl"
               />
             }
-            {athlete.home_team_id ?             
-            <h2 className="text-xl font-bold cursor-pointer hover:text-gray-600">{athlete.home_team_name}</h2>
+            {athlete.home_team_id ?  
+              <Link 
+                href={`/teams/${athlete.home_team_id}`}
+                className="text-xl font-bold cursor-pointer hover:text-gray-400"
+              >
+                {athlete.home_team_name}
+              </Link>           
             :
             <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>}
           </div>
