@@ -29,9 +29,9 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
               <Image
                 src={"https://aqmxliazkvtwjmsrkcpa.supabase.co/storage/v1/object/public/sportpin/teams/62336a91-956a-4225-9b90-eb244e6cb635.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
-                width={20}
-                height={20}
-                className="object-contain rounded-xl border-2 border-white"
+                width={50}
+                height={50}
+                className="object-contain rounded-xl"
               />
             }
             <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
