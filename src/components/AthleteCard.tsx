@@ -15,6 +15,8 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
   //     setTeamLogo(teamLogoURL);
   //   }}, [teamLogoURL]);
 
+  console.log("Team logo URL in AthleteCard:", teamLogoURL);
+
   return (
     <>
       <div className="h-[500px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
