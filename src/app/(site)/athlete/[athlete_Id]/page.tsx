@@ -1,7 +1,7 @@
 // import AthleteCard from "@/components/AthleteCard";
-import { getAthleteById } from "@/lib/athletes.actions";
+// import { getAthleteById } from "@/lib/athletes.actions";
 import { createUser } from "@/lib/users.actions";
-import { CreateAthlete } from "@/types";
+// import { CreateAthlete } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function AthletePage({ params }: { params: Promise<{ athlete_id: string }> }) {
