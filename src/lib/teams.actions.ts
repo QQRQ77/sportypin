@@ -27,3 +27,17 @@ export async function searchTeams(query: string): Promise<{ id: string; name: st
     .limit(8);
   return (data ?? []).map((i) => ({ id: i.id, name: i.name }));
 }
+
+export async function getTeamLogoURL(teamId: string) {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Teams')
+    .select('logoURL')
+    .eq('id', teamId)
+    .single();
+  if (error) {
+    console.error('Error fetching team logo URL:', error);
+    throw new Error(error.message || 'Failed to fetch team logo URL');
+  }
+  return data?.logoURL || null;
+}

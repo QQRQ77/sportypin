@@ -1,7 +1,12 @@
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
 
-export default function AthleteCard(athlete: CreateAthlete) {
+interface AthleteCardProps {
+  athlete: CreateAthlete;
+  teamLogoURL?: string | null;
+}
+
+export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) {
  
   return (
     <>
@@ -16,7 +21,18 @@ export default function AthleteCard(athlete: CreateAthlete) {
         <div className="absolute bottom-0 w-full bg-orange-700 bg-opacity-60 text-white p-4 text-center flex flex-col justify-center items-center gap-3">
           <h2 className="text-2xl font-bold">{athlete.first_name} {athlete.last_name}</h2>
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
-          <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
+          <div className="flex justify-center items-center gap-4">
+            {teamLogoURL && 
+              <Image
+                src={teamLogoURL}
+                alt={`${athlete.home_team_name} logo`}
+                width={50}
+                height={50}
+                className="object-contain rounded-full border-2 border-white"
+              />
+            }
+            <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
+          </div>
         </div>
       </div>
     </>
