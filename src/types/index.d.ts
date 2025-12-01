@@ -17,12 +17,13 @@ interface CreateAthlete {
 interface CreateTeam {
   name: string;
   host_city?: string;
+  sports?: string[];
+  cathegories?: string[];
   members?: string[];
   zip_code?: string;
-  birth_day?: number;
-  birth_month?: number;
-  birth_year?: number;
   imageUrls?: string[];
+  contact_email?: string;
+  contact_phone?: string;
 }
 
 interface CreateEvent{

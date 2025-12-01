@@ -29,6 +29,19 @@ import { sanitizeStrings } from "@/lib/utils";
 const FormSchema = z.object({
   name: z.string().min(3, "Nazwa zespołu jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa zespołu jest zbyt długa (maksymalnie 50 znaków)."),
   host_city: z.string().min(3, "Nazwa miasta jest zbyt krótka (minimum 3 znaki).").max(50, "Nazwa miasta jest zbyt długa (maksymalnie 50 znaków).").optional(),
+  sports: z.array(
+      z.string()
+      .min(2, "Nazwa sportu są jest zbyt krótka (minimum 2 znaki).")
+      .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+    ).optional(),
+  cathegories: z.array(
+    z.string()
+    .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
+    .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+  ).optional(),
+  contact_email: z.string().email("Podaj poprawny adres email.").optional(),
+  contact_phone: z.string()
+    .regex(/^\+?\d{9,15}$/, "Numer telefonu musi zawierać od 9 do 15 cyfr i może zaczynać się od znaku +.").optional(),  
   members: z.array(
     z.string()
     .min(3, "Dane zawodnika są jest zbyt krótkie (minimum 3 znaki).")
@@ -54,6 +67,8 @@ export default function CreateTeamForm() {
     const [imageUrls, setImageUrls] = useState<string[]>([])
     const [imageError, setImageError] = useState<string>("")
     const [memberInput, setMemberInput] = useState("");
+    const [sportInput, setSportInput] = useState("");
+    const [cathegoryInput, setCathegoryInput] = useState("");
         
     const addTeam: SubmitHandler<InputType> = async (data) => {
 
@@ -67,7 +82,29 @@ export default function CreateTeamForm() {
               data.members = [...(data.members || []), trimmed];
               setMemberInput("");
             } else {
-              toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+              toast.error("Dane zawodnika muszą mieć co najmniej 3 znaki i nie może być duplikatem.");
+              return;
+            }
+        }
+
+        if (sportInput != "") {
+            const trimmed = sportInput.trim();
+            if (trimmed.length >= 3 && !data.sports?.includes(trimmed)) {
+              data.sports = [...(data.sports || []), trimmed];
+              setSportInput("");
+            } else {
+              toast.error("Nazwa sportu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+              return;
+            }
+        }
+
+        if (cathegoryInput != "") {
+            const trimmed = cathegoryInput.trim();
+            if (trimmed.length >= 3 && !data.cathegories?.includes(trimmed)) {
+              data.cathegories = [...(data.cathegories || []), trimmed];
+              setCathegoryInput("");
+            } else {
+              toast.error("Nazwa kategorii musi mieć co najmniej 3 znaki i nie może być duplikatem.");
               return;
             }
         }
@@ -104,31 +141,31 @@ export default function CreateTeamForm() {
     } 
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-          const files = e.target.files;
-          if (!files) return;
-    
-          const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
-          if (remainingSlots <= 0) return;
-    
-          const validFiles = Array.from(files)
-            .filter((f) => {
-              const ok = f.size <= MAX_UPLOADED_FILE_SIZE
-              if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
-              return ok;
-            })
-            .slice(0, remainingSlots);
-    
-          validFiles.forEach((file) => {
-            const url = URL.createObjectURL(file);
-            setImageUrls((prev) => [...prev, url]);
-          });
-    
-          e.target.value = ""; // reset inputa   
-        }
+      const files = e.target.files;
+      if (!files) return;
+
+      const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+      if (remainingSlots <= 0) return;
+
+      const validFiles = Array.from(files)
+        .filter((f) => {
+          const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+          if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+          return ok;
+        })
+        .slice(0, remainingSlots);
+
+      validFiles.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        setImageUrls((prev) => [...prev, url]);
+      });
+
+      e.target.value = ""; // reset inputa   
+    }
         
-        const removeImage = (index: number) => {
-          setImageUrls((prev) => prev.filter((_, i) => i !== index));
-        };
+    const removeImage = (index: number) => {
+      setImageUrls((prev) => prev.filter((_, i) => i !== index));
+    };
 
     return (
         <>
@@ -211,6 +248,136 @@ export default function CreateTeamForm() {
                           </FormItem>
                        )}
                   />
+
+                  <FormField
+                    control={form.control}
+                    name="sports"
+                    render={({ field }) => {
+                      const sports = field.value || [];
+
+                      const addSport = () => {
+                        const trimmed = sportInput.trim();
+                        if (trimmed.length >= 3 && !sports.includes(trimmed)) {
+                          field.onChange([...sports, trimmed]);
+                          setSportInput("");
+                        }
+                      };
+
+                      const removeSport = (sportToRemove: string) => {
+                        field.onChange(sports.filter((sport: string) => sport !== sportToRemove));
+                      };
+
+                      return (
+                        <FormItem>
+                          <FormLabel>Rodzaj uprawianego sportu</FormLabel>
+                          <FormControl>
+                            <div>
+                              <div className="flex gap-2 mb-2">
+                                <Input
+                                  value={sportInput}
+                                  onChange={e => setSportInput(e.target.value)}
+                                  placeholder="Dodaj sport"
+                                  onKeyDown={e => {
+                                    if (e.key === "Enter") {
+                                      e.preventDefault();
+                                      addSport();
+                                    }
+                                  }}
+                                />
+                                <Button type="button" onClick={addSport} disabled={sportInput.trim().length < 3}>
+                                  Dodaj
+                                </Button>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {sports.map((sport: string, idx: number) => (
+                                  <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
+                                    {sport}
+                                    <button
+                                      type="button"
+                                      className="ml-1 text-red-500 hover:text-red-700"
+                                      onClick={() => removeSport(sport)}
+                                      aria-label={`Usuń ${sport}`}
+                                    >
+                                      ×
+                                    </button>
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </FormControl>
+                          <FormDescription>
+                            Dodaj jeden lub więcej uprawianych sportów.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="cathegories"
+                    render={({ field }) => {
+                      const cathegories = field.value || [];
+
+                      const addCathegory = () => {
+                        const trimmed = cathegoryInput.trim();
+                        if (trimmed.length >= 3 && !cathegories.includes(trimmed)) {
+                          field.onChange([...cathegories, trimmed]);
+                          setCathegoryInput("");
+                        }
+                      };
+
+                      const removeCathegory = (cathegoryToRemove: string) => {
+                        field.onChange(cathegories.filter((sport: string) => sport !== cathegoryToRemove));
+                      };
+
+                      return (
+                        <FormItem>
+                          <FormLabel>Kategoria sportowa</FormLabel>
+                          <FormControl>
+                            <div>
+                              <div className="flex gap-2 mb-2">
+                                <Input
+                                  value={cathegoryInput}
+                                  onChange={e => setCathegoryInput(e.target.value)}
+                                  placeholder="Dodaj kategorię"
+                                  onKeyDown={e => {
+                                    if (e.key === "Enter") {
+                                      e.preventDefault();
+                                      addCathegory();
+                                    }
+                                  }}
+                                />
+                                <Button type="button" onClick={addCathegory} disabled={cathegoryInput.trim().length < 3}>
+                                  Dodaj
+                                </Button>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {cathegories.map((cathegory: string, idx: number) => (
+                                  <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
+                                    {cathegory}
+                                    <button
+                                      type="button"
+                                      className="ml-1 text-red-500 hover:text-red-700"
+                                      onClick={() => removeCathegory(cathegory)}
+                                      aria-label={`Usuń ${cathegory}`}
+                                    >
+                                      ×
+                                    </button>
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </FormControl>
+                          <FormDescription>
+                            Dodaj jeden lub więcej kategorii sportu na zawodach.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
+                  />
                   <FormField
                     control={form.control}
                     name="members"
@@ -275,6 +442,38 @@ export default function CreateTeamForm() {
                       );
                     }}
                   />
+                  <FormField
+                    control={form.control}
+                    name="contact_email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Adres email</FormLabel>
+                            <FormControl>
+                                <Input type="email" placeholder="Wpisz adres email" {...field} />
+                            </FormControl>
+                            <FormDescription>
+                                To jest adres email do kontaktu z zespołem.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                      )}
+                />
+                <FormField
+                    control={form.control}
+                    name="contact_phone"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Numer telefonu</FormLabel>
+                            <FormControl>
+                                <Input type="tel" placeholder="Wpisz numer telefonu" {...field} />  
+                            </FormControl>
+                            <FormDescription>
+                                To jest numer telefonu do kontaktu z zespołem.
+                            </FormDescription>
+                            <FormMessage />
+                        </FormItem>
+                      )}
+                />
                   <div className="flex items-center justify-center gap-2">
                       <Button 
                           color="warning" 
