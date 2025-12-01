@@ -35,7 +35,7 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
             {athlete.home_team_id ?  
               <Link 
                 href={`/teams/${athlete.home_team_id}`}
-                className="text-xl font-bold cursor-pointer hover:text-gray-400"
+                className="text-xl font-bold underline cursor-pointer hover:text-gray-400"
               >
                 {athlete.home_team_name}
               </Link>           
