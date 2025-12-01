@@ -9,7 +9,7 @@ export default function TeamCard({ team }: TeamCardProps) {
 
   return (
     <>
-      <div className="h-[500px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
+      <div className="border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
         <Image
           src={team.imageUrls ? team.imageUrls[0] : "/images/default_team_logo.jpeg"}
           alt={`${team.name} logo`}
