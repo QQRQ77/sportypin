@@ -14,10 +14,11 @@ export default async function AthletePage({ params }: { params: Promise<{ athlet
 
   const athlete: CreateAthlete = await getAthleteById(athlete_Id);
   const teamLogoURL = athlete.home_team_id ? await getTeamLogoURL(athlete.home_team_id) : null;
+  athlete.home_team_logo_URL = teamLogoURL;
 
   return (
     <div className="flex items-center justify-center flex-col w-11/12 mx-auto mt-20 gap-4 mb-20">
-      <AthleteCard athlete={athlete} teamLogoURL={teamLogoURL} />
+      <AthleteCard athlete={athlete}/>
     </div>
   );
 }

@@ -7,6 +7,7 @@ interface CreateAthlete {
   teams?: string[];
   home_team_name?: string;
   home_team_id?: string;
+  home_team_logo_URL?: string;
   birth_day?: number;
   birth_month?: string;
   birth_year?: number;
