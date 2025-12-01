@@ -39,5 +39,5 @@ export async function getTeamLogoURL(teamId: string) {
     console.error('Error fetching team logo URL:', error);
     throw new Error(error.message || 'Failed to fetch team logo URL');
   }
-  return data?.imageURLs || null;
+  return data?.imageUrls || null;
 }
