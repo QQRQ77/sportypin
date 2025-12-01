@@ -32,7 +32,7 @@ export async function getTeamLogoURL(teamId: string) {
   const supabase = createSupabaseClient();
   const { data, error } = await supabase
     .from('Teams')
-    .select('imageURLs')
+    .select('imageUrls')
     .eq('id', teamId)
     .single();
   if (error) {
