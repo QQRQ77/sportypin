@@ -13,7 +13,7 @@ export default function AthleteCard({ athlete, teamLogoURL }: AthleteCardProps) 
 
   return (
     <>
-      <div className="h-[550px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
+      <div className="h-[1000px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
         <Image
           src={athlete.imageUrls ? athlete.imageUrls[0] : "/images/athlete_avatar2.jpeg"}
           alt={`${athlete.first_name} ${athlete.last_name ? athlete.last_name : ""}`}
