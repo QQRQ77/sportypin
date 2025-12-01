@@ -9,6 +9,7 @@ interface AthleteCardProps {
 export default function AthleteCard({ athlete }: AthleteCardProps) {
 
   console.log("Team logo URL in AthleteCard:", athlete.home_team_logo_URL);
+  console.log("Athlete images URLs in AthleteCard:", athlete.imageUrls);
 
   return (
     <>
