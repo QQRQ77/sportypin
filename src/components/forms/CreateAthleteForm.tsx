@@ -26,7 +26,7 @@ import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { sanitizeStrings } from "@/lib/utils";
-import ComboInput from "../ComboInput";
+import ComboInputTeams from "../ComboInputTeams";
 
 const teamSchema = z.object({
   id: z.string(),
@@ -278,7 +278,7 @@ export default function CreateAthleteForm() {
                       );
                     }}*/}
 
-                    <ComboInput
+                    <ComboInputTeams
                       control={form.control}
                       name="home_team"
                       label="Wybierz zespół"

@@ -41,3 +41,18 @@ export async function getTeamLogoURL(teamId: string) {
   }
   return data?.imageUrls || null;
 }
+
+export async function getTeamById(teamId: string) {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Teams')
+    .select('*')
+    .eq('id', teamId);
+
+  if (error) {
+    console.error('Error fetching athlete:', error);
+    throw new Error(error.message || 'Failed to fetch athlete');
+  }
+
+  return data[0];
+}

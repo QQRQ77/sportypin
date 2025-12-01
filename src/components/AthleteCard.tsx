@@ -8,9 +8,6 @@ interface AthleteCardProps {
 
 export default function AthleteCard({ athlete }: AthleteCardProps) {
 
-  console.log("Team logo URL in AthleteCard:", athlete.home_team_logo_URL);
-  console.log("Athlete images URLs in AthleteCard:", athlete.imageUrls);
-
   return (
     <>
       <div className="h-[500px] border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">

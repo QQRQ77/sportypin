@@ -11,7 +11,7 @@ type Props<TForm extends FieldValues> = UseControllerProps<TForm> & {
   placeholder?: string;
 };
 
-export default function ComboInput<TForm extends FieldValues>(props: Props<TForm>) {
+export default function ComboInputTeams<TForm extends FieldValues>(props: Props<TForm>) {
   const {
     field: { onChange, value = { id: '', name: '' }, ref },
     fieldState: { error },
