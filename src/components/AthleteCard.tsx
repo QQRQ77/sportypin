@@ -39,9 +39,25 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
             :
             <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>}
           </div>
+          <div className="flex flex-wrap gap-2">
+            {athlete.sports && athlete.sports.map((cathegory: string, idx: number) => (
+              <div key={idx} className="flex items-center bg-orange-600 px-2 py-1 rounded">
+                {cathegory}              
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {athlete.cathegories && athlete.cathegories.map((cathegory: string, idx: number) => (
+              <div key={idx} className="flex items-center bg-orange-800 px-2 py-1 rounded">
+                {cathegory}              
+              </div>
+            ))}
+          </div>
+          <div className="text-xl">Kontakt: </div>
+          {athlete.contact_email && <div className="text-lg">email: <span className="ml-4">{athlete.contact_email}</span></div>}
+          {athlete.contact_phone && <div className="text-lg">telefon: <span className="ml-4">{athlete.contact_phone}</span></div>}
         </div>
       </div>
     </>
-
   )
 }
