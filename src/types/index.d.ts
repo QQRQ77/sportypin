@@ -22,6 +22,7 @@ interface CreateTeam {
   name: string;
   host_city?: string;
   sports?: string[];
+  creator_name?: string;
   cathegories?: string[];
   members?: string[];
   zip_code?: string;

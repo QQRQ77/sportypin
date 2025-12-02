@@ -36,7 +36,10 @@ export default function TeamCard({ team }: TeamCardProps) {
           </div>
           <div className="text-xl">Kontakt: </div>
           {team.contact_email && <div className="text-lg">email: <span className="ml-4">{team.contact_email}</span></div>}
-          {team.contact_phone && <div className="text-lg">telefon: <span className="ml-4">{team.contact_phone}</span></div>}
+          {team.contact_phone && <div className="text-lg">telefon: <span className="ml-4">{team.contact_phone}</span></div>}          
+        </div>
+        <div className="w-full text-right text-base">
+            Dodane przez: <span className="font-semibold">{team.creator_name || 'Nieznany'}</span>
         </div>
       </div>
     </>
