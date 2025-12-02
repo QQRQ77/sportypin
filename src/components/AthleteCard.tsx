@@ -12,7 +12,7 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
     <>
       <div className="border-4 border-orange-700 rounded-xl shadow-md flex flex-col items-center overflow-hidden bg-cyan-400 relative">
         <Image
-          src={athlete.imageUrls ? athlete.imageUrls[0] : "/images/athlete_avatar2.jpeg"}
+          src={athlete.imageUrls && athlete.imageUrls[0] || "/images/athlete_avatar2.jpeg"}
           alt={`${athlete.first_name} ${athlete.last_name ? athlete.last_name : ""}`}
           width={384}
           height={500}
