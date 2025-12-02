@@ -31,6 +31,14 @@ interface CreateTeam {
   contact_phone?: string;
 }
 
+type TeamSmall = {
+  id: string;
+  name: string;
+  host_city?: string;
+  sports: string[];
+  imageUrls?: string[];
+}
+
 interface CreateEvent{
   name: string;
   event_type?: string;

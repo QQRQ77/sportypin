@@ -40,9 +40,9 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
             <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>}
           </div>
           <div className="flex flex-wrap gap-2">
-            {athlete.sports && athlete.sports.map((cathegory: string, idx: number) => (
+            {athlete.sports && athlete.sports.map((sport: string, idx: number) => (
               <div key={idx} className="flex items-center bg-orange-600 px-2 py-1 rounded">
-                {cathegory}              
+                {sport}              
               </div>
             ))}
           </div>
