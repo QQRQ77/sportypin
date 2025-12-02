@@ -30,7 +30,7 @@ export default function UserMenu() {
             <Link href="/venue/new_venue">
               <span className="text-sm">Dodaj obiekt</span>
             </Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
           <DropdownMenuItem>
             <Link href="/teams/new_team">
               <span className="text-sm">Dodaj zespół</span>
@@ -40,7 +40,7 @@ export default function UserMenu() {
             <Link href="/athlete/new_athlete">
               <span className="text-sm">Dodaj zawodnika</span>
             </Link>
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
