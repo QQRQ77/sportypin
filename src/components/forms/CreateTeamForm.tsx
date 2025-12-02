@@ -378,7 +378,7 @@ export default function CreateTeamForm() {
                       );
                     }}
                   />
-                  <FormField
+                  {/* <FormField
                     control={form.control}
                     name="members"
                     render={({ field }) => {
@@ -441,7 +441,7 @@ export default function CreateTeamForm() {
                         </FormItem>
                       );
                     }}
-                  />
+                  /> */}
                   <FormField
                     control={form.control}
                     name="contact_email"
