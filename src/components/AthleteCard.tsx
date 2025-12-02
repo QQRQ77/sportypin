@@ -57,7 +57,7 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
           {athlete.contact_email && <div className="text-lg">email: <span className="ml-4">{athlete.contact_email}</span></div>}
           {athlete.contact_phone && <div className="text-lg">telefon: <span className="ml-4">{athlete.contact_phone}</span></div>}
         </div>
-        <div className="w-full text-right text-base">
+        <div className="w-full text-right text-base text-white bg-orange-700">
           Dodane przez: <span className="font-semibold">{athlete.creator_name || 'Nieznany'}</span>
         </div>
       </div>
