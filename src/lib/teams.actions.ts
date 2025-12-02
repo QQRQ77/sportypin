@@ -68,7 +68,7 @@ export async function getTeams() {
   
   const { data, error } = await supabase
     .from('Teams')
-    .select('id, name, host_city, imageUrls, sports')
+    .select('id, name, host_city, imageUrls, sports, cathegories')
     .limit(20); // Pobierz maksymalnie 100 nadchodzących wydarzeń
 
   if (error) {

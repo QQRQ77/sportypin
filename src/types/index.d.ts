@@ -36,6 +36,7 @@ type TeamSmall = {
   name: string;
   host_city?: string;
   sports: string[];
+  cathegories?: string[];
   imageUrls?: string[];
 }
 

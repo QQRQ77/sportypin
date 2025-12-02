@@ -26,7 +26,14 @@ export default function TeamCardSmall({ team }: TeamCardProps) {
                 {sport}              
               </div>
             ))}
-          </div>         
+          </div>   
+          <div className="flex flex-wrap gap-2">
+            {team.cathegories && team.cathegories.map((cathegory: string, idx: number) => (
+              <div key={idx} className="flex items-center bg-orange-600 px-2 py-1 rounded">
+                {cathegory}              
+              </div>
+            ))}
+          </div>       
         </div>
       </div>
     </>

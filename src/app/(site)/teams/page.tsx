@@ -12,7 +12,7 @@ export default async function Page() {
   const teams = await getTeams()
 
   return (
-    <main className="flex items-center justify-center flex-col w-11/12 mx-auto mt-10 gap-4 mb-20">
+    <main className="flex items-center justify-center flex-col w-11/12 mx-auto gap-4 mb-5">
         <Image
           src="/images/logo_team.png"
           alt="Sport Teams Logo"
