@@ -384,135 +384,6 @@ export default function CreateAthleteForm() {
                               <FormMessage />
                           </FormItem>
                       )}/> */}
-                  <FormField
-                    control={form.control}
-                    name="sports"
-                    render={({ field }) => {
-                      const sports = field.value || [];
-
-                      const addSport = () => {
-                        const trimmed = sportInput.trim();
-                        if (trimmed.length >= 3 && !sports.includes(trimmed)) {
-                          field.onChange([...sports, trimmed]);
-                          setSportInput("");
-                        }
-                      };
-
-                      const removeSport = (sportToRemove: string) => {
-                        field.onChange(sports.filter((sport: string) => sport !== sportToRemove));
-                      };
-
-                      return (
-                        <FormItem>
-                          <FormLabel>Rodzaj uprawianego sportu</FormLabel>
-                          <FormControl>
-                            <div>
-                              <div className="flex gap-2 mb-2">
-                                <Input
-                                  value={sportInput}
-                                  onChange={e => setSportInput(e.target.value)}
-                                  placeholder="Dodaj sport"
-                                  onKeyDown={e => {
-                                    if (e.key === "Enter") {
-                                      e.preventDefault();
-                                      addSport();
-                                    }
-                                  }}
-                                />
-                                <Button type="button" onClick={addSport} disabled={sportInput.trim().length < 3}>
-                                  Dodaj
-                                </Button>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                {sports.map((sport: string, idx: number) => (
-                                  <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
-                                    {sport}
-                                    <button
-                                      type="button"
-                                      className="ml-1 text-red-500 hover:text-red-700"
-                                      onClick={() => removeSport(sport)}
-                                      aria-label={`Usuń ${sport}`}
-                                    >
-                                      ×
-                                    </button>
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </FormControl>
-                          <FormDescription>
-                            Dodaj jeden lub więcej uprawianych sportów.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="cathegories"
-                    render={({ field }) => {
-                      const cathegories = field.value || [];
-
-                      const addCathegory = () => {
-                        const trimmed = cathegoryInput.trim();
-                        if (trimmed.length >= 3 && !cathegories.includes(trimmed)) {
-                          field.onChange([...cathegories, trimmed]);
-                          setCathegoryInput("");
-                        }
-                      };
-
-                      const removeCathegory = (cathegoryToRemove: string) => {
-                        field.onChange(cathegories.filter((sport: string) => sport !== cathegoryToRemove));
-                      };
-
-                      return (
-                        <FormItem>
-                          <FormLabel>Kategoria sportowa</FormLabel>
-                          <FormControl>
-                            <div>
-                              <div className="flex gap-2 mb-2">
-                                <Input
-                                  value={cathegoryInput}
-                                  onChange={e => setCathegoryInput(e.target.value)}
-                                  placeholder="Dodaj kategorię"
-                                  onKeyDown={e => {
-                                    if (e.key === "Enter") {
-                                      e.preventDefault();
-                                      addCathegory();
-                                    }
-                                  }}
-                                />
-                                <Button type="button" onClick={addCathegory} disabled={cathegoryInput.trim().length < 3}>
-                                  Dodaj
-                                </Button>
-                              </div>
-                              <div className="flex flex-wrap gap-2">
-                                {cathegories.map((cathegory: string, idx: number) => (
-                                  <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
-                                    {cathegory}
-                                    <button
-                                      type="button"
-                                      className="ml-1 text-red-500 hover:text-red-700"
-                                      onClick={() => removeCathegory(cathegory)}
-                                      aria-label={`Usuń ${cathegory}`}
-                                    >
-                                      ×
-                                    </button>
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                          </FormControl>
-                          <FormDescription>
-                            Dodaj jeden lub więcej kategorii sportu na zawodach.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      );
-                    }}
-                  />                      
                     <FormField
                       control={form.control}
                       name="birth_year"
@@ -536,6 +407,136 @@ export default function CreateAthleteForm() {
                           </FormItem>
                       )}/>
                     </div>
+                    
+                    <FormField
+                      control={form.control}
+                      name="sports"
+                      render={({ field }) => {
+                        const sports = field.value || [];
+
+                        const addSport = () => {
+                          const trimmed = sportInput.trim();
+                          if (trimmed.length >= 3 && !sports.includes(trimmed)) {
+                            field.onChange([...sports, trimmed]);
+                            setSportInput("");
+                          }
+                        };
+
+                        const removeSport = (sportToRemove: string) => {
+                          field.onChange(sports.filter((sport: string) => sport !== sportToRemove));
+                        };
+
+                        return (
+                          <FormItem>
+                            <FormLabel>Rodzaj uprawianego sportu</FormLabel>
+                            <FormControl>
+                              <div>
+                                <div className="flex gap-2 mb-2">
+                                  <Input
+                                    value={sportInput}
+                                    onChange={e => setSportInput(e.target.value)}
+                                    placeholder="Dodaj sport"
+                                    onKeyDown={e => {
+                                      if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        addSport();
+                                      }
+                                    }}
+                                  />
+                                  <Button type="button" onClick={addSport} disabled={sportInput.trim().length < 3}>
+                                    Dodaj
+                                  </Button>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  {sports.map((sport: string, idx: number) => (
+                                    <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
+                                      {sport}
+                                      <button
+                                        type="button"
+                                        className="ml-1 text-red-500 hover:text-red-700"
+                                        onClick={() => removeSport(sport)}
+                                        aria-label={`Usuń ${sport}`}
+                                      >
+                                        ×
+                                      </button>
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            </FormControl>
+                            <FormDescription>
+                              Dodaj jeden lub więcej uprawianych sportów.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="cathegories"
+                      render={({ field }) => {
+                        const cathegories = field.value || [];
+
+                        const addCathegory = () => {
+                          const trimmed = cathegoryInput.trim();
+                          if (trimmed.length >= 3 && !cathegories.includes(trimmed)) {
+                            field.onChange([...cathegories, trimmed]);
+                            setCathegoryInput("");
+                          }
+                        };
+
+                        const removeCathegory = (cathegoryToRemove: string) => {
+                          field.onChange(cathegories.filter((sport: string) => sport !== cathegoryToRemove));
+                        };
+
+                        return (
+                          <FormItem>
+                            <FormLabel>Kategoria sportowa</FormLabel>
+                            <FormControl>
+                              <div>
+                                <div className="flex gap-2 mb-2">
+                                  <Input
+                                    value={cathegoryInput}
+                                    onChange={e => setCathegoryInput(e.target.value)}
+                                    placeholder="Dodaj kategorię"
+                                    onKeyDown={e => {
+                                      if (e.key === "Enter") {
+                                        e.preventDefault();
+                                        addCathegory();
+                                      }
+                                    }}
+                                  />
+                                  <Button type="button" onClick={addCathegory} disabled={cathegoryInput.trim().length < 3}>
+                                    Dodaj
+                                  </Button>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                  {cathegories.map((cathegory: string, idx: number) => (
+                                    <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
+                                      {cathegory}
+                                      <button
+                                        type="button"
+                                        className="ml-1 text-red-500 hover:text-red-700"
+                                        onClick={() => removeCathegory(cathegory)}
+                                        aria-label={`Usuń ${cathegory}`}
+                                      >
+                                        ×
+                                      </button>
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            </FormControl>
+                            <FormDescription>
+                              Dodaj jeden lub więcej kategorii sportu na zawodach.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
+                    />     
                     <FormField
                       control={form.control}
                       name="contact_email"
