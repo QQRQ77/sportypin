@@ -35,10 +35,10 @@ const FormSchema = z.object({
       .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
     ).optional(),
   cathegories: z.array(
-    z.string()
-    .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
-    .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
-  ).optional(),
+      z.string()
+      .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
+      .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+    ).optional(),
   contact_email: z.string().email("Podaj poprawny adres email.").optional(),
   contact_phone: z.string()
     .regex(/^\+?\d{9,15}$/, "Numer telefonu musi zawierać od 9 do 15 cyfr i może zaczynać się od znaku +.").optional(),  

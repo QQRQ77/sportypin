@@ -5,6 +5,8 @@ interface CreateAthlete {
   first_name: string;
   last_name?: string;
   teams?: string[];
+  sports?: string[];
+  cathegories?: string[];
   home_team_name?: string;
   home_team_id?: string;
   home_team_logo_URL?: string[];
@@ -12,6 +14,8 @@ interface CreateAthlete {
   birth_month?: string;
   birth_year?: number;
   imageUrls?: string[];
+  contact_email?: string;
+  contact_phone?: string;
 }
 
 interface CreateTeam {

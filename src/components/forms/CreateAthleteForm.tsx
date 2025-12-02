@@ -44,6 +44,19 @@ const FormSchema = z.object({
     home_team: teamSchema.optional(),
     home_team_id: z.string().optional(),
     home_team_name: z.string().optional(),
+    sports: z.array(
+        z.string()
+        .min(2, "Nazwa sportu są jest zbyt krótka (minimum 2 znaki).")
+        .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+      ).optional(),
+    cathegories: z.array(
+        z.string()
+        .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
+        .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+      ).optional(),
+    contact_email: z.string().email("Podaj poprawny adres email.").optional(),
+    contact_phone: z.string()
+      .regex(/^\+?\d{9,15}$/, "Numer telefonu musi zawierać od 9 do 15 cyfr i może zaczynać się od znaku +.").optional(),
     birth_day: z.number().min(1, "Dzień musi być większy niż 0.").max(31, "Dzień musi być mniejszy lub równy 31.").optional(),
     birth_month: z.string().optional().refine(value => {
         const months = ["styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"];
@@ -63,11 +76,13 @@ export default function CreateAthleteForm() {
     const imageInputRef = useRef<HTMLInputElement>(null)   
     const [imageUrls, setImageUrls] = useState<string[]>([])
     const [imageError, setImageError] = useState<string>("")
+    const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
 
     const router = useRouter()
 
     const [teamInput, setTeamInput] = useState("");
-    const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
+    const [sportInput, setSportInput] = useState("");
+    const [cathegoryInput, setCathegoryInput] = useState("");
 
     const addAthlete: SubmitHandler<InputType> = async (data) => {
 
@@ -91,6 +106,28 @@ export default function CreateAthleteForm() {
             setTeamInput("");
           } else {
             toast.error("Nazwa zespołu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            return;
+          }
+      }
+
+      if (sportInput != "") {
+          const trimmed = sportInput.trim();
+          if (trimmed.length >= 3 && !data.sports?.includes(trimmed)) {
+            data.sports = [...(data.sports || []), trimmed];
+            setSportInput("");
+          } else {
+            toast.error("Nazwa sportu musi mieć co najmniej 3 znaki i nie może być duplikatem.");
+            return;
+          }
+      }
+
+      if (cathegoryInput != "") {
+          const trimmed = cathegoryInput.trim();
+          if (trimmed.length >= 3 && !data.cathegories?.includes(trimmed)) {
+            data.cathegories = [...(data.cathegories || []), trimmed];
+            setCathegoryInput("");
+          } else {
+            toast.error("Nazwa kategorii musi mieć co najmniej 3 znaki i nie może być duplikatem.");
             return;
           }
       }
@@ -369,7 +406,39 @@ export default function CreateAthleteForm() {
                               <FormMessage />
                           </FormItem>
                       )}/>
-                      </div>
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="contact_email"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Adres email</FormLabel>
+                              <FormControl>
+                                  <Input type="email" placeholder="Wpisz adres email" {...field} />
+                              </FormControl>
+                                <FormDescription>
+                                  To jest adres email do kontaktu z zawodnikiem.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="contact_phone"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Numer telefonu</FormLabel>
+                                <FormControl>
+                                    <Input type="tel" placeholder="Wpisz numer telefonu" {...field} />  
+                                </FormControl>
+                                <FormDescription>
+                                    To jest numer telefonu do kontaktu z zawodnikiem.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                          )}
+                    />                      
 
                   <div className="flex items-center justify-center gap-2">
                       <Button 
