@@ -38,3 +38,19 @@ export async function getAthleteById(athleteId: string) {
 
   return data[0];
 }
+
+export async function getAthletes() {
+  const supabase = createSupabaseClient();
+  
+  const { data, error } = await supabase
+    .from('Athletes')
+    .select('id, first_name, last_name, sports, cathegories, birth_year, home_team_name, home_team_id')
+    .limit(20); // Pobierz maksymalnie 100 nadchodzących wydarzeń
+
+  if (error) {
+    console.error('Error fetching events:', error);
+    throw new Error(error.message || 'Failed to fetch events');
+  }
+
+  return data;
+}

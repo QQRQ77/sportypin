@@ -23,11 +23,9 @@ export default async function Page() {
       <p className="text-lg">Lista zespołów sportowych</p>
       <section className="flex justify-center items-center gap-4">
         {teams && teams.length > 0 ? (
-          
             teams.map((team) => (
               <TeamCardSmall key={team.id} team={team} />
             ))
-          
         ) : (
           <p className="text-lg">Brak zespołów do wyświetlenia.</p>
         )}
