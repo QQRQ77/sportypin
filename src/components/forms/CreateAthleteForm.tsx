@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+// import Image from "next/image";
 
 import {
   Form,
@@ -24,7 +24,7 @@ import { createAthlete } from "@/lib/athletes.actions";
 import { convertBlobUrlToFile } from "@/lib/file.actions";
 import { uploadImage } from "@/lib/supabase.storage";
 import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
-import { XMarkIcon } from "@heroicons/react/20/solid";
+// import { XMarkIcon } from "@heroicons/react/20/solid";
 import { sanitizeStrings } from "@/lib/utils";
 import ComboInputTeams from "../ComboInputTeams";
 
@@ -73,9 +73,9 @@ export default function CreateAthleteForm() {
         resolver: zodResolver(FormSchema)
     });
 
-    const imageInputRef = useRef<HTMLInputElement>(null)   
+    // const imageInputRef = useRef<HTMLInputElement>(null)   
     const [imageUrls, setImageUrls] = useState<string[]>([])
-    const [imageError, setImageError] = useState<string>("")
+    // const [imageError, setImageError] = useState<string>("")
     const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
 
     const router = useRouter()
@@ -170,7 +170,7 @@ export default function CreateAthleteForm() {
       const validFiles = Array.from(files)
         .filter((f) => {
           const ok = f.size <= MAX_UPLOADED_FILE_SIZE
-          if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+          // if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
           return ok;
         })
         .slice(0, remainingSlots);
@@ -224,7 +224,7 @@ export default function CreateAthleteForm() {
                   )}
                   />
 
-                  <div className="w-full flex flex-col gap-2 justify-center">
+                  {/* <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
                       {imageUrls.map((url, index)=> 
@@ -250,7 +250,7 @@ export default function CreateAthleteForm() {
                     <p className="text-red-700 text-center">{imageError}</p>
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); imageInputRef.current?.click()}}>Dodaj zdjęcia</Button>
                     <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
-                  </div>
+                  </div> */}
                   {/* <FormField
                     control={form.control}
                     name="teams"
@@ -408,7 +408,7 @@ export default function CreateAthleteForm() {
                       )}/>
                     </div>
                     
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="sports"
                       render={({ field }) => {
@@ -568,7 +568,7 @@ export default function CreateAthleteForm() {
                                 <FormMessage />
                             </FormItem>
                           )}
-                    />                      
+                    />                       */}
 
                   <div className="flex items-center justify-center gap-2">
                       <Button 
