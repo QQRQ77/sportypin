@@ -409,7 +409,7 @@ export default function CreateAthleteForm() {
                       )}/>
                     </div>
                     
-                    {/* <FormField
+                    <FormField
                       control={form.control}
                       name="sports"
                       render={({ field }) => {
@@ -538,7 +538,7 @@ export default function CreateAthleteForm() {
                         );
                       }}
                     />     
-                    <FormField
+                    {/* <FormField
                       control={form.control}
                       name="contact_email"
                       render={({ field }) => (
