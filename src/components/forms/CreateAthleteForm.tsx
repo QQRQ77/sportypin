@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -160,32 +160,32 @@ export default function CreateAthleteForm() {
         }
     } 
 
-    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const files = e.target.files;
-      if (!files) return;
+    // const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //   const files = e.target.files;
+    //   if (!files) return;
 
-      const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
-      if (remainingSlots <= 0) return;
+    //   const remainingSlots = MAX_FILES_UPLOADED - imageUrls.length;
+    //   if (remainingSlots <= 0) return;
 
-      const validFiles = Array.from(files)
-        .filter((f) => {
-          const ok = f.size <= MAX_UPLOADED_FILE_SIZE
-          // if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
-          return ok;
-        })
-        .slice(0, remainingSlots);
+    //   const validFiles = Array.from(files)
+    //     .filter((f) => {
+    //       const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+    //       // if (!ok) setImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+    //       return ok;
+    //     })
+    //     .slice(0, remainingSlots);
 
-      validFiles.forEach((file) => {
-        const url = URL.createObjectURL(file);
-        setImageUrls((prev) => [...prev, url]);
-      });
+    //   validFiles.forEach((file) => {
+    //     const url = URL.createObjectURL(file);
+    //     setImageUrls((prev) => [...prev, url]);
+    //   });
 
-      e.target.value = ""; // reset inputa   
-    }
+    //   e.target.value = ""; // reset inputa   
+    // }
         
-      const removeImage = (index: number) => {
-        setImageUrls((prev) => prev.filter((_, i) => i !== index));
-      };
+      // const removeImage = (index: number) => {
+      //   setImageUrls((prev) => prev.filter((_, i) => i !== index));
+      // };
 
     return (
         <>
