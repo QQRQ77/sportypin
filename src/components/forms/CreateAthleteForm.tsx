@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,9 +21,9 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { createAthlete } from "@/lib/athletes.actions";
-import { convertBlobUrlToFile } from "@/lib/file.actions";
-import { uploadImage } from "@/lib/supabase.storage";
-import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
+// import { convertBlobUrlToFile } from "@/lib/file.actions";
+// import { uploadImage } from "@/lib/supabase.storage";
+// import { MAX_FILES_UPLOADED, MAX_UPLOADED_FILE_SIZE } from "@/lib/settings";
 // import { XMarkIcon } from "@heroicons/react/20/solid";
 import { sanitizeStrings } from "@/lib/utils";
 import ComboInputTeams from "../ComboInputTeams";
@@ -74,7 +74,7 @@ export default function CreateAthleteForm() {
     });
 
     // const imageInputRef = useRef<HTMLInputElement>(null)   
-    const [imageUrls, setImageUrls] = useState<string[]>([])
+    // const [imageUrls, setImageUrls] = useState<string[]>([])
     // const [imageError, setImageError] = useState<string>("")
     const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
 
@@ -132,31 +132,32 @@ export default function CreateAthleteForm() {
           }
       }
 
-        const urls = [];
-        for (const url of imageUrls) {
-          const imageFile = await convertBlobUrlToFile(url);
+        // const urls = [];
+        // for (const url of imageUrls) {
+        //   const imageFile = await convertBlobUrlToFile(url);
 
-          const { imageUrl, error } = await uploadImage({
-            file: imageFile,
-            bucket: "sportpin",
-            folder: "athletes",
-          });
+        //   const { imageUrl, error } = await uploadImage({
+        //     file: imageFile,
+        //     bucket: "sportpin",
+        //     folder: "athletes",
+        //   });
 
-          if (error) {
-            console.error(error);
-            return;
-          }
+        //   if (error) {
+        //     console.error(error);
+        //     return;
+        //   }
 
-          urls.push(imageUrl);
-        }
+        //   urls.push(imageUrl);
+        // }
           
         try {
-            const athlete = await createAthlete({...data, imageUrls: urls}) 
-            if(athlete) {router.push(`/athlete/${athlete.id}`)} else {router.push("/")}
+          // const athlete = await createAthlete({...data, imageUrls: urls}) 
+          const athlete = await createAthlete({...data}) 
+          if(athlete) {router.push(`/athlete/${athlete.id}`)} else {router.push("/")}
         } catch (error) {
-            setSubmitButtonDisactive(false);
-            toast.error("Upps!. Coś poszło nie tak...")
-            console.error(error)
+          setSubmitButtonDisactive(false);
+          toast.error("Upps!. Coś poszło nie tak...")
+          console.error(error)
         }
     } 
 
