@@ -339,9 +339,9 @@ export default function CreateAthleteForm() {
                           </FormItem>
                        )}
                   /> */}
-                  <FormLabel>Rok urodzenia zawodnika</FormLabel>
+                  {/* <FormLabel>Rok urodzenia zawodnika</FormLabel>
                   <div className="flex justify-start gap-3">
-                  {/* <FormField
+                  <FormField
                       control={form.control}
                       name="birth_day"
                       render={({ field }) => (
@@ -384,7 +384,7 @@ export default function CreateAthleteForm() {
                               </FormControl>
                               <FormMessage />
                           </FormItem>
-                      )}/> */}
+                      )}/> 
                     <FormField
                       control={form.control}
                       name="birth_year"
@@ -407,7 +407,7 @@ export default function CreateAthleteForm() {
                               <FormMessage />
                           </FormItem>
                       )}/>
-                    </div>
+                    </div>*/}
                     
                     <FormField
                       control={form.control}

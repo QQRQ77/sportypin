@@ -24,7 +24,6 @@ export default function AthleteCardSmall({ athlete }: SmallAthleteCardProps) {
           />
           <div className="w-full bg-orange-700 bg-opacity-60 text-white p-4 text-center flex flex-col justify-center items-center gap-3">
             <h2 className="text-2xl font-bold">{athlete.first_name} {athlete.last_name}</h2>
-            <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
             <div className="flex justify-center items-center gap-4">
                 <Image
                   src={athlete.home_team_logo_URL && athlete.home_team_logo_URL[0] || "/images/logo_team.png"}
