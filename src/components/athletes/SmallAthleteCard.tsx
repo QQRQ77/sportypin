@@ -1,12 +1,18 @@
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
 import Link from "next/link";
+import { MouseEvent } from "react";
 
 interface SmallAthleteCardProps {
   athlete: CreateAthlete
 }
 
 export default function AthleteCardSmall({ athlete }: SmallAthleteCardProps) {
+
+  // Funkcja zatrzymująca propagację zdarzenia
+  const handleTeamLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation(); // Kluczowy element: zapobiega "przebąbelkowaniu" kliknięcia do nadrzędnego <Link>
+  };
 
   return (
     <>
@@ -25,6 +31,11 @@ export default function AthleteCardSmall({ athlete }: SmallAthleteCardProps) {
           <div className="w-full bg-orange-700 bg-opacity-60 text-white p-4 text-center flex flex-col justify-center items-center gap-3">
             <h2 className="text-2xl font-bold">{athlete.first_name} {athlete.last_name}</h2>
             <div className="flex justify-center items-center gap-4">
+              <Link 
+                href={`/teams/${athlete.home_team_id}`}
+                onClick={handleTeamLinkClick}
+                className="flex justify-center items-center gap-4 hover:opacity-80 transition"
+                >
                 <Image
                   src={athlete.home_team_logo_URL && athlete.home_team_logo_URL[0] || "/images/logo_team.png"}
                   alt={`${athlete.home_team_name} logo`}
@@ -32,7 +43,8 @@ export default function AthleteCardSmall({ athlete }: SmallAthleteCardProps) {
                   height={50}
                   className={`object-contain rounded-xl`}
                 />
-              <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
+                <h2 className="text-xl font-bold">{athlete.home_team_name}</h2>
+              </Link>
             </div>
             <div className="flex flex-wrap gap-2">
               {athlete.sports && athlete.sports.map((sport: string, idx: number) => (
