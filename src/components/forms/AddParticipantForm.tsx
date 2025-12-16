@@ -188,7 +188,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                   name="start_number"
                   render={({ field }) => (
                     <FormItem className="w-32">
-                      <FormLabel>Numer startowy</FormLabel>
+                      <FormLabel>Numer</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="np. 23 (opcjonalne)"
@@ -264,10 +264,6 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                   </FormItem>
                 )}
               />}
-    
-              <div className="flex gap-4 w-full lg:w-2/5">
-    
-              </div>
             </div>
     
             <div className="w-full flex justify-center">
