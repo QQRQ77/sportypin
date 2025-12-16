@@ -1,4 +1,3 @@
-// components/ComboInput.tsx
 import { useState, useRef, useEffect } from 'react';
 import { useController, UseControllerProps, FieldValues } from 'react-hook-form';
 import clsx from 'clsx';

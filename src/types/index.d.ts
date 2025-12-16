@@ -179,15 +179,14 @@ export type Participant = {
       id?: string,
       athlete_id?: string,
       itemType?: string,
-      team_id?: string,
       first_name?: string,
       second_name?: string,
       team_name?: string,
+      team_id?: string,
       birth_date?: string,
       start_number?: number,
       cathegory?: string,
       name?: string,
-      start_number?: string,   
 }
 
 export type ClassificationItem = {

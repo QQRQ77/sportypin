@@ -25,6 +25,7 @@ import { useState } from "react";
 import { createId } from "@paralleldrive/cuid2";
 import { saveNewParticipant } from "@/lib/events.actions";
 import { sanitizeStrings } from "@/lib/utils";
+import ComboInputTeams from "../ComboInputTeams";
 
 
 interface CompetitorFormProps {
@@ -34,8 +35,16 @@ interface CompetitorFormProps {
   setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
 }
 
+const teamSchema = z.object({
+  id: z.string(),
+  name: z.string().min(3, "Nazwa drużyny domowej jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 100 znaków).")
+});
+
 const FormSchema = z.object({
   name: z.string().min(2).max(100).optional(),
+  team: teamSchema.optional(),
+  team_id: z.string().optional(),
+  team_name: z.string().optional(),
   start_number: z.coerce
       .number({ invalid_type_error: "Podaj liczbę" })
       .int()
@@ -68,6 +77,13 @@ export default function AddParticipantForm({cathegories, eventId, participants =
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
       setButtonSubmitting(true);
+
+      if (data.team) {
+        const { id: home_team_id, name: home_team_name } = data.team;
+        data.team_id = home_team_id;
+        data.team_name = home_team_name;
+        delete data.team;
+      }
 
       const cleanedData = sanitizeStrings(data);
       data = {...cleanedData};
@@ -166,24 +182,26 @@ export default function AddParticipantForm({cathegories, eventId, participants =
             </div>
 
             <div className="flex flex-col lg:flex-row gap-2">
-              <FormField
-                control={form.control}
-                name="start_number"
-                render={({ field }) => (
-                  <FormItem className="w-32">
-                    <FormLabel>Numer startowy</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="np. 23 (opcjonalne)"
-                        className="shadow-xl"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            {(itemType === "zespół" || itemType === "inny") &&  
+              {itemType === "zawodnik" && 
+                <FormField
+                  control={form.control}
+                  name="start_number"
+                  render={({ field }) => (
+                    <FormItem className="w-32">
+                      <FormLabel>Numer startowy</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="np. 23 (opcjonalne)"
+                          className="shadow-xl"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />}
+
+            {itemType === "inny" &&  
               <FormField
                 control={form.control}
                 name="name"
@@ -201,6 +219,17 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                   </FormItem>
                 )}
               />}
+
+              {
+              itemType === "zespół" && 
+                <ComboInputTeams
+                  control={form.control}
+                  name="team"
+                  label="Wybierz zespół"
+                  placeholder="Wpisz nazwę…"
+                />
+              }  
+
               {itemType === "zawodnik" &&
               <FormField
                 control={form.control}
