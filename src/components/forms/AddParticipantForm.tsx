@@ -107,6 +107,8 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         start_number: undefined,
         first_name: "",
         second_name: "",
+        team_name: "",
+        team_id: "",
         cathegory: data.cathegory || "",
         itemType: data.itemType,
       });
