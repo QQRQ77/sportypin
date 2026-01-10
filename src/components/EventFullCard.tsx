@@ -212,8 +212,10 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
         </section>
         
         {/* Uczestnicy     */}
-        {(isUserCreator || (!isUserCreator && !isPast)) &&
+
         <section className="relative pt-4 border-t border-slate-300">
+        {(isUserCreator || (!isUserCreator && !isPast)) &&
+          <>
           <div className="w-full flex justify-between">
             <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
             {isUserCreator && 
@@ -227,8 +229,9 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               setItems={setParticipants} 
               cathegories={event.cathegories}
               participants={participants}/>}
+          </>}
           <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
-        </section>}
+        </section>
 
         {/* Harmonogram */}
         {(isUserCreator || (!isUserCreator && !isPast)) && 
