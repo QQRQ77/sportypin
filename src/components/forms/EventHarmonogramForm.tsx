@@ -85,8 +85,8 @@ export const transformationParticipants = (participants?: Participant[]) => {
   if (!participants) return [];
   return participants.map(p => {
   if (p.itemType === "zawodnik") return `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim();
-  if (p.itemType === "drużyna") return p.team_name || "";
-  return p.name || "";
+  if (p.itemType === "drużyna" || p.itemType === "zespół") return p.team_name || "";
+  return p.name || p.team_name || "";
   });
 }
 
