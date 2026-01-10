@@ -225,7 +225,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                 <ComboInputTeams
                   control={form.control}
                   name="team"
-                  label="Wybierz zespół"
+                  label="Wybierz/dodaj zespół"
                   placeholder="Wpisz nazwę…"
                 />
               }  
