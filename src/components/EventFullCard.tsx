@@ -230,7 +230,9 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               cathegories={event.cathegories}
               participants={participants}/>}
           </>}
-          <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
+          {(classification.length === 0 || !isPast || isUserCreator) && 
+            <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
+          }
         </section>
 
         {/* Harmonogram */}
