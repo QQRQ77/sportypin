@@ -43,7 +43,7 @@ const teamSchema = z.object({
 const FormSchema = z.object({
   name: z.string().max(100).optional(),
   team: teamSchema.optional(),
-  team_id: z.string().optional(),
+  team_id: z.string().or(z.literal("")).optional(),
   team_name: z.string().optional(),
   start_number: z.coerce
       .number({ invalid_type_error: "Podaj liczbę" })
@@ -58,7 +58,7 @@ const FormSchema = z.object({
     {
       message: "Wybierz typ uczestnika",
     }
-  ),
+  ).optional(),
 });
 
 type FormValues = z.infer<typeof FormSchema>;
