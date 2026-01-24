@@ -36,8 +36,8 @@ interface CompetitorFormProps {
 }
 
 const teamSchema = z.object({
-  id: z.string(),
-  name: z.string().min(3, "Nazwa drużyny domowej jest zbyt krótka (minimum 3 znaki).").max(100, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 100 znaków).")
+  id: z.string().or(z.literal("")).optional(),
+  name: z.string().max(100, "Nazwa drużyny domowej jest zbyt długa (maksymalnie 100 znaków).")
 });
 
 const FormSchema = z.object({
