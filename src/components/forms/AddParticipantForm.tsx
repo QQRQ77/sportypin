@@ -74,7 +74,6 @@ export default function AddParticipantForm({cathegories, eventId, participants =
     const itemType = form.watch("itemType");
 
     const [buttonSubmitting, setButtonSubmitting] = useState(false);
-    const [formError, setFormError] = useState(form.formState);
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
       setButtonSubmitting(true);
@@ -269,8 +268,20 @@ export default function AddParticipantForm({cathegories, eventId, participants =
               />}
             </div>
 
-            <div>{formError && <p className="text-red-500">{JSON.stringify(formError)}</p>}</div>
-    
+            <div className="p-4 bg-gray-100 rounded-lg">
+              <p className="text-sm font-semibold mb-2">Aktualny stan formularza:</p>
+              <pre className="text-xs overflow-auto max-h-48 bg-white p-2 rounded border border-gray-300">
+                {JSON.stringify(form.getValues(), null, 2)}
+                  {form.formState.errors && (
+                  <div className="text-red-500 text-sm">
+                    {Object.values(form.formState.errors).map((error) => (
+                    <p key={error.message}>{error.message}</p>
+                    ))}
+                  </div>
+                  )}
+              </pre>
+            </div>
+
             <div className="w-full flex justify-center">
               <SubmitButton
                 isSubmitting={buttonSubmitting}
