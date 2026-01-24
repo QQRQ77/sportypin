@@ -74,7 +74,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
     const itemType = form.watch("itemType");
 
     const [buttonSubmitting, setButtonSubmitting] = useState(false);
-    const [formError, setFormError] = useState(form.formState.errors);
+    const [formError, setFormError] = useState(form.formState);
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
       setButtonSubmitting(true);
