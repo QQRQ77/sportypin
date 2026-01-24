@@ -110,7 +110,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         team_name: "",
         team_id: "",
         cathegory: data.cathegory || "",
-        itemType: data.itemType,
+        itemType: data.itemType || "",
       });
 
       setButtonSubmitting(false);
