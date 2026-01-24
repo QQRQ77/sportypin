@@ -41,7 +41,7 @@ const teamSchema = z.object({
 });
 
 const FormSchema = z.object({
-  name: z.string().min(2).max(100).optional(),
+  name: z.string().max(100).optional(),
   team: teamSchema.optional(),
   team_id: z.string().optional(),
   team_name: z.string().optional(),
