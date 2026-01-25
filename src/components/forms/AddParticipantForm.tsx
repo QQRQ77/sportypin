@@ -79,55 +79,8 @@ export default function AddParticipantForm({cathegories, eventId, participants =
     const itemType = form.watch("itemType");
 
     const [buttonSubmitting, setButtonSubmitting] = useState(false);
-
-    // const handleSubmit: SubmitHandler<FormValues> = async (data) => {
-    //   try {
-    //     console.log("handleSubmit data:", data);
-    //     setButtonSubmitting(true);
-
-    //     const cleanedData = sanitizeStrings(data);
-    //     data = {...cleanedData};
-
-    //     // Tworzymy kopię, aby nie mutować oryginału z formularza
-    //     const submissionData = { ...data, id: createId() };
-
-    //     if (data.team) {
-    //       submissionData.team_id = data.team.id;
-    //       submissionData.team_name = data.team.name;
-    //       delete submissionData.team;
-    //     }
-
-    //     // Walidacja pustych danych
-    //     if (!submissionData.name && !submissionData.first_name && !submissionData.second_name) {
-    //       setButtonSubmitting(false);
-    //       return;
-    //     }
-
-    //     const newParticipants = [...participants, submissionData];
-    //     setItems(newParticipants as Participant[]);
-    //     await saveNewParticipant(eventId, newParticipants as Participant[]);
-
-    //     // Resetuj do wartości domyślnych zdefiniowanych w useForm
-    //     form.reset({
-    //       name: "",
-    //       start_number: "",
-    //       first_name: "",
-    //       second_name: "",
-    //       team_name: "",
-    //       team_id: "",
-    //       cathegory: data.cathegory || "",
-    //       itemType: "zespół",
-    //     });
-        
-    //   } catch (error) {
-    //     console.error("Błąd podczas dodawania:", error);
-    //   } finally {
-    //     setButtonSubmitting(false);
-    //   }
-    // };
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
-      console.log("handleSubmit data:", data);
       setButtonSubmitting(true);
 
       if (data.team) {
@@ -319,20 +272,6 @@ export default function AddParticipantForm({cathegories, eventId, participants =
                   </FormItem>
                 )}
               />}
-            </div>
-
-            <div className="p-4 bg-gray-100 rounded-lg">
-              <p className="text-sm font-semibold mb-2">Aktualny stan formularza:</p>
-              <pre className="text-xs overflow-auto max-h-48 bg-white p-2 rounded border border-gray-300">
-                {JSON.stringify(form.getValues(), null, 2)}
-                  {form.formState.errors && (
-                  <div className="text-red-500 text-sm">
-                    {Object.values(form.formState.errors).map((error) => (
-                    <p key={error.message}>{error.message}</p>
-                    ))}
-                  </div>
-                  )}
-              </pre>
             </div>
 
             <div className="w-full flex justify-center">
