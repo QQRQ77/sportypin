@@ -93,7 +93,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         if (data.team) {
           submissionData.team_id = data.team.id;
           submissionData.team_name = data.team.name;
-          delete (submissionData as any).team;
+          delete submissionData.team;
         }
 
         // Walidacja pustych danych
