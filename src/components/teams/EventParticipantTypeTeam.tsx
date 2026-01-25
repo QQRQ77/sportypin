@@ -9,12 +9,14 @@ interface EventParticipantTypeTeamProps {
 
 const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({participant = {team_name: "Wczytuję..."}}) => {
   const [participantData, setParticipantData] = useState<Participant>(participant);
+  console.log('Participant data in EventParticipantTypeTeam:', participantData.team_id);
 
   useEffect(() => {
     const fetchTeamLogo = async () => {
       let teamLogoUrls = null;
       if (participant?.team_id) {
         teamLogoUrls = await getTeamLogoURL(participant.team_id);
+        console.log('Fetched team logo URLs:', teamLogoUrls);
       }
       setParticipantData({...participant, imageUrls: teamLogoUrls ? [...teamLogoUrls] : []});
     };
