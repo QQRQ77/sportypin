@@ -82,6 +82,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
 
     const handleSubmit: SubmitHandler<FormValues> = async (data) => {
       try {
+        console.log("handleSubmit data:", data);
         setButtonSubmitting(true);
 
         const cleanedData = sanitizeStrings(data);
