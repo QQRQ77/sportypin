@@ -127,6 +127,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
     // };
       
     const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
+      console.log("handleSubmit data:", data);
       setButtonSubmitting(true);
 
       if (data.team) {
