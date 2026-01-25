@@ -117,8 +117,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
   return (
     <Form {...form}>
       <form
-        // onSubmit={form.handleSubmit(handleSubmit)}
-        onSubmit={form.handleSubmit(handleSubmit, (errors) => console.log("Błędy walidacji:", errors))}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="w-full mb-2"
       >
         <div className="w-full flex flex-row flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2 justify-between">

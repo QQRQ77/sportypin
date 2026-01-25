@@ -169,7 +169,8 @@ export default function AddParticipantForm({cathegories, eventId, participants =
   return (
     <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleSubmit)}
+            // onSubmit={form.handleSubmit(handleSubmit)}
+            onSubmit={form.handleSubmit(handleSubmit, (errors) => console.log("Błędy walidacji:", errors))}
             className="space-y-6 w-full mx-auto my-4 p-4 rounded-xl shadow-2xl"
           >
             <h2 className="text-2xl font-bold text-sky-600 text-center">
