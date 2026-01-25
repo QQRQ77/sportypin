@@ -45,11 +45,16 @@ const FormSchema = z.object({
   team: teamSchema.optional(),
   team_id: z.string().or(z.literal("")).optional(),
   team_name: z.string().optional(),
-  start_number: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę" })
-      .int()
-      .nonnegative()
-      .optional(),
+  // start_number: z.coerce
+  //     .number({ invalid_type_error: "Podaj liczbę" })
+  //     .int()
+  //     .nonnegative()
+  //     .optional(),
+  start_number: z.union([
+    z.coerce.number().int().nonnegative(),
+    z.literal(""),
+    z.undefined()
+  ]).optional(),
   first_name: z.string().max(100).optional(),
   second_name: z.string().max(100).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
@@ -74,47 +79,89 @@ export default function AddParticipantForm({cathegories, eventId, participants =
     const itemType = form.watch("itemType");
 
     const [buttonSubmitting, setButtonSubmitting] = useState(false);
-      
-    const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
-      setButtonSubmitting(true);
 
-      if (data.team) {
-        const { id: home_team_id, name: home_team_name } = data.team;
-        data.team_id = home_team_id;
-        data.team_name = home_team_name;
-        delete data.team;
-      }
+    const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+      try {
+        setButtonSubmitting(true);
 
-      const cleanedData = sanitizeStrings(data);
-      data = {...cleanedData};
+        // Tworzymy kopię, aby nie mutować oryginału z formularza
+        const submissionData = { ...data, id: createId() };
 
-      const submissionData = {
-        ...data,
-        id: createId(),
-      };
+        if (data.team) {
+          submissionData.team_id = data.team.id;
+          submissionData.team_name = data.team.name;
+          delete (submissionData as any).team;
+        }
 
-      if (submissionData.name === "" && submissionData.first_name === "" && submissionData.second_name === "") {
+        // Walidacja pustych danych
+        if (!submissionData.name && !submissionData.first_name && !submissionData.second_name) {
+          setButtonSubmitting(false);
+          return;
+        }
+
+        const newParticipants = [...participants, submissionData];
+        setItems(newParticipants as Participant[]);
+        await saveNewParticipant(eventId, newParticipants as Participant[]);
+
+        // Resetuj do wartości domyślnych zdefiniowanych w useForm
+        form.reset({
+          name: "",
+          start_number: "",
+          first_name: "",
+          second_name: "",
+          team_name: "",
+          team_id: "",
+          cathegory: data.cathegory || "",
+          itemType: "zespół",
+        });
+        
+      } catch (error) {
+        console.error("Błąd podczas dodawania:", error);
+      } finally {
         setButtonSubmitting(false);
-        return;
       }
+    };
+      
+    // const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
+    //   setButtonSubmitting(true);
 
-      const newParticipants = [...participants, submissionData];
-      setItems(newParticipants);
-      await saveNewParticipant(eventId, newParticipants);
+    //   if (data.team) {
+    //     const { id: home_team_id, name: home_team_name } = data.team;
+    //     data.team_id = home_team_id;
+    //     data.team_name = home_team_name;
+    //     delete data.team;
+    //   }
+
+    //   const cleanedData = sanitizeStrings(data);
+    //   data = {...cleanedData};
+
+    //   const submissionData = {
+    //     ...data,
+    //     id: createId(),
+    //   };
+
+    //   if (submissionData.name === "" && submissionData.first_name === "" && submissionData.second_name === "") {
+    //     setButtonSubmitting(false);
+    //     return;
+    //   }
+
+    //   const newParticipants = [...participants, submissionData];
+    //   setItems(newParticipants);
+    //   await saveNewParticipant(eventId, newParticipants);
   
-      form.reset({
-        name: "",
-        start_number: undefined,
-        first_name: "",
-        second_name: "",
-        team_name: "",
-        team_id: "",
-        cathegory: data.cathegory || "",
-        itemType: data.itemType || "",
-      });
+    //   form.reset({
+    //     name: "",
+    //     start_number: "",
+    //     first_name: "",
+    //     second_name: "",
+    //     team_name: "",
+    //     team_id: "",
+    //     cathegory: data.cathegory || "",
+    //     itemType: "zespół",
+    //   });
 
-      setButtonSubmitting(false);
-    }
+    //   setButtonSubmitting(false);
+    // }
 
   return (
     <Form {...form}>
