@@ -39,7 +39,7 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
         )}
       </div>
       {participant.team_id ? 
-      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer">{participantData.team_name} <CursorArrowRaysIcon className="w-4 h-4 inline-block ml-1" /></Link> 
+      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer">{participantData.team_name} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1" /></Link> 
       : <span className="font-medium text-lg">{participantData.team_name}</span>}
     </div>
   );
