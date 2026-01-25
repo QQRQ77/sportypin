@@ -145,7 +145,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         id: createId(),
       };
 
-      if (submissionData.name === "" && submissionData.first_name === "" && submissionData.second_name === "") {
+      if (submissionData.team_name === "" && submissionData.name === "" && submissionData.first_name === "" && submissionData.second_name === "") {
         setButtonSubmitting(false);
         return;
       }
@@ -162,7 +162,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
         team_name: "",
         team_id: "",
         cathegory: data.cathegory || "",
-        itemType: "zespół",
+        itemType: data.itemType || "zespół",
       });
 
       setButtonSubmitting(false);
