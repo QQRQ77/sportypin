@@ -2,6 +2,7 @@ import { getTeamLogoURL } from "@/lib/teams.actions";
 import { Participant } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface EventParticipantTypeTeamProps {
   participant?: Participant;
@@ -34,7 +35,9 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
           />
         )}
       </div>
-      <span className="font-medium text-lg">{participantData.team_name}</span>
+      {participant.team_id ? 
+      <Link href={`/teams/${participant.team_id}`} className="font-medium cursor-pointer">{participantData.team_name}</Link> 
+      : <span className="font-medium text-lg">{participantData.team_name}</span>}
     </div>
   );
 };
