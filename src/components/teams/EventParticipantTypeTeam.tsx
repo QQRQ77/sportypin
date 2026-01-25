@@ -31,7 +31,7 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
           alt={`${participantData.name} logo`}
           width={50}
           height={50}
-          className="object-contain"
+          className="object-contain rounded"
         />
       )}
       <span className="font-medium text-lg">{participantData.team_name}</span>
