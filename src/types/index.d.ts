@@ -184,7 +184,7 @@ export type Participant = {
       team_name?: string,
       team_id?: string,
       birth_date?: string,
-      start_number?: number | string,
+      start_number?: number | "",
       cathegory?: string,
       name?: string,
 }

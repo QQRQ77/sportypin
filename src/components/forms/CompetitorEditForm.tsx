@@ -38,11 +38,16 @@ const FormSchema = z.object({
   first_name: z.string().min(2).max(100).optional(),
   second_name: z.string().min(2).max(100).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
-  start_number: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę" })
-      .int()
-      .nonnegative()
-      .optional(),
+  // start_number: z.coerce
+  //     .number({ invalid_type_error: "Podaj liczbę" })
+  //     .int()
+  //     .nonnegative()
+  //     .optional(),
+  start_number: z.union([
+    z.coerce.number().int().nonnegative(),
+    z.literal(""),
+    z.undefined()
+    ]).optional(),
   itemType: z.string().refine(
     (val) => ["zawodnik", "zespół", "inny"].includes(val),
     {
