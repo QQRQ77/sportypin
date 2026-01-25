@@ -84,6 +84,9 @@ export default function AddParticipantForm({cathegories, eventId, participants =
       try {
         setButtonSubmitting(true);
 
+        const cleanedData = sanitizeStrings(data);
+        data = {...cleanedData};
+
         // Tworzymy kopię, aby nie mutować oryginału z formularza
         const submissionData = { ...data, id: createId() };
 
