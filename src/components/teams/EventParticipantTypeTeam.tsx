@@ -37,15 +37,6 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
             />
           </Link>
         )}
-        {(!participantData.imageUrls || participantData.imageUrls.length === 0) && (
-          <Image
-            src={participantData.imageUrls && participantData.imageUrls[0] || "/images/logo_team.png"}
-            alt={`${participantData.name} logo`}
-            width={50}
-            height={50}
-            className="object-contain rounded"
-          />
-        )}
       </div>
       {participant.team_id ? 
       <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer">{participantData.team_name} <CursorArrowRaysIcon className="w-4 h-4 inline-block ml-1" /></Link> 
