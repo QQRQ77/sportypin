@@ -33,13 +33,13 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
               alt={`${participantData.name} logo`}
               width={50}
               height={50}
-              className="object-contain rounded cursor-pointer"
+              className="object-contain rounded cursor-pointer hover:border-2 hover:border-orange-600"
             />
           </Link>
         )}
       </div>
       {participant.team_id ? 
-      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer">{participantData.team_name} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1" /></Link> 
+      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{participantData.team_name} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
       : <span className="font-medium text-lg">{participantData.team_name}</span>}
     </div>
   );
