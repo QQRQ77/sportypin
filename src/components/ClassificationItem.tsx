@@ -2,7 +2,7 @@
 
 import { ClassificationItem } from "@/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { CursorArrowRaysIcon, PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useEffect, useState } from "react";
 import ClassificationItemForm from "./forms/ClassificationItemForm";
 import { saveClassification } from "@/lib/events.actions";
@@ -58,7 +58,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
     </div>
     <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
       {classificationItem.imageUrls && classificationItem.imageUrls.length > 0 && (
-        <Link href={`/teams/${item.team_id}`}>
+        <Link href={`/teams/${classificationItem.team_id}`}>
           <Image
             src={classificationItem.imageUrls[0]}
             alt={`${classificationItem.description} logo`}
@@ -69,9 +69,11 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         </Link>
       )}
     </div>
-    <div className="flex-1">
-      {classificationItem.description}
-    </div>
+          {classificationItem.team_id ? 
+          <Link href={`/teams/${classificationItem.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{classificationItem.description} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
+          : <div className="flex-1">
+              {classificationItem.description}
+            </div>}
     <div className="w-[80px] text-center font-medium">
       {classificationItem.score && `${item.score}`}
     </div>
