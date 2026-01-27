@@ -43,7 +43,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
   }
 
  return (
-  <div className="flex flex-row w-full text-base">
+  <div className="flex flex-row items-center gap-3 w-full text-base">
     {showEditForm ? 
       <ClassificationItemForm 
         item={item} 
