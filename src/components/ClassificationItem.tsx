@@ -54,7 +54,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         onClose={() => setShowEditForm(false)} />
     : <>
     <div className="flex flex-row items-center w-full justify-between">
-      <div>
+      <div className="flex flex-row items-center flex-1 gap-4">
         <div className="w-[80px] font-medium text-center">
           {classificationItem.place && classificationItem.place < 11 ? romanize(classificationItem.place) : classificationItem.place} 
         </div>
