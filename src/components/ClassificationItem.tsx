@@ -53,72 +53,77 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         setItems={setItems} 
         onClose={() => setShowEditForm(false)} />
     : <>
-    <div className="w-[80px] font-medium text-center">
-      {classificationItem.place && classificationItem.place < 11 ? romanize(classificationItem.place) : classificationItem.place} 
-    </div>
-    <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
-      {classificationItem.imageUrls && classificationItem.imageUrls.length > 0 && (
-        <Link href={`/teams/${classificationItem.team_id}`}>
-          <Image
-            src={classificationItem.imageUrls[0]}
-            alt={`${classificationItem.description} logo`}
-            width={40}
-            height={40}
-            className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
-          />
-        </Link>
-      )}
-    </div>
-          {classificationItem.team_id ? 
-          <Link href={`/teams/${classificationItem.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{classificationItem.description} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
-          : <div className="flex-1">
-              {classificationItem.description}
-            </div>}
-    <div className="w-[80px] text-center font-medium">
-      {classificationItem.score && `${item.score}`}
-    </div>
-    {isUserCreator && 
-      <div className="flex flex-row justify-center items-center gap-4 ml-5">
-        <div className="text-gray-500 hover:text-gray-800">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={e => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setShowEditForm(true);
-                  }}
-                aria-label="Edytuj"
-              >
-                <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Edytuj</p>
-            </TooltipContent>
-          </Tooltip>
+    <div className="flex flex-row items-center w-full justify-between">
+      <div>
+        <div className="w-[80px] font-medium text-center">
+          {classificationItem.place && classificationItem.place < 11 ? romanize(classificationItem.place) : classificationItem.place} 
         </div>
-        <div className="text-gray-500 hover:text-gray-800">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                  onClick={e => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    deleteItem(item.id);
-                      }}
-                  aria-label="Usuń"
-                >
-                <TrashIcon className="w-6 h-6 cursor-pointer" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Usuń</p>
-            </TooltipContent>
-          </Tooltip>
+        <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+          {classificationItem.imageUrls && classificationItem.imageUrls.length > 0 && (
+            <Link href={`/teams/${classificationItem.team_id}`}>
+              <Image
+                src={classificationItem.imageUrls[0]}
+                alt={`${classificationItem.description} logo`}
+                width={40}
+                height={40}
+                className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
+              />
+            </Link>
+          )}
+        </div>
+              {classificationItem.team_id ? 
+              <Link href={`/teams/${classificationItem.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{classificationItem.description} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
+              : <div className="flex-1 text-lg">
+                  {classificationItem.description}
+                </div>}
+        <div className="w-[80px] text-center font-medium">
+          {classificationItem.score && `${item.score}`}
         </div>
       </div>
-    }</>}
+        {isUserCreator && 
+          <div className="flex flex-row justify-center items-center gap-4 ml-5">
+            <div className="text-gray-500 hover:text-gray-800">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setShowEditForm(true);
+                      }}
+                    aria-label="Edytuj"
+                  >
+                    <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edytuj</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="text-gray-500 hover:text-gray-800">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        deleteItem(item.id);
+                          }}
+                      aria-label="Usuń"
+                    >
+                    <TrashIcon className="w-6 h-6 cursor-pointer" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Usuń</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
+        }
+      </div>
+    </>}
   </div>
 )
 }
