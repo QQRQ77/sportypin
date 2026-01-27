@@ -23,7 +23,6 @@ import { ClassificationItem, Participant } from "@/types";
 import { useEffect, useState } from "react";
 import { createId } from "@paralleldrive/cuid2";
 import { saveClassification } from "@/lib/events.actions";
-import { transformationParticipants } from "./EventHarmonogramForm";
 import { sanitizeStrings } from "@/lib/utils";
 
 
