@@ -52,10 +52,10 @@ type FormValues = z.infer<typeof FormSchema>;
 export const transformationClassificationItems = (participants?: Participant[]) => {
   if (!participants) return [];
   return participants.map(p => {
-  if (p.itemType === "zawodnik") return {name: `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim() || "", id: ""};
+  if (p.itemType === "zawodnik") return {name: `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim() || "", id: "", itemType: ""};
   if (p.itemType === "drużyna" || p.itemType === "zespół"){
-    return {name: p.team_name || "", id: p.team_id || ""}};
-  return {name: p.name || p.team_name || "", id: ""};
+    return {name: p.team_name || "", id: p.team_id || "", itemType: p.itemType || ""};};
+  return {name: p.name || p.team_name || "", id: "", itemType: ""};
   });
 }
 
@@ -71,7 +71,7 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
   });
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
-  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string}[]>([]);
+  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string, itemType: string}[]>([]);
 
   const cathegorySelected = form.watch("cathegory");
 
@@ -95,15 +95,13 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
       id: createId(),
     };
 
-    console.log("submissionData:", submissionData);
-
     //sprawdzenie w participantToSelect czy uczestnik o takim "name" posiada team_id lub athlete_id i przypisanie ich do submissionData  
-    const participant = participants ? participants.find(p => p.name === data.description || p.team_name === data.description) : {name: "", id: "", itemType: ""};
+    const participant = participants ? participantsToSelect.find(p => p.name === data.description) : {name: "", id: "", itemType: ""};
     if (participant?.itemType === "drużyna" || participant?.itemType === "zespół") {
-      submissionData.team_id = participant?.team_id;
+      submissionData.team_id = participant?.id;
     }
     if (participant?.itemType === "zawodnik") {
-      submissionData.athlete_id = participant?.athlete_id;
+      submissionData.athlete_id = participant?.id;
     }
 
     const newClassification = [...classification, submissionData].sort((a, b) => (a.place ?? 0) - (b.place ?? 0));
