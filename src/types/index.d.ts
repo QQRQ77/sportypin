@@ -198,5 +198,6 @@ export type ClassificationItem = {
       cathegory?: string,
       team_id?: string,
       athlete_id?: string,
+      imageUrls?: string[];
 }
 

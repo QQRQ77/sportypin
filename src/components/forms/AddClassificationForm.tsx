@@ -113,7 +113,7 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
       description: "",
       place: undefined,
       score: "",
-      cathegory: data.cathegory || "",
+      cathegory: data.cathegory || "wszystkie",
     });
     
     setButtonSubmitting(false);

@@ -3,10 +3,13 @@
 import { ClassificationItem } from "@/types";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ClassificationItemForm from "./forms/ClassificationItemForm";
 import { saveClassification } from "@/lib/events.actions";
 import { romanize } from 'romans';
+import { getTeamLogoURL } from "@/lib/teams.actions";
+import Link from "next/link";
+import Image from "next/image";
 
 interface ClassificationItemProps {
   item: ClassificationItem;
@@ -20,6 +23,18 @@ interface ClassificationItemProps {
 export default function ClassificationSingleItem({eventId, item, isUserCreator = false, classification = [], setItems, cathegories}: ClassificationItemProps) {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
+  const [classificationItem, setClassificationItem] = useState<ClassificationItem>(item);
+
+    useEffect(() => {
+      const fetchTeamLogo = async () => {
+        let teamLogoUrls = null;
+        if (item?.team_id) {
+          teamLogoUrls = await getTeamLogoURL(item.team_id);
+        }
+        setClassificationItem({...item, imageUrls: teamLogoUrls ? [...teamLogoUrls] : []});
+      };
+      fetchTeamLogo();
+    }, [item]);
 
   const deleteItem = async (id: string) => {
     const newClassification = classification.filter(item => item.id !== id);
@@ -39,13 +54,26 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         onClose={() => setShowEditForm(false)} />
     : <>
     <div className="w-[80px] font-medium text-center">
-      {item.place && item.place < 11 ? romanize(item.place) : item.place} 
+      {classificationItem.place && classificationItem.place < 11 ? romanize(classificationItem.place) : classificationItem.place} 
+    </div>
+    <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+      {classificationItem.imageUrls && classificationItem.imageUrls.length > 0 && (
+        <Link href={`/teams/${item.team_id}`}>
+          <Image
+            src={classificationItem.imageUrls[0]}
+            alt={`${classificationItem.description} logo`}
+            width={40}
+            height={40}
+            className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
+          />
+        </Link>
+      )}
     </div>
     <div className="flex-1">
-      {item.description}
+      {classificationItem.description}
     </div>
     <div className="w-[80px] text-center font-medium">
-      {item.score && `${item.score}`}
+      {classificationItem.score && `${item.score}`}
     </div>
     {isUserCreator && 
       <div className="flex flex-row justify-center items-center gap-4 ml-5">
