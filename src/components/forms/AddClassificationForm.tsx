@@ -98,7 +98,7 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
     console.log("submissionData:", submissionData);
 
     //sprawdzenie w participantToSelect czy uczestnik o takim "name" posiada team_id lub athlete_id i przypisanie ich do submissionData  
-    const participant = participants ? participants.find(p => p.name === data.description) : {name: "", id: "", itemType: ""};
+    const participant = participants ? participants.find(p => p.name === data.description || p.team_name === data.description) : {name: "", id: "", itemType: ""};
     if (participant?.itemType === "drużyna" || participant?.itemType === "zespół") {
       submissionData.team_id = participant?.team_id;
     }
