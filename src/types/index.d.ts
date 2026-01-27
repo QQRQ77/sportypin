@@ -196,5 +196,7 @@ export type ClassificationItem = {
       place?: number,
       score?: string,
       cathegory?: string,
+      team_id?: string,
+      athlete_id?: string,
 }
 

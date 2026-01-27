@@ -33,7 +33,7 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
               alt={`${participantData.name} logo`}
               width={50}
               height={50}
-              className="object-contain rounded cursor-pointer hover:border-2 hover:border-orange-600"
+              className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
             />
           </Link>
         )}

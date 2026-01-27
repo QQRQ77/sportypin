@@ -50,6 +50,16 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
+export const transformationClassificationItems = (participants?: Participant[]) => {
+  if (!participants) return [];
+  return participants.map(p => {
+  if (p.itemType === "zawodnik") return {name: `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim() || "", id: ""};
+  if (p.itemType === "drużyna" || p.itemType === "zespół"){
+    return {name: p.team_name || "", id: p.team_id || ""}};
+  return {name: p.name || p.team_name || "", id: ""};
+  });
+}
+
 export default function ClassificationForm({ eventId, cathegories = [], setItems, classification, participants }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -62,16 +72,16 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
   });
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
-  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
+  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string}[]>([]);
 
   const cathegorySelected = form.watch("cathegory");
 
   useEffect(() => {
     if (cathegorySelected && cathegorySelected !== "wszystkie") {
       const filtered = participants ? participants.filter(p => p.cathegory === cathegorySelected) : [];
-      setParticipantsToSelect(transformationParticipants(filtered));
+      setParticipantsToSelect(transformationClassificationItems(filtered));
     } else {
-      setParticipantsToSelect(transformationParticipants(participants));
+      setParticipantsToSelect(transformationClassificationItems(participants));
     }
   }, [participants, cathegorySelected]);
 
@@ -85,6 +95,15 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
       ...data,
       id: createId(),
     };
+
+    //sprawdzenie w participantToSelect czy uczestnik o takim "name" posiada team_id lub athlete_id i przypisanie ich do submissionData  
+    const participant = participants ? participants.find(p => p.name === data.description) : {name: "", id: "", itemType: ""};
+    if (participant?.itemType === "drużyna" || participant?.itemType === "zespół") {
+      submissionData.team_id = participant?.id;
+    }
+    if (participant?.itemType === "zawodnik") {
+      submissionData.athlete_id = participant?.id;
+    }
 
     const newClassification = [...classification, submissionData].sort((a, b) => (a.place ?? 0) - (b.place ?? 0));
 
@@ -140,8 +159,8 @@ export default function ClassificationForm({ eventId, cathegories = [], setItems
                     </FormControl>
                     <SelectContent>
                       {participants && participantsToSelect.map((opt, idx) => (
-                        <SelectItem key={idx} value={opt}>
-                          {opt}
+                        <SelectItem key={idx} value={opt.name}>
+                          {opt.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
