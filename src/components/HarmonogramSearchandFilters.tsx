@@ -48,7 +48,7 @@ export default function HarmonogramSearchAndFilters({cathegories, setFilterCathe
     },
   });
 
-  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
+  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string, itemType: string}[]>([]);
 
   const cathegorySelected = form.watch("cathegory");
   const participantSelected = form.watch("participant");
@@ -115,9 +115,9 @@ export default function HarmonogramSearchAndFilters({cathegories, setFilterCathe
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {participants && ["wszyscy", ...participantsToSelect].map((opt, idx) => (
-                        <SelectItem key={idx} value={opt}>
-                          {opt}
+                      {participants && [{"name": "wszyscy", "id": "", "itemType": ""}, ...participantsToSelect].map((opt, idx) => (
+                        <SelectItem key={idx} value={opt.name}>
+                          {opt.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
