@@ -198,6 +198,8 @@ export default function HarmonogramForm({
       // end_time: computedEnd,
     };
 
+    console.log("SubmissionData: ", submissionData);
+
     //sprawdzenie w participantToSelect czy uczestnik o takim "name" posiada team_id lub athlete_id i przypisanie ich do submissionData  
     const participant_1 = participants ? participantsToSelect.find(p => p.name === data.team_1) : {name: "", id: "", itemType: ""};
     if (participant_1?.itemType === "drużyna" || participant_1?.itemType === "zespół") {
