@@ -87,7 +87,7 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
   const [showModalPromise, setShowModalPromise] = useState<((value: unknown) => void) | null>(null);
-  const [participantsToSelect, setParticipantsToSelect] = useState<string[]>([]);
+  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string, itemType: string}[]>([]);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
@@ -398,8 +398,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                               </FormControl>
                               <SelectContent>
                                 {participants && participantsToSelect.map((opt, idx) => (
-                                  <SelectItem key={idx} value={opt}>
-                                    {opt}
+                                  <SelectItem key={idx} value={opt.name}>
+                                    {opt.name}
                                   </SelectItem>
                                 ))}
                               </SelectContent>
@@ -421,8 +421,8 @@ export default function HarmonogramItemEditForm({ items, itemIdx, eventId, setIt
                             </FormControl>
                             <SelectContent>
                               {participants && participantsToSelect.map((opt, idx) => (
-                                <SelectItem key={idx} value={opt}>
-                                  {opt}
+                                <SelectItem key={idx} value={opt.name}>
+                                  {opt.name}
                                 </SelectItem>
                               ))}
                             </SelectContent>
