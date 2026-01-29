@@ -57,6 +57,8 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   }, [filterHarmonogramCathegory]);
 
   useEffect(() => {
+    console.log("filterHarmonogramParticipant changed:", filterHarmonogramParticipant);
+
     let filteredItems = event.harmonogram || [];
     // Filtrowanie po uczestniku
     if (filterHarmonogramParticipant && filterHarmonogramParticipant !== "wszyscy") {
