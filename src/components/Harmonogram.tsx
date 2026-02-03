@@ -1,5 +1,6 @@
 import { HarmonogramItem } from "@/types";
 import DateViewer from "./DataViewer";
+import EventHarmonogramTeamsItem from "./teams/EventHarmonogramTeams";
 
 interface HarmonogramProps {
   items: HarmonogramItem[];
@@ -49,7 +50,9 @@ export default function Harmonogram({items}: HarmonogramProps) {
               <div className="w-[100px] text-center">{item.start_time}</div>
               <div className="w-[100px] text-center">{item.end_time}</div>
             </div>
-            <div className="hidden lg:block flex-1 text-center lg:text-left font-medium">{item.team_1}{item.team_1 && " vs. "}{item.team_2}{((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}</div>
+            <div className="hidden lg:block flex-1">
+              <EventHarmonogramTeamsItem item={item} />
+            </div>
             <div className="hidden lg:block">
                 <div className="flex gap-2 justify-center items-center">
                   <div className="w-[100px] text-center">
