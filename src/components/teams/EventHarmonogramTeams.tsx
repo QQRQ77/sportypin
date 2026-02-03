@@ -14,8 +14,8 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
 
   useEffect(() => {
     const fetchTeamLogo = async () => {
-      let team_1_logoURL = ""
-      let team_2_logoURL = "" 
+      let team_1_logoURL
+      let team_2_logoURL 
       if (item.team_1_id) {
         console.log("Fetching logo for team 1 ID:", item.team_1_id);
         team_1_logoURL = await getTeamLogoURL(item.team_1_id);
@@ -24,8 +24,8 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
       if (item.team_2_id) {
         team_2_logoURL = await getTeamLogoURL(item.team_2_id);
       }
-      setTeam_1_LogoURL(team_1_logoURL);
-      setTeam_2_LogoURL(team_2_logoURL);
+      setTeam_1_LogoURL(team_1_logoURL[0]);
+      setTeam_2_LogoURL(team_2_logoURL[0]);
     };
     fetchTeamLogo();
   }, [item]);
