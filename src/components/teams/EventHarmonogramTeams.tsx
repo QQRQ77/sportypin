@@ -17,6 +17,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
       let team_1_logoURL = ""
       let team_2_logoURL = "" 
       if (item.team_1_id) {
+        console.log("Fetching logo for team 1 ID:", item.team_1_id);
         team_1_logoURL = await getTeamLogoURL(item.team_1_id);
       }
       if (item.team_2_id) {
@@ -38,7 +39,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
                     className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
                   /> : <div className="w-[40px] h-[40px]"></div>}{item.team_1}
       {item.team_1 && " vs. "}
-      {item.team_1_id ? <Image
+      {item.team_2_id ? <Image
               src={team_2_LogoURL}
               alt={`${item.team_2} logo`}
               width={40}
