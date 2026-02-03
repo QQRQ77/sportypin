@@ -45,8 +45,6 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [filterHarmonogramParticipant, setFilterHarmonogramParticipant] = useState<string>("wszyscy");
 
   useEffect(() => {
-    console.log("filterHarmonogramCathegory changed:", filterHarmonogramCathegory);
-
     let filteredItems = event.harmonogram || [];
 
     // Filtrowanie po kategorii
@@ -57,8 +55,6 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   }, [filterHarmonogramCathegory]);
 
   useEffect(() => {
-    console.log("filterHarmonogramParticipant changed:", filterHarmonogramParticipant);
-
     let filteredItems = event.harmonogram || [];
     // Filtrowanie po uczestniku
     if (filterHarmonogramParticipant && filterHarmonogramParticipant !== "wszyscy") {

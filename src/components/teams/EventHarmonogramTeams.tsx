@@ -19,6 +19,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
       if (item.team_1_id) {
         console.log("Fetching logo for team 1 ID:", item.team_1_id);
         team_1_logoURL = await getTeamLogoURL(item.team_1_id);
+        console.log("Fetched logo URL for team 1:", team_1_logoURL);
       }
       if (item.team_2_id) {
         team_2_logoURL = await getTeamLogoURL(item.team_2_id);
