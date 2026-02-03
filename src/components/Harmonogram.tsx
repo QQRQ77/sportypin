@@ -50,7 +50,7 @@ export default function Harmonogram({items}: HarmonogramProps) {
               <div className="w-[100px] text-center">{item.start_time}</div>
               <div className="w-[100px] text-center">{item.end_time}</div>
             </div>
-            <div className="hidden lg:block flex-1">
+            <div className="hidden lg:block flex-1 items-center">
               <EventHarmonogramTeamsItem item={item} />
             </div>
             <div className="hidden lg:block">
