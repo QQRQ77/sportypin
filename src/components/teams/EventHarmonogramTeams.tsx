@@ -35,7 +35,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
                     alt={`${item.team_1} logo`}
                     width={40}
                     height={40}
-                    className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
+                    className="object-contain rounded"
                   /> : <div className="w-[40px] h-[40px]"></div>}{item.team_1}
       {item.team_1 && "    vs. "}
       {item.team_2_id ? <Image
@@ -43,7 +43,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
               alt={`${item.team_2} logo`}
               width={40}
               height={40}
-              className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
+              className="object-contain rounded"
             /> : <div className=""></div>}{item.team_2}
       {((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}
     </div>
