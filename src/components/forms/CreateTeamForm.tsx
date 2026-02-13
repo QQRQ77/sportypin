@@ -234,7 +234,7 @@ export default function CreateTeamForm() {
                   )}
                   />
 
-                  //logo zespołu - opcjonalne
+                  {/* logo zespołu - opcjonalne */}
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={logoImageInputRef} onChange={handleLogoImageChange}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
@@ -260,10 +260,10 @@ export default function CreateTeamForm() {
                     </div>
                     <p className="text-red-700 text-center">{logoImageError}</p>
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); logoImageInputRef.current?.click()}}>Dodaj logo</Button>
-                    <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
+                    <p className="text-center">Max. rozmiar pliku: 1MB</p>
                   </div>
 
-                  //zdjęcia zespołu - opcjonalne
+                  {/* zdjęcia zespołu - opcjonalne */}
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
