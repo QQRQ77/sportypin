@@ -27,6 +27,7 @@ interface CreateTeam {
   members?: string[];
   zip_code?: string;
   imageUrls?: string[];
+  logoUrl?: string;
   contact_email?: string;
   contact_phone?: string;
 }

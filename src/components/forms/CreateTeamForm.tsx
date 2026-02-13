@@ -61,11 +61,15 @@ export default function CreateTeamForm() {
     });
 
     const imageInputRef = useRef<HTMLInputElement>(null)
+    const logoImageInputRef = useRef<HTMLInputElement>(null)
+
     const router = useRouter();
 
     const [submitButtonDisactive, setSubmitButtonDisactive] = useState(false);
     const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [logoImageUrl, setLogoImageUrl] = useState<string[]>([])
     const [imageError, setImageError] = useState<string>("")
+    const [logoImageError, setLogoImageError] = useState<string>("")
     const [memberInput, setMemberInput] = useState("");
     const [sportInput, setSportInput] = useState("");
     const [cathegoryInput, setCathegoryInput] = useState("");
@@ -127,10 +131,25 @@ export default function CreateTeamForm() {
           urls.push(imageUrl);
         }
 
+        const logoUrls = [];
+        if (logoImageUrl.length > 0) {
+          const logoFile = await convertBlobUrlToFile(logoImageUrl[0]);
+          const { imageUrl, error } = await uploadImage({
+            file: logoFile,
+            bucket: "sportpin",
+            folder: "teams/logo"
+          });
+
+          if (error) {
+            console.error(error);
+            return;
+          }
+
+          logoUrls.push(imageUrl);}
+
 
         try {
-            const team = await createTeam({...data, imageUrls: urls}) 
-
+            const team = await createTeam({...data, imageUrls: urls, logoUrl: logoUrls.length > 0 ? logoUrls[0] : undefined});
             if(team) {router.push(`/teams/${team.id}`)} else {router.push("/")}
 
         } catch (error) {
@@ -162,10 +181,37 @@ export default function CreateTeamForm() {
 
       e.target.value = ""; // reset inputa   
     }
+
+    const handleLogoImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (!files) return;
+
+      const remainingSlots = 1 - imageUrls.length;
+      if (remainingSlots <= 0) return;
+
+      const validFiles = Array.from(files)
+        .filter((f) => {
+          const ok = f.size <= MAX_UPLOADED_FILE_SIZE
+          if (!ok) setLogoImageError(`${f.name} przekracza 1 MB i zostanie pominięte.`);
+          return ok;
+        })
+        .slice(0, remainingSlots);
+
+      validFiles.forEach((file) => {
+        const url = URL.createObjectURL(file);
+        setLogoImageUrl((prev) => [...prev, url]);
+      });
+
+      e.target.value = ""; // reset inputa   
+    }
         
     const removeImage = (index: number) => {
-      setImageUrls((prev) => prev.filter((_, i) => i !== index));
+      setLogoImageUrl((prev) => prev.filter((_, i) => i !== index));
     };
+
+    const removeLogoImage = (index: number) => {
+      setLogoImageUrl((prev) => prev.filter((_, i) => i !== index));
+    }
 
     return (
         <>
@@ -188,6 +234,36 @@ export default function CreateTeamForm() {
                   )}
                   />
 
+                  //logo zespołu - opcjonalne
+                  <div className="w-full flex flex-col gap-2 justify-center">
+                    <input type="file" hidden multiple ref={logoImageInputRef} onChange={handleLogoImageChange}/>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
+                      {imageUrls.map((url, index)=> 
+                        <div key={index} className="relative">
+                          <Image
+                            src={url}
+                            alt={`image-${index}`}
+                            width={300}
+                            height={300}
+                            className="object-cover rounded"
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {e.preventDefault(); removeLogoImage(index)}}
+                            className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer"
+                            aria-label="Usuń logo"
+                          >
+                            <XMarkIcon className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-red-700 text-center">{logoImageError}</p>
+                    <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); logoImageInputRef.current?.click()}}>Dodaj logo</Button>
+                    <p className="text-center">( Max. ilość zdjęć: 5<span className="ml-4">Max. rozmiar pliku: 1MB )</span></p>
+                  </div>
+
+                  //zdjęcia zespołu - opcjonalne
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={imageInputRef} onChange={handleImageChange}/>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
