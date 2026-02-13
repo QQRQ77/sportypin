@@ -237,26 +237,24 @@ export default function CreateTeamForm() {
                   {/* logo zespołu - opcjonalne */}
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={logoImageInputRef} onChange={handleLogoImageChange}/>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 place-items-center">
-                      {imageUrls.map((url, index)=> 
-                        <div key={index} className="relative">
+                    <div className="flex justify-center mx-auto">
+                        <div className="relative">
                           <Image
-                            src={url}
-                            alt={`image-${index}`}
+                            src={logoImageUrl[0]}
+                            alt={`team-logo`}
                             width={300}
                             height={300}
                             className="object-cover rounded"
                           />
                           <button
                             type="button"
-                            onClick={(e) => {e.preventDefault(); removeLogoImage(index)}}
+                            onClick={(e) => {e.preventDefault(); removeLogoImage(0)}}
                             className="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-black/80 cursor-pointer"
                             aria-label="Usuń logo"
                           >
                             <XMarkIcon className="w-4 h-4" />
                           </button>
                         </div>
-                      )}
                     </div>
                     <p className="text-red-700 text-center">{logoImageError}</p>
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); logoImageInputRef.current?.click()}}>Dodaj logo</Button>
