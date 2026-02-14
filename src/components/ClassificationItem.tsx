@@ -34,6 +34,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
         setClassificationItem({...item, logoUrl: teamLogoUrl ? teamLogoUrl : ""});
       };
       fetchTeamLogo();
+      console.log("Classification item updated:", item);
     }, [item]);
 
   const deleteItem = async (id: string) => {
