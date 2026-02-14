@@ -1,6 +1,6 @@
 import AthleteCardSmall from "@/components/athletes/SmallAthleteCard";
 import { getAthletes } from "@/lib/athletes.actions";
-import { getTeamLogoURL } from "@/lib/teams.actions";
+import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { createUser } from "@/lib/users.actions";
 import { CreateAthlete } from "@/types";
 import { auth } from "@clerk/nextjs/server";
@@ -15,7 +15,7 @@ export default async function Page() {
 
   const athletes: CreateAthlete[] = await getAthletes();
   for (const athlete of athletes) {
-    const teamLogoURL = athlete.home_team_id ? await getTeamLogoURL(athlete.home_team_id) : null;
+    const teamLogoURL = athlete.home_team_id ? await getTeamLogoByTeamId(athlete.home_team_id) : "";
     athlete.home_team_logo_URL = teamLogoURL;}
 
   return (

@@ -39,7 +39,7 @@ export default function AthleteCardSmall({ athlete }: SmallAthleteCardProps) {
                 className="flex justify-center items-center gap-4 hover:opacity-80 transition"
                 >
                 <Image
-                  src={athlete.home_team_logo_URL && athlete.home_team_logo_URL[0] || "/images/logo_team.png"}
+                  src={athlete.home_team_logo_URL || "/images/logo_team.png"}
                   alt={`${athlete.home_team_name} logo`}
                   width={50}
                   height={50}
