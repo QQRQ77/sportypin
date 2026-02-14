@@ -39,6 +39,7 @@ type TeamSmall = {
   sports: string[];
   cathegories?: string[];
   imageUrls?: string[];
+  logoUrl?: string;
 }
 
 interface CreateEvent{
