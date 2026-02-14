@@ -23,7 +23,7 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
           <h2 className="text-xl font-medium">{athlete.birth_year}</h2>
           <div className="flex justify-center items-center gap-4">
               <Image
-                src={athlete.home_team_logo_URL && athlete.home_team_logo_URL[0] || "/images/default_team_logo.jpeg"}
+                src={athlete.home_team_logo_URL || "/images/default_team_logo.jpeg"}
                 alt={`${athlete.home_team_name} logo`}
                 width={50}
                 height={50}
