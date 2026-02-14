@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import ClassificationItemForm from "./forms/ClassificationItemForm";
 import { saveClassification } from "@/lib/events.actions";
 import { romanize } from 'romans';
-import { getTeamLogoURL } from "@/lib/teams.actions";
+import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -27,11 +27,11 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
 
     useEffect(() => {
       const fetchTeamLogo = async () => {
-        let teamLogoUrls = null;
+        let teamLogoUrl = null;
         if (item?.team_id) {
-          teamLogoUrls = await getTeamLogoURL(item.team_id);
+          teamLogoUrl = await getTeamLogoByTeamId(item.team_id);
         }
-        setClassificationItem({...item, imageUrls: teamLogoUrls ? [...teamLogoUrls] : []});
+        setClassificationItem({...item, logoUrl: teamLogoUrl ? teamLogoUrl : ""});
       };
       fetchTeamLogo();
     }, [item]);
@@ -59,10 +59,10 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
           {classificationItem.place && classificationItem.place < 11 ? romanize(classificationItem.place) : classificationItem.place} 
         </div>
         <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
-          {classificationItem.imageUrls && classificationItem.imageUrls.length > 0 && (
+          {classificationItem.logoUrl && (
             <Link href={`/teams/${classificationItem.team_id}`}>
               <Image
-                src={classificationItem.imageUrls[0]}
+                src={classificationItem.logoUrl}
                 alt={`${classificationItem.description} logo`}
                 width={40}
                 height={40}

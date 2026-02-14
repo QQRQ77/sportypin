@@ -207,5 +207,6 @@ export type ClassificationItem = {
       team_id?: string,
       athlete_id?: string,
       imageUrls?: string[];
+      logoUrl?: string;
 }
 

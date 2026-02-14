@@ -34,7 +34,7 @@ export async function searchTeams(query: string): Promise<{ id: string; name: st
   return (data ?? []).map((i) => ({ id: i.id, name: i.name }));
 }
 
-export async function getTeamLogoURL(teamId: string) {
+export async function getTeamImagesUrls(teamId: string) {
   const supabase = createSupabaseClient();
   const { data, error } = await supabase
     .from('Teams')
@@ -77,4 +77,19 @@ export async function getTeams() {
   }
 
   return data;
+}
+
+export async function getTeamLogoByTeamId(teamId: string) {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Teams')
+    .select('logoUrl')
+    .eq('id', teamId);
+
+  if (error) {
+    console.error('Error fetching athlete:', error);
+    throw new Error(error.message || 'Failed to fetch athlete');
+  }
+
+  return data[0]?.logoUrl || "";
 }
