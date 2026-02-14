@@ -237,7 +237,7 @@ export default function CreateTeamForm() {
                   {/* logo zespołu - opcjonalne */}
                   <div className="w-full flex flex-col gap-2 justify-center">
                     <input type="file" hidden multiple ref={logoImageInputRef} onChange={handleLogoImageChange}/>
-                    <div className="flex justify-center mx-auto">
+                    {logoImageUrl.length > 0 && <div className="flex justify-center mx-auto">
                         <div className="relative">
                           <Image
                             src={logoImageUrl[0]}
@@ -255,7 +255,7 @@ export default function CreateTeamForm() {
                             <XMarkIcon className="w-4 h-4" />
                           </button>
                         </div>
-                    </div>
+                    </div>}
                     <p className="text-red-700 text-center">{logoImageError}</p>
                     <Button className="mx-auto cursor-pointer" onClick={(e) => {e.preventDefault(); logoImageInputRef.current?.click()}}>Dodaj logo</Button>
                     <p className="text-center">Max. rozmiar pliku: 1MB</p>
