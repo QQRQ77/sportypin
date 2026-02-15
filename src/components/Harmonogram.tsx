@@ -44,7 +44,7 @@ export default function Harmonogram({items}: HarmonogramProps) {
           {idx > 0 && items[idx].date !== items[idx - 1].date && <div className="w-full flex justify-center mb-2">
             <DateViewer date={item.date}/>    
           </div>}
-          <div className={`h-10 w-full flex flex-wrap gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} items-center ${!dateCheck(item) ? "opacity-50" : ""}`}>
+          <div className={`h-20 w-full flex flex-wrap gap-2 rounded-xl shadow-xl ${idx % 2 === 0 ? "bg-sky-200" : "bg-gray-200"} items-center ${!dateCheck(item) ? "opacity-50" : ""}`}>
             <div className="flex gap-2">
               <div className="w-[80px] text-center">{item.LP}.</div>
               <div className="w-[100px] text-center">{item.start_time}</div>
