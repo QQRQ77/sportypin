@@ -1,4 +1,4 @@
-import { getTeamLogoURL } from "@/lib/teams.actions";
+import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { HarmonogramItem } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -17,12 +17,12 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
       let team_1_logoURL
       let team_2_logoURL 
       if (item.team_1_id) {
-        team_1_logoURL = await getTeamLogoURL(item.team_1_id);
-        setTeam_1_LogoURL(team_1_logoURL[0]);
+        team_1_logoURL = await getTeamLogoByTeamId(item.team_1_id);
+        setTeam_1_LogoURL(team_1_logoURL);
       }
       if (item.team_2_id) {
-        team_2_logoURL = await getTeamLogoURL(item.team_2_id);
-        setTeam_2_LogoURL(team_2_logoURL[0]);
+        team_2_logoURL = await getTeamLogoByTeamId(item.team_2_id);
+        setTeam_2_LogoURL(team_2_logoURL);
       }
     };
     fetchTeamLogo();
