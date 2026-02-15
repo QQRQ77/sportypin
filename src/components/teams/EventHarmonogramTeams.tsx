@@ -29,7 +29,7 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
   }, [item]);
 
   return (
-    <div className="text-center lg:text-left font-medium inline-flex items-center">
+    <div className="text-center lg:text-left font-medium inline-flex items-center gap-2">
       {item.team_1_id ? <Image
                     src={team_1_LogoURL}
                     alt={`${item.team_1} logo`}
