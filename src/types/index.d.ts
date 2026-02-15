@@ -192,6 +192,7 @@ export type Participant = {
       team_name?: string,
       team_id?: string,
       imageUrls?: string[];
+      teamLogoUrl?: string;
       birth_date?: string,
       start_number?: number | "",
       cathegory?: string,

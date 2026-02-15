@@ -1,4 +1,4 @@
-import { getTeamLogoURL } from "@/lib/teams.actions";
+import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { Participant } from "@/types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -14,11 +14,11 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
 
   useEffect(() => {
     const fetchTeamLogo = async () => {
-      let teamLogoUrls = null;
+      let teamLogoUrl = "";
       if (participant?.team_id) {
-        teamLogoUrls = await getTeamLogoURL(participant.team_id);
+        teamLogoUrl = await getTeamLogoByTeamId(participant.team_id);
       }
-      setParticipantData({...participant, imageUrls: teamLogoUrls ? [...teamLogoUrls] : []});
+      setParticipantData({...participant, teamLogoUrl: teamLogoUrl});
     };
     fetchTeamLogo();
   }, [participant]);
@@ -26,10 +26,10 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
   return (
     <div className="flex items-center gap-3 ml-5">
       <div className="w-14 h-14 flex items-center justify-center overflow-hidden">
-        {participantData.imageUrls && participantData.imageUrls.length > 0 && (
+        {participantData.teamLogoUrl && (
           <Link href={`/teams/${participant.team_id}`}>
             <Image
-              src={participantData.imageUrls[0]}
+              src={participantData.teamLogoUrl}
               alt={`${participantData.name} logo`}
               width={50}
               height={50}
