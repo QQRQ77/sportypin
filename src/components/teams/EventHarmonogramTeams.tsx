@@ -5,9 +5,10 @@ import Image from "next/image";
 
 interface EventHarmonogramTeamsProps {
   item: HarmonogramItem;
+  participantSelected?: string;
 }
 
-export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = ({item}) => {
+export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = ({item, participantSelected}) => {
 
   const [team_1_LogoURL, setTeam_1_LogoURL] = useState<string>("");
   const [team_2_LogoURL, setTeam_2_LogoURL] = useState<string>("");
@@ -36,7 +37,8 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
                     width={40}
                     height={40}
                     className="object-contain rounded"
-                  /> : <div className="w-[40px] h-[40px]"></div>}{item.team_1}
+                  /> : <div className="w-[40px] h-[40px]"></div>}
+      <span className={`${item.team_1 === participantSelected && "font-bold"}`}>{item.team_1}</span>
       {item.team_1 && <span className="ml-2">vs.</span>}
       {item.team_2_id ? <Image
               src={team_2_LogoURL}
@@ -44,7 +46,8 @@ export const EventHarmonogramTeamsItem: React.FC<EventHarmonogramTeamsProps> = (
               width={40}
               height={40}
               className="object-contain rounded"
-            /> : <div className=""></div>}{item.team_2}
+            /> : <div className=""></div>}
+      <span className={`${item.team_2 === participantSelected && "font-bold"}`}>{item.team_2}</span>
       {((item.team_1 && item.description) || (item.team_2 && item.description)) && " - "}{` ${item.description}`}
     </div>
   );

@@ -4,9 +4,10 @@ import EventHarmonogramTeamsItem from "./teams/EventHarmonogramTeams";
 
 interface HarmonogramProps {
   items: HarmonogramItem[];
+  participantSelected?: string;
 }
 
-export default function Harmonogram({items}: HarmonogramProps) {
+export default function Harmonogram({items, participantSelected}: HarmonogramProps) {
 
   function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
     // licznik dla każdej daty
@@ -51,7 +52,10 @@ export default function Harmonogram({items}: HarmonogramProps) {
               <div className="w-[100px] text-center">{item.end_time}</div>
             </div>
             <div className="hidden lg:flex flex-1 items-center">
-              <EventHarmonogramTeamsItem item={item} />
+              <EventHarmonogramTeamsItem 
+                item={item}
+                participantSelected={participantSelected}
+              />
             </div>
             <div className="hidden lg:block">
                 <div className="flex gap-2 justify-center items-center">
