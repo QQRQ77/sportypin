@@ -32,6 +32,8 @@ interface Props {
 export default function EventCard({ event, isUserFollowing = false, isUserCreator = false }: Props) {
   const router = useRouter()
 
+  console.log("Participants: ", event.participants)
+
   const [openHarmonogramForm, setOpenHarmonogramForm] = useState(false)
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [openParticipantsForm, setOpenParticipantsForm] = useState(false)
