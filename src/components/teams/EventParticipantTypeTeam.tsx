@@ -30,7 +30,7 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
           <Link href={`/teams/${participant.team_id}`}>
             <Image
               src={participantData.teamLogoUrl}
-              alt={`${participantData.name} logo`}
+              alt={`${participantData.team_name} logo`}
               width={50}
               height={50}
               className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
@@ -39,8 +39,8 @@ const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({part
         )}
       </div>
       {participant.team_id ? 
-      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{participantData.team_name} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
-      : <span className="font-medium text-lg">{participantData.team_name}</span>}
+      <Link href={`/teams/${participant.team_id}`} className="font-semibold text-lg cursor-pointer hover:text-gray-600">{participantData.team_name || participantData.name} <CursorArrowRaysIcon className="w-6 h-6 inline-block ml-1 sm:hidden" /></Link> 
+      : <span className="font-medium text-lg">{participantData.team_name || participantData.name}</span>}
     </div>
   );
 };
