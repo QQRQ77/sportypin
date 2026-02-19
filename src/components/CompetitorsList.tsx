@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import CompetitorEditForm from "./forms/CompetitorEditForm";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon, TrashIcon, UsersIcon } from "@heroicons/react/20/solid";
 import { saveNewParticipant } from "@/lib/events.actions";
 import EventParticipantTypeTeam from "./teams/EventParticipantTypeTeam";
 
@@ -81,9 +81,28 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                         <div className="ml-5 font-medium text-lg">{participant.second_name}</div>
                       </div>
                     </>} 
-                    <EventParticipantTypeTeam participant={participant} />
+                    <EventParticipantTypeTeam participant={participant} isUserCreator={isUserCreator} />
                     {isUserCreator && 
                           <div className="flex flex-row w-24 justify-center items-center gap-4 ml-5">
+                            <div className="text-gray-500 hover:text-gray-800">
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <button
+                                    onClick={e => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      setShowEditForm(participant.id || "");
+                                      }}
+                                    aria-label="Zawodnicy"
+                                  >
+                                    <UsersIcon className="w-6 h-6 cursor-pointer" /><UsersIcon className="w-6 h-6 cursor-pointer" />
+                                  </button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Zawodnicy</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </div>
                             <div className="text-gray-500 hover:text-gray-800">
                               <Tooltip>
                                 <TooltipTrigger asChild>
