@@ -81,7 +81,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                         <div className="ml-5 font-medium text-lg">{participant.second_name}</div>
                       </div>
                     </>} 
-                    <EventParticipantTypeTeam participant={participant} isUserCreator={isUserCreator} />
+                    <EventParticipantTypeTeam participant={participant}/>
                     {isUserCreator && 
                           <div className="flex flex-row w-24 justify-center items-center gap-4 ml-5">
                             <div className="text-gray-500 hover:text-gray-800">

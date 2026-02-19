@@ -7,10 +7,9 @@ import { CursorArrowRaysIcon } from "@heroicons/react/20/solid";
 
 interface EventParticipantTypeTeamProps {
   participant?: Participant;
-  isUserCreator?: boolean;
 }
 
-const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({participant = {team_name: "Wczytuję..."}, isUserCreator = false}) => {
+const EventParticipantTypeTeam: React.FC<EventParticipantTypeTeamProps> = ({participant = {team_name: "Wczytuję..."}}) => {
   const [participantData, setParticipantData] = useState<Participant>(participant);
 
   useEffect(() => {
