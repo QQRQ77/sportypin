@@ -96,8 +96,8 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                     aria-label="Zawodnicy"
                                   >
                                     <div className="flex flex-row items-center">
-                                      <UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1] -mr-2" />
-                                      <UsersIcon className="w-6 h-6 cursor-pointer text-black outline" />
+                                      <UsersIcon className="w-7 h-7 cursor-pointer scale-x-[-1] -mr-2" />
+                                      <UsersIcon className="w-6 h-6 cursor-pointer text-black" />
                                     </div>
                                   </button>
                                 </TooltipTrigger>
