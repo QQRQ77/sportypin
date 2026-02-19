@@ -83,7 +83,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                     </>} 
                     <EventParticipantTypeTeam participant={participant}/>
                     {isUserCreator && 
-                          <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5 border-2">
+                          <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5">
                             <div className="text-gray-500 hover:text-gray-800">
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -95,7 +95,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                       }}
                                     aria-label="Zawodnicy"
                                   >
-                                    <div className="flex flex-row items-center"><UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1]" /><UsersIcon className="w-6 h-6 cursor-pointer" /></div>
+                                    <div className="flex flex-row items-center gap-[-1]"><UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1]" /><UsersIcon className="w-6 h-6 cursor-pointer" /></div>
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
