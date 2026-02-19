@@ -97,7 +97,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                   >
                                     <div className="flex flex-row items-center">
                                       <UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1] -mr-2" />
-                                      <UsersIcon className="w-6 h-6 cursor-pointer" />
+                                      <UsersIcon className="w-6 h-6 cursor-pointer text-black outline" />
                                     </div>
                                   </button>
                                 </TooltipTrigger>
