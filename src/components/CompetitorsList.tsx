@@ -95,7 +95,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                       }}
                                     aria-label="Zawodnicy"
                                   >
-                                    <div className="flex flex-row items-center gap-[-1]"><UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1]" /><UsersIcon className="w-6 h-6 cursor-pointer" /></div>
+                                    <div className="flex flex-row items-center gap-[-2]"><UsersIcon className="w-6 h-6 cursor-pointer scale-x-[-1]" /><UsersIcon className="w-6 h-6 cursor-pointer" /></div>
                                   </button>
                                 </TooltipTrigger>
                                 <TooltipContent>
