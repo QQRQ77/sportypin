@@ -37,6 +37,7 @@ function getCategoryKeys(obj: Record<string, Participant[]>) {
 export default function CompetitorsList({eventId, setItems, participants = [], isUserCreator = false}: CompetitorsProps) {
 
   const [showEditForm, setShowEditForm] = useState("");
+  const [showTeamMembers, setShowTeamMembers] = useState("");
 
   const participantsByCategory = groupByCategory(participants);
 
@@ -65,7 +66,17 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <div className="flex flex-col gap-1 pl-2">
               {participantsByCategory[category].map((participant) => (
-                (showEditForm && participant.id === showEditForm) ? 
+                <>
+              {showTeamMembers && (participant.id === showTeamMembers) && 
+                  <CompetitorEditForm 
+                    key={participant.id}
+                    participant={participant} 
+                    participants={participants} 
+                    cathegories={categoryKeys}
+                    eventId={eventId}
+                    setItems={setItems} 
+                    onClose={() => {setShowTeamMembers("")}} />}
+                {(showEditForm && participant.id === showEditForm) ? 
                   <CompetitorEditForm 
                     key={participant.id}
                     participant={participant} 
@@ -90,7 +101,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                     onClick={e => {
                                       e.preventDefault();
                                       e.stopPropagation();
-                                      setShowEditForm(participant.id || "");
+                                      setShowTeamMembers(participant.id || "");
                                       }}
                                     aria-label="Zawodnicy"
                                   >
@@ -146,7 +157,8 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                             </div>
                             </>}
                           </div>
-                  </div>
+                  </div>}
+                </>
               ))}
             </div>
           </AccordionContent>
