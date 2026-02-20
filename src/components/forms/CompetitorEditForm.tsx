@@ -38,11 +38,6 @@ const FormSchema = z.object({
   first_name: z.string().min(2).max(100).optional(),
   second_name: z.string().min(2).max(100).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
-  // start_number: z.coerce
-  //     .number({ invalid_type_error: "Podaj liczbę" })
-  //     .int()
-  //     .nonnegative()
-  //     .optional(),
   start_number: z.union([
     z.coerce.number().int().nonnegative(),
     z.literal(""),
@@ -63,7 +58,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: participant?.name,
+      name: participant?.team_name,
       first_name: participant?.first_name,
       second_name: participant?.second_name,
       start_number: participant?.start_number,
@@ -90,7 +85,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
 
     if (participant) {
       const isUnchanged =
-        (participant.name || "") === (submissionData.name || "") &&
+        (participant.team_name || "") === (submissionData.name || "") &&
         (participant.first_name || "") === (submissionData.first_name || "") &&
         (participant.second_name || "") === (submissionData.second_name || "") &&
         (participant.cathegory || "") === (submissionData.cathegory || "") &&
