@@ -117,7 +117,11 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(handleSubmit)}
+        // onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={(e) => {
+          e.stopPropagation(); // Kluczowe: zapobiega bąbelkowaniu do Accordion
+          form.handleSubmit(handleSubmit)(e);
+        }}
         className="w-full mb-2"
       >
         <div className="w-full flex flex-row flex-wrap p-4 gap-2 items-center rounded-xl shadow-xl bg-slate-100 border-2 justify-between">
