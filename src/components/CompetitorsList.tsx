@@ -67,102 +67,100 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
           <AccordionContent className="flex flex-col gap-4 text-balance">
             <div className="flex flex-col gap-1 pl-2">
               {participantsByCategory[category].map((participant) => (
-                <>
-                {(showEditForm && participant.id === showEditForm) ? 
-                  <CompetitorEditForm 
-                    key={participant.id}
-                    participant={participant} 
-                    participants={participants} 
-                    cathegories={categoryKeys}
-                    eventId={eventId}
-                    setItems={setItems} 
-                    onClose={() => {setShowEditForm("")}} /> :
-                  <div key={participant.id} className="flex w-full justify-between text-base gap-2">
-                    {participant.itemType === "zawodnik" && <><div className="ml-5 font-medium text-lg">{participant.start_number}</div> 
-                      <div className="flex flex-row gap-2 w-full lg:w-1/4">
-                        <div className="ml-5 font-medium text-lg">{participant.first_name}</div> 
-                        <div className="ml-5 font-medium text-lg">{participant.second_name}</div>
-                      </div>
-                    </>} 
-                    <EventParticipantTypeTeam participant={participant}/>
-                          <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5">
-                            <div className="text-gray-500 hover:text-gray-800">
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    onClick={e => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      setShowTeamMembers(participant.id || "");
-                                      setShowEditForm("")
-                                      }}
-                                    aria-label="Zawodnicy"
-                                  >
-                                    <div className="flex flex-row items-center">
-                                      <UsersIcon className="w-7 h-7 cursor-pointer scale-x-[-1] -mr-2 hover:text-black" />
-                                      <UsersIcon className="w-6 h-6 cursor-pointer text-black" />
-                                    </div>
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Zawodnicy</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </div>
-                            {isUserCreator && <>
-                            <div className="text-gray-500 hover:text-gray-800">
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    onClick={e => {
-                                      e.preventDefault();
-                                      e.stopPropagation();
-                                      setShowEditForm(participant.id || "");
-                                      setShowTeamMembers("")
-                                      }}
-                                    aria-label="Edytuj"
-                                  >
-                                    <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Edytuj</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </div>
-                            <div className="text-gray-500 hover:text-gray-800">
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <button
+                <div key={participant.id} className="flex flex-col gap-2">
+                  {(showEditForm && participant.id === showEditForm) ? 
+                    <CompetitorEditForm 
+                      participant={participant} 
+                      participants={participants} 
+                      cathegories={categoryKeys}
+                      eventId={eventId}
+                      setItems={setItems} 
+                      onClose={() => {setShowEditForm("")}} /> :
+                    <div className="flex w-full justify-between text-base gap-2">
+                      {participant.itemType === "zawodnik" && <><div className="ml-5 font-medium text-lg">{participant.start_number}</div> 
+                        <div className="flex flex-row gap-2 w-full lg:w-1/4">
+                          <div className="ml-5 font-medium text-lg">{participant.first_name}</div> 
+                          <div className="ml-5 font-medium text-lg">{participant.second_name}</div>
+                        </div>
+                      </>} 
+                      <EventParticipantTypeTeam participant={participant}/>
+                            <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5">
+                              <div className="text-gray-500 hover:text-gray-800">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <button
                                       onClick={e => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        deleteItem(participant.id || "");
-                                          }}
-                                      aria-label="Usuń"
+                                        setShowTeamMembers(participant.id || "");
+                                        setShowEditForm("")
+                                        }}
+                                      aria-label="Zawodnicy"
                                     >
-                                    <TrashIcon className="w-6 h-6 cursor-pointer" />
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Usuń</p>
-                                </TooltipContent>
-                              </Tooltip>
+                                      <div className="flex flex-row items-center">
+                                        <UsersIcon className="w-7 h-7 cursor-pointer scale-x-[-1] -mr-2 hover:text-black" />
+                                        <UsersIcon className="w-6 h-6 cursor-pointer text-black" />
+                                      </div>
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Zawodnicy</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </div>
+                              {isUserCreator && <>
+                              <div className="text-gray-500 hover:text-gray-800">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <button
+                                      onClick={e => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        setShowEditForm(participant.id || "");
+                                        setShowTeamMembers("")
+                                        }}
+                                      aria-label="Edytuj"
+                                    >
+                                      <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Edytuj</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </div>
+                              <div className="text-gray-500 hover:text-gray-800">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <button
+                                        onClick={e => {
+                                          e.preventDefault();
+                                          e.stopPropagation();
+                                          deleteItem(participant.id || "");
+                                            }}
+                                        aria-label="Usuń"
+                                      >
+                                      <TrashIcon className="w-6 h-6 cursor-pointer" />
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>Usuń</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </div>
+                              </>}
                             </div>
-                            </>}
-                          </div>
-                  </div>}
-                {showTeamMembers && participant.id === showTeamMembers ? 
-                  <EventTeamMembersList 
-                    key={participant.id}
-                    participant={participant} 
-                    participants={participants} 
-                    cathegories={categoryKeys}
-                    eventId={eventId}
-                    setItems={setItems} 
-                    onClose={() => {setShowTeamMembers("")}} /> 
-                : <div></div>}
-                </>
+                    </div>}
+                  {showTeamMembers && participant.id === showTeamMembers ? 
+                    <EventTeamMembersList 
+                      participant={participant} 
+                      participants={participants} 
+                      cathegories={categoryKeys}
+                      eventId={eventId}
+                      setItems={setItems} 
+                      onClose={() => {setShowTeamMembers("")}} /> 
+                  : <div></div>}
+                </div>
               ))}
             </div>
           </AccordionContent>

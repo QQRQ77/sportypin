@@ -13,8 +13,8 @@ interface EventTeamMembersListProps {
 export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ onClose }) => {
   return (
     <div className="">
-      <h2>Team Members</h2>
-      <Button onClick={() => {console.log("Closing team members list"); onClose()}}>Close</Button>
+      <h2>Skład zespołu:</h2>
+      <Button onClick={() => onClose()}>Close</Button>
     </div>
   );
 };
