@@ -58,12 +58,12 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: participant?.team_name,
-      first_name: participant?.first_name,
-      second_name: participant?.second_name,
-      start_number: participant?.start_number,
-      cathegory: participant?.cathegory,
-      itemType: participant?.itemType,
+      name: participant?.team_name || "",
+      first_name: participant?.first_name || "",
+      second_name: participant?.second_name || "" ,
+      start_number: participant?.start_number || "",
+      cathegory: participant?.cathegory || "",
+      itemType: participant?.itemType || "inny",
     },
   });
 
