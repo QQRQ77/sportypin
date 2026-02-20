@@ -1,4 +1,5 @@
 import { Participant } from '@/types';
+import { Button } from '../ui/button';
 
 interface EventTeamMembersListProps {
   eventId: string;
@@ -13,7 +14,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ onCl
   return (
     <div className="">
       <h2>Team Members</h2>
-      <button onClick={() => onClose()}>Close</button>
+      <Button onClick={() => {console.log("Closing team members list"); onClose()}}>Close</Button>
     </div>
   );
 };
