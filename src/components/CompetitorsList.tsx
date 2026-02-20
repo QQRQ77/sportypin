@@ -68,15 +68,6 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
             <div className="flex flex-col gap-1 pl-2">
               {participantsByCategory[category].map((participant) => (
                 <>
-              {showTeamMembers && (participant.id === showTeamMembers) && 
-                  <EventTeamMembersList 
-                    key={participant.id}
-                    participant={participant} 
-                    participants={participants} 
-                    cathegories={categoryKeys}
-                    eventId={eventId}
-                    setItems={setItems} 
-                    onClose={() => {setShowTeamMembers("")}} />}
                 {(showEditForm && participant.id === showEditForm) ? 
                   <CompetitorEditForm 
                     key={participant.id}
@@ -159,6 +150,16 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                             </>}
                           </div>
                   </div>}
+                {showTeamMembers && participant.id === showTeamMembers ? 
+                  <EventTeamMembersList 
+                    key={participant.id}
+                    participant={participant} 
+                    participants={participants} 
+                    cathegories={categoryKeys}
+                    eventId={eventId}
+                    setItems={setItems} 
+                    onClose={() => {setShowTeamMembers("")}} /> 
+                : <div></div>}
                 </>
               ))}
             </div>
