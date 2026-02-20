@@ -11,6 +11,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { PencilSquareIcon, TrashIcon, UsersIcon } from "@heroicons/react/20/solid";
 import { saveNewParticipant } from "@/lib/events.actions";
 import EventParticipantTypeTeam from "./teams/EventParticipantTypeTeam";
+import TeamCard from "./TeamCard";
+import { EventTeamMembersList } from "./teams/EventTeamMembersList";
 
 interface CompetitorsProps {
   participants?: Participant[];
@@ -68,7 +70,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
               {participantsByCategory[category].map((participant) => (
                 <>
               {showTeamMembers && (participant.id === showTeamMembers) && 
-                  <CompetitorEditForm 
+                  <EventTeamMembersList 
                     key={participant.id}
                     participant={participant} 
                     participants={participants} 
