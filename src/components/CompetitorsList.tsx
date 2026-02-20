@@ -82,7 +82,6 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                       </div>
                     </>} 
                     <EventParticipantTypeTeam participant={participant}/>
-                    {isUserCreator && 
                           <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5">
                             <div className="text-gray-500 hover:text-gray-800">
                               <Tooltip>
@@ -106,6 +105,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                 </TooltipContent>
                               </Tooltip>
                             </div>
+                            {isUserCreator && <>
                             <div className="text-gray-500 hover:text-gray-800">
                               <Tooltip>
                                 <TooltipTrigger asChild>
@@ -144,8 +144,8 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                 </TooltipContent>
                               </Tooltip>
                             </div>
+                            </>}
                           </div>
-                        }
                   </div>
               ))}
             </div>
