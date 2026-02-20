@@ -94,6 +94,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
         (participant.start_number ?? "") === (submissionData.start_number ?? "") &&
         (participant.itemType || "") === (submissionData.itemType || "");
       if (isUnchanged) {
+        console.log("No changes detected, skipping update.");
         onClose();
         setButtonSubmitting(false);
         return;
