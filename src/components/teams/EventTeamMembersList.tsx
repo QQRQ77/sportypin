@@ -1,6 +1,4 @@
 import { Participant } from '@/types';
-import React from 'react';
-
 
 interface EventTeamMembersListProps {
   eventId: string;

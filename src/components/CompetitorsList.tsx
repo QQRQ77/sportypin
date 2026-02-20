@@ -11,7 +11,6 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { PencilSquareIcon, TrashIcon, UsersIcon } from "@heroicons/react/20/solid";
 import { saveNewParticipant } from "@/lib/events.actions";
 import EventParticipantTypeTeam from "./teams/EventParticipantTypeTeam";
-import TeamCard from "./TeamCard";
 import { EventTeamMembersList } from "./teams/EventTeamMembersList";
 
 interface CompetitorsProps {
