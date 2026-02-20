@@ -83,6 +83,8 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
 
     };
 
+    console.log("Submission data:", submissionData);
+
     if (participant) {
       const isUnchanged =
         (participant.team_name || "") === (submissionData.name || "") &&
