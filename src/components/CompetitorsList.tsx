@@ -94,6 +94,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                       e.preventDefault();
                                       e.stopPropagation();
                                       setShowTeamMembers(participant.id || "");
+                                      setShowEditForm("")
                                       }}
                                     aria-label="Zawodnicy"
                                   >
@@ -117,6 +118,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                                       e.preventDefault();
                                       e.stopPropagation();
                                       setShowEditForm(participant.id || "");
+                                      setShowTeamMembers("")
                                       }}
                                     aria-label="Edytuj"
                                   >
