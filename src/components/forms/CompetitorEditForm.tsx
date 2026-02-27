@@ -55,6 +55,8 @@ type FormValues = z.infer<typeof FormSchema>;
 
 export default function CompetitorEditForm({eventId, cathegories, setItems, onClose, participant, participants = [],}: Props) {
 
+  console.log("Participant in form (CompetitorsList.tsx):", participant);
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -104,8 +106,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
     const newParticipants = participants.map((ci) =>
       ci.id === submissionData.id ? submissionData : ci
     );
-
-    console.log("New participants list:", newParticipants);
 
     setItems(newParticipants);
     await saveNewParticipant(eventId, newParticipants);
