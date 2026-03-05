@@ -18,9 +18,11 @@ interface ClassificationItemProps {
   classification?: ClassificationItem[];
   cathegories?: string[];
   setItems: React.Dispatch<React.SetStateAction<ClassificationItem[]>>;
+  activePlaceId?: string;
+  setActivePlaceId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ClassificationSingleItem({eventId, item, isUserCreator = false, classification = [], setItems, cathegories}: ClassificationItemProps) {
+export default function ClassificationSingleItem({eventId, item, isUserCreator = false, classification = [], setItems, cathegories, activePlaceId, setActivePlaceId = () => {}}: ClassificationItemProps) {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [classificationItem, setClassificationItem] = useState<ClassificationItem>(item);
@@ -45,7 +47,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
 
  return (
   <div className="flex flex-row items-center gap-3 w-full text-base">
-    {showEditForm ? 
+    {item.id === activePlaceId && showEditForm ? 
       <ClassificationItemForm 
         item={item} 
         eventId={eventId} 
@@ -91,6 +93,7 @@ export default function ClassificationSingleItem({eventId, item, isUserCreator =
                       e.preventDefault();
                       e.stopPropagation();
                       setShowEditForm(true);
+                      setActivePlaceId(item.id);
                       }}
                     aria-label="Edytuj"
                   >

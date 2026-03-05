@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     Accordion,
     AccordionContent,
@@ -31,6 +32,8 @@ function getCategoryKeys(obj: Record<string, ClassificationItem[]>) {
 
 export default function Classification({eventId, isUserCreator = false, classification = [], setItems}: ClassificationProps) {
 
+  const [activePlaceId, setActivePlaceId] = useState<string>("");
+  
   const classificationByCategory = groupByCategory(classification);
 
   const categoryKeys = getCategoryKeys(classificationByCategory);
@@ -60,6 +63,8 @@ export default function Classification({eventId, isUserCreator = false, classifi
                   setItems={setItems} 
                   classification={classification}
                   cathegories={categoryKeys}
+                  activePlaceId={activePlaceId}
+                  setActivePlaceId={setActivePlaceId}
                   />
               ))}
             </div>
