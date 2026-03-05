@@ -36,12 +36,6 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
 
   const categoryKeys = getCategoryKeys(participantsByCategory);
 
-  const deleteItem = async (id: string) => {
-      const newParticipants = participants.filter(item => item.id !== id);
-      setItems(newParticipants);
-      await saveNewParticipant(eventId, newParticipants);
-    }
-  
   return (
     <Accordion
       type="single"
