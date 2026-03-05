@@ -32,6 +32,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
     
   
   return (
+    <>
     <div className="competitor-single-item w-full flex justify-between gap-2">
       {showEditForm ? (
         <CompetitorEditForm 
@@ -113,6 +114,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
         </div>
         </>}
       </div>
+    </div>
+
       {showTeamMembers && (
         <EventTeamMembersList 
           participant={participant} 
@@ -121,7 +124,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
           setItems={setItems} 
         />
       )}
-    </div>
+    </>
   );
 };
 
