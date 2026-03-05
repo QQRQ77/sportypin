@@ -15,9 +15,12 @@ interface CompetitorSingleItemProps {
   participant?: Participant;
   participants?: Participant[]; 
   cathegories: string[];
+  activeParticipantId?: string;
+  setActiveParticipantId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreator, eventId, setItems, participant, participants, cathegories}) => {
+const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
+  {isUserCreator, eventId, setItems, participant, participants, cathegories, activeParticipantId, setActiveParticipantId = () => {}}) => {
   
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [showTeamMembers, setShowTeamMembers] = useState<boolean>(false);
@@ -34,7 +37,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
   return (
     <>
     <div className="competitor-single-item w-full flex justify-between gap-2">
-      {showEditForm ? (
+      {participant?.id === activeParticipantId && showEditForm ? (
         <CompetitorEditForm 
           participant={participant} 
           participants={participants} 
@@ -57,7 +60,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
                   e.preventDefault();
                   e.stopPropagation();
                   setShowTeamMembers(!showTeamMembers);
-                  setShowEditForm(false)
+                  setShowEditForm(false);
+                  setActiveParticipantId(participant?.id || "");
                   }}
                 aria-label="Zawodnicy"
               >
@@ -81,7 +85,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
                   e.preventDefault();
                   e.stopPropagation();
                   setShowEditForm(!showEditForm);
-                  setShowTeamMembers(false)
+                  setShowTeamMembers(false);
+                  setActiveParticipantId(participant?.id || "");
                   }}
                 aria-label="Edytuj"
               >
@@ -116,7 +121,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
       </div>
     </div>
 
-      {showTeamMembers && (
+      {participant?.id === activeParticipantId && showTeamMembers && (
         <EventTeamMembersList 
           participant={participant} 
           participants={participants} 

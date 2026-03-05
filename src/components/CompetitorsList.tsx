@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Participant } from "@/types";
 import {
     Accordion,
@@ -31,6 +32,7 @@ function getCategoryKeys(obj: Record<string, Participant[]>) {
 
 export default function CompetitorsList({eventId, setItems, participants = [], isUserCreator = false}: CompetitorsProps) {
 
+  const [activeParticipantId, setActiveParticipantId] = useState<string>("");
   const participantsByCategory = groupByCategory(participants);
 
   const categoryKeys = getCategoryKeys(participantsByCategory);
@@ -60,6 +62,8 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
                   setItems={setItems}
                   participants={participants}
                   cathegories={categoryKeys}
+                  activeParticipantId={activeParticipantId}
+                  setActiveParticipantId={setActiveParticipantId}
                 />
               ))}
             </div>
