@@ -50,7 +50,7 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
             </div>
           </AccordionTrigger>
           <AccordionContent className="flex flex-col gap-4 text-balance">
-            <div className="flex flex-col gap-1 pl-2">
+            <div className="flex flex-col gap-2">
               {participantsByCategory[category].map((participant) => (
                 <CompetitorSingleItem
                   key={participant.id}

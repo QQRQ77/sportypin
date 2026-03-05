@@ -32,7 +32,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = ({isUserCreato
     
   
   return (
-    <div className="competitor-single-item flex flex-col gap-2">
+    <div className="competitor-single-item w-full flex justify-between gap-2">
       {showEditForm ? (
         <CompetitorEditForm 
           participant={participant} 
