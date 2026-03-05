@@ -30,7 +30,6 @@ interface Props {
   participant?: Participant;
   participants?: Participant[];
   setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
-  onClose: () => void;
 }
 
 const FormSchema = z.object({
@@ -53,7 +52,7 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export default function CompetitorEditForm({eventId, cathegories, setItems, onClose, participant, participants = [],}: Props) {
+export default function CompetitorEditForm({eventId, cathegories, setItems, participant, participants = [],}: Props) {
 
   console.log("Participant in form (CompetitorsList.tsx):", participant);
 
@@ -97,7 +96,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
         (participant.itemType || "") === (submissionData.itemType || "");
       if (isUnchanged) {
         console.log("No changes detected, skipping update.");
-        onClose();
         setButtonSubmitting(false);
         return;
       }
@@ -110,7 +108,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, onCl
     setItems(newParticipants);
     await saveNewParticipant(eventId, newParticipants);
 
-    onClose();
     setButtonSubmitting(false);
   }
 
