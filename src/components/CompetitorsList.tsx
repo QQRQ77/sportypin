@@ -5,7 +5,6 @@ import {
     AccordionItem,
     AccordionTrigger,
   } from "@/components/ui/accordion"
-import { saveNewParticipant } from "@/lib/events.actions";
 import CompetitorSingleItem from "./CompetitorSingleItem";
 
 interface CompetitorsProps {
