@@ -38,38 +38,58 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
   const categoryKeys = getCategoryKeys(participantsByCategory);
 
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="w-full"
-      defaultValue="item-1"
-    >
-      {categoryKeys.map((category, index) => (
-        <AccordionItem key={category} value={`item-${index + 1}`}>
-          <AccordionTrigger>
-            <div className="text-lg font-medium cursor-pointer">
-              {category} ({participantsByCategory[category].length})
-            </div>
-          </AccordionTrigger>
-          <AccordionContent className="flex flex-col gap-4 text-balance">
-            <div className="flex flex-col gap-2">
-              {participantsByCategory[category].map((participant) => (
-                <CompetitorSingleItem
-                  key={participant.id}
-                  participant={participant}
-                  isUserCreator={isUserCreator}
-                  eventId={eventId}
-                  setItems={setItems}
-                  participants={participants}
-                  cathegories={categoryKeys}
-                  activeParticipantId={activeParticipantId}
-                  setActiveParticipantId={setActiveParticipantId}
-                />
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      ))}
-    </Accordion>
+    <>
+      {categoryKeys.map((category) => (
+      <div className="flex flex-col gap-2">
+        {participantsByCategory[category].map((participant) => (
+          <CompetitorSingleItem
+            key={participant.id}
+            participant={participant}
+            isUserCreator={isUserCreator}
+            eventId={eventId}
+            setItems={setItems}
+            participants={participants}
+            cathegories={categoryKeys}
+            activeParticipantId={activeParticipantId}
+            setActiveParticipantId={setActiveParticipantId}
+          />
+        ))}
+      </div>))}
+      
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full"
+        defaultValue="item-1"
+      >
+        {categoryKeys.map((category, index) => (
+          <AccordionItem key={category} value={`item-${index + 1}`}>
+            <AccordionTrigger>
+              <div className="text-lg font-medium cursor-pointer">
+                {category} ({participantsByCategory[category].length})
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <div className="flex flex-col gap-2">
+                {participantsByCategory[category].map((participant) => (
+                  <CompetitorSingleItem
+                    key={participant.id}
+                    participant={participant}
+                    isUserCreator={isUserCreator}
+                    eventId={eventId}
+                    setItems={setItems}
+                    participants={participants}
+                    cathegories={categoryKeys}
+                    activeParticipantId={activeParticipantId}
+                    setActiveParticipantId={setActiveParticipantId}
+                  />
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </>
+    
   )
 }
