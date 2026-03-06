@@ -106,6 +106,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     );
 
     setItems(newParticipants);
+    console.log("newParticipants (CompetitorEditForm.tsx): ", newParticipants)
     await saveNewParticipant(eventId, newParticipants);
 
     setButtonSubmitting(false);
