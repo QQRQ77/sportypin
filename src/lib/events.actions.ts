@@ -340,7 +340,7 @@ export async function saveNewParticipant(eventId: string, participants: Particip
     throw new Error(error?.message || 'Failed to save new participant');
   }
 
-  return "success";
+  return data;
 } 
 
 export async function saveClassification(eventId: string, classification: ClassificationItem[]) {
