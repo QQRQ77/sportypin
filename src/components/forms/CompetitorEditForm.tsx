@@ -54,8 +54,6 @@ type FormValues = z.infer<typeof FormSchema>;
 
 export default function CompetitorEditForm({eventId, cathegories, setItems, participant, participants = [],}: Props) {
 
-  console.log("Participant in form (CompetitorsList.tsx):", participant);
-
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -84,8 +82,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
 
     };
 
-    console.log("Submission data:", submissionData);
-
     if (participant) {
       const isUnchanged =
         (participant.team_name || "") === (submissionData.name || "") &&
@@ -106,9 +102,9 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     );
 
     setItems(newParticipants);
-    console.log("newParticipants (CompetitorEditForm.tsx): ", newParticipants)
-    await saveNewParticipant(eventId, newParticipants);
+    const result = await saveNewParticipant(eventId, newParticipants);
 
+    console.log("saveNewParticipant result (CompetitorEditForm.tsx): ", result);
     setButtonSubmitting(false);
   }
 
