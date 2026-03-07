@@ -333,7 +333,7 @@ export async function saveNewParticipant(eventId: string, participants: Particip
     .from('Events')
     .update({ participants })
     .eq('id', eventId)
-    .select('harmonogram');
+    .select('participants');
   
   if (error || !data) {
     console.error('Error adding new participant:', error);
