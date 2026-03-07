@@ -79,6 +79,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     const submissionData = {
       ...participant,
       ...data,
+      team_name: data.itemType === "zespół" ? data.name : participant?.team_name
     };
 
     console.log("Prepared submission data (CompetitorEditForm.tsx): ", submissionData);
