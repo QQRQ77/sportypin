@@ -79,8 +79,9 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     const submissionData = {
       ...participant,
       ...data,
-
     };
+
+    console.log("Prepared submission data (CompetitorEditForm.tsx): ", submissionData);
 
     if (participant) {
       const isUnchanged =
