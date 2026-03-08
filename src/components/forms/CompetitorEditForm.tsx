@@ -103,7 +103,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     );
 
     setItems(newParticipants);
-    const result = await saveNewParticipant(eventId, newParticipants);
+    await saveNewParticipant(eventId, newParticipants);
 
     onClose(false);
     setButtonSubmitting(false);
