@@ -83,8 +83,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
       team_name: data.itemType === "zespół" ? data.name : participant?.team_name
     };
 
-    console.log("Prepared submission data (CompetitorEditForm.tsx): ", submissionData);
-
     if (participant) {
       const isUnchanged =
         (participant.team_name || "") === (submissionData.name || "") &&
@@ -94,7 +92,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
         (participant.start_number ?? "") === (submissionData.start_number ?? "") &&
         (participant.itemType || "") === (submissionData.itemType || "");
       if (isUnchanged) {
-        console.log("No changes detected, skipping update.");
         onClose(false);
         setButtonSubmitting(false);
         return;
@@ -106,10 +103,8 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
     );
 
     setItems(newParticipants);
-    console.log("Submitting updated participant data (CompetitorEditForm.tsx): ", newParticipants);
     const result = await saveNewParticipant(eventId, newParticipants);
 
-    console.log("saveNewParticipant result (CompetitorEditForm.tsx): ", result);
     onClose(false);
     setButtonSubmitting(false);
   }
@@ -119,6 +114,7 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
       <form
         // onSubmit={form.handleSubmit(handleSubmit)}
         onSubmit={(e) => {
+          console.log("Submitting form with data:", form.getValues());
           e.stopPropagation(); // Kluczowe: zapobiega bąbelkowaniu do Accordion
           form.handleSubmit(handleSubmit)(e);
         }}
