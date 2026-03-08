@@ -43,7 +43,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
           participants={participants} 
           cathegories={cathegories}
           eventId={eventId}
-          setItems={setItems} 
+          setItems={setItems}
+          onClose={setShowEditForm} 
         />
       ) : 
         <>
