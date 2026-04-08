@@ -48,20 +48,16 @@ export function AddEventTeamMember() {
         onSubmit={form.handleSubmit(handleSubmit, (errors) => console.log("Błędy walidacji:", errors))}
         className="space-y-6 w-full mx-auto my-4 p-4 rounded-xl shadow-2xl"
       >
-        <h2 className="text-2xl font-bold text-sky-600 text-center">
-          Dodaj uczestnika
-        </h2>
-            
         <div className="flex flex-col lg:flex-row gap-2">
           <FormField
               control={form.control}
               name="startNumber"
               render={({ field }) => (
-                <FormItem className="w-32">
+                <FormItem className="w-16">
                   <FormLabel>Numer</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="np. 23 (opcjonalne)"
+                      placeholder="np. 23"
                       className="shadow-xl"
                       {...field}
                     />
@@ -93,7 +89,7 @@ export function AddEventTeamMember() {
               control={form.control}
               name="lastName"
               render={({ field }) => (
-                <FormItem className="w-32">
+                <FormItem className="w-60">
                   <FormLabel>Nazwisko</FormLabel>
                   <FormControl>
                     <Input
@@ -112,7 +108,7 @@ export function AddEventTeamMember() {
           <SubmitButton
             isSubmitting={buttonSubmitting}
             submittingText="Dodawanie..."
-            baseText="Dodaj"
+            baseText="Dodaj zawodnika"
           />
         </div>
       </form>
