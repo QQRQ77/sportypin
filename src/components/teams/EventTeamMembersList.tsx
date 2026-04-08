@@ -1,5 +1,4 @@
 import { Participant } from '@/types';
-import { Button } from '../ui/button';
 import { AddEventTeamMember } from './forms/AddEventTeamMemeber';
 
 interface EventTeamMembersListProps {
