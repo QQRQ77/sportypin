@@ -33,7 +33,7 @@ interface Props {
     setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
-export function AddEventTeamMember({participant, participants = []}: Props) {
+export function AddEventTeamMember({participant, participants = [], setItems}: Props) {
   
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -59,6 +59,8 @@ export function AddEventTeamMember({participant, participants = []}: Props) {
     const newParticipants = participants.map((ci) =>
       ci.id === participant?.id ? {...participant, eventTeamMembers: [...(participant?.eventTeamMembers || []), cleanedData] } : ci
     );
+
+    setItems(newParticipants);
 
     console.log("Nowa lista uczestników po dodaniu członka zespołu:", newParticipants);
     

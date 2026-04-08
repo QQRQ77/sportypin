@@ -197,8 +197,16 @@ export type Participant = {
       start_number?: number | "",
       cathegory?: string,
       name?: string,
-      eventTeamMembers?: Participant[];
+      eventTeamMembers?: TeamMember[];
 }
+
+export type TeamMember = {
+  id: string;
+  athlete_id: string;
+  first_name: string;
+  second_name?: string;
+  start_number: number | string
+};
 
 export type ClassificationItem = {
       id: string,
