@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { createId } from "@paralleldrive/cuid2";
 
 import {
   Form,
@@ -14,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/ui/submitButton";
 import { useState } from "react";
+import { sanitizeStrings } from "@/lib/utils";
+import { Participant } from "@/types";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
@@ -23,7 +26,14 @@ const FormSchema = z.object({
 
 type FormValues = z.infer<typeof FormSchema>;
 
-export function AddEventTeamMember() {
+interface Props {
+    eventId: string;
+    participant?: Participant;
+    participants?: Participant[];
+    setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
+  }
+
+export function AddEventTeamMember({participant, participants = []}: Props) {
   
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -36,7 +46,21 @@ export function AddEventTeamMember() {
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);
 
-    console.log("Dane z formularza:", data);
+    const memberData = {
+      id: createId(),
+      athlete_id: "",
+      first_name: data.firstName,
+      second_name: data.lastName,
+      start_number: data.startNumber,
+    };
+
+    const cleanedData = sanitizeStrings(memberData);
+
+    const newParticipants = participants.map((ci) =>
+      ci.id === participant?.id ? {...participant, eventTeamMembers: [...(participant?.eventTeamMembers || []), cleanedData] } : ci
+    );
+
+    console.log("Nowa lista uczestników po dodaniu członka zespołu:", newParticipants);
     
     setButtonSubmitting(false);
   }

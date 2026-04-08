@@ -197,6 +197,7 @@ export type Participant = {
       start_number?: number | "",
       cathegory?: string,
       name?: string,
+      eventTeamMembers?: Participant[];
 }
 
 export type ClassificationItem = {

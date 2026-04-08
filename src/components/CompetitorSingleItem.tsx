@@ -123,7 +123,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
     </div>
 
       {participant?.id === activeParticipantId && showTeamMembers && (
-        <EventTeamMembersList 
+        <EventTeamMembersList
+          isUserCreator={isUserCreator} 
           participant={participant} 
           participants={participants} 
           eventId={eventId}
