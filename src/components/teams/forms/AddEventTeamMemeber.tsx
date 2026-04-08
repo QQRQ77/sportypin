@@ -1,45 +1,119 @@
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-const schema = z.object({
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+import { Input } from "@/components/ui/input";
+import SubmitButton from "@/components/ui/submitButton";
+import { useState } from "react";
+
+const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
-  lastName: z.string().min(1, 'Nazwisko jest wymagane'),
+  lastName: z.string().optional(),
   startNumber: z.string().min(1, 'Numer startowy jest wymagany'),
 });
 
-type FormData = z.infer<typeof schema>;
+type FormValues = z.infer<typeof FormSchema>;
 
 export function AddEventTeamMember() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
+  
+  const form = useForm<FormValues>({
+      resolver: zodResolver(FormSchema),
+      defaultValues: {
+      },
+    });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
+  const [buttonSubmitting, setButtonSubmitting] = useState(false);
+  
+  const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
+    setButtonSubmitting(true);
+    
+    setButtonSubmitting(false);
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="firstName">Imię</label>
-        <input {...register('firstName')} id="firstName" />
-        {errors.firstName && <span>{errors.firstName.message}</span>}
-      </div>
+    <Form {...form}>
+      <form
+        // onSubmit={form.handleSubmit(handleSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit, (errors) => console.log("Błędy walidacji:", errors))}
+        className="space-y-6 w-full mx-auto my-4 p-4 rounded-xl shadow-2xl"
+      >
+        <h2 className="text-2xl font-bold text-sky-600 text-center">
+          Dodaj uczestnika
+        </h2>
+            
+        <div className="flex flex-col lg:flex-row gap-2">
+          <FormField
+              control={form.control}
+              name="startNumber"
+              render={({ field }) => (
+                <FormItem className="w-32">
+                  <FormLabel>Numer</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="np. 23 (opcjonalne)"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem className="w-32">
+                  <FormLabel>Imię</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="np. imię lub ksywka"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="lastName">Nazwisko</label>
-        <input {...register('lastName')} id="lastName" />
-        {errors.lastName && <span>{errors.lastName.message}</span>}
-      </div>
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem className="w-32">
+                  <FormLabel>Nazwisko</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="np. Kowalski (opcjonalne)"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+        </div>
 
-      <div>
-        <label htmlFor="startNumber">Numer startowy</label>
-        <input {...register('startNumber')} id="startNumber" />
-        {errors.startNumber && <span>{errors.startNumber.message}</span>}
-      </div>
-
-      <button type="submit">Dodaj</button>
-    </form>
+        <div className="w-full flex justify-center">
+          <SubmitButton
+            isSubmitting={buttonSubmitting}
+            submittingText="Dodawanie..."
+            baseText="Dodaj"
+          />
+        </div>
+      </form>
+    </Form>
   );
 }
