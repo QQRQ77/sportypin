@@ -64,6 +64,8 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
     setItems(newParticipants);
 
     await saveNewParticipant(eventId, newParticipants);
+
+    form.reset();
         
     setButtonSubmitting(false);
   }
