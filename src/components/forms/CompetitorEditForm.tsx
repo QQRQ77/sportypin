@@ -114,7 +114,6 @@ export default function CompetitorEditForm({eventId, cathegories, setItems, part
       <form
         // onSubmit={form.handleSubmit(handleSubmit)}
         onSubmit={(e) => {
-          console.log("Submitting form with data:", form.getValues());
           e.stopPropagation(); // Kluczowe: zapobiega bąbelkowaniu do Accordion
           form.handleSubmit(handleSubmit)(e);
         }}
