@@ -17,6 +17,7 @@ import SubmitButton from "@/components/ui/submitButton";
 import { useState } from "react";
 import { sanitizeStrings } from "@/lib/utils";
 import { Participant } from "@/types";
+import { saveNewParticipant } from "@/lib/events.actions";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
@@ -33,7 +34,7 @@ interface Props {
     setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
-export function AddEventTeamMember({participant, participants = [], setItems}: Props) {
+export function AddEventTeamMember({participant, participants = [], setItems, eventId}: Props) {
   
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -62,8 +63,8 @@ export function AddEventTeamMember({participant, participants = [], setItems}: P
 
     setItems(newParticipants);
 
-    console.log("Nowa lista uczestników po dodaniu członka zespołu:", newParticipants);
-    
+    await saveNewParticipant(eventId, newParticipants);
+        
     setButtonSubmitting(false);
   }
 
