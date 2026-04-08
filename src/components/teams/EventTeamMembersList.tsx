@@ -1,5 +1,6 @@
 import { Participant } from '@/types';
 import { Button } from '../ui/button';
+import { AddEventTeamMember } from './forms/AddEventTeamMemeber';
 
 interface EventTeamMembersListProps {
   eventId: string;
@@ -12,6 +13,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = () => {
   return (
     <div className="">
       <h2>Skład zespołu:</h2>
-      <Button/>Dodaj zawodnika</div>
+      <AddEventTeamMember />
+    </div>
   );
 };
