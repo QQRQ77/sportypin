@@ -35,6 +35,8 @@ export function AddEventTeamMember() {
   
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);
+
+    console.log("Dane z formularza:", data);
     
     setButtonSubmitting(false);
   }
