@@ -20,20 +20,17 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}
 
 
   return (
-        <div className="flex justify-between items-center space-x-2 p-2 border rounded">
-          <div>
-            <IconContext.Provider value={{ className: "text-sky-600" }}>
-              <div className='relative'>
-                <IoShirtOutline size={48} />
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
-              </div>
-            </IconContext.Provider>
-            <div className="flex flex-row">
-              <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
+        <div className="flex items-center space-x-2 p-2 border rounded">
+          <IconContext.Provider value={{ className: "text-sky-600" }}>
+            <div className='relative'>
+              <IoShirtOutline size={48} />
+                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
             </div>
+          </IconContext.Provider>
+          <div className="flex flex-row">
+            <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
           </div>
-          
-          {isUserCreator && <div>
+          {isUserCreator && <>
             <div className="text-gray-500 hover:text-gray-800">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -74,7 +71,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}
                 </TooltipContent>
               </Tooltip>
             </div>
-            </div>}
+            </>}
         </div>
     );
 };
