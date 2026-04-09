@@ -2,8 +2,8 @@ import { Participant, TeamMember } from '@/types';
 import React from 'react';
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
-
-
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
@@ -16,7 +16,7 @@ interface EventTeamMemberProps {
   setActiveParticipantId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
+const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}) => {
 
 
   return (
@@ -30,6 +30,48 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
           <div className="flex flex-row">
             <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
           </div>
+          {isUserCreator && <>
+            <div className="text-gray-500 hover:text-gray-800">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      // setShowEditForm(!showEditForm);
+                      // setShowTeamMembers(false);
+                      // setActiveParticipantId(participant?.id || "");
+                      }}
+                    aria-label="Edytuj"
+                  >
+                    <PencilSquareIcon className="w-6 h-6 cursor-pointer" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Edytuj</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="text-gray-500 hover:text-gray-800">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // deleteItem(participant?.id || "");
+                          }}
+                      aria-label="Usuń"
+                    >
+                    <TrashIcon className="w-6 h-6 cursor-pointer" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Usuń</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            </>}
         </div>
     );
 };
