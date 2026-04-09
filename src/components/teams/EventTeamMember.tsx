@@ -16,7 +16,13 @@ interface EventTeamMemberProps {
 
 const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
   return (
-        <div><IoShirtOutline className='w-16'/>{member.start_number} {member.first_name} {member.second_name ? member.second_name : ""}</div>
+        <div className="flex items-center space-x-2 p-2 border rounded">
+          <IoShirtOutline className='w-16'/>
+          <div>
+            <p className="font-bold">{member.start_number}</p>
+            <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
+          </div>
+        </div>
     );
 };
 
