@@ -1,5 +1,6 @@
 import { Participant } from '@/types';
 import { AddEventTeamMember } from './forms/AddEventTeamMemeber';
+import EventTeamMember from './EventTeamMember';
 
 interface EventTeamMembersListProps {
   eventId: string;
@@ -14,6 +15,19 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
   return (
     <div className="">
       <h2>Skład zespołu:</h2>
+      {participant?.eventTeamMembers?.length && (
+        <ul className="list-disc list-inside">
+          {participant.eventTeamMembers.map((member) => (
+            <EventTeamMember 
+              key={member.id}
+              member={member} 
+              participant={participant} 
+              participants={participants} 
+              setItems={setItems} 
+              eventId={eventId} />
+          ))}
+        </ul>
+      )}
       {isUserCreator && 
         <AddEventTeamMember
           eventId={eventId}
