@@ -21,12 +21,12 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
 
   return (
         <div className="flex items-center space-x-2 p-2 border rounded">
-          <IconContext.Provider value={{ color: "blue", className: "global-class-name" }}>
+          <IconContext.Provider value={{ color: "red", className: "global-class-name" }}>
             <div>
-              <IoShirtOutline size={24} />
+              <IoShirtOutline size={48} />
             </div>
           </IconContext.Provider>;
-          <div>
+          <div className="flex flex-row">
             <p className="font-bold">{member.start_number}</p>
             <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
           </div>
