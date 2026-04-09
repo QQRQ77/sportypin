@@ -27,7 +27,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}
                 <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
             </div>
           </IconContext.Provider>
-          <div className="flex flex-row">
+          <div className="flex flex-row w-96">
             <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
           </div>
           {isUserCreator && <>
