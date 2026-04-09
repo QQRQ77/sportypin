@@ -20,6 +20,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
           {participant.eventTeamMembers.map((member) => (
             <EventTeamMember 
               key={member.id}
+              isUserCreator={isUserCreator}
               member={member} 
               participant={participant} 
               participants={participants} 
