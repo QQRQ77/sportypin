@@ -14,7 +14,7 @@ interface EventTeamMemberProps {
 
 const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
   return (
-        <li>{member.first_name} {member.second_name ? member.second_name : ""} (start number: {member.start_number})</li>
+        <div>{member.first_name} {member.second_name ? member.second_name : ""} (start number: {member.start_number})</div>
     );
 };
 
