@@ -1,5 +1,7 @@
 import { Participant, TeamMember } from '@/types';
 import React from 'react';
+import { IoShirtOutline } from "react-icons/io5";
+
 
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
@@ -14,7 +16,7 @@ interface EventTeamMemberProps {
 
 const EventTeamMember: React.FC<EventTeamMemberProps> = ({member}) => {
   return (
-        <div>{member.first_name} {member.second_name ? member.second_name : ""} (start number: {member.start_number})</div>
+        <div><IoShirtOutline className='w-16'/>{member.start_number} {member.first_name} {member.second_name ? member.second_name : ""}</div>
     );
 };
 
