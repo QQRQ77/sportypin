@@ -39,23 +39,6 @@ export default function CompetitorsList({eventId, setItems, participants = [], i
 
   return (
     <>
-      {categoryKeys.map((category, index) => (
-      <div key={index} className="flex flex-col gap-2">
-        {participantsByCategory[category].map((participant) => (
-          <CompetitorSingleItem
-            key={participant.id}
-            participant={participant}
-            isUserCreator={isUserCreator}
-            eventId={eventId}
-            setItems={setItems}
-            participants={participants}
-            cathegories={categoryKeys}
-            activeParticipantId={activeParticipantId}
-            setActiveParticipantId={setActiveParticipantId}
-          />
-        ))}
-      </div>))}
-
       <Accordion
         type="single"
         collapsible
