@@ -5,6 +5,7 @@ import { IconContext } from "react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { Button } from '../ui/button';
+import { EventTeamMemberEditForm } from './forms/EventTeamMemberEditForm';
 
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
@@ -24,10 +25,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator,
   return (
         <div className="flex items-center space-x-2 p-2 border rounded">
           {member.id === activeMemberId && showEditForm ? (
-            <div>
-              Edytuj członka zespołu - formularz w trakcie tworzenia
-              <Button className="cursor-pointer ml-2" onClick={() => setShowEditForm(false)}>Zamknij</Button>
-            </div>
+              <EventTeamMemberEditForm member={member} />
           ) : (<>
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
