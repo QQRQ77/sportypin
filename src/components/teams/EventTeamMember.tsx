@@ -5,6 +5,7 @@ import { IconContext } from "react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { EventTeamMemberEditForm } from './forms/EventTeamMemberEditForm';
+import { saveNewParticipant } from '@/lib/events.actions';
 
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
@@ -20,7 +21,23 @@ interface EventTeamMemberProps {
 const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
-  
+
+  const deleteItem = async (id: string) => {
+      if (participants && participant) {
+        const newParticipants = participants.map((p) => {
+          if (p.id === participant.id) {
+            return {
+              ...p,
+              eventTeamMembers: p.eventTeamMembers?.filter((tm) => tm.id !== id)
+            };
+          }
+          return p;
+        });
+        setItems(newParticipants);
+        await saveNewParticipant(eventId, newParticipants);
+      }
+    };
+
   return (
         <div className="flex items-center space-x-2 p-2 border rounded">
           {member.id === activeMemberId && showEditForm ? (
@@ -70,7 +87,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
                       onClick={e => {
                         e.preventDefault();
                         e.stopPropagation();
-                        // deleteItem(participant?.id || "");
+                        deleteItem(member?.id || "");
                           }}
                       aria-label="Usuń"
                     >
