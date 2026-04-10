@@ -112,14 +112,13 @@ export function EventTeamMemberEditForm({member}: Props) {
                 </FormItem>
               )}
             />
-        </div>
-
-        <div className="w-full flex justify-center">
-          <SubmitButton
-            isSubmitting={buttonSubmitting}
-            submittingText="Zapisywanie..."
-            baseText="Zapisz zmiany"
-          />
+          <div className="w-full flex justify-center">
+            <SubmitButton
+              isSubmitting={buttonSubmitting}
+              submittingText="Zapisywanie..."
+              baseText="Zapisz zmiany"
+            />
+          </div>
         </div>
       </form>
     </Form>
