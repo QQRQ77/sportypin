@@ -82,6 +82,8 @@ export function EventTeamMemberEditForm({member, participants, participant, even
         setItems(newParticipants);
     
         await saveNewParticipant(eventId, newParticipants);
+
+        onClose(false);
       
     setButtonSubmitting(false);
   }
