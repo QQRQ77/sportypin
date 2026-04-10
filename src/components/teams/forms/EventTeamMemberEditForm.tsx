@@ -58,7 +58,7 @@ export function EventTeamMemberEditForm({member}: Props) {
         onSubmit={form.handleSubmit(handleSubmit, (errors) => console.log("Błędy walidacji:", errors))}
         className="space-y-6 w-full mx-auto my-4 p-4 rounded-xl shadow-2xl"
       >
-        <div className="flex flex-col lg:flex-row gap-2">
+        <div className="flex flex-col lg:flex-row gap-2 items-center">
           <FormField
               control={form.control}
               name="startNumber"
