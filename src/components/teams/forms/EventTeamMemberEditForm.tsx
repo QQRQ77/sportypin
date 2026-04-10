@@ -16,6 +16,7 @@ import SubmitButton from "@/components/ui/submitButton";
 import { useState } from "react";
 import { Participant, TeamMember } from "@/types";
 import { sanitizeStrings } from "@/lib/utils";
+import { saveNewParticipant } from "@/lib/events.actions";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
@@ -26,14 +27,15 @@ const FormSchema = z.object({
 type FormValues = z.infer<typeof FormSchema>;
 
 interface Props {
-    eventId?: string;
+    eventId: string;
     member: TeamMember;
-    participants?: Participant[];
+    participant: Participant;
+    participants: Participant[];
     onClose?: (show: boolean) => void;
-    setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
+    setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
-export function EventTeamMemberEditForm({member, onClose = () => {}}: Props) {
+export function EventTeamMemberEditForm({member, participants, participant, eventId, onClose = () => {}, setItems}: Props) {
   
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -60,6 +62,26 @@ export function EventTeamMemberEditForm({member, onClose = () => {}}: Props) {
         return;
       }
     }
+
+    const submissionData = {
+      ...member,
+      //TODO: w przypadku zmiany na zawodnika wybranego z bazy danych, trzeba będzie dodać nowe athlete_id do submissionData
+      first_name: cleanData.firstName,
+      second_name: cleanData.lastName,
+      start_number: cleanData.startNumber,
+    };
+
+        const newParticipants = participants.map((ci) =>
+              ci.id === participant.id ? 
+                {...participant, eventTeamMembers: participant.eventTeamMembers?.map((tm) =>
+                  tm.id === member.id ? submissionData : tm
+                ) || []} 
+                : ci
+            );
+    
+        setItems(newParticipants);
+    
+        await saveNewParticipant(eventId, newParticipants);
       
     setButtonSubmitting(false);
   }

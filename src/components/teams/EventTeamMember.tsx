@@ -17,7 +17,7 @@ interface EventTeamMemberProps {
   setActiveMemberId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator, activeMemberId, setActiveMemberId = () => {}}) => {
+const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   
@@ -27,6 +27,10 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator,
               <EventTeamMemberEditForm 
                 member={member} 
                 onClose={setShowEditForm} 
+                eventId={eventId}
+                participants={participants || []}
+                participant={participant!}
+                setItems={setItems}
               />
           ) : (<>
             <IconContext.Provider value={{ className: "text-sky-600" }}>
