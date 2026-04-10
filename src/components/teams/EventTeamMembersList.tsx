@@ -1,6 +1,7 @@
 import { Participant } from '@/types';
 import { AddEventTeamMember } from './forms/AddEventTeamMemeber';
 import EventTeamMember from './EventTeamMember';
+import { useState } from 'react';
 
 interface EventTeamMembersListProps {
   eventId: string;
@@ -11,6 +12,8 @@ interface EventTeamMembersListProps {
 }
 
 export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUserCreator = false, eventId, participant, participants, setItems }) => {
+  
+  const [activeMemberId, setActiveMemberId] = useState<string>("");
   
   return (
     <div className="">
@@ -25,7 +28,10 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
               participant={participant} 
               participants={participants} 
               setItems={setItems} 
-              eventId={eventId} />
+              eventId={eventId}
+              activeMemberId={activeMemberId} 
+              setActiveMemberId={setActiveMemberId}
+            />
           ))}
         </div>
       )}

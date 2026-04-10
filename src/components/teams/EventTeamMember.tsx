@@ -1,9 +1,10 @@
 import { Participant, TeamMember } from '@/types';
-import React from 'react';
+import React, { useState } from 'react';
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
+import { Button } from '../ui/button';
 
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
@@ -12,21 +13,28 @@ interface EventTeamMemberProps {
   member: TeamMember;
   participant?: Participant;
   participants?: Participant[]; 
-  activeParticipantId?: string;
-  setActiveParticipantId?: React.Dispatch<React.SetStateAction<string>>;
+  activeMemberId?: string;
+  setActiveMemberId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}) => {
+const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator, activeMemberId, setActiveMemberId = () => {}}) => {
 
-
+  const [showEditForm, setShowEditForm] = useState<boolean>(false);
+  
   return (
         <div className="flex items-center space-x-2 p-2 border rounded">
-          <IconContext.Provider value={{ className: "text-sky-600" }}>
-            <div className='relative'>
-              <IoShirtOutline size={48} />
-                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
+          {member.id === activeMemberId && showEditForm ? (
+            <div>
+              Edytuj członka zespołu - formularz w trakcie tworzenia
+              <Button onClick={() => setShowEditForm(false)}>Zamknij</Button>
             </div>
-          </IconContext.Provider>
+          ) : (<>
+            <IconContext.Provider value={{ className: "text-sky-600" }}>
+              <div className='relative'>
+                <IoShirtOutline size={48} />
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
+              </div>
+            </IconContext.Provider>
           <div className="flex flex-row w-96">
             <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
           </div>
@@ -38,9 +46,8 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}
                     onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
-                      // setShowEditForm(!showEditForm);
-                      // setShowTeamMembers(false);
-                      // setActiveParticipantId(participant?.id || "");
+                      setShowEditForm(!showEditForm);
+                      setActiveMemberId(member.id || "");
                       }}
                     aria-label="Edytuj"
                   >
@@ -72,6 +79,8 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator}
               </Tooltip>
             </div>
             </>}
+            </>
+          )}
         </div>
     );
 };
