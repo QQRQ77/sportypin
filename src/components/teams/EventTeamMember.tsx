@@ -4,7 +4,6 @@ import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/20/solid";
-import { Button } from '../ui/button';
 import { EventTeamMemberEditForm } from './forms/EventTeamMemberEditForm';
 
 interface EventTeamMemberProps {
