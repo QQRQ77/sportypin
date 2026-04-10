@@ -26,7 +26,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator,
           {member.id === activeMemberId && showEditForm ? (
             <div>
               Edytuj członka zespołu - formularz w trakcie tworzenia
-              <Button onClick={() => setShowEditForm(false)}>Zamknij</Button>
+              <Button className="cursor-pointer ml-2" onClick={() => setShowEditForm(false)}>Zamknij</Button>
             </div>
           ) : (<>
             <IconContext.Provider value={{ className: "text-sky-600" }}>
