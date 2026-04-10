@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/ui/submitButton";
 import { useState } from "react";
 import { Participant, TeamMember } from "@/types";
+import { sanitizeStrings } from "@/lib/utils";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
@@ -28,10 +29,11 @@ interface Props {
     eventId?: string;
     member: TeamMember;
     participants?: Participant[];
+    onClose?: (show: boolean) => void;
     setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
-export function EventTeamMemberEditForm({member}: Props) {
+export function EventTeamMemberEditForm({member, onClose = () => {}}: Props) {
   
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
@@ -47,8 +49,18 @@ export function EventTeamMemberEditForm({member}: Props) {
   const handleSubmit: SubmitHandler<FormValues> =  async (data) => {
     setButtonSubmitting(true);
 
-    console.log("Dane z formularza edycji:", data);
-        
+    const cleanData = sanitizeStrings(data);
+
+    if (member) {
+      const unchangedFields = (member.first_name === cleanData.firstName) && (member.second_name === cleanData.lastName) && (String(member.start_number) === cleanData.startNumber);
+
+      if (unchangedFields) {
+        onClose(false);
+        setButtonSubmitting(false);
+        return;
+      }
+    }
+      
     setButtonSubmitting(false);
   }
 

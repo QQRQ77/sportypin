@@ -24,7 +24,10 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({member, isUserCreator,
   return (
         <div className="flex items-center space-x-2 p-2 border rounded">
           {member.id === activeMemberId && showEditForm ? (
-              <EventTeamMemberEditForm member={member} />
+              <EventTeamMemberEditForm 
+                member={member} 
+                onClose={setShowEditForm} 
+              />
           ) : (<>
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
