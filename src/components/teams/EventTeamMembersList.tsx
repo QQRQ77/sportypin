@@ -20,7 +20,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
       <h2>Skład zespołu:</h2>
       {participant?.eventTeamMembers?.length && (
         <div className="">
-          {participant.eventTeamMembers.map((member) => (
+          {participant.eventTeamMembers.map((member, index) => (
             <EventTeamMember 
               key={member.id}
               isUserCreator={isUserCreator}
@@ -29,6 +29,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
               participants={participants} 
               setItems={setItems} 
               eventId={eventId}
+              lp={index + 1}
               activeMemberId={activeMemberId} 
               setActiveMemberId={setActiveMemberId}
             />

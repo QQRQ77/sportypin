@@ -10,6 +10,7 @@ import { saveNewParticipant } from '@/lib/events.actions';
 interface EventTeamMemberProps {
   isUserCreator?: boolean;
   eventId: string;
+  lp?: number;
   setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
   member: TeamMember;
   participant?: Participant;
@@ -18,7 +19,7 @@ interface EventTeamMemberProps {
   setActiveMemberId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
+const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, lp, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
 
@@ -50,6 +51,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
                 setItems={setItems}
               />
           ) : (<>
+            {lp && <p className="text-lg font-bold">{lp}.</p>}
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
                 <IoShirtOutline size={48} />
