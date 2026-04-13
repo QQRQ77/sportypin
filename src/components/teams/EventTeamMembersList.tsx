@@ -18,7 +18,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
   return (
     <div className="">
       <h2>Skład zespołu:</h2>
-      {participant?.eventTeamMembers?.length && (
+      {participant?.eventTeamMembers?.length ? (
         <div className="">
           {participant.eventTeamMembers.map((member, index) => (
             <EventTeamMember 
@@ -35,7 +35,7 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
             />
           ))}
         </div>
-      )}
+      ): "Brak dodanych członków zespołu"}
       {isUserCreator && 
         <AddEventTeamMember
           eventId={eventId}
