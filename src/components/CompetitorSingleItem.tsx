@@ -36,7 +36,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
   
   return (
     <>
-    <div className="competitor-single-item w-full flex justify-between gap-2">
+    <div className="w-full flex justify-between gap-2">
       {participant?.id === activeParticipantId && showEditForm ? (
         <CompetitorEditForm 
           participant={participant} 
@@ -52,7 +52,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
           {participant?.itemType === "zawodnik" && <EventParticipantTypeAthlete participant={participant} />}
         </>
       }
-      <div className="flex flex-row w-30 justify-center items-center gap-4 ml-5">
+      <div className="flex flex-row justify-center items-center gap-4 ml-5">
         <div className="flex flex-row text-gray-500 hover:text-gray-800">
           <p className="hidden md:block hover:text-gray-500 text-base">lista zawodników: </p>
           <Tooltip>
