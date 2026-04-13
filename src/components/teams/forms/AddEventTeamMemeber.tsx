@@ -18,7 +18,7 @@ import { useState } from "react";
 import { sanitizeStrings } from "@/lib/utils";
 import { Participant } from "@/types";
 import { saveNewParticipant } from "@/lib/events.actions";
-import ComboInputTeamMember from "../ComboInputTeamMember";
+// import ComboInputTeamMember from "../ComboInputTeamMember";
 
 const FormSchema = z.object({
   firstName: z.string().min(1, 'Imię jest wymagane'),
@@ -119,12 +119,12 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
               )}
             />
 
-            <ComboInputTeamMember
+            {/* <ComboInputTeamMember
               control={form.control}
               name="firstName"
               label="Wybierz/dodaj zespół"
               placeholder="Wpisz imię…"
-            />
+            /> */}
 
             <FormField
               control={form.control}
