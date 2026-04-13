@@ -1,4 +1,4 @@
-import { Participant, TeamMember } from '@/types';
+import { Participant, EventTeamMemberType } from '@/types';
 import React, { useState } from 'react';
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
@@ -12,14 +12,14 @@ interface EventTeamMemberProps {
   eventId: string;
   lp?: number;
   setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
-  member: TeamMember;
+  member: EventTeamMemberType;
   participant?: Participant;
   participants?: Participant[]; 
   activeMemberId?: string;
   setActiveMemberId?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, lp, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
+const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, participants, member, lp = 0, isUserCreator, activeMemberId, setItems, setActiveMemberId = () => {}}) => {
 
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
 
@@ -51,7 +51,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
                 setItems={setItems}
               />
           ) : (<>
-            {lp && <p className="text-lg font-bold">{lp}.</p>}
+            {lp > 0 && <p className="text-lg font-bold">{lp}.</p>}
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
                 <IoShirtOutline size={48} />
@@ -59,7 +59,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
               </div>
             </IconContext.Provider>
           <div className="flex flex-row w-96">
-            <p>{member.first_name} {member.second_name ? member.second_name : ""}</p>
+            <p>{member.name}</p>
           </div>
           {isUserCreator && <>
             <div className="text-gray-500 hover:text-gray-800">

@@ -14,13 +14,12 @@ import {
 import { Input } from "@/components/ui/input";
 import SubmitButton from "@/components/ui/submitButton";
 import { useState } from "react";
-import { Participant, TeamMember } from "@/types";
+import { Participant, EventTeamMemberType } from "@/types";
 import { sanitizeStrings } from "@/lib/utils";
 import { saveNewParticipant } from "@/lib/events.actions";
 
 const FormSchema = z.object({
-  firstName: z.string().min(1, 'Imię jest wymagane'),
-  lastName: z.string().optional(),
+  name: z.string().min(1, 'Imię/ksywka/nazwisko jest wymagane'),
   startNumber: z.string().min(1, 'Numer startowy jest wymagany'),
 });
 
@@ -28,7 +27,7 @@ type FormValues = z.infer<typeof FormSchema>;
 
 interface Props {
     eventId: string;
-    member: TeamMember;
+    member: EventTeamMemberType;
     participant: Participant;
     participants: Participant[];
     onClose?: (show: boolean) => void;
@@ -40,8 +39,7 @@ export function EventTeamMemberEditForm({member, participants, participant, even
   const form = useForm<FormValues>({
       resolver: zodResolver(FormSchema),
       defaultValues: {
-        firstName: member.first_name,
-        lastName: member.second_name,
+        name: member.name,
         startNumber: String(member.start_number || ""),
       },
     });
@@ -54,7 +52,7 @@ export function EventTeamMemberEditForm({member, participants, participant, even
     const cleanData = sanitizeStrings(data);
 
     if (member) {
-      const unchangedFields = (member.first_name === cleanData.firstName) && (member.second_name === cleanData.lastName) && (String(member.start_number) === cleanData.startNumber);
+      const unchangedFields = (member.name === cleanData.name) && (String(member.start_number) === cleanData.startNumber);
 
       if (unchangedFields) {
         onClose(false);
@@ -66,8 +64,7 @@ export function EventTeamMemberEditForm({member, participants, participant, even
     const submissionData = {
       ...member,
       //TODO: w przypadku zmiany na zawodnika wybranego z bazy danych, trzeba będzie dodać nowe athlete_id do submissionData
-      first_name: cleanData.firstName,
-      second_name: cleanData.lastName,
+      name: cleanData.name,
       start_number: cleanData.startNumber,
     };
 
@@ -115,13 +112,13 @@ export function EventTeamMemberEditForm({member, participants, participant, even
             
             <FormField
               control={form.control}
-              name="firstName"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-32">
                   <FormLabel>Imię</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="np. imię lub ksywka"
+                      placeholder="np. imię lub ksywka lub nazwisko"
                       className="shadow-xl"
                       {...field}
                     />
@@ -131,23 +128,6 @@ export function EventTeamMemberEditForm({member, participants, participant, even
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className="w-60">
-                  <FormLabel>Nazwisko</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="np. Kowalski (opcjonalne)"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
           <div className="w-full flex justify-center">
             <SubmitButton
               isSubmitting={buttonSubmitting}

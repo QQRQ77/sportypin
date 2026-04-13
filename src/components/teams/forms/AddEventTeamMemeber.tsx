@@ -21,8 +21,7 @@ import { saveNewParticipant } from "@/lib/events.actions";
 // import ComboInputTeamMember from "../ComboInputTeamMember";
 
 const FormSchema = z.object({
-  firstName: z.string().min(1, 'Imię jest wymagane'),
-  lastName: z.string().optional(),
+  name: z.string().min(1, 'Imię/ksywka/nazwisko jest wymagane'),
   startNumber: z.string().min(1, 'Numer startowy jest wymagany'),
 });
 
@@ -51,8 +50,7 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
     const memberData = {
       id: createId(),
       athlete_id: "",
-      first_name: data.firstName,
-      second_name: data.lastName,
+      name: data.name,
       start_number: data.startNumber,
     };
 
@@ -67,8 +65,7 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
     await saveNewParticipant(eventId, newParticipants);
 
     form.reset({
-      firstName: "",
-      lastName: "",
+      name: "",
       startNumber: "",
     });
         
@@ -103,13 +100,13 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
             
             <FormField
               control={form.control}
-              name="firstName"
+              name="name"
               render={({ field }) => (
                 <FormItem className="w-32">
                   <FormLabel>Imię</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="np. imię lub ksywka"
+                      placeholder="np. imię/ksywka/nazwisko"
                       className="shadow-xl"
                       {...field}
                     />
@@ -125,24 +122,6 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
               label="Wybierz/dodaj zespół"
               placeholder="Wpisz imię…"
             /> */}
-
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem className="w-60">
-                  <FormLabel>Nazwisko</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="np. Kowalski (opcjonalne)"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
         </div>
 
         <div className="w-full flex justify-center">
