@@ -40,7 +40,7 @@ export async function searchAthletes(query: string): Promise<{ id: string; name:
   const { data } = await supabase
     .from('Athletes')
     .select('id, first_name, last_name, home_team_name')
-    .ilike('home_team_name', `%${query}%`)
+    .or(`first_name.ilike.%${query}%,last_name.ilike.%${query}%,home_team_name.ilike.%${query}%`)
     .limit(8);
   return (data ?? []).map((i) => ({ id: i.id, name: `${i.first_name} ${i.last_name} (${i.home_team_name})` }));
 }

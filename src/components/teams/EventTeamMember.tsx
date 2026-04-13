@@ -51,7 +51,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
                 setItems={setItems}
               />
           ) : (<>
-            {lp && <p className="text-lg font-bold">{lp}.</p>}
+            {lp && <p className="text-lg w-5 font-bold">{lp}.</p>}
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
                 <IoShirtOutline size={48} />
