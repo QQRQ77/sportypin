@@ -53,7 +53,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
         </>
       }
       <div className="flex flex-row justify-center items-center gap-4 ml-5">
-        <div className="flex flex-row text-gray-500 hover:text-gray-800">
+        <div className="flex flex-row text-gray-500 hover:text-gray-800 mr-10">
           <p className="hidden md:block hover:text-gray-500 text-base">lista zawodników: </p>
           <Tooltip>
             <TooltipTrigger asChild>
