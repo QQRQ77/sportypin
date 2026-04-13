@@ -18,6 +18,7 @@ import { useState } from "react";
 import { sanitizeStrings } from "@/lib/utils";
 import { Participant } from "@/types";
 import { saveNewParticipant } from "@/lib/events.actions";
+import ComboInputTeamMember from "../ComboInputTeamMember";
 // import ComboInputTeamMember from "../ComboInputTeamMember";
 
 const FormSchema = z.object({
@@ -98,7 +99,7 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
               )}
             />
             
-            <FormField
+            {/* <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
@@ -114,14 +115,14 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
                   <FormMessage />
                 </FormItem>
               )}
-            />
-
-            {/* <ComboInputTeamMember
-              control={form.control}
-              name="firstName"
-              label="Wybierz/dodaj zespół"
-              placeholder="Wpisz imię…"
             /> */}
+
+            <ComboInputTeamMember
+              control={form.control}
+              name="name"
+              label="Wybierz/dodaj zawodnika"
+              placeholder="Wpisz imię/ksywka/nazwisko..."
+            />
         </div>
 
         <div className="w-full flex justify-center">

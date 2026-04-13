@@ -3,7 +3,7 @@ import { useController, UseControllerProps, FieldValues } from 'react-hook-form'
 import clsx from 'clsx';
 import { useSearchAthletes } from '@/lib/hooks';
 
-type Option = { id: string; first_name: string; last_name: string; home_team_name: string };
+type Option = { id: string; name: string };
 
 type Props<TForm extends FieldValues> = UseControllerProps<TForm> & {
   label?: string;
@@ -12,13 +12,13 @@ type Props<TForm extends FieldValues> = UseControllerProps<TForm> & {
 
 export default function ComboInputTeamMember<TForm extends FieldValues>(props: Props<TForm>) {
   const {
-    field: { onChange, value = { id: '', first_name: '', last_name: '', home_team_name: '' }, ref },
+    field: { onChange, value = { id: '', name: ''}, ref },
     fieldState: { error },
   } = useController(props);
 
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const { results, loading } = useSearchAthletes(`${value.first_name} ${value.last_name} ${value.home_team_name}` as string);
+  const { results, loading } = useSearchAthletes(`${value.name}` as string);
 
   useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
@@ -33,7 +33,7 @@ export default function ComboInputTeamMember<TForm extends FieldValues>(props: P
     setOpen(false);
   };
 
-  const displayName = `${(value as Option)?.first_name} ${(value as Option)?.last_name} ${(value as Option)?.home_team_name}`.trim();
+  const displayName = `${(value as Option)?.name}`.trim();
 
   return (
     <div ref={rootRef} className="relative w-full">
@@ -69,7 +69,7 @@ export default function ComboInputTeamMember<TForm extends FieldValues>(props: P
                 onClick={() => handleSelect(item)}
                 className="cursor-pointer px-4 py-2 text-sm hover:bg-blue-50"
               >
-                {`${item.first_name} ${item.last_name} (${item.home_team_name})`}
+                {item.name}
               </li>
             ))}
         </ul>

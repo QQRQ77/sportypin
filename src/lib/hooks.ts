@@ -20,7 +20,7 @@ export function useSearchTeams(query: string) {
 }
 
 export function useSearchAthletes(query: string) {
-  const [results, setResults] = useState<{ id: string; first_name: string; last_name: string; home_team_name: string }[]>([]);
+  const [results, setResults] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
