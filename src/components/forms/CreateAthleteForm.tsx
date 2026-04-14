@@ -44,6 +44,7 @@ const FormSchema = z.object({
     home_team: teamSchema.optional(),
     home_team_id: z.string().optional(),
     home_team_name: z.string().optional(),
+    default_start_number: z.string().optional(),
     sports: z.array(
         z.string()
         .min(2, "Nazwa sportu są jest zbyt krótka (minimum 2 znaki).")
@@ -537,7 +538,23 @@ export default function CreateAthleteForm() {
                           </FormItem>
                         );
                       }}
-                    />     
+                    /> 
+                    <FormField
+                      control={form.control}
+                      name="default_start_number"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel>Domyślny numer startowy</FormLabel>
+                              <FormControl>
+                                  <Input placeholder="Wpisz domyślny numer startowy" {...field} />
+                              </FormControl>
+                              <FormDescription>
+                                  To jest domyślny numer startowy zawodnika, którego dodajesz do bazy.
+                              </FormDescription>
+                              <FormMessage />
+                          </FormItem>
+                      )}
+                    />    
                     {/* <FormField
                       control={form.control}
                       name="contact_email"
