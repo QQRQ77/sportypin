@@ -158,7 +158,7 @@ export default function SortableHarmonogram({
                           onClick={e => {
                             e.preventDefault();
                             e.stopPropagation();
-                            router.push(`/event/${eventId}/match/${matchSport}/${item.id}`);
+                            router.push(`/events/${eventId}/match/${matchSport}/${item.id}`);
                             }}
                           aria-label="Transmisja"
                         >
