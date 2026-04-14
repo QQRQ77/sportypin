@@ -18,7 +18,7 @@ export default function ComboInputTeamMember<TForm extends FieldValues>(props: P
 
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  const { results, loading } = useSearchAthletes(`${value.name}` as string);
+  const { results, loading } = useSearchAthletes(value.name as string);
 
   useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
@@ -33,8 +33,8 @@ export default function ComboInputTeamMember<TForm extends FieldValues>(props: P
     setOpen(false);
   };
 
-  const displayName = `${(value as Option)?.name}`.trim();
-
+  const displayName = (value as Option)?.name ?? '';
+  
   return (
     <div ref={rootRef} className="relative w-full">
       {props.label && (
