@@ -34,7 +34,7 @@ export async function searchTeams(query: string): Promise<{ id: string; name: st
   return (data ?? []).map((i) => ({ id: i.id, name: i.name }));
 }
 
-export async function searchAthletes(query: string): Promise<{ id: string; name: string; }[]> {
+export async function searchAthletes(query: string): Promise<{ id: string; name: string; homeTeamName: string }[]> {
   if (!query) return [];
   const supabase = createSupabaseClient();
   const { data } = await supabase
@@ -42,7 +42,7 @@ export async function searchAthletes(query: string): Promise<{ id: string; name:
     .select('id, first_name, last_name, home_team_name')
     .or(`first_name.ilike.%${query}%,last_name.ilike.%${query}%,home_team_name.ilike.%${query}%`)
     .limit(8);
-  return (data ?? []).map((i) => ({ id: i.id, name: `${i.first_name} ${i.last_name} (${i.home_team_name})` }));
+  return (data ?? []).map((i) => ({ id: i.id, name: `${i.first_name} ${i.last_name}`, homeTeamName: i.home_team_name || "" }));
 }
 
 export async function getTeamImagesUrls(teamId: string) {

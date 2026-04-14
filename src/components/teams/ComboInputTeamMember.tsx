@@ -69,7 +69,7 @@ export default function ComboInputTeamMember<TForm extends FieldValues>(props: P
                 onClick={() => handleSelect(item)}
                 className="cursor-pointer px-4 py-2 text-sm hover:bg-blue-50"
               >
-                {item.name}
+                {`${item.name} (${item.homeTeamName})`} 
               </li>
             ))}
         </ul>

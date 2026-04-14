@@ -23,7 +23,8 @@ import ComboInputTeamMember from "../ComboInputTeamMember";
 
 const name = z.object({
   id: z.string().or(z.literal("")).optional(),
-  name: z.string().max(100, "Nazwa zbyt długa (maksymalnie 100 znaków).")
+  name: z.string().max(100, "Nazwa zbyt długa (maksymalnie 100 znaków)."),
+  homeTeamName: z.string().optional()
 });
 
 const FormSchema = z.object({
@@ -71,8 +72,8 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
     await saveNewParticipant(eventId, newParticipants);
 
     form.reset({
-      name: { id: "", name: "" },
-      startNumber: "",
+      name: { id: "", name: "", homeTeamName: "" },
+      startNumber: ""
     });
         
     setButtonSubmitting(false);
