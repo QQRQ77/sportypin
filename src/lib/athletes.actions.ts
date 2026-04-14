@@ -44,7 +44,7 @@ export async function getAthletes() {
   
   const { data, error } = await supabase
     .from('Athletes')
-    .select('id, first_name, last_name, sports, cathegories, home_team_name, home_team_id')
+    .select('id, first_name, last_name, sports, cathegories, home_team_name, home_team_id, default_start_number')
     .limit(20); // Pobierz maksymalnie 100 nadchodzących wydarzeń
 
   if (error) {

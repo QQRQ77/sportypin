@@ -19,7 +19,7 @@ export default async function Page() {
     athlete.home_team_logo_URL = teamLogoURL;}
 
   return (
-    <main className="flex items-center justify-center flex-col w-11/12 mx-auto gap-4">
+    <main className="flex items-center justify-center flex-col w-11/12 mx-auto gap-4 mb-20">
       <Image
           src="/images/logo_athlete.png"
           alt="Sport Athlete Logo"
