@@ -1,3 +1,5 @@
+'use client';
+
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
 import Link from "next/link";
@@ -58,7 +60,7 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
           <IconContext.Provider value={{ className: "text-sky-600" }}>
             <div className='relative'>
               <IoShirtOutline size={48} />
-                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">28</p>
+                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{athlete.default_start_number}</p>
             </div>
           </IconContext.Provider>
           <div className="text-xl">Kontakt: </div>
