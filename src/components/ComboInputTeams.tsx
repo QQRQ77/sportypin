@@ -56,12 +56,12 @@ export default function ComboInputTeams<TForm extends FieldValues>(props: Props<
         )}
       />
 
-      {open && (
+      {open && results.length > 0 && (
         <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-lg border border-gray-300 bg-white shadow-lg">
           {loading && <li className="px-4 py-2 text-sm text-gray-500">Wyszukiwanie...</li>}
-          {!loading && results.length === 0 && displayName && (
+          {/* {!loading && results.length === 0 && displayName && (
             <li className="px-4 py-2 text-sm text-gray-500">Brak wyników</li>
-          )}
+          )} */}
           {!loading &&
             results.map((item) => (
               <li
