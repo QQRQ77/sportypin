@@ -21,8 +21,13 @@ import { saveNewParticipant } from "@/lib/events.actions";
 import ComboInputTeamMember from "../ComboInputTeamMember";
 // import ComboInputTeamMember from "../ComboInputTeamMember";
 
+const name = z.object({
+  id: z.string().or(z.literal("")).optional(),
+  name: z.string().max(100, "Nazwa zbyt długa (maksymalnie 100 znaków).")
+});
+
 const FormSchema = z.object({
-  name: z.string().min(1, 'Imię/ksywka/nazwisko jest wymagane'),
+  name: name,
   startNumber: z.string().min(1, 'Numer startowy jest wymagany'),
 });
 
@@ -50,8 +55,8 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
 
     const memberData = {
       id: createId(),
-      athlete_id: "",
-      name: data.name,
+      athlete_id: data.name.id || "",
+      name: data.name.name,
       start_number: data.startNumber,
     };
 
@@ -66,7 +71,7 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
     await saveNewParticipant(eventId, newParticipants);
 
     form.reset({
-      name: "",
+      name: { id: "", name: "" },
       startNumber: "",
     });
         
