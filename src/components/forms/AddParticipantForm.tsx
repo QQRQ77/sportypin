@@ -274,7 +274,7 @@ export default function AddParticipantForm({cathegories, eventId, participants =
               />}
             </div>
 
-            <div className="w-full flex justify-center">
+            <div className="w-full flex justify-center mt-10">
               <SubmitButton
                 isSubmitting={buttonSubmitting}
                 submittingText="Dodawanie..."
