@@ -1,12 +1,7 @@
-import { useParams } from 'next/navigation';
 
-'use client';
+export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
-
-export default function HandballMatchPage() {
-  const params = useParams();
-  const eventId = params.event_id;
-  const itemId = params.item_id;
+  const { event_id, item_id } = await params;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -17,22 +12,22 @@ export default function HandballMatchPage() {
           <div className="grid grid-cols-2 gap-6">
             <div>
               <h2 className="text-lg font-semibold text-gray-700">Event ID</h2>
-              <p className="text-2xl font-mono text-blue-600">{eventId}</p>
+              <p className="text-2xl font-mono text-blue-600">{event_id}</p>
             </div>
             
             <div>
               <h2 className="text-lg font-semibold text-gray-700">Item ID</h2>
-              <p className="text-2xl font-mono text-blue-600">{itemId}</p>
+              <p className="text-2xl font-mono text-blue-600">{item_id}</p>
             </div>
           </div>
         </div>
 
         <div className="mt-8">
           <p className="text-gray-600">
-            Event: <strong>{eventId}</strong>
+            Event: <strong>{event_id}</strong>
           </p>
           <p className="text-gray-600">
-            Match: <strong>{itemId}</strong>
+            Match: <strong>{item_id}</strong>
           </p>
         </div>
       </div>
