@@ -16,7 +16,7 @@ import { useId, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import HarmonogramItemEditForm from "./forms/HarmonogramItemEditForm";
 import DateViewer from "./DataViewer";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface SortableHarmonogramProps {
   items: HarmonogramItem[];
