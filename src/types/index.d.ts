@@ -10,6 +10,7 @@ interface CreateAthlete {
   home_team_name?: string;
   home_team_id?: string;
   home_team_logo_URL?: string;
+  default_start_number?: string;
   birth_day?: number;
   birth_month?: string;
   birth_year?: number;

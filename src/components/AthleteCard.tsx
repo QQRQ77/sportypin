@@ -1,6 +1,8 @@
 import { CreateAthlete } from "@/types"
 import Image from "next/image";
 import Link from "next/link";
+import { IoShirtOutline } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 interface AthleteCardProps {
   athlete: CreateAthlete;
@@ -53,6 +55,12 @@ export default function AthleteCard({ athlete }: AthleteCardProps) {
               </div>
             ))}
           </div>
+          <IconContext.Provider value={{ className: "text-sky-600" }}>
+            <div className='relative'>
+              <IoShirtOutline size={48} />
+                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{athlete.default_start_number}</p>
+            </div>
+          </IconContext.Provider>
           <div className="text-xl">Kontakt: </div>
           {athlete.contact_email && <div className="text-lg">email: <span className="ml-4">{athlete.contact_email}</span></div>}
           {athlete.contact_phone && <div className="text-lg">telefon: <span className="ml-4">{athlete.contact_phone}</span></div>}
