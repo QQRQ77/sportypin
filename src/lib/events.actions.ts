@@ -403,3 +403,26 @@ export async function getEventBaseInfo(eventId: string) {
 
   return data;
 } 
+
+export async function getMatchInfo(matchId: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('harmonogram')
+    .eq('id', matchId)
+    .single();
+
+    if (error || !data) {
+    console.error('Error fetching match info:', error);
+    throw new Error(error?.message || 'Failed to fetch match info');
+  }
+
+  const { harmonogram } = data;
+
+  if (harmonogram.length > 0) {
+    const matchInfo = harmonogram.find((item: HarmonogramItem) => item.id === matchId); 
+    return matchInfo
+  }
+
+} 
