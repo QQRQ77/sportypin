@@ -404,13 +404,13 @@ export async function getEventBaseInfo(eventId: string) {
   return data;
 } 
 
-export async function getMatchInfo(matchId: string) {
+export async function getMatchInfo(eventId: string, matchId: string) {
   const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
     .from('Events')
     .select('harmonogram')
-    .eq('id', matchId)
+    .eq('id', eventId)
     .single();
 
     if (error || !data) {

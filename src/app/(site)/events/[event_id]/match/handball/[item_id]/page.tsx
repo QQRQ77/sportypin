@@ -9,7 +9,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   
   let itemInfo = null;
   try {
-    itemInfo = await getMatchInfo(item_id);
+    itemInfo = await getMatchInfo(event_id, item_id);
   } catch (error) {
     console.error("Error fetching match info:", error);
   }
