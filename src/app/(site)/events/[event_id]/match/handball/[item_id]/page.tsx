@@ -29,9 +29,19 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-3xl font-bold">{eventInfo.name}</h1>
         <h1 className="text-3xl font-bold">{eventInfo.city}</h1>
         <h2 className="text-2xl font-semibold">{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
-        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>
-      
+        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
+      </div>
+      <div className="w-full flex flex-2 items-center gap-5">
+        <div className="w-full flex flex-col items-center gap-5">
+          <h2 className="text-xl font-bold">Drużyna 1</h2>
+          <p className="text-lg">{itemInfo ? itemInfo.team_1 : ""}</p>
+        </div>
+        <div className="w-full flex flex-col items-center gap-5">
+          <h2 className="text-xl font-bold">Drużyna 2</h2>
+          <p className="text-lg">{itemInfo ? itemInfo.team_2 : ""}</p>
+        </div>
       </div>
     </div>
   );
 }
+
