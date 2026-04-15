@@ -11,11 +11,13 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 flex flex-col justify-center">
-      <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline border border-blue-500 rounded px-4 py-2 mb-6">
+      <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline w-42 border border-blue-500 rounded px-4 py-2 mb-6">
         Powrót do strony turnieju
       </Link>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Handball Match</h1>
+        <h1 className="text-4xl font-bold mb-8">{eventInfo.name}</h1>
+        <h1 className="text-3xl font-bold mb-8">{eventInfo.city}</h1>
+        <h2>{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
         
         <div className="bg-white rounded-lg shadow p-6">
           <div className="grid grid-cols-2 gap-6">
