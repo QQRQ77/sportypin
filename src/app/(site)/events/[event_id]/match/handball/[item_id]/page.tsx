@@ -32,11 +32,11 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
       <div className="w-full flex flex-2 items-start">
-        <div className="w-full flex flex-col items-center gap-5">
-          <p className="text-lg">{itemInfo ? itemInfo.team_1 : ""}</p>
+        <div className="w-full flex flex-col items-center gap-5 border-r-1 border-gray-500">
+          <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_1 : ""}</p>
         </div>
         <div className="w-full flex flex-col items-center gap-5">
-          <p className="text-lg">{itemInfo ? itemInfo.team_2 : ""}</p>
+          <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
     </div>
