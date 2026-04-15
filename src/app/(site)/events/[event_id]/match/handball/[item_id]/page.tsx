@@ -6,7 +6,13 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   const { event_id, item_id } = await params;
 
   const eventInfo = await getEventBaseInfo(event_id);
-  const itemInfo = await getMatchInfo(item_id);
+  
+  let itemInfo = null;
+  try {
+    itemInfo = await getMatchInfo(item_id);
+  } catch (error) {
+    console.error("Error fetching match info:", error);
+  }
 
   console.log("Event info:", eventInfo);
   console.log("Item info:", itemInfo);
@@ -42,6 +48,9 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           <p className="text-gray-600">
             Match: <strong>{item_id}</strong>
           </p>
+          {!itemInfo && (
+            <p className="text-red-600 mt-4">Could not load match information. Invalid match ID.</p>
+          )}
         </div>
       </div>
     </div>
