@@ -1,3 +1,19 @@
+// file: src/lib/events.actions.ts
+// function createEvent
+// function getUpcomingEvents
+// function getPastEvents
+// function getUserEvents
+// function getObservedEvents
+// function ToggleEventFollower
+// function getEventById
+// function updateEvent
+// function findEventCreatorId
+// function saveHarmonogram
+// function saveHarmonogramItem
+// function saveNewParticipant
+// function saveClassification
+// function getEventBaseInfo
+
 'use server'
 
 import { auth } from "@clerk/nextjs/server";
@@ -369,4 +385,21 @@ export async function saveClassification(eventId: string, classification: Classi
   }
 
   return "success";
+}
+
+export async function getEventBaseInfo(eventId: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('name, start_date, city, imageUrls')
+    .eq('id', eventId)
+    .single();
+  
+    if (error || !data) {
+    console.error('Error adding new participant:', error);
+    throw new Error(error?.message || 'Failed to save new participant');
+  }
+
+  return data;
 } 

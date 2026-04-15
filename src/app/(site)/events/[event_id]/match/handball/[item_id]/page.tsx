@@ -1,12 +1,17 @@
+import { getEventBaseInfo } from "@/lib/events.actions";
 import Link from "next/link";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
   const { event_id, item_id } = await params;
 
+  const eventInfo = await getEventBaseInfo(event_id);
+
+  console.log("Event info:", eventInfo);
+
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline ">
+    <div className="min-h-screen bg-gray-50 p-8 flex flex-col justify-center">
+      <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline border border-blue-500 rounded px-4 py-2 mb-6">
         Powrót do strony turnieju
       </Link>
       <div className="max-w-4xl mx-auto">
