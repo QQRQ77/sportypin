@@ -50,8 +50,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           {team_1_logoURL && <Image
             src={team_1_logoURL || "/images/logo_team.png"}
             alt={`${itemInfo?.team_1} logo`}
-            width={50}
-            height={50}
+            width={150}
+            height={150}
             className="object-contain rounded "
           />}
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_1 : ""}</p>
@@ -60,8 +60,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           {team_2_logoURL && <Image
             src={team_2_logoURL || "/images/logo_team.png"}
             alt={`${itemInfo?.team_2} logo`}
-            width={50}
-            height={50}
+            width={150}
+            height={150}
             className="object-contain rounded "
           />}
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
