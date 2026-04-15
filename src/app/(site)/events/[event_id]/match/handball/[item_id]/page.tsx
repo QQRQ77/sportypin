@@ -20,7 +20,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   console.log("Item info:", itemInfo);
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full flex flex-col justify-center items-center mb-20 gap-5">
+    <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mb-20 gap-5">
       <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline w-66 border border-blue-500 rounded flex items-center gap-2 px-4 py-2 transition-colors">
         <ChevronDoubleLeftIcon className="h-5 w-5" />
         Powrót do strony turnieju
