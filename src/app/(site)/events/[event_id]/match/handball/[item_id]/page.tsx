@@ -26,6 +26,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-4xl font-bold mb-8">{eventInfo.name}</h1>
         <h1 className="text-3xl font-bold mb-8">{eventInfo.city}</h1>
         <h2>{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
+        <h2> Mecz: {itemInfo ? `${itemInfo.team_1} vs ${itemInfo.team_2}` : ''}</h2>
         
         <div className="bg-white rounded-lg shadow p-6">
           <div className="grid grid-cols-2 gap-6">
