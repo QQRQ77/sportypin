@@ -1,7 +1,9 @@
 import { getEventBaseInfo, getMatchInfo } from "@/lib/events.actions";
+import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
@@ -16,8 +18,20 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
     console.error("Error fetching match info:", error);
   }
 
-  console.log("Event info:", eventInfo);
-  console.log("Item info:", itemInfo);
+  let team_1_logoURL = ""
+  let team_2_logoURL = ""
+  try {
+    if (itemInfo?.team_1_id) {
+      team_1_logoURL = await getTeamLogoByTeamId(itemInfo.team_1_id);
+    }
+    if (itemInfo?.team_2_id) {
+      team_2_logoURL = await getTeamLogoByTeamId(itemInfo.team_2_id);
+    }
+  } catch (error) {
+    console.error("Error fetching team logo:", error);
+  }
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mt-5 mb-20 gap-5">
@@ -33,9 +47,23 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
       </div>
       <div className="w-full flex flex-2 items-start">
         <div className="w-full flex flex-col items-center gap-5 border-r-1 border-gray-500">
+          {team_1_logoURL && <Image
+            src={team_1_logoURL || "/images/logo_team.png"}
+            alt={`${itemInfo?.team_1} logo`}
+            width={50}
+            height={50}
+            className="object-contain rounded "
+          />}
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_1 : ""}</p>
         </div>
         <div className="w-full flex flex-col items-center gap-5">
+          {team_2_logoURL && <Image
+            src={team_2_logoURL || "/images/logo_team.png"}
+            alt={`${itemInfo?.team_2} logo`}
+            width={50}
+            height={50}
+            className="object-contain rounded "
+          />}
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
