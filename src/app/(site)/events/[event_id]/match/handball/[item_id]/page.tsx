@@ -29,7 +29,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-3xl font-bold">{eventInfo.name}</h1>
         <h1 className="text-3xl font-bold">{eventInfo.city}</h1>
         <h2 className="text-2xl font-semibold">{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
-        <h1 className="text-2xl font-semibold"> Mecz nr: {itemInfo ? `${itemInfo.LP}` : ""} rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span> koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>
+        <h1 className="text-2xl font-normal"> Mecz nr: {itemInfo ? `${itemInfo.LP}` : ""}{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>
       
       </div>
     </div>
