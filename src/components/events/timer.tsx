@@ -43,13 +43,11 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
     <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
-      {isRunning ?
-        <PlayIcon onClick={handleToggle}/> : <PauseIcon onClick={handleToggle}/>}
       <div className="flex flex-col items-center gap-2">
         {isRunning ?
-        <PlayIcon onClick={handleToggle}/> : <PauseIcon onClick={handleToggle}/>}
+        <PlayIcon onClick={handleToggle} className='w-10 h-10'/> : <PauseIcon onClick={handleToggle} className='w-10 h-10'/>}
         
-        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-6 w-6"/>
+        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10"/>
         
         <div className='flex gap-2'>
           <button
