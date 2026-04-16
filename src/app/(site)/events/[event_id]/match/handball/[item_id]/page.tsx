@@ -58,7 +58,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
             className="object-contain rounded "
           />}
           <p className="text-2xl font-bold text-center">{itemInfo ? itemInfo.team_1 : ""}</p>
-          <div className="absolute text-3xl font-bold text-gray-400 -rotate-45 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute text-3xl font-bold text-gray-400 -rotate-45 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">VS</div>
         </div>
         <div className="w-full flex flex-col items-center justify-center gap-5">
           {team_1_logoURL && !team_2_logoURL && <div className="h-[170px]"></div>}
