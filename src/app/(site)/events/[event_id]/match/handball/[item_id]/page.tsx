@@ -4,6 +4,7 @@ import { HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Image from "next/image";
+import { Timer } from "@/components/events/timer";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
@@ -69,6 +70,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
+      <Timer initialSeconds={300} />
     </div>
   );
 }
