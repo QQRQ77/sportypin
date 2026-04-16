@@ -5,6 +5,7 @@ import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Image from "next/image";
 import { Timer } from "@/components/events/timer";
+import ScoreBoard from "@/components/events/ScoreBoard";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
@@ -73,6 +74,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         </div>
       </div>
       <Timer initialSeconds={matchTime} />
+      <h1 className="text-3xl font-bold">Wynik:</h1>
+      <ScoreBoard team_1_score={0} team_2_score={0} />
     </div>
   );
 }
