@@ -39,7 +39,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
   const handleSubtractSecond = () => setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6">
+    <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded">
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
       <div className="flex gap-2">
@@ -62,6 +62,20 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
           className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
         >
           +1s
+        </button>
+        
+        <button
+          onClick={() => setSeconds((prev) => prev + 60)}
+          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+        >
+          +1m
+        </button>
+        
+        <button
+          onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          -1m
         </button>
         
         <button
