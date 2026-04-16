@@ -48,7 +48,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
       <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start">
-        <div className="w-full flex flex-col items-center gap-5 border-r-1 border-gray-500">
+        <div className="w-full flex flex-col items-center justify-center gap-5 border-r-1 border-gray-500">
           {team_2_logoURL && !team_1_logoURL && <div className="h-[170px]"></div>}
           {team_1_logoURL && <Image
             src={team_1_logoURL || "/images/logo_team.png"}
@@ -59,7 +59,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           />}
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_1 : ""}</p>
         </div>
-        <div className="w-full flex flex-col items-center gap-5">
+        <div className="w-full flex flex-col items-center justify-center gap-5">
           {team_1_logoURL && !team_2_logoURL && <div className="h-[170px]"></div>}
           {team_2_logoURL && <Image
             src={team_2_logoURL || "/images/logo_team.png"}
