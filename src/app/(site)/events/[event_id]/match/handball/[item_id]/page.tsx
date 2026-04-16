@@ -57,9 +57,9 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
             height={150}
             className="object-contain rounded "
           />}
-          <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_1 : ""}</p>
+          <p className="text-2xl font-bold text-center">{itemInfo ? itemInfo.team_1 : ""}</p>
         </div>
-        <div className="w-full flex flex-col items-center justify-center gap-5">
+        <div className="w-full flex flex-col items-center justify-center gap-5 border-l-1 border-gray-500">
           {team_1_logoURL && !team_2_logoURL && <div className="h-[170px]"></div>}
           {team_2_logoURL && <Image
             src={team_2_logoURL || "/images/logo_team.png"}
@@ -68,7 +68,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
             height={150}
             className="object-contain rounded "
           />}
-          <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
+            <p className="text-2xl font-bold text-center">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
       <Timer initialSeconds={matchTime} />
