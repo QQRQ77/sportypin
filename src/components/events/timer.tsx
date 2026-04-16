@@ -45,38 +45,38 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
       
       <div className="flex flex-col items-center gap-2">
         {!isRunning ?
-        <PlayIcon onClick={handleToggle} className='w-14 h-14'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14'/>}
+        <PlayIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/>}
                 
         <div className='flex gap-2'>
-          <button
-            onClick={handleAddSecond}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            +1s
-          </button>
-          
-          <button
-            onClick={() => setSeconds((prev) => prev + 60)}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            +1m
-          </button>
-          
+
           <button
             onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
           >
             -1m
           </button>
           
           <button
+            onClick={() => setSeconds((prev) => prev + 60)}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer mr-5"
+          >
+            +1m
+          </button>
+
+          <button
             onClick={handleSubtractSecond}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
           >
             -1s
           </button>
+          <button
+            onClick={handleAddSecond}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
+          >
+            +1s
+          </button>
         </div>
-        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10"/>
+        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
       </div>
     </div>
   );
