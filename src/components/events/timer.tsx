@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import React, { useState, useEffect } from 'react';
 
 interface TimerProps {
@@ -42,48 +43,44 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
     <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
-      <div className="flex gap-2">
-        <button
-          onClick={handleToggle}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          {isRunning ? 'Pause' : 'Start'}
-        </button>
+      {isRunning ?
+        <PlayIcon onClick={handleToggle}/> : <PauseIcon onClick={handleToggle}/>}
+      <div className="flex flex-col items-center gap-2">
+        {isRunning ?
+        <PlayIcon onClick={handleToggle}/> : <PauseIcon onClick={handleToggle}/>}
         
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-        >
-          Reset
-        </button>
+        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-6 w-6"/>
         
-        <button
-          onClick={handleAddSecond}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-        >
-          +1s
-        </button>
+        <div className='flex gap-2'>
+          <button
+            onClick={handleAddSecond}
+            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            +1s
+          </button>
+          
+          <button
+            onClick={() => setSeconds((prev) => prev + 60)}
+            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+          >
+            +1m
+          </button>
+          
+          <button
+            onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+          >
+            -1m
+          </button>
+          
+          <button
+            onClick={handleSubtractSecond}
+            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            -1s
+          </button>
+        </div>
         
-        <button
-          onClick={() => setSeconds((prev) => prev + 60)}
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          +1m
-        </button>
-        
-        <button
-          onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-        >
-          -1m
-        </button>
-        
-        <button
-          onClick={handleSubtractSecond}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          -1s
-        </button>
       </div>
     </div>
   );
