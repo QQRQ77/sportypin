@@ -48,7 +48,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
       <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start max-h-min">
-        <div className="w-full flex flex-col items-center justify-center gap-5 border-r-1 border-gray-500">
+        <div className="w-full flex flex-col items-center justify-center gap-5 relative">
           {team_2_logoURL && !team_1_logoURL && <div className="h-[170px]"></div>}
           {team_1_logoURL && <Image
             src={team_1_logoURL || "/images/logo_team.png"}
@@ -58,8 +58,9 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
             className="object-contain rounded "
           />}
           <p className="text-2xl font-bold text-center">{itemInfo ? itemInfo.team_1 : ""}</p>
+          <div className="absolute text-3xl font-bold text-gray-400 -rotate-45 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         </div>
-        <div className="w-full flex flex-col items-center justify-center gap-5 border-l-1 border-gray-500">
+        <div className="w-full flex flex-col items-center justify-center gap-5">
           {team_1_logoURL && !team_2_logoURL && <div className="h-[170px]"></div>}
           {team_2_logoURL && <Image
             src={team_2_logoURL || "/images/logo_team.png"}
