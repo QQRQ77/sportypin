@@ -39,7 +39,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
   const handleSubtractSecond = () => setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
 
   return (
-    <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded">
+    <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
       <div className="flex gap-2">

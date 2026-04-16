@@ -32,7 +32,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
     console.error("Error fetching team logo:", error);
   }
 
-
+  const matchTime 
+  = itemInfo ? Math.floor((new Date(`1970-01-01 ${itemInfo.end_time}`).getTime() - new Date(`1970-01-01 ${itemInfo.start_time}`).getTime()) / 1000) : 0;
 
   return (
     <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mt-5 mb-20 gap-5">
@@ -70,7 +71,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
           <p className="text-2xl font-bold">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
-      <Timer initialSeconds={300} />
+      <Timer initialSeconds={matchTime} />
     </div>
   );
 }
