@@ -13,7 +13,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score }) =
   const [score2, setScore2] = useState(team_2_score);
   
   return (
-    <div className="scoreboard flex flex-2">
+    <div className="scoreboard flex flex-2 gap-20">
       <div className="team-1 w-52 flex flex-col items-center gap-4">
         <h2 className="text-9xl font-bold">{score1}</h2>
         <div className="flex gap-2">
