@@ -36,7 +36,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   = itemInfo ? Math.floor((new Date(`1970-01-01 ${itemInfo.end_time}`).getTime() - new Date(`1970-01-01 ${itemInfo.start_time}`).getTime()) / 1000) : 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mt-5 mb-20 gap-5">
+    <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mt-5 mb-20 gap-5 text-center">
       <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline w-66 border border-blue-500 rounded flex items-center gap-2 px-4 py-2 transition-colors">
         <ChevronDoubleLeftIcon className="h-5 w-5" />
         Powrót do strony turnieju
@@ -47,7 +47,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h2 className="text-2xl font-semibold">{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
         <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
-      <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start">
+      <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start max-h-min">
         <div className="w-full flex flex-col items-center justify-center gap-5 border-r-1 border-gray-500">
           {team_2_logoURL && !team_1_logoURL && <div className="h-[170px]"></div>}
           {team_1_logoURL && <Image
