@@ -44,11 +44,9 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
       <div className="flex flex-col items-center gap-2">
-        {isRunning ?
-        <PlayIcon onClick={handleToggle} className='w-10 h-10'/> : <PauseIcon onClick={handleToggle} className='w-10 h-10'/>}
-        
-        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10"/>
-        
+        {!isRunning ?
+        <PlayIcon onClick={handleToggle} className='w-14 h-14'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14'/>}
+                
         <div className='flex gap-2'>
           <button
             onClick={handleAddSecond}
@@ -78,7 +76,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
             -1s
           </button>
         </div>
-        
+        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10"/>
       </div>
     </div>
   );
