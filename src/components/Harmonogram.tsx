@@ -3,7 +3,7 @@ import DateViewer from "./DataViewer";
 import EventHarmonogramTeamsItem from "./teams/EventHarmonogramTeams";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useRouter } from "next/navigation";
-import { PencilSquareIcon, PlayCircleIcon, TrashIcon, TrophyIcon } from "@heroicons/react/20/solid";
+import { PlayCircleIcon } from "@heroicons/react/20/solid";
 
 
 interface HarmonogramProps {
