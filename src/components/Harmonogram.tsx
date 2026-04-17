@@ -1,13 +1,21 @@
 import { HarmonogramItem } from "@/types";
 import DateViewer from "./DataViewer";
 import EventHarmonogramTeamsItem from "./teams/EventHarmonogramTeams";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { useRouter } from "next/navigation";
+import { PencilSquareIcon, PlayCircleIcon, TrashIcon, TrophyIcon } from "@heroicons/react/20/solid";
+
 
 interface HarmonogramProps {
   items: HarmonogramItem[];
+  eventId: string;
   participantSelected?: string;
 }
 
-export default function Harmonogram({items, participantSelected}: HarmonogramProps) {
+export default function Harmonogram({eventId, items, participantSelected}: HarmonogramProps) {
+
+  const router = useRouter();
+  const matchSport = "handball"
 
   function addLP(items: HarmonogramItem[]): (HarmonogramItem & { LP: number })[] {
     // licznik dla każdej daty
@@ -56,6 +64,25 @@ export default function Harmonogram({items, participantSelected}: HarmonogramPro
                 item={item}
                 participantSelected={participantSelected}
               />
+            </div>
+            <div className="text-gray-500 hover:text-gray-800">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    onClick={e => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      router.push(`/events/${eventId}/match/${matchSport}/${item.id}`);
+                      }}
+                    aria-label="Transmisja"
+                  >
+                    <PlayCircleIcon className="w-10 h-10 lg:w-6 lg:h-6 cursor-pointer" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Transmisja meczu</p>
+                </TooltipContent>
+              </Tooltip>
             </div>
             <div className="hidden lg:block">
                 <div className="flex gap-2 justify-center items-center">

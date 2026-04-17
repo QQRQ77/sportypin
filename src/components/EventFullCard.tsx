@@ -282,6 +282,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               />
             : <>
             <Harmonogram 
+              eventId={event.id}
               items={harmonogramItems}
               participantSelected={filterHarmonogramParticipant}
             />
