@@ -5,9 +5,10 @@ import React, { useState, useEffect } from 'react';
 
 interface TimerProps {
   initialSeconds?: number;
+  isUserCreator?: boolean;
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false }) => {
   const [seconds, setSeconds] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -43,6 +44,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
     <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
+      {isUserCreator && 
       <div className="flex flex-col items-center gap-2">
         {!isRunning ?
         <PlayIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/>}
@@ -77,7 +79,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300 }) => {
           </button>
         </div>
         <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
-      </div>
+      </div>}
     </div>
   );
 };
