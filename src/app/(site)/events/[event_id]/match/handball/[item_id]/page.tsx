@@ -40,9 +40,6 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
       }
     }
 
-    console.log("Team 1 members:", team_1_members);
-    console.log("Team 2 members:", team_2_members);
-
   } catch (error) {
     console.error("Error fetching match info:", error);
   }
