@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { EventTeamMemberType } from "@/types";
 import { IoShirtOutline } from "react-icons/io5";
