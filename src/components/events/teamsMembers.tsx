@@ -14,8 +14,8 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
       <div className='team-1 flex flex-2 md:flex-3 flex-col items-center gap-2'>
         {team_1_members && team_1_members.length > 0 ? (
           <div className=''>
-            {team_1_members.map((member, index) => (
-              <IconContext.Provider value={{ className: "text-sky-600" }}>
+            {team_1_members.map((member) => (
+              <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
                 <div className='relative'>
                   <IoShirtOutline size={48} />
                     <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
