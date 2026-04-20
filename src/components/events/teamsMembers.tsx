@@ -12,16 +12,16 @@ interface TeamsMembersProps {
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2_members }) => {
   return (
-    <div className='w-full flex flex-2 items-center justify-center gap-8'>
+    <div className='w-3/5 flex flex-2 items-center justify-center gap-8'>
       <div className='team-1 w-1/2'>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
               <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
-              <div className='relative'>
-                <IoShirtOutline size={96} />
-                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl">{member.start_number}</p>
-              </div>
+                <div className='relative'>
+                  <IoShirtOutline size={96} />
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl">{member.start_number}</p>
+                </div>
               </IconContext.Provider>
             ))}
             </div>
@@ -32,11 +32,16 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
       <div className='team-2 w-1/2 flex flex-col items-center gap-2'>
         <h3 className='text-xl font-semibold'>Zespół 2</h3>
         {team_2_members && team_2_members.length > 0 ? (
-          <ul className='list-disc list-inside'>
-            {team_2_members.map((member, index) => (
-              <li key={index}>{member.name} (#{member.start_number})</li>
+          <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
+            {team_2_members.map((member) => (
+              <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
+                <div className='relative'>
+                  <IoShirtOutline size={96} />
+                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl">{member.start_number}</p>
+                </div>
+              </IconContext.Provider>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>Brak członków zespołu 2</p>
         )}

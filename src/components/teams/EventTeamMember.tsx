@@ -55,7 +55,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
             <IconContext.Provider value={{ className: "text-sky-600" }}>
               <div className='relative'>
                 <IoShirtOutline size={48} />
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
+                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
               </div>
             </IconContext.Provider>
           <div className="flex flex-row w-96">
