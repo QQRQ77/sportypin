@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
+import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { auth } from "@clerk/nextjs/server";
 import { createUser } from "@/lib/users.actions";
 
@@ -22,6 +23,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   let itemInfo: HarmonogramItem | null = null
   try {
     itemInfo = await getMatchInfo(event_id, item_id);
+    console.log("Item info:", itemInfo);
   } catch (error) {
     console.error("Error fetching match info:", error);
   }
@@ -82,6 +84,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
       <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard team_1_score={0} team_2_score={0} isUserCreator={isUserCreator} />
+      <MatchTeamsMembers />
     </div>
   );
 }

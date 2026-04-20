@@ -420,8 +420,6 @@ export async function getMatchInfo(eventId: string, matchId: string) {
 
   const { harmonogram } = data;
 
-  console.log(harmonogram);
-
   if (harmonogram.length > 0) {
     const matchInfo: HarmonogramItem = harmonogram.find((item: HarmonogramItem) => item.id === matchId); 
     return matchInfo
