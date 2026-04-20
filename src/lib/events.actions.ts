@@ -446,6 +446,7 @@ export async function getTeamMembers(eventId: string, teamName: string) {
 
   if (participants && participants.length > 0) {
     const teamMembers = participants.filter((participant: any) => participant.team_name === teamName);
+    console.log("Team members for team", teamName, ":", teamMembers);
     return teamMembers.eventTeamMembers || [];
   }
 
