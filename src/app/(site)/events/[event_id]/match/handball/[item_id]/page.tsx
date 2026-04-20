@@ -25,7 +25,6 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   let team_2_members: EventTeamMemberType[] = [];
   try {
     itemInfo = await getMatchInfo(event_id, item_id);
-    console.log("Item info:", itemInfo);
     if (itemInfo?.team_1) {
       try {
         team_1_members = await getTeamMembers(event_id, itemInfo.team_1) || [];
@@ -104,7 +103,10 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
       <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard team_1_score={0} team_2_score={0} isUserCreator={isUserCreator} />
-      <MatchTeamsMembers />
+      <MatchTeamsMembers 
+        team_1_members={team_1_members}
+        team_2_members={team_2_members}
+      />
     </div>
   );
 }
