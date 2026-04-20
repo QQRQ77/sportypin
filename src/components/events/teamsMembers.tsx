@@ -1,5 +1,7 @@
 import React from 'react';
 import { EventTeamMemberType } from "@/types";
+import { IoShirtOutline } from "react-icons/io5";
+import { IconContext } from "react-icons";
 
 interface TeamsMembersProps {
   team_1_members?: EventTeamMemberType[];
@@ -9,14 +11,18 @@ interface TeamsMembersProps {
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2_members }) => {
   return (
     <div className='flex flex-2 items-center justify-center gap-8'>
-      <div className='team-1 flex flex-col items-center gap-2'>
-        <h3 className='text-xl font-semibold'>Zespół 1</h3>
+      <div className='team-1 flex flex-2 md:flex-3 flex-col items-center gap-2'>
         {team_1_members && team_1_members.length > 0 ? (
-          <ul className='list-disc list-inside'>
+          <div className=''>
             {team_1_members.map((member, index) => (
-              <li key={index}>{member.name} (#{member.start_number})</li>
+              <IconContext.Provider value={{ className: "text-sky-600" }}>
+                <div className='relative'>
+                  <IoShirtOutline size={48} />
+                    <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
+                </div>
+              </IconContext.Provider>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>Brak członków zespołu 1</p>
         )}
