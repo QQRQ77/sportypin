@@ -15,16 +15,16 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
     <div className='w-full flex flex-2 items-center justify-center gap-8'>
       <div className='team-1 w-1/2'>
         {team_1_members && team_1_members.length > 0 ? (
-          <div className='flex flex-2 md:flex-3 md:gap-4 flex-wrap items-center justify-center'>
+            <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
               <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
-                <div className='relative'>
-                  <IoShirtOutline size={96} />
-                    <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl">{member.start_number}</p>
-                </div>
+              <div className='relative'>
+                <IoShirtOutline size={96} />
+                <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl">{member.start_number}</p>
+              </div>
               </IconContext.Provider>
             ))}
-          </div>
+            </div>
         ) : (
           <p>Brak członków zespołu 1</p>
         )}
