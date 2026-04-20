@@ -15,7 +15,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
     <div className='flex flex-2 items-center justify-center gap-8'>
       <div className='team-1'>
         {team_1_members && team_1_members.length > 0 ? (
-          <div className='flex flex-2 md:flex-3 flex-row md:gap-4 items-center justify-center'>
+          <div className='flex flex-2 md:flex-3 md:gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
               <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
                 <div className='relative'>
