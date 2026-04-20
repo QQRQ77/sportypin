@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface TeamsMembersProps {
-  // Define props here if needed
+  teams?: string
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = () => {
