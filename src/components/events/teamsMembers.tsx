@@ -19,7 +19,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
             {team_1_members.map((member) => (
               <IconContext.Provider value={{ className: "text-sky-600" }} key={member.id}>
                 <div className='relative'>
-                  <IoShirtOutline size={48} />
+                  <IoShirtOutline size={96} />
                     <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold">{member.start_number}</p>
                 </div>
               </IconContext.Provider>
