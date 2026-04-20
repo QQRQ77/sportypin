@@ -19,7 +19,6 @@ import { sanitizeStrings } from "@/lib/utils";
 import { Participant } from "@/types";
 import { saveNewParticipant } from "@/lib/events.actions";
 import ComboInputTeamMember from "../ComboInputTeamMember";
-// import ComboInputTeamMember from "../ComboInputTeamMember";
 
 const name = z.object({
   id: z.string().or(z.literal("")).optional(),

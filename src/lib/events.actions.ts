@@ -427,3 +427,27 @@ export async function getMatchInfo(eventId: string, matchId: string) {
 
   return null
 } 
+
+export async function getTeamMembers(eventId: string, teamName: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('participants')
+    .eq('id', eventId)
+    .single();
+  
+    if (error || !data) {
+    console.error('Error fetching team members:', error);
+    throw new Error(error?.message || 'Failed to fetch team members');
+  }
+
+  const { participants } = data;
+
+  if (participants && participants.length > 0) {
+    const teamMembers = participants.filter((participant: any) => participant.team_name === teamName);
+    return teamMembers.eventTeamMembers || [];
+  }
+
+  return [];
+} 
