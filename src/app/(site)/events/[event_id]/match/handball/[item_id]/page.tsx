@@ -4,11 +4,9 @@ import { EventTeamMemberType, HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Image from "next/image";
-import { Timer } from "@/components/events/timer";
-import ScoreBoard from "@/components/events/ScoreBoard";
-import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { auth } from "@clerk/nextjs/server";
 import { createUser } from "@/lib/users.actions";
+import HandballGame from "@/components/events/HandBallGame";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
@@ -97,13 +95,12 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
             <p className="text-2xl font-bold text-center">{itemInfo ? itemInfo.team_2 : ""}</p>
         </div>
       </div>
-      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
-      <h1 className="text-3xl font-bold">Wynik:</h1>
-      <ScoreBoard team_1_score={0} team_2_score={0} isUserCreator={isUserCreator} />
-      <MatchTeamsMembers 
+      <HandballGame
+        matchTime={matchTime}
+        isUserCreator={isUserCreator} 
         team_1_members={team_1_members}
         team_2_members={team_2_members}
-      />
+      />      
     </div>
   );
 }
