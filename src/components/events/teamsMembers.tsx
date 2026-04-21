@@ -18,7 +18,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
-              <div className='flex flex-col items-center gap-2 hover:bg-gray-300 rounded-2xl' key={member.id}>
+              <div className='flex flex-col items-center gap-2 hover:bg-gray-300 rounded-2xl p-2' key={member.id}>
                 <IconContext.Provider value={{ className: "text-sky-600 hover:text-sky-800" }}>
                   <div className='relative cursor-pointer'>
                     <IoShirtOutline size={96} />
@@ -37,7 +37,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
         {team_2_members && team_2_members.length > 0 ? (
           <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_2_members.map((member) => (
-              <div className='flex flex-col items-center gap-2 hover:bg-gray-300 rounded-2xl' key={member.id}>
+              <div className='flex flex-col items-center gap-2 hover:bg-gray-300 rounded-2xl p-2' key={member.id}>
               <IconContext.Provider value={{ className: "text-green-600 hover:text-green-800" }}>
                 <div className='relative cursor-pointer'>
                   <IoShirtOutline size={96} />
