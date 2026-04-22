@@ -10,8 +10,12 @@ interface TeamsMembersProps {
   team_2_members?: EventTeamMemberType[];
   team1active: boolean;
   team2active: boolean;
+  members1active: boolean;
+  members2active: boolean;
   setTeam1Active: (active: boolean) => void;
   setTeam2Active: (active: boolean) => void;
+  setMembers1Active?: (active: boolean) => void;
+  setMembers2Active?: (active: boolean) => void;
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2_members, team1active = true, team2active = true, setTeam1Active, setTeam2Active }) => {

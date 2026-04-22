@@ -16,8 +16,10 @@ interface HandBallGameProps {
 
 const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
   
-  const [team1active, setTeam1Active] = React.useState(true);
-  const [team2active, setTeam2Active] = React.useState(true);
+  const [score1active, setScore1Active] = React.useState(true);
+  const [score2active, setScore2Active] = React.useState(true);
+  const [members1active, setMembers1Active] = React.useState(false);
+  const [members2active, setMembers2Active] = React.useState(false);
   
   return (
     <>
@@ -27,18 +29,26 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         team_1_score={0} 
         team_2_score={0} 
         isUserCreator={isUserCreator}
-        team1active={team1active}
-        team2active={team2active}
-        setTeam1Active={setTeam1Active}
-        setTeam2Active={setTeam2Active} 
+        team1active={score1active}
+        team2active={score2active}
+        members1active={members1active}
+        members2active={members2active}
+        setTeam1Active={setScore1Active}
+        setTeam2Active={setScore2Active}
+        setMembers1Active={setMembers1Active}
+        setMembers2Active={setMembers2Active} 
         />
       <MatchTeamsMembers 
         team_1_members={team_1_members}
         team_2_members={team_2_members}
-        team1active={team1active}
-        team2active={team2active}
-        setTeam1Active={setTeam1Active}
-        setTeam2Active={setTeam2Active}
+        team1active={score1active}
+        team2active={score2active}
+        members1active={members1active}
+        members2active={members2active}
+        setTeam1Active={setScore1Active}
+        setTeam2Active={setScore2Active}
+        setMembers1Active={setMembers1Active}
+        setMembers2Active={setMembers2Active} 
       />
     </>
   );

@@ -8,11 +8,17 @@ interface ScoreBoardProps {
   isUserCreator?: boolean;
   team1active?: boolean;
   team2active?: boolean;
+  members1active?: boolean;
+  members2active?: boolean;
   setTeam1Active?: (active: boolean) => void;
   setTeam2Active?: (active: boolean) => void;
+  setMembers1Active?: (active: boolean) => void;
+  setMembers2Active?: (active: boolean) => void;
 }
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, setTeam1Active, setTeam2Active }) => {
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
+  team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
+  setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active }) => {
 
   const [score1, setScore1] = useState(team_1_score);
   const [score2, setScore2] = useState(team_2_score);
@@ -21,6 +27,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score, isU
     setScore1(score1 + 1);
     if (setTeam2Active) {
       setTeam2Active(false);
+    }
+    if (setMembers1Active) {
+      setMembers1Active(true);
+    }
+    if (setMembers2Active) {
+      setMembers2Active(false);
     }
   };
 
@@ -32,6 +44,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score, isU
     setScore2(score2 + 1);
     if (setTeam1Active) {
       setTeam1Active(false);
+    }
+    if (setMembers2Active) {
+      setMembers2Active(true);
+    }
+    if (setMembers1Active) {
+      setMembers1Active(false);
     }
   };
 
