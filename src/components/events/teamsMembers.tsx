@@ -31,12 +31,12 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
 
   return (
     <div className='w-3/5 flex flex-2 items-center justify-center gap-8'>
-      <div className={`team-1 w-1/2 flex flex-col items-center gap-2 p-2 ${team1active && !noTeam1Members ? "border-5 border-blue-500 animate-pulse rounded-2xl" : ""}`}>
+      <div className={`team-1 w-1/2 flex flex-col items-center gap-2 p-2 ${team1active && !noTeam1Members ? "border-5 border-blue-500 animate-border-pulse rounded-2xl" : ""}`}>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center cursor-pointer'
               onClick={handleTeam1Click}>
             {team_1_members.map((member) => (
-              <div className={`flex flex-col items-center gap-2 ${team1active && !noTeam1Members ? "hover:bg-gray-300" :""}  rounded-2xl p-2 opacity-100`} key={member.id}>
+              <div className={`flex flex-col items-center gap-2 ${team1active && !noTeam1Members ? "hover:bg-gray-300" :""}  rounded-2xl p-2`} key={member.id}>
                 <IconContext.Provider value={{ className: "text-sky-600 hover:text-sky-800" }}>
                   <div className='relative'>
                     <IoShirtOutline size={96} />
