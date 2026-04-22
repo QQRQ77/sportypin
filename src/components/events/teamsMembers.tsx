@@ -31,7 +31,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
 
   return (
     <div className='w-3/5 flex flex-2 items-center justify-center gap-8'>
-      <div className={`team-1 w-1/2 flex flex-col items-center gap-2 p-2 ${team1active && !noTeam1Members ? "border-5 border-blue-500 animate-border-pulse rounded-2xl" : ""}`}>
+      <div className={`team-1 w-1/2 flex flex-col items-center gap-2 p-2 ${team1active && !noTeam1Members ? "pulse-border-only rounded-2xl" : "border-5 border-transparent"}`}>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center cursor-pointer'
               onClick={handleTeam1Click}>
