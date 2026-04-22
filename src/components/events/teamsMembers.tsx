@@ -51,7 +51,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> = ({ team_1_members, team_2
           <p>Brak członków zespołu 1</p>
         )}
       </div>
-      <div className='team-2 w-1/2 flex flex-col items-center gap-2'>
+      <div className={`team-2 w-1/2 flex flex-col items-center gap-2 p-2 ${team2active && !noTeam2Members ? "border-5 border-green-500 animate-pulse rounded-2xl" : ""}`} onClick={handleTeam2Click}>
         {team_2_members && team_2_members.length > 0 ? (
           <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center cursor-pointer'
             onClick={handleTeam2Click}
