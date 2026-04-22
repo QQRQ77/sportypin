@@ -12,7 +12,7 @@ interface ScoreBoardProps {
   setTeam2Active?: (active: boolean) => void;
 }
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score, isUserCreator = false, team1active, team2active, setTeam1Active, setTeam2Active }) => {
+const ScoreBoard: React.FC<ScoreBoardProps> = ({ team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, setTeam1Active, setTeam2Active }) => {
 
   const [score1, setScore1] = useState(team_1_score);
   const [score2, setScore2] = useState(team_2_score);

@@ -16,8 +16,8 @@ interface HandBallGameProps {
 
 const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
   
-  const [team1active, setTeam1Active] = React.useState(false);
-  const [team2active, setTeam2Active] = React.useState(false);
+  const [team1active, setTeam1Active] = React.useState(true);
+  const [team2active, setTeam2Active] = React.useState(true);
   
   return (
     <>
