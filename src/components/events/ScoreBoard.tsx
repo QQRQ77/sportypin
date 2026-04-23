@@ -32,7 +32,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (setTeam2Active && !noTeam1Members) {
       setTeam2Active(false);
     }
-    if (setMembers1Active) {
+    if (setMembers1Active && !noTeam1Members) {
       setMembers1Active(true);
     }
     if (setMembers2Active) {
@@ -49,7 +49,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (setTeam1Active && !noTeam2Members) {
       setTeam1Active(false);
     }
-    if (setMembers2Active) {
+    if (setMembers2Active && !noTeam2Members) {
       setMembers2Active(true);
     }
     if (setMembers1Active) {
