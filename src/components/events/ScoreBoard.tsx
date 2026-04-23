@@ -17,7 +17,7 @@ interface ScoreBoardProps {
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
-  team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
+  team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, members1active = true, 
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active }) => {
 
   const [score1, setScore1] = useState(team_1_score);
@@ -64,7 +64,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <h2 className="text-9xl font-bold">{score1}</h2>
         {isUserCreator && 
           <div className="flex gap-2">
-            <button onClick={handleTeam1ClickAdd} className={`px-4 py-2 ${team1active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
+            <button onClick={handleTeam1ClickAdd} className={`px-4 py-2 ${team1active && !members1active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
             <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
           </div>}
       </div>
