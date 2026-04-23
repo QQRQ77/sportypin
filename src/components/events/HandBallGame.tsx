@@ -6,7 +6,6 @@ import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { EventTeamMemberType } from "@/types";
 
-
 interface HandBallGameProps {
   isUserCreator?: boolean;
   matchTime: number;
@@ -25,7 +24,9 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
     <>
       <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
-      <ScoreBoard 
+      <ScoreBoard
+        noTeam1Members={!team_1_members || team_1_members.length === 0}
+        noTeam2Members={!team_2_members || team_2_members.length === 0} 
         team_1_score={0} 
         team_2_score={0} 
         isUserCreator={isUserCreator}
