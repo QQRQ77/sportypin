@@ -29,7 +29,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleTeam1ClickAdd = () => {
     setScore1(score1 + 1);
-    if (setTeam2Active) {
+    if (setTeam2Active && !noTeam1Members) {
       setTeam2Active(false);
     }
     if (setMembers1Active) {
@@ -46,7 +46,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleTeam2ClickAdd = () => {
     setScore2(score2 + 1);
-    if (setTeam1Active) {
+    if (setTeam1Active && !noTeam2Members) {
       setTeam1Active(false);
     }
     if (setMembers2Active) {
@@ -68,7 +68,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <h2 className="text-9xl font-bold">{score1}</h2>
         {isUserCreator && 
           <div className="flex gap-2">
-            <button onClick={handleTeam1ClickAdd} className={`px-4 py-2 ${team1active && !members1active && !noTeam1Members ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
+            <button onClick={handleTeam1ClickAdd} className={`px-4 py-2 ${team1active && !members1active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
             <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
           </div>}
       </div>
@@ -77,7 +77,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <h2 className="text-9xl font-bold">{score2}</h2>
         {isUserCreator && 
           <div className="flex gap-2">
-            <button onClick={handleTeam2ClickAdd} className={`px-4 py-2 ${team2active && !members2active && !noTeam2Members ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
+            <button onClick={handleTeam2ClickAdd} className={`px-4 py-2 ${team2active && !members2active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
             <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
           </div>}
       </div>
