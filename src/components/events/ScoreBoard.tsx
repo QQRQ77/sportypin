@@ -59,7 +59,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
 
   return (
-    <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl">
+    <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 w-52 flex flex-col items-center gap-4">
         <h2 className="text-9xl font-bold">{score1}</h2>
         {isUserCreator && 

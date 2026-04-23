@@ -45,7 +45,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center cursor-pointer'>
             {team_1_members.map((member) => (
-              <div className={`flex flex-col items-center gap-2 ${members1active && !noTeam1Members ? "hover:bg-gray-300" :""}  rounded-2xl p-2`} key={member.id}
+              <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300" :""}  rounded-2xl p-2`} key={member.id}
                 onClick={handleTeam1Click}>
                 <IconContext.Provider value={{ className: "text-sky-600 hover:text-sky-800" }}>
                   <div className='relative'>
@@ -65,7 +65,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
         {team_2_members && team_2_members.length > 0 ? (
           <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center cursor-pointer'>
             {team_2_members.map((member) => (
-              <div className={`flex flex-col items-center gap-2 ${members2active && !noTeam2Members ? "hover:bg-gray-300" :""} rounded-2xl p-2`} key={member.id}
+              <div className={`flex flex-col items-center gap-2 ${members2active ? "hover:bg-gray-300" :""} rounded-2xl p-2`} key={member.id}
                 onClick={handleTeam2Click}>
               <IconContext.Provider value={{ className: "text-green-600 hover:text-green-800" }}>
                 <div className='relative cursor-pointer'>
