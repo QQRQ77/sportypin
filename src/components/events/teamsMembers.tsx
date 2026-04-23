@@ -58,7 +58,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
             ))}
             </div>
         ) : (
-          <p>Brak danych</p>
+          <p>Brak danych o zawodnikach</p>
         )}
       </div>
       <div className={`team-2 w-1/2 flex flex-col items-center gap-2 p-2 ${members2active && !noTeam2Members ? "pulse-border-green rounded-2xl" : "border-5 border-transparent"}`}>
@@ -78,10 +78,9 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
             ))}
           </div>
         ) : (
-          <p>Brak danych</p>
+          <p>Brak danych o zawodnikach</p>
         )}
       </div>
-
     </div>
   );
 };

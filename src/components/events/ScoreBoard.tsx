@@ -12,10 +12,10 @@ interface ScoreBoardProps {
   team2active?: boolean;
   members1active?: boolean;
   members2active?: boolean;
-  setTeam1Active?: (active: boolean) => void;
-  setTeam2Active?: (active: boolean) => void;
-  setMembers1Active?: (active: boolean) => void;
-  setMembers2Active?: (active: boolean) => void;
+  setTeam1Active: (active: boolean) => void;
+  setTeam2Active: (active: boolean) => void;
+  setMembers1Active: (active: boolean) => void;
+  setMembers2Active: (active: boolean) => void;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
@@ -42,6 +42,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
    const handleTeam1ClickSub = () => {
     setScore1(score1 - 1);
+    setTeam1Active(true);
+    setTeam2Active(true);
+    setMembers1Active(false);
+    setMembers2Active(false);
   };
 
   const handleTeam2ClickAdd = () => {
@@ -59,6 +63,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleTeam2ClickSub = () => {
     setScore2(score2 - 1);
+    setTeam1Active(true);
+    setTeam2Active(true);
+    setMembers1Active(false);
+    setMembers2Active(false);
   }
 
 
