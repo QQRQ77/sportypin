@@ -26,18 +26,22 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
 
   const handleTeam1Click = () => {
+    if (members1active) { 
     setTeam1Active(true);
     setTeam2Active(true);
     setMembers1Active(false);
     setMembers2Active(false);
-  }
+    }
+  };
 
   const handleTeam2Click = () => {
+    if (members2active) {
     setTeam1Active(true);
     setTeam2Active(true);
     setMembers1Active(false);
     setMembers2Active(false);
-  }
+    }
+  };
 
   return (
     <div className='w-3/5 flex flex-2 items-center justify-center gap-8'>
@@ -47,10 +51,10 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
             {team_1_members.map((member) => (
               <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300" :""}  rounded-2xl p-2`} key={member.id}
                 onClick={handleTeam1Click}>
-                <IconContext.Provider value={{ className: "text-sky-600 hover:text-sky-800" }}>
+                <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
                   <div className='relative'>
                     <IoShirtOutline size={96} />
-                    <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl hover:text-gray-600">{member.start_number}</p>
+                    <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members1active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
                   </div>
                 </IconContext.Provider>
                 <p className="text-base font-bold text-wrap">{member.name}</p>
@@ -67,10 +71,10 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
             {team_2_members.map((member) => (
               <div className={`flex flex-col items-center gap-2 ${members2active ? "hover:bg-gray-300" :""} rounded-2xl p-2`} key={member.id}
                 onClick={handleTeam2Click}>
-              <IconContext.Provider value={{ className: "text-green-600 hover:text-green-800" }}>
+              <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
                 <div className='relative cursor-pointer'>
                   <IoShirtOutline size={96} />
-                  <p className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl hover:text-gray-600">{member.start_number}</p>
+                  <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members2active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
                 </div>
               </IconContext.Provider>
               <p className="text-base font-bold text-wrap">{member.name}</p>
