@@ -73,13 +73,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   return (
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
-      <div className="flex flex-2 w-62 items-center gap-4">
-        <div className="w-10 flex flex-col gap-2 items-center justify-center">
+      <div className="team-1 flex flex-2 w-64 items-center gap-4">
+        <div className="w-12 flex flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className="text-gray-400" />
-          <div className="w-10 h-12 bg-yellow-300 rounded"></div>
-          <div className="w-10 h-12 bg-red-500 rounded"></div>
+          <div className="w-8 h-12 bg-yellow-300 rounded"></div>
+          <div className="w-8 h-12 bg-red-500 rounded"></div>
         </div>
-        <div className="team-1 w-52 flex flex-col items-center gap-4">
+        <div className="w-52 flex flex-col items-center gap-4">
           <h2 className="text-9xl font-bold">{score1}</h2>
           {isUserCreator && 
             <div className="flex gap-2">
@@ -90,14 +90,21 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       </div>
 
       <div className="text-center text-9xl font-bold w-16 lg:w-24">:</div>
-      <div className="team-2 w-52 flex flex-col items-center gap-4">
-        <h2 className="text-9xl font-bold">{score2}</h2>
-        {isUserCreator && 
-          <div className="flex gap-2">
-            <button onClick={handleTeam2ClickAdd} className={`px-4 py-2 ${team2active && !members2active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
-            <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
-          </div>}
-      </div>
+        <div className="team-2 flex flex-2 w-64 items-center gap-4">
+          <div className="team-2 w-52 flex flex-col items-center gap-4">
+            <h2 className="text-9xl font-bold">{score2}</h2>
+            {isUserCreator && 
+              <div className="flex gap-2">
+                <button onClick={handleTeam2ClickAdd} className={`px-4 py-2 ${team2active && !members2active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
+                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
+              </div>}
+          </div>
+          <div className="w-12 flex flex-col gap-2 items-center justify-center">
+            <PiNumberTwoFill size={48} className="text-gray-400" />
+            <div className="w-8 h-12 bg-yellow-300 rounded"></div>
+            <div className="w-8 h-12 bg-red-500 rounded"></div>
+          </div>
+        </div> 
     </div>
   );
 };
