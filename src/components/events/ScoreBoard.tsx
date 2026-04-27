@@ -17,6 +17,7 @@ interface ScoreBoardProps {
   setTeam2Active: (active: boolean) => void;
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
+  setGameSignals: (signals: any) => void;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
@@ -75,9 +76,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 flex flex-2 w-64 items-center gap-4">
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className="text-gray-400" />
-          <div className="w-8 h-12 bg-yellow-300 rounded"></div>
-          <div className="w-8 h-12 bg-red-500 rounded"></div>
+          <PiNumberTwoFill size={48} className="text-gray-400 cursor-pointer hover:text-gray-500" />
+          <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"></div>
+          <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-600"></div>
         </div>
         <div className="w-52 flex flex-col items-center gap-4">
           <h2 className="text-9xl font-bold">{score1}</h2>
@@ -100,9 +101,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
-            <PiNumberTwoFill size={48} className="text-gray-400" />
-            <div className="w-8 h-12 bg-yellow-300 rounded"></div>
-            <div className="w-8 h-12 bg-red-500 rounded"></div>
+            <PiNumberTwoFill size={48} className="text-gray-400 cursor-pointer hover:text-gray-500" />
+            <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"></div>
+            <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-600"></div>
           </div>
         </div> 
     </div>

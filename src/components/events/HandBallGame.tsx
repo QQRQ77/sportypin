@@ -13,12 +13,33 @@ interface HandBallGameProps {
   team_2_members?: EventTeamMemberType[];
 }
 
+type GameSygnals = {
+  score1: number;
+  score2: number;
+  yellowCardsTeam1: number;
+  yellowCardsTeam2: number;
+  redCardsTeam1: number;
+  redCardsTeam2: number;
+  penaltyTeam1: number;
+  penaltyTeam2: number;
+};
+
 const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
   
   const [score1active, setScore1Active] = React.useState(true);
   const [score2active, setScore2Active] = React.useState(true);
   const [members1active, setMembers1Active] = React.useState(false);
   const [members2active, setMembers2Active] = React.useState(false);
+  const [gameSignals, setGameSignals] = React.useState<GameSygnals>({
+    score1: 0,
+    score2: 0,
+    yellowCardsTeam1: 0,
+    yellowCardsTeam2: 0,
+    redCardsTeam1: 0,
+    redCardsTeam2: 0,
+    penaltyTeam1: 0,
+    penaltyTeam2: 0, 
+  });
   
   return (
     <>
@@ -27,8 +48,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
       <ScoreBoard
         noTeam1Members={!team_1_members || team_1_members.length === 0}
         noTeam2Members={!team_2_members || team_2_members.length === 0} 
-        team_1_score={0} 
-        team_2_score={0} 
+        team_1_score={gameSignals.score1} 
+        team_2_score={gameSignals.score2} 
         isUserCreator={isUserCreator}
         team1active={score1active}
         team2active={score2active}
@@ -37,7 +58,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setTeam1Active={setScore1Active}
         setTeam2Active={setScore2Active}
         setMembers1Active={setMembers1Active}
-        setMembers2Active={setMembers2Active} 
+        setMembers2Active={setMembers2Active}
+        setGameSignals={setGameSignals} 
         />
       <MatchTeamsMembers 
         team_1_members={team_1_members}
@@ -49,7 +71,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setTeam1Active={setScore1Active}
         setTeam2Active={setScore2Active}
         setMembers1Active={setMembers1Active}
-        setMembers2Active={setMembers2Active} 
+        setMembers2Active={setMembers2Active}
+        setGameSignals={setGameSignals} 
       />
     </>
   );

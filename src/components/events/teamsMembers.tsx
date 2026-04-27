@@ -16,6 +16,7 @@ interface TeamsMembersProps {
   setTeam2Active: (active: boolean) => void;
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
+  setGameSignals: (signals: any) => void;
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = 
