@@ -73,11 +73,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   return (
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
-      <div className="flex flex-2 w-62 flex-col items-center gap-4">
-        <div className="w-10 flex flex-col gap-2">
+      <div className="flex flex-2 w-62 items-center gap-4">
+        <div className="w-10 flex flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className="text-gray-400" />
-          <div className="w-6 h-10 bg-yellow-300"></div>
-          <div className="w-6 h-10 bg-red-500"></div>
+          <div className="w-10 h-12 bg-yellow-300 rounded"></div>
+          <div className="w-10 h-12 bg-red-500 rounded"></div>
         </div>
         <div className="team-1 w-52 flex flex-col items-center gap-4">
           <h2 className="text-9xl font-bold">{score1}</h2>
