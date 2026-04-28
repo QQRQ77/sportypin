@@ -206,6 +206,10 @@ export type EventTeamMemberType = {
   athlete_id: string;
   name: string;
   start_number: number | string
+  goals?: number;
+  yellowCards?: number;
+  redCards?: number;
+  penalties?: number;
 };
 
 export type ClassificationItem = {

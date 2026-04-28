@@ -48,11 +48,44 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
   });
 
     useEffect(() => {
-      console.log("gameSignals:", gameSignals);
-      const keysWithMinusOne = Object.keys(gameSignals).filter(key => gameSignals[key as keyof GameSygnals] === -1);
-      if (keysWithMinusOne.length > 0) {
-        console.log("Keys with value -1:", keysWithMinusOne);
+      if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          yellowCardsTeam1: gameSignals.scorer1
+        }));
       }
+      if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          yellowCardsTeam2: gameSignals.scorer2
+        }));
+      }
+      if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          redCardsTeam1: gameSignals.scorer1
+        }));
+      }
+      if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          redCardsTeam2: gameSignals.scorer2
+        }));
+      }
+      if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,          
+          penaltyTeam1: gameSignals.scorer1
+        }));
+      }
+      if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          penaltyTeam2: gameSignals.scorer2
+        }));
+      }
+
+      console.log("gameSignals:", gameSignals);
       setTeam_1(team_1_members || []);
       setTeam_2(team_2_members || []);
     }, [gameSignals]);
