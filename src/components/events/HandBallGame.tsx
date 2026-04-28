@@ -47,11 +47,15 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
     penaltyTeam2: 0, 
   });
 
-  useEffect(() => {
-    console.log("gameSignals:", gameSignals);
-    setTeam_1(team_1_members || []);
-    setTeam_2(team_2_members || []);
-  }, [gameSignals]);
+    useEffect(() => {
+      console.log("gameSignals:", gameSignals);
+      const keysWithMinusOne = Object.keys(gameSignals).filter(key => gameSignals[key as keyof GameSygnals] === -1);
+      if (keysWithMinusOne.length > 0) {
+        console.log("Keys with value -1:", keysWithMinusOne);
+      }
+      setTeam_1(team_1_members || []);
+      setTeam_2(team_2_members || []);
+    }, [gameSignals]);
   
   return (
     <>
