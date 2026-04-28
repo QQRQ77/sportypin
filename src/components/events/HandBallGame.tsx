@@ -13,7 +13,7 @@ interface HandBallGameProps {
   team_2_members?: EventTeamMemberType[];
 }
 
-type GameSygnals = {
+export type GameSygnals = {
   score1: number;
   score2: number;
   yellowCardsTeam1: number;

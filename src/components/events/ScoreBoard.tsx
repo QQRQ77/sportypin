@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
+import { GameSygnals } from "./HandBallGame";
 
 interface ScoreBoardProps {
   noTeam1Members: boolean;
@@ -17,7 +18,7 @@ interface ScoreBoardProps {
   setTeam2Active: (active: boolean) => void;
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
-  setGameSignals: (signals: any) => void;
+  setGameSignals: (signals: GameSygnals) => void;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 

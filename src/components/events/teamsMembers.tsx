@@ -4,6 +4,7 @@ import React from 'react';
 import { EventTeamMemberType } from "@/types";
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
+import { GameSygnals } from './HandBallGame';
 
 interface TeamsMembersProps {
   team_1_members?: EventTeamMemberType[];
@@ -16,7 +17,7 @@ interface TeamsMembersProps {
   setTeam2Active: (active: boolean) => void;
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
-  setGameSignals: (signals: any) => void;
+  setGameSignals: (signals: GameSygnals) => void;
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = 
