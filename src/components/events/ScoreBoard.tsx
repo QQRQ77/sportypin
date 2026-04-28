@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
 import { GameSygnals } from "./HandBallGame";
 
