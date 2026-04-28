@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { Dispatch, SetStateAction } from "react";
 import { EventTeamMemberType } from "@/types";
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
@@ -17,17 +17,22 @@ interface TeamsMembersProps {
   setTeam2Active: (active: boolean) => void;
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
-  setGameSignals: (signals: GameSygnals) => void;
+  setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = 
   ({ team_1_members, team_2_members, members1active = true, members2active = true, 
-    setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active }) => {
+    setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals }) => {
 
   const noTeam1Members = !team_1_members || team_1_members.length === 0;
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
 
-  const handleTeam1Click = () => {
+  const handleTeam1Click = (memberId: string | number) => {
+    setGameSignals((prevSignals) => ({
+      ...prevSignals,
+      scorer1: memberId,
+    }));
+
     if (members1active) { 
     setTeam1Active(true);
     setTeam2Active(true);
@@ -36,7 +41,12 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
     }
   };
 
-  const handleTeam2Click = () => {
+  const handleTeam2Click = (memberId: string | number) => {
+    setGameSignals((prevSignals) => ({
+      ...prevSignals,
+      scorer2: memberId,
+    }));
+
     if (members2active) {
     setTeam1Active(true);
     setTeam2Active(true);
@@ -52,7 +62,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
               <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`} key={member.id}
-                onClick={handleTeam1Click}>
+                onClick={() => handleTeam1Click(member.id)}>
                 <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
                   <div className='relative'>
                     <IoShirtOutline size={96} />
@@ -72,7 +82,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
           <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_2_members.map((member) => (
               <div className={`flex flex-col items-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""} rounded-2xl p-2`} key={member.id}
-                onClick={handleTeam2Click}>
+                onClick={() => handleTeam2Click(member.id)}>
               <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
                 <div className='relative'>
                   <IoShirtOutline size={96} />
