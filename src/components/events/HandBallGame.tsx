@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
@@ -16,16 +16,20 @@ interface HandBallGameProps {
 export type GameSygnals = {
   score1: number;
   score2: number;
-  yellowCardsTeam1: number;
-  yellowCardsTeam2: number;
-  redCardsTeam1: number;
-  redCardsTeam2: number;
-  penaltyTeam1: number;
-  penaltyTeam2: number;
+  scorer1: string | number;
+  scorer2: string | number;
+  yellowCardsTeam1: number | string;
+  yellowCardsTeam2: number | string;
+  redCardsTeam1: number | string;
+  redCardsTeam2: number | string;
+  penaltyTeam1: number  | string;
+  penaltyTeam2: number | string;
 };
 
 const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
   
+  const [team_1, setTeam_1] = React.useState(team_1_members || []);
+  const [team_2, setTeam_2] = React.useState(team_2_members || []);
   const [score1active, setScore1Active] = React.useState(true);
   const [score2active, setScore2Active] = React.useState(true);
   const [members1active, setMembers1Active] = React.useState(false);
@@ -33,6 +37,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({
     score1: 0,
     score2: 0,
+    scorer1: "",
+    scorer2: "",
     yellowCardsTeam1: 0,
     yellowCardsTeam2: 0,
     redCardsTeam1: 0,
@@ -40,6 +46,10 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
     penaltyTeam1: 0,
     penaltyTeam2: 0, 
   });
+
+  useEffect(() => {
+    console.log("gameSignals:", gameSignals);
+  }, [gameSignals]);
   
   return (
     <>
@@ -62,8 +72,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setGameSignals={setGameSignals} 
         />
       <MatchTeamsMembers 
-        team_1_members={team_1_members}
-        team_2_members={team_2_members}
+        team_1_members={team_1}
+        team_2_members={team_2}
         team1active={score1active}
         team2active={score2active}
         members1active={members1active}

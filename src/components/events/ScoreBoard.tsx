@@ -37,20 +37,20 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (event === "penalty" ) {  
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        penaltyTeam1: prevSignals.penaltyTeam1 + 1,
+        penaltyTeam1:  -1,
       }));
     }
     if (event === "yellowCard") {
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        yellowCardsTeam1: prevSignals.yellowCardsTeam1 + 1,
+        yellowCardsTeam1: -1,
       }));
     }
 
     if (event === "redCard") {
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        redCardsTeam1: prevSignals.redCardsTeam1 + 1,
+        redCardsTeam1: -1,
       }));
     }
 
@@ -80,19 +80,19 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (event === "penalty" ) {  
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        penaltyTeam2: prevSignals.penaltyTeam2 + 1,
+        penaltyTeam2: -1,
       }));
     }
     if (event === "yellowCard") {
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        yellowCardsTeam2: prevSignals.yellowCardsTeam2 + 1,
+        yellowCardsTeam2: -1,
       }));
     }
     if (event === "redCard") {
       setGameSignals((prevSignals) => ({
         ...prevSignals,
-        redCardsTeam2: prevSignals.redCardsTeam2 + 1,
+        redCardsTeam2: -1,
       }));
     }
 
@@ -120,11 +120,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 flex flex-2 w-64 items-center gap-4">
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${team1active && !members1active ? 'cursor-pointer text-gray-400 hover:text-gray-500' : 'text-gray-200'}`}
+          <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500`}
             onClick={()=> handleTeam1ClickAdd("penalty")} />
-          <div className={`w-8 h-12 rounded ${team1active && !members1active ? 'bg-yellow-300 cursor-pointer hover:bg-yellow-400' : 'bg-gray-200'}`}
+          <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"
             onClick={()=> handleTeam1ClickAdd("yellowCard")} ></div>
-          <div className={`w-8 h-12 rounded ${team1active && !members1active ? 'bg-red-500 cursor-pointer hover:bg-red-400' : 'bg-gray-200'}`}
+          <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400"
             onClick={()=> handleTeam1ClickAdd("redCard")} ></div>
         </div>
         <div className="w-52 flex flex-col items-center gap-4">
@@ -148,11 +148,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
-            <PiNumberTwoFill size={48} className={`${team2active && !members2active ? 'cursor-pointer text-gray-400 hover:text-gray-500' : 'text-gray-200'}`}
+            <PiNumberTwoFill size={48} className="text-gray-400 cursor-pointer hover:text-gray-500"
               onClick={()=> handleTeam2ClickAdd("penalty")} />
-            <div className={`w-8 h-12 rounded ${team2active && !members2active ? 'bg-yellow-300 cursor-pointer hover:bg-yellow-400' : 'bg-gray-200'}`}
+            <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"
               onClick={()=> handleTeam2ClickAdd("yellowCard")} ></div>
-            <div className={`w-8 h-12 rounded ${team2active && !members2active ? 'bg-red-500 cursor-pointer hover:bg-red-400' : 'bg-gray-200'}`}
+            <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400"
               onClick={()=> handleTeam2ClickAdd("redCard")} ></div>
           </div>
         </div> 
