@@ -49,6 +49,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
 
   useEffect(() => {
     console.log("gameSignals:", gameSignals);
+    setTeam_1(team_1_members || []);
+    setTeam_2(team_2_members || []);
   }, [gameSignals]);
   
   return (
