@@ -62,6 +62,13 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0 }));
         }
       
+      if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
+        if (team_1.length > 0) {
+          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0 }))  ;
+      }
+      
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
           setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member)));
