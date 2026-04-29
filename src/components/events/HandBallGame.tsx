@@ -53,40 +53,40 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_1.length > 0) {
           setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0 }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }
       if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
           setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0 }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
       
       if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
           setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0 }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
       }
       
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
           setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0 }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
       }
       
       if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
           setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0 }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
       if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
           setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: 1 } : member)));
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0 }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
       }
       console.log("team_1: ", team_1);
       console.log("team_2: ", team_2);
