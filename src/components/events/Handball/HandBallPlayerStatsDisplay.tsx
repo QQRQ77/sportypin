@@ -18,7 +18,7 @@ const HandBallPlayerStatsDisplay: React.FC<HandBallPlayerStatsDisplayProps> = ({
 
 }) => {
   return (
-    <div className='flex flex-col items-center justify-center gap-2'>
+    <div className='flex flex-col items-center justify-start gap-2'>
       {goals > 0 && <div className='flex items-center gap-1'><PiSoccerBallLight size={24} /><span className='text-green-600 font-bold'>{goals}</span></div>}
       {penalties > 0 && <div className='flex items-center gap-1'><PiNumberTwoFill size={24} /><span className='text-red-600 font-bold'>{penalties}</span></div>}
       {yellowCards > 0 && <div className='flex items-center gap-1'><div className="w-4 h-8 bg-yellow-300 rounded"></div><span className='text-yellow-600 font-bold'>{yellowCards}</span></div>}

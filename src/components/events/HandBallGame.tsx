@@ -51,7 +51,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
       console.log("gameSignals: ", gameSignals);
       if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
-          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: 1 } : member)));
+          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: 1, goals: (member.goals || 0) + 1 } : member)));
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }

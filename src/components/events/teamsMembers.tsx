@@ -57,7 +57,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   };
 
   return (
-    <div className='w-3/5 flex flex-2 items-center justify-center gap-8'>
+    <div className='w-full lg:w-3/5 flex flex-2 items-center justify-center gap-8'>
       <div className={`team-1 w-1/2 flex flex-col items-center gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl" : "border-5 border-transparent"}`}>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
