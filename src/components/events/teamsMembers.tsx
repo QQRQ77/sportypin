@@ -62,8 +62,8 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
-              <div className="flex flex-2">
-                <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`} key={member.id}
+              <div className="flex flex-2"  key={member.id}>
+                <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
                   onClick={() => handleTeam1Click(member.id)}>
                   <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
                     <div className='relative'>
