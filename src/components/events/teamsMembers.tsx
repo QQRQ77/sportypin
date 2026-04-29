@@ -5,6 +5,7 @@ import { EventTeamMemberType } from "@/types";
 import { IoShirtOutline } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import { GameSygnals } from './HandBallGame';
+import HandBallPlayerStatsDisplay from "./Handball/HandBallPlayerStatsDisplay";
 
 interface TeamsMembersProps {
   team_1_members?: EventTeamMemberType[];
@@ -61,15 +62,23 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_1_members.map((member) => (
-              <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`} key={member.id}
-                onClick={() => handleTeam1Click(member.id)}>
-                <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
-                  <div className='relative'>
-                    <IoShirtOutline size={96} />
-                    <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members1active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
-                  </div>
-                </IconContext.Provider>
-                <p className="text-base font-bold text-wrap">{member.name}</p>
+              <div className="flex flex-2">
+                <div className={`flex flex-col items-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`} key={member.id}
+                  onClick={() => handleTeam1Click(member.id)}>
+                  <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
+                    <div className='relative'>
+                      <IoShirtOutline size={96} />
+                      <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members1active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
+                    </div>
+                  </IconContext.Provider>
+                  <p className="text-base font-bold text-wrap">{member.name}</p>
+                </div>
+                <HandBallPlayerStatsDisplay
+                  goals={member.goals}
+                  penalties={member.penalties}
+                  yellowCards={member.yellowCards}
+                  redCards={member.redCards}
+                />
               </div>
             ))}
             </div>

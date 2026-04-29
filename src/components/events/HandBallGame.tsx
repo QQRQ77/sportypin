@@ -49,45 +49,37 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
 
     useEffect(() => {
       if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          yellowCardsTeam1: gameSignals.scorer1
-        }));
+        if (team_1.length > 0) {
+          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0 }));
       }
       if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          yellowCardsTeam2: gameSignals.scorer2
-        }));
-      }
-      if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          redCardsTeam1: gameSignals.scorer1
-        }));
-      }
+        if (team_2.length > 0) {
+          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0 }));
+        }
+      
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          redCardsTeam2: gameSignals.scorer2
-        }));
+        if (team_2.length > 0) {
+          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0 }))  ;
       }
+      
       if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,          
-          penaltyTeam1: gameSignals.scorer1
-        }));
+        if (team_1.length > 0) {
+          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalty: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0 }));
       }
       if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          penaltyTeam2: gameSignals.scorer2
-        }));
+        if (team_2.length > 0) {
+          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalty: 1 } : member)));
+        }
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0 }));
       }
-
-      console.log("gameSignals:", gameSignals);
-      setTeam_1(team_1_members || []);
-      setTeam_2(team_2_members || []);
     }, [gameSignals]);
   
   return (
@@ -95,8 +87,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
       <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
-        noTeam1Members={!team_1_members || team_1_members.length === 0}
-        noTeam2Members={!team_2_members || team_2_members.length === 0} 
+        noTeam1Members={!team_1 || team_1.length === 0}
+        noTeam2Members={!team_2 || team_2.length === 0} 
         team_1_score={gameSignals.score1} 
         team_2_score={gameSignals.score2} 
         isUserCreator={isUserCreator}
