@@ -90,16 +90,24 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
         {team_2_members && team_2_members.length > 0 ? (
           <div className='grid grid-cols-2 md:grid-cols-3 gap-4 items-center justify-center'>
             {team_2_members.map((member) => (
-              <div className={`flex flex-col items-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""} rounded-2xl p-2`} key={member.id}
-                onClick={() => handleTeam2Click(member.id)}>
-              <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
-                <div className='relative'>
-                  <IoShirtOutline size={96} />
-                  <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members2active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
+              <div className="flex flex-2"  key={member.id}>
+                <div className={`flex flex-col items-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
+                  onClick={() => handleTeam2Click(member.id)}>
+                  <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
+                    <div className='relative'>
+                      <IoShirtOutline size={96} />
+                      <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members2active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
+                    </div>
+                  </IconContext.Provider>
+                  <p className="text-base font-bold text-wrap">{member.name}</p>
                 </div>
-              </IconContext.Provider>
-              <p className="text-base font-bold text-wrap">{member.name}</p>
-            </div>
+                <HandBallPlayerStatsDisplay
+                  goals={member.goals}
+                  penalties={member.penalties}
+                  yellowCards={member.yellowCards}
+                  redCards={member.redCards}
+                />
+              </div>
             ))}
           </div>
         ) : (
