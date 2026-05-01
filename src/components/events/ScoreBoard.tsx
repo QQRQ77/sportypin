@@ -133,11 +133,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 flex flex-2 w-64 items-center gap-4">
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue rounded-2xl" : "border-5 border-transparent"}`}
+          <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={()=> {handleTeam1ClickAdd("penalty"); setIsPenaltyButtonActive("penalty1")}} />
-          <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-yellow rounded-2xl" : "border-5 border-transparent"}`}
+          <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={()=> {handleTeam1ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard1")}} ></div>
-          <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard1" ? "pulse-border-red rounded-2xl" : "border-5 border-transparent"}`}
+          <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={()=> {handleTeam1ClickAdd("redCard"); setIsPenaltyButtonActive("redCard1")}} ></div>
         </div>
         <div className="w-52 flex flex-col items-center gap-4">
@@ -161,11 +161,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
-            <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty2" ? "pulse-border-blue rounded-2xl" : "border-5 border-transparent"}`}
+            <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
               onClick={()=> {handleTeam2ClickAdd("penalty"); setIsPenaltyButtonActive("penalty2")}} />
-            <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-yellow rounded-2xl" : "border-5 border-transparent"}`}
+            <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green" : "border-1 border-transparent"}`}
               onClick={()=> {handleTeam2ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard2")}} ></div>
-            <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard2" ? "pulse-border-red rounded-2xl" : "border-5 border-transparent"}`}
+            <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green" : "border-1 border-transparent"}`}
               onClick={()=> {handleTeam2ClickAdd("redCard"); setIsPenaltyButtonActive("redCard2")}} ></div>
           </div>
         </div> 
