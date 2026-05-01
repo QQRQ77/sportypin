@@ -3,6 +3,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
 import { GameSygnals } from "./HandBallGame";
+import React from "react";
 
 interface ScoreBoardProps {
   noTeam1Members: boolean;
@@ -27,6 +28,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   noTeam1Members = false, noTeam2Members = false,
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals }) => {
 
+  const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
+  
   const handleTeam1ClickAdd = (event: string) => {
     if (event === "score") {
       setGameSignals((prevSignals) => ({
@@ -65,7 +68,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     }
   };
 
-   const handleTeam1ClickSub = () => {
+  const handleTeam1ClickSub = () => {
     setGameSignals((prevSignals) => ({
       ...prevSignals,
       score1: prevSignals.score1 - 1,
@@ -130,12 +133,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 flex flex-2 w-64 items-center gap-4">
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500`}
-            onClick={()=> handleTeam1ClickAdd("penalty")} />
-          <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"
-            onClick={()=> handleTeam1ClickAdd("yellowCard")} ></div>
-          <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400"
-            onClick={()=> handleTeam1ClickAdd("redCard")} ></div>
+          <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue rounded-2xl" : "border-5 border-transparent"}`}
+            onClick={()=> {handleTeam1ClickAdd("penalty"); setIsPenaltyButtonActive("penalty1")}} />
+          <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-yellow rounded-2xl" : "border-5 border-transparent"}`}
+            onClick={()=> {handleTeam1ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard1")}} ></div>
+          <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard1" ? "pulse-border-red rounded-2xl" : "border-5 border-transparent"}`}
+            onClick={()=> {handleTeam1ClickAdd("redCard"); setIsPenaltyButtonActive("redCard1")}} ></div>
         </div>
         <div className="w-52 flex flex-col items-center gap-4">
           <h2 className="text-9xl font-bold">{team_1_score}</h2>
@@ -158,12 +161,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
-            <PiNumberTwoFill size={48} className="text-gray-400 cursor-pointer hover:text-gray-500"
-              onClick={()=> handleTeam2ClickAdd("penalty")} />
-            <div className="w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400"
-              onClick={()=> handleTeam2ClickAdd("yellowCard")} ></div>
-            <div className="w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400"
-              onClick={()=> handleTeam2ClickAdd("redCard")} ></div>
+            <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty2" ? "pulse-border-blue rounded-2xl" : "border-5 border-transparent"}`}
+              onClick={()=> {handleTeam2ClickAdd("penalty"); setIsPenaltyButtonActive("penalty2")}} />
+            <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-yellow rounded-2xl" : "border-5 border-transparent"}`}
+              onClick={()=> {handleTeam2ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard2")}} ></div>
+            <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard2" ? "pulse-border-red rounded-2xl" : "border-5 border-transparent"}`}
+              onClick={()=> {handleTeam2ClickAdd("redCard"); setIsPenaltyButtonActive("redCard2")}} ></div>
           </div>
         </div> 
     </div>
