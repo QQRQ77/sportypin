@@ -19,12 +19,12 @@ interface TeamsMembersProps {
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
   setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
-  setResetPenaltyButtons: Dispatch<SetStateAction<boolean>>;
+  setIsPenaltyButtonActive: Dispatch<SetStateAction<string>>;
 }
 
 const MatchTeamsMembers: React.FC<TeamsMembersProps> = 
   ({ team_1_members, team_2_members, members1active = true, members2active = true, 
-    setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setResetPenaltyButtons }) => {
+    setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
 
   const noTeam1Members = !team_1_members || team_1_members.length === 0;
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
@@ -41,7 +41,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
     setMembers1Active(false);
     setMembers2Active(false);
     }
-    setResetPenaltyButtons(true);
+    setIsPenaltyButtonActive("");
   };
 
   const handleTeam2Click = (memberId: string | number) => {
@@ -56,7 +56,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
     setMembers1Active(false);
     setMembers2Active(false);
     }
-    setResetPenaltyButtons(true);
+    setIsPenaltyButtonActive("");
   };
 
   return (

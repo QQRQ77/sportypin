@@ -6,7 +6,8 @@ import { GameSygnals } from "./HandBallGame";
 import React from "react";
 
 interface ScoreBoardProps {
-  resetPenaltyButtons?: boolean;
+  isPenaltyButtonActive?: string;
+  setIsPenaltyButtonActive: Dispatch<SetStateAction<string>>;
   noTeam1Members: boolean;
   noTeam2Members: boolean;
   team_1_score: number;
@@ -26,11 +27,9 @@ interface ScoreBoardProps {
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
   team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
   members1active = true, members2active = true,
-  noTeam1Members = false, noTeam2Members = false, resetPenaltyButtons = false,
-  setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals }) => {
+  noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "",
+  setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
 
-  const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState(resetPenaltyButtons ? "" : null);
-  
   const handleTeam1ClickAdd = (event: string) => {
     if (event === "score") {
       setGameSignals((prevSignals) => ({

@@ -36,7 +36,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
   const [members2active, setMembers2Active] = React.useState(false);
   const [prevScore1, setPrevScore1] = React.useState(0);
   const [prevScore2, setPrevScore2] = React.useState(0);
-  const [resetPenaltyButtons, setResetPenaltyButtons] = React.useState(false);
+  const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({
     score1: 0,
     score2: 0,
@@ -125,7 +125,8 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setMembers1Active={setMembers1Active}
         setMembers2Active={setMembers2Active}
         setGameSignals={setGameSignals} 
-        resetPenaltyButtons={resetPenaltyButtons}
+        isPenaltyButtonActive={isPenaltyButtonActive}
+        setIsPenaltyButtonActive={setIsPenaltyButtonActive}
         />
       <MatchTeamsMembers 
         team_1_members={team_1}
@@ -139,7 +140,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setMembers1Active={setMembers1Active}
         setMembers2Active={setMembers2Active}
         setGameSignals={setGameSignals} 
-        setResetPenaltyButtons={setResetPenaltyButtons}
+        setIsPenaltyButtonActive={setIsPenaltyButtonActive}
       />
     </>
   );
