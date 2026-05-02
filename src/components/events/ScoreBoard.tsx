@@ -1,9 +1,8 @@
 'use client';
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
 import { defaultGameSignals, GameSygnals } from "./HandBallGame";
-import React from "react";
 
 interface ScoreBoardProps {
   isPenaltyButtonActive?: string;
@@ -29,15 +28,23 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   members1active = true, members2active = true,
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "",
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
+  
+  const [penaltyButtonState, setPenaltyButtonState] = useState("");
 
   const handleTeam1ClickAdd = (event: string) => {
+    if (event === "") {
+      setGameSignals((prevSignals) => ({
+        ...defaultGameSignals,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
+    }))};
+
     if (event === "score") {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         score1: prevSignals.score1 + 1,
         score2: prevSignals.score2,
     }))};
-
     if (event === "penalty" ) {  
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -88,6 +95,12 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickAdd = (event: string) => {
+    if (event === "") {
+      setGameSignals((prevSignals) => ({
+        ...defaultGameSignals,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
+    }))};
     if (event === "score") {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -144,13 +157,24 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     setMembers2Active(false);
   }
 
+  const handlePenalty1Click = () => {
+    if (penaltyButtonState === "penalty1") {
+      handleTeam1ClickAdd("");
+      setPenaltyButtonState("");
+      setIsPenaltyButtonActive("");
+    } else {
+      handleTeam1ClickAdd("penalty");
+      setPenaltyButtonState("penalty1");
+      setIsPenaltyButtonActive("penalty1");
+    }
+  };
 
   return (
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
       <div className="team-1 flex flex-2 w-64 items-center gap-4">
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
-            onClick={()=> {handleTeam1ClickAdd("penalty"); setIsPenaltyButtonActive("penalty1")}} />
+            onClick={handlePenalty1Click} />
           <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={()=> {handleTeam1ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard1")}} ></div>
           <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
