@@ -33,31 +33,34 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handleTeam1ClickAdd = (event: string) => {
     if (event === "score") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         score1: prevSignals.score1 + 1,
+        score2: prevSignals.score2,
     }))};
 
     if (event === "penalty" ) {  
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         penaltyTeam1:  -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
     if (event === "yellowCard") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         yellowCardsTeam1: -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
 
     if (event === "redCard") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         redCardsTeam1: -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
 
@@ -74,9 +77,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleTeam1ClickSub = () => {
     setGameSignals((prevSignals) => ({
-      ...prevSignals,
       ...defaultGameSignals,
       score1: prevSignals.score1 - 1,
+      score2: prevSignals.score2,
     }));
     setTeam1Active(true);
     setTeam2Active(true);
@@ -87,31 +90,34 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handleTeam2ClickAdd = (event: string) => {
     if (event === "score") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         score2: prevSignals.score2 + 1,
+        score1: prevSignals.score1,
       }));
     }
 
     if (event === "penalty" ) {  
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         penaltyTeam2: -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
     if (event === "yellowCard") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         yellowCardsTeam2: -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
     if (event === "redCard") {
       setGameSignals((prevSignals) => ({
-        ...prevSignals,
         ...defaultGameSignals,
         redCardsTeam2: -1,
+        score1: prevSignals.score1,
+        score2: prevSignals.score2,
       }));
     }
 
@@ -128,9 +134,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleTeam2ClickSub = () => {
     setGameSignals((prevSignals) => ({
-      ...prevSignals,
       ...defaultGameSignals,
       score2: prevSignals.score2 - 1,
+      score1: prevSignals.score1,
     }));
     setTeam1Active(true);
     setTeam2Active(true);
