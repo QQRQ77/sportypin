@@ -26,6 +26,17 @@ export type GameSygnals = {
   penaltyTeam2: number | string;
 };
 
+export const defaultGameSignals = {
+    scorer1: "",
+    scorer2: "",
+    yellowCardsTeam1: 0,
+    yellowCardsTeam2: 0,
+    redCardsTeam1: 0,
+    redCardsTeam2: 0,
+    penaltyTeam1: 0,
+    penaltyTeam2: 0,
+}
+
 const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
   
   const [team_1, setTeam_1] = React.useState(team_1_members || []);
@@ -37,18 +48,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
   const [prevScore1, setPrevScore1] = React.useState(0);
   const [prevScore2, setPrevScore2] = React.useState(0);
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
-  const [gameSignals, setGameSignals] = React.useState<GameSygnals>({
-    score1: 0,
-    score2: 0,
-    scorer1: "",
-    scorer2: "",
-    yellowCardsTeam1: 0,
-    yellowCardsTeam2: 0,
-    redCardsTeam1: 0,
-    redCardsTeam2: 0,
-    penaltyTeam1: 0,
-    penaltyTeam2: 0, 
-  });
+  const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: 0, score2: 0 });
 
     useEffect(() => {
       if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
