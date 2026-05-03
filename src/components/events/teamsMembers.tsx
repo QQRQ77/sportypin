@@ -39,8 +39,8 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
       setTeam2Active(true);
       setMembers1Active(false);
       setMembers2Active(false);
+      setIsPenaltyButtonActive("");
     }
-    setIsPenaltyButtonActive("");
   };
 
   const handleTeam2Click = (memberId: string | number) => {
@@ -53,8 +53,8 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
       setTeam2Active(true);
       setMembers1Active(false);
       setMembers2Active(false);
+      setIsPenaltyButtonActive("");
     }
-    setIsPenaltyButtonActive("");
   };
 
   return (
