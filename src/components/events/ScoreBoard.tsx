@@ -29,8 +29,6 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "",
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
-  // const [penaltyButtonState, setPenaltyButtonState] = useState(isPenaltyButtonActive);
-
   const handleTeam1ClickAdd = (event: string) => {
     if (event === "") {
       setGameSignals((prevSignals) => ({
@@ -45,7 +43,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score1: prevSignals.score1 + 1,
         score2: prevSignals.score2,
     }))};
-    if (event === "penalty" ) {  
+    if (event === "penalty" && !noTeam1Members) {  
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         penaltyTeam1:  -1,
@@ -53,7 +51,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2,
       }));
     }
-    if (event === "yellowCard") {
+    if (event === "yellowCard" && !noTeam1Members) {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         yellowCardsTeam1: -1,
@@ -62,7 +60,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    if (event === "redCard") {
+    if (event === "redCard" && !noTeam1Members) {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         redCardsTeam1: -1,
@@ -71,15 +69,15 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    if (setTeam2Active && !noTeam1Members) {
-      setTeam2Active(isPenaltyButtonActive === "" ? false : true);
-    }
-    if (setMembers1Active && !noTeam1Members) {
-      setMembers1Active(isPenaltyButtonActive === "" ? true : false);
-    }
-    if (setMembers2Active) {
-      setMembers2Active(false);
-    }
+    // if (setTeam2Active && !noTeam1Members) {
+    //   setTeam2Active(isPenaltyButtonActive === "" ? false : true);
+    // }
+    // if (setMembers1Active && !noTeam1Members) {
+    //   setMembers1Active(isPenaltyButtonActive === "" ? true : false);
+    // }
+    // if (setMembers2Active) {
+    //   setMembers2Active(false);
+    // }
   };
 
   const handleTeam1ClickSub = () => {
@@ -157,9 +155,17 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     setMembers2Active(false);
   }
 
+  const resetPenaltyState = () => {
+      setIsPenaltyButtonActive("");
+      setMembers1Active(false);
+      setMembers2Active(false);
+      setTeam2Active(true);
+      setTeam1Active(true);
+  };
+
   const handlePenalty1Click = () => {
     if (isPenaltyButtonActive === "penalty1") {
-      setIsPenaltyButtonActive("");
+      resetPenaltyState();
       handleTeam1ClickAdd("");
     } else {
       handleTeam1ClickAdd("penalty");
@@ -169,7 +175,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handleYellowCard1Click = () => {
     if (isPenaltyButtonActive === "yellowCard1") {
-      setIsPenaltyButtonActive("");
+      resetPenaltyState();
       handleTeam1ClickAdd("");
     } else {
       handleTeam1ClickAdd("yellowCard");
@@ -179,7 +185,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
     const handleRedCard1Click = () => {
     if (isPenaltyButtonActive === "redCard1") {
-      setIsPenaltyButtonActive("");
+      resetPenaltyState();
       handleTeam1ClickAdd("");
     } else {
       handleTeam1ClickAdd("redCard");
