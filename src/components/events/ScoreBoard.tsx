@@ -162,6 +162,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("");
     } else {
+      setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("penalty");
       setIsPenaltyButtonActive("penalty1");
     }
@@ -172,6 +173,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("");
     } else {
+      setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("yellowCard");
       setIsPenaltyButtonActive("yellowCard1");
     }
@@ -182,6 +184,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("");
     } else {
+      setIsPenaltyButtonActive("");
       handleTeam1ClickAdd("redCard");
       setIsPenaltyButtonActive("redCard1");
     }
