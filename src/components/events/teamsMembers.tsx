@@ -30,31 +30,29 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
 
   const handleTeam1Click = (memberId: string | number) => {
-    setGameSignals((prevSignals) => ({
-      ...prevSignals,
-      scorer1: memberId,
-    }));
-
     if (members1active) { 
-    setTeam1Active(true);
-    setTeam2Active(true);
-    setMembers1Active(false);
-    setMembers2Active(false);
+      setGameSignals((prevSignals) => ({
+        ...prevSignals,
+        scorer1: memberId,
+      }));
+      setTeam1Active(true);
+      setTeam2Active(true);
+      setMembers1Active(false);
+      setMembers2Active(false);
     }
     setIsPenaltyButtonActive("");
   };
 
   const handleTeam2Click = (memberId: string | number) => {
-    setGameSignals((prevSignals) => ({
-      ...prevSignals,
-      scorer2: memberId,
-    }));
-
     if (members2active) {
-    setTeam1Active(true);
-    setTeam2Active(true);
-    setMembers1Active(false);
-    setMembers2Active(false);
+      setGameSignals((prevSignals) => ({
+        ...prevSignals,
+        scorer2: memberId,
+      }));
+      setTeam1Active(true);
+      setTeam2Active(true);
+      setMembers1Active(false);
+      setMembers2Active(false);
     }
     setIsPenaltyButtonActive("");
   };
