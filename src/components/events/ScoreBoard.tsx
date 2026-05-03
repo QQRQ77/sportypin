@@ -159,9 +159,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
   const handlePenalty1Click = () => {
     if (isPenaltyButtonActive === "penalty1") {
-      handleTeam1ClickAdd("");
       setIsPenaltyButtonActive("");
       setMembers1Active(false);
+      handleTeam1ClickAdd("");
     } else {
       handleTeam1ClickAdd("penalty");
       setIsPenaltyButtonActive("penalty1");
