@@ -29,7 +29,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "",
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
-  const [penaltyButtonState, setPenaltyButtonState] = useState("");
+  const [penaltyButtonState, setPenaltyButtonState] = useState(isPenaltyButtonActive);
 
   const handleTeam1ClickAdd = (event: string) => {
     if (event === "") {
