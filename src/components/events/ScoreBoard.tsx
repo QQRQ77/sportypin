@@ -75,7 +75,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       setTeam2Active(isPenaltyButtonActive === "" ? false : true);
     }
     if (setMembers1Active && !noTeam1Members) {
-      setMembers1Active(isPenaltyButtonActive === "" ? false : true);
+      setMembers1Active(isPenaltyButtonActive === "" ? true : false);
     }
     if (setMembers2Active) {
       setMembers2Active(false);
