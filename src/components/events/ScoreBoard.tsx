@@ -184,7 +184,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           {isUserCreator && 
             <div className="flex gap-2">
               <button onClick={() => handleTeam1ClickAdd("score")} className={`px-4 py-2 ${team1active && !members1active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
-              <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
+              <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && isPenaltyButtonActive === "" ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
             </div>}
         </div>
       </div>
@@ -196,7 +196,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
             {isUserCreator && 
               <div className="flex gap-2">
                 <button onClick={() => handleTeam2ClickAdd("score")} className={`px-4 py-2 ${team2active && !members2active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
-                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
+                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && isPenaltyButtonActive === "" ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
