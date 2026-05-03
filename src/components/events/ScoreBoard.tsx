@@ -168,8 +168,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       resetPenaltyState();
       handleTeam1ClickAdd("");
     } else {
+//TODO: jaki stan ma być jeśli zostanie klliknięty penalty button poraz pierwszy lub jeśli wcześniej był aktywny inny button
       handleTeam1ClickAdd("penalty");
       setIsPenaltyButtonActive("penalty1");
+      setMembers1Active(true);
+      setMembers2Active(false);
+      setTeam1Active(false);
+      setTeam2Active(false);
     }
   };
 
