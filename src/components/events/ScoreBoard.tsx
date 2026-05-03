@@ -162,6 +162,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       handleTeam1ClickAdd("");
       setPenaltyButtonState("");
       setIsPenaltyButtonActive("");
+      setMembers1Active(false);
     } else {
       handleTeam1ClickAdd("penalty");
       setPenaltyButtonState("penalty1");
