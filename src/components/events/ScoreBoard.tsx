@@ -72,10 +72,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     }
 
     if (setTeam2Active && !noTeam1Members) {
-      setTeam2Active(false);
+      setTeam2Active(isPenaltyButtonActive === "" ? false : true);
     }
     if (setMembers1Active && !noTeam1Members) {
-      setMembers1Active(true);
+      setMembers1Active(isPenaltyButtonActive === "" ? false : true);
     }
     if (setMembers2Active) {
       setMembers2Active(false);
@@ -160,7 +160,6 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handlePenalty1Click = () => {
     if (isPenaltyButtonActive === "penalty1") {
       setIsPenaltyButtonActive("");
-      setMembers1Active(false);
       handleTeam1ClickAdd("");
     } else {
       handleTeam1ClickAdd("penalty");
