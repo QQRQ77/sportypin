@@ -71,7 +71,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    if (setTeam2Active && !noTeam1Members && isPenaltyButtonActive !== "") {
+    if (setTeam2Active && !noTeam1Members) {
       setTeam2Active(false);
     }
     if (setMembers1Active && !noTeam1Members) {
