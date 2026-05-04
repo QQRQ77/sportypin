@@ -168,7 +168,6 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       resetPenaltyState();
       handleTeam1ClickAdd("");
     } else {
-//TODO: jaki stan ma być jeśli zostanie klliknięty penalty button poraz pierwszy lub jeśli wcześniej był aktywny inny button
       handleTeam1ClickAdd("penalty");
       setIsPenaltyButtonActive("penalty1");
       setMembers1Active(true);
@@ -201,6 +200,48 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       setIsPenaltyButtonActive("redCard1");
       setMembers1Active(true);
       setMembers2Active(false);
+      setTeam1Active(false);
+      setTeam2Active(false);
+    }
+  };
+
+  const handlePenalty2Click = () => {
+    if (isPenaltyButtonActive === "penalty2") {
+      resetPenaltyState();
+      handleTeam1ClickAdd("");
+    } else {
+      handleTeam1ClickAdd("penalty");
+      setIsPenaltyButtonActive("penalty2");
+      setMembers1Active(false);
+      setMembers2Active(true);
+      setTeam1Active(false);
+      setTeam2Active(false);
+    }
+  };
+
+  const handleYellowCard2Click = () => {
+    if (isPenaltyButtonActive === "yellowCard2") {
+      resetPenaltyState();
+      handleTeam1ClickAdd("");
+    } else {
+      handleTeam1ClickAdd("yellowCard");
+      setIsPenaltyButtonActive("yellowCard2");
+      setMembers1Active(false);
+      setMembers2Active(true);
+      setTeam1Active(false);
+      setTeam2Active(false);
+    }
+  };
+
+    const handleRedCard2Click = () => {
+    if (isPenaltyButtonActive === "redCard2") {
+      resetPenaltyState();
+      handleTeam1ClickAdd("");
+    } else {
+      handleTeam1ClickAdd("redCard");
+      setIsPenaltyButtonActive("redCard2");
+      setMembers1Active(false);
+      setMembers2Active(true);
       setTeam1Active(false);
       setTeam2Active(false);
     }
@@ -239,11 +280,11 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
             <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
-              onClick={()=> {handleTeam2ClickAdd("penalty"); setIsPenaltyButtonActive("penalty2")}} />
+              onClick={handlePenalty2Click} />
             <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-              onClick={()=> {handleTeam2ClickAdd("yellowCard"); setIsPenaltyButtonActive("yellowCard2")}} ></div>
+              onClick={handleYellowCard2Click} ></div>
             <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-              onClick={()=> {handleTeam2ClickAdd("redCard"); setIsPenaltyButtonActive("redCard2")}} ></div>
+              onClick={handleRedCard2Click} ></div>
           </div>
         </div> 
     </div>
