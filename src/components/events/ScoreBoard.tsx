@@ -208,9 +208,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handlePenalty2Click = () => {
     if (isPenaltyButtonActive === "penalty2") {
       resetPenaltyState();
-      handleTeam1ClickAdd("");
+      handleTeam2ClickAdd("");
     } else {
-      handleTeam1ClickAdd("penalty");
+      handleTeam2ClickAdd("penalty");
       setIsPenaltyButtonActive("penalty2");
       setMembers1Active(false);
       setMembers2Active(true);
@@ -222,9 +222,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   const handleYellowCard2Click = () => {
     if (isPenaltyButtonActive === "yellowCard2") {
       resetPenaltyState();
-      handleTeam1ClickAdd("");
+      handleTeam2ClickAdd("");
     } else {
-      handleTeam1ClickAdd("yellowCard");
+      handleTeam2ClickAdd("yellowCard");
       setIsPenaltyButtonActive("yellowCard2");
       setMembers1Active(false);
       setMembers2Active(true);
@@ -236,9 +236,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     const handleRedCard2Click = () => {
     if (isPenaltyButtonActive === "redCard2") {
       resetPenaltyState();
-      handleTeam1ClickAdd("");
+      handleTeam2ClickAdd("");
     } else {
-      handleTeam1ClickAdd("redCard");
+      handleTeam2ClickAdd("redCard");
       setIsPenaltyButtonActive("redCard2");
       setMembers1Active(false);
       setMembers2Active(true);
