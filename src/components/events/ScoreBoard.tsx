@@ -85,11 +85,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam1ClickSub = () => {
+    if (!team1active && !(isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled")) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
       score1: prevSignals.score1 - 1,
       score2: prevSignals.score2,
     }));
+    setIsPenaltyButtonActive("");
     setTeam1Active(true);
     setTeam2Active(true);
     setMembers1Active(false);
@@ -148,11 +150,13 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickSub = () => {
+    if (!team2active && !(isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled")) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
       score2: prevSignals.score2 - 1,
       score1: prevSignals.score1,
     }));
+    setIsPenaltyButtonActive("");
     setTeam1Active(true);
     setTeam2Active(true);
     setMembers1Active(false);
@@ -285,7 +289,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           {isUserCreator && 
             <div className="flex gap-2">
               <button onClick={() => handleTeam1ClickAdd("score")} className={`px-4 py-2 ${team1active && !members1active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
-              <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
+              <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
       </div>
@@ -297,7 +301,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
             {isUserCreator && 
               <div className="flex gap-2">
                 <button onClick={() => handleTeam2ClickAdd("score")} className={`px-4 py-2 ${team2active && !members2active ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>+</button>
-                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400'} text-white text-3xl rounded cursor-pointer`}>-</button>
+                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
               </div>}
           </div>
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
