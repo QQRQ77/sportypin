@@ -132,15 +132,15 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    if (setTeam1Active && !noTeam2Members) {
-      setTeam1Active(false);
-    }
-    if (setMembers2Active && !noTeam2Members) {
-      setMembers2Active(true);
-    }
-    if (setMembers1Active) {
-      setMembers1Active(false);
-    }
+    // if (setTeam1Active && !noTeam2Members) {
+    //   setTeam1Active(false);
+    // }
+    // if (setMembers2Active && !noTeam2Members) {
+    //   setMembers2Active(true);
+    // }
+    // if (setMembers1Active) {
+    //   setMembers1Active(false);
+    // }
   };
 
   const handleTeam2ClickSub = () => {
