@@ -43,6 +43,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score1: prevSignals.score1 + 1,
         score2: prevSignals.score2,
         }))
+      setIsPenaltyButtonActive("disabled");
       if (setTeam2Active && !noTeam1Members) {
         setTeam2Active(isPenaltyButtonActive === "" ? false : true);
       }
@@ -53,7 +54,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         setMembers2Active(false);
       }
     };
-    
+
     if (event === "penalty" && !noTeam1Members) {  
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -108,6 +109,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2 + 1,
         score1: prevSignals.score1,
       }));
+      setIsPenaltyButtonActive("disabled");
       if (setTeam1Active && !noTeam2Members) {
         setTeam1Active(false);
       }
@@ -166,6 +168,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty1Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "penalty1") {
       resetPenaltyState();
       handleTeam1ClickAdd("");
@@ -180,6 +185,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard1Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "yellowCard1") {
       resetPenaltyState();
       handleTeam1ClickAdd("");
@@ -194,6 +202,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard1Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "redCard1") {
       resetPenaltyState();
       handleTeam1ClickAdd("");
@@ -208,6 +219,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty2Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "penalty2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -222,6 +236,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard2Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "yellowCard2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -236,6 +253,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard2Click = () => {
+    if (isPenaltyButtonActive === "disabled") {
+      return;
+    }
     if (isPenaltyButtonActive === "redCard2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -255,9 +275,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <div className="w-12 flex flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" ? "bg-gray-400" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleYellowCard1Click} ></div>
-          <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" ? "bg-gray-400" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleRedCard1Click} ></div>
         </div>
         <div className="w-52 flex flex-col items-center gap-4">
@@ -283,9 +303,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <div className="w-12 flex flex-col gap-2 items-center justify-center">
             <PiNumberTwoFill size={48} className={`text-gray-400 cursor-pointer hover:text-gray-500 ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
               onClick={handlePenalty2Click} />
-            <div className={`w-8 h-12 bg-yellow-300 rounded cursor-pointer hover:bg-yellow-400 ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" ? "bg-gray-400" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
               onClick={handleYellowCard2Click} ></div>
-            <div className={`w-8 h-12 bg-red-500 rounded cursor-pointer hover:bg-red-400 ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" ? "bg-gray-400" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
               onClick={handleRedCard2Click} ></div>
           </div>
         </div> 
