@@ -185,6 +185,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     } else {
       handleTeam1ClickAdd("yellowCard");
       setIsPenaltyButtonActive("yellowCard1");
+      setMembers1Active(true);
+      setMembers2Active(false);
+      setTeam1Active(false);
+      setTeam2Active(false);
     }
   };
 
@@ -195,6 +199,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     } else {
       handleTeam1ClickAdd("redCard");
       setIsPenaltyButtonActive("redCard1");
+      setMembers1Active(true);
+      setMembers2Active(false);
+      setTeam1Active(false);
+      setTeam2Active(false);
     }
   };
 
