@@ -42,7 +42,18 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         ...defaultGameSignals,
         score1: prevSignals.score1 + 1,
         score2: prevSignals.score2,
-    }))};
+        }))
+      if (setTeam2Active && !noTeam1Members) {
+        setTeam2Active(isPenaltyButtonActive === "" ? false : true);
+      }
+      if (setMembers1Active && !noTeam1Members) {
+        setMembers1Active(isPenaltyButtonActive === "" ? true : false);
+      }
+      if (setMembers2Active) {
+        setMembers2Active(false);
+      }
+    };
+    
     if (event === "penalty" && !noTeam1Members) {  
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -69,15 +80,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    // if (setTeam2Active && !noTeam1Members) {
-    //   setTeam2Active(isPenaltyButtonActive === "" ? false : true);
-    // }
-    // if (setMembers1Active && !noTeam1Members) {
-    //   setMembers1Active(isPenaltyButtonActive === "" ? true : false);
-    // }
-    // if (setMembers2Active) {
-    //   setMembers2Active(false);
-    // }
+
   };
 
   const handleTeam1ClickSub = () => {
@@ -105,6 +108,15 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2 + 1,
         score1: prevSignals.score1,
       }));
+      if (setTeam1Active && !noTeam2Members) {
+        setTeam1Active(false);
+      }
+      if (setMembers2Active && !noTeam2Members) {
+        setMembers2Active(true);
+      }
+      if (setMembers1Active) {
+        setMembers1Active(false);
+      }
     }
 
     if (event === "penalty" && !noTeam2Members) {  
@@ -131,16 +143,6 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2,
       }));
     }
-
-    // if (setTeam1Active && !noTeam2Members) {
-    //   setTeam1Active(false);
-    // }
-    // if (setMembers2Active && !noTeam2Members) {
-    //   setMembers2Active(true);
-    // }
-    // if (setMembers1Active) {
-    //   setMembers1Active(false);
-    // }
   };
 
   const handleTeam2ClickSub = () => {
