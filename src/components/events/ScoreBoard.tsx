@@ -107,7 +107,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       }));
     }
 
-    if (event === "penalty" ) {  
+    if (event === "penalty" && !noTeam2Members) {  
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         penaltyTeam2: -1,
@@ -115,7 +115,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2,
       }));
     }
-    if (event === "yellowCard") {
+    if (event === "yellowCard" && !noTeam2Members) {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         yellowCardsTeam2: -1,
@@ -123,7 +123,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2,
       }));
     }
-    if (event === "redCard") {
+    if (event === "redCard" && !noTeam2Members) {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
         redCardsTeam2: -1,
