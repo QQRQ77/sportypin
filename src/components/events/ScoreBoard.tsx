@@ -88,7 +88,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (!(team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
-      score1: prevSignals.score1 - 1,
+      score1: prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0,
       score2: prevSignals.score2,
     }));
     setIsPenaltyButtonActive("");
@@ -153,7 +153,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
     if (!(team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
-      score2: prevSignals.score2 - 1,
+      score2: prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0,
       score1: prevSignals.score1,
     }));
     setIsPenaltyButtonActive("");
