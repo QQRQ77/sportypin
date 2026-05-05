@@ -59,9 +59,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
       }
 
-      console.log("gameSignals.score1: ", gameSignals.score1, "prevScore1: ", prevScore1);
       if (gameSignals.score1 < prevScore1) {
-        console.log("Score 1 decreased");
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
       }
