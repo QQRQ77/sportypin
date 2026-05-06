@@ -59,9 +59,9 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
 
   return (
     <div className='w-full lg:w-3/5 flex flex-2 items-start justify-center gap-8'>
-      <div className={`team-1 w-1/2 flex flex-col items-start justify-center gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl bg-blue-50" : "border-5"}`}>
+      <div className={`team-1 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl bg-blue-50" : "border-5"}`}>
         {team_1_members && team_1_members.length > 0 ? (
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-start justify-center border'>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-start border'>
             {team_1_members.map((member) => (
               <div className="flex flex-2 border justify-center items-start"  key={member.id}>
                 <div className={`flex flex-col items-center justify-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
@@ -87,12 +87,12 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
           <p>Brak danych o zawodnikach</p>
         )}
       </div>
-      <div className={`team-2 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members2active && !noTeam2Members ? "pulse-border-green rounded-2xl bg-green-50" : "border-5"}`}>
+      <div className={`team-2 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members2active && !noTeam2Members ? "pulse-border-green rounded-2xl bg-green-50" : "border-5 border-transparent"}`}>
         {team_2_members && team_2_members.length > 0 ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-start border-2'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-start'>
             {team_2_members.map((member) => (
               <div className="flex flex-2 justify-center items-start border"  key={member.id}>
-                <div className={`border flex flex-col items-center justify-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
+                <div className={`flex flex-col items-center justify-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
                   onClick={() => handleTeam2Click(member.id)}>
                   <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
                     <div className='relative'>
