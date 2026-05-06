@@ -276,7 +276,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   return (
     <div className="scoreboard flex flex-3 border-1 border-gray-300 rounded-xl pb-4">
 
-      <div className="team-1 flex flex-col md:flex-row md:flex-2 w-64 items-center gap-4">
+      <div className="team-1 flex flex-col md:flex-row md:flex-2 w-64 items-center gap-4 border">
         <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={handlePenalty1Click} />
@@ -303,9 +303,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         </div>
       </div>
 
-      <div className="text-center text-7xl lg:text-9xl font-bold w-10 lg:w-24">:</div>
+      <div className="text-center text-7xl lg:text-9xl font-bold w-10 lg:w-24 border">:</div>
 
-      <div className="team-2 flex flex-col md:flex-row md:flex-2 w-64 items-center gap-4">
+      <div className="team-2 flex flex-col md:flex-row md:flex-2 w-64 items-center gap-4 border">
         <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
           <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
           {isUserCreator && 
