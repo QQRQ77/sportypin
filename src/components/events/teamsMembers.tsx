@@ -58,8 +58,8 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   };
 
   return (
-    <div className='w-full lg:w-3/5 flex flex-2 items-center justify-center gap-8'>
-      <div className={`team-1 w-1/2 flex flex-col items-start justify-center gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl bg-blue-50" : "border-5 border-transparent"}`}>
+    <div className='w-full lg:w-3/5 flex flex-2 items-start justify-center gap-8'>
+      <div className={`team-1 w-1/2 flex flex-col items-start justify-center gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl bg-blue-50" : "border-5"}`}>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-start justify-center border'>
             {team_1_members.map((member) => (
