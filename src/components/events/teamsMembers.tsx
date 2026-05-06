@@ -87,7 +87,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
           <p>Brak danych o zawodnikach</p>
         )}
       </div>
-      <div className={`team-2 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members2active && !noTeam2Members ? "pulse-border-green rounded-2xl bg-green-50" : "border-5 border-transparent"}`}>
+      <div className={`team-2 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members2active && !noTeam2Members ? "pulse-border-green rounded-2xl bg-green-50" : "border-5"}`}>
         {team_2_members && team_2_members.length > 0 ? (
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-start border-2'>
             {team_2_members.map((member) => (
