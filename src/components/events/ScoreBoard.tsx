@@ -293,10 +293,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
-        <div className="md:hidden flex flex-row gap-2 items-center justify-center">
+          <div className="md:hidden flex flex-row gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleYellowCard1Click} ></div>
           <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleRedCard1Click} ></div>
@@ -305,7 +305,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
       <div className="text-center text-7xl lg:text-9xl font-bold w-10 lg:w-24">:</div>
 
-      <div className="team-2 flex flex-2 w-64 items-center gap-4">
+      <div className="team-2 flex flex-col md:flex-row md:flex-2 w-64 items-center gap-4">
         <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
           <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
           {isUserCreator && 
@@ -314,7 +314,15 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
-        <div className="w-12 flex flex-col gap-2 items-center justify-center">
+        <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
+          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
+            onClick={handlePenalty2Click} />
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+            onClick={handleYellowCard2Click} ></div>
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+            onClick={handleRedCard2Click} ></div>
+        </div>
+        <div className="md:hidden flex flex-row gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
             onClick={handlePenalty2Click} />
           <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
