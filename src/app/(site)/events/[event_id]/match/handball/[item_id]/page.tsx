@@ -96,6 +96,9 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         </div>
       </div>
       <HandballGame
+        eventId={event_id}
+        team_1_name={itemInfo?.team_1 || ""}
+        team_2_name={itemInfo?.team_2 || ""}
         matchTime={matchTime}
         isUserCreator={isUserCreator} 
         team_1_members={team_1_members}

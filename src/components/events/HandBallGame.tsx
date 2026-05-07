@@ -5,8 +5,12 @@ import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { EventTeamMemberType } from "@/types";
+import { saveEventTeamMembers } from '@/lib/events.actions';
 
 interface HandBallGameProps {
+  eventId: string;
+  team_1_name?: string;
+  team_2_name?: string;
   isUserCreator?: boolean;
   matchTime: number;
   team_1_members?: EventTeamMemberType[];
@@ -37,7 +41,7 @@ export const defaultGameSignals = {
     penaltyTeam2: 0,
 }
 
-const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members }) => {
+const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matchTime = 0, team_1_members, team_2_members, eventId, team_1_name = "", team_2_name = "" }) => {
   
   const [team_1, setTeam_1] = React.useState(team_1_members || []);
   const [team_2, setTeam_2] = React.useState(team_2_members || []);
@@ -51,9 +55,13 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: 0, score2: 0 });
 
     useEffect(() => {
+
+      const handleGameSignalsChange = async () => {
       if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
-          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member)));
+          const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member))
+          setTeam_1(teamOne);
+          await saveEventTeamMembers(eventId, team_1_name, teamOne);
         }
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
@@ -66,7 +74,9 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
 
       if (gameSignals.score2 > prevScore2 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
-          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member)));
+          const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
+          setTeam_2(teamTwo);
+          await saveEventTeamMembers(eventId, team_2_name, teamTwo);
         }
         setPrevScore2(gameSignals.score2);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "" }))  ;
@@ -79,45 +89,54 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
 
       if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
-          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member)));
+          const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
+          setTeam_1(teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }
 
       if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
-          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member)));
+          const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
+          setTeam_2(teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
       
       if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
-          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member)));
+          const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
+          setTeam_1(teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
       }
       
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
-          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member)));
+          const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
+          setTeam_2(teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
       }
       
       if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
         if (team_1.length > 0) {
-          setTeam_1(team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member)));
+          const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
+          setTeam_1(teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
 
       if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
-          setTeam_2(team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member)));
+          const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
+          setTeam_2(teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
-      }
+      }}
+
+      handleGameSignalsChange();
+
     }, [gameSignals]);
   
   return (

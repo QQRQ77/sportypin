@@ -18,7 +18,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { ClassificationItem, CreateEvent, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, CreateEvent, EventTeamMemberType, HarmonogramItem, Participant } from "@/types";
 import { formatAddressForGeocoding, getGeocodeFromAddressGoogle } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 
@@ -463,4 +463,49 @@ export async function getTeamMembers(eventId: string, teamName: string) {
   }
 
   return [];
+}
+
+export async function saveEventTeamMembers(eventId: string, teamName: string, eventTeamMembers: EventTeamMemberType[]) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('participants')
+    .eq('id', eventId)
+    .single();
+
+  if (error || !data) {
+    console.error('Error fetching event:', error);
+    throw new Error(error?.message || 'Failed to fetch event');
+  }
+
+  const { participants } = data;
+
+  if (participants && participants.length > 0) {
+    const updatedParticipants = participants.map((participant: Participant) => {
+      if (participant.team_name === teamName) {
+        return {
+          ...participant,
+          eventTeamMembers: eventTeamMembers
+        };
+      }
+      return participant;
+    });
+
+    const { error: updateError } = await supabase
+      .from('Events')
+      .update({ participants: updatedParticipants })
+      .eq('id', eventId);
+
+    if (updateError) {
+      console.error('Error updating event team members:', updateError);
+      throw new Error(updateError.message || 'Failed to update event team members');
+    }
+
+    return true;
+  }
+
+  throw new Error('No participants found for this event');
 } 
+
+
