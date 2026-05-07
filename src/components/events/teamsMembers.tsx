@@ -99,9 +99,13 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
                 <div className={`flex flex-col items-center justify-center gap-2 ${members2active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
                   onClick={() => handleTeam2Click(member.id)}>
                   <IconContext.Provider value={{ className: `text-green-600 ${members2active ? "hover:text-green-800" : ""}` }}>
-                    <div className='relative'>
+                    <div className='hidden md:block relative'>
                       <IoShirtOutline size={96} />
                       <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members2active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
+                    </div>
+                    <div className='md:hidden relative'>
+                      <IoShirtOutline size={72} />
+                      <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-3xl ${members2active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
                     </div>
                   </IconContext.Provider>
                   <p className="text-base font-bold text-wrap">{member.name}</p>
