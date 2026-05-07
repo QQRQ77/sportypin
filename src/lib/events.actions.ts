@@ -446,7 +446,20 @@ export async function getTeamMembers(eventId: string, teamName: string) {
 
   if (participants && participants.length > 0) {
     const teamMembers: Participant[] = participants.filter((participant: Participant) => participant.team_name === teamName);
-    return teamMembers[0].eventTeamMembers || [];
+    const eventTeamMembers = teamMembers[0].eventTeamMembers || [];
+
+    return eventTeamMembers.sort((a, b) => {
+      const aValue = String(a.start_number ?? '');
+      const bValue = String(b.start_number ?? '');
+      const aIsNumeric = /^[0-9]+$/.test(aValue);
+      const bIsNumeric = /^[0-9]+$/.test(bValue);
+
+      if (aIsNumeric && !bIsNumeric) return -1;
+      if (!aIsNumeric && bIsNumeric) return 1;
+      if (aIsNumeric && bIsNumeric) return Number(aValue) - Number(bValue);
+
+      return aValue.localeCompare(bValue, undefined, { sensitivity: 'base' });
+    });
   }
 
   return [];
