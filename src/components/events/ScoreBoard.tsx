@@ -274,7 +274,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   return (
-    <div className="scoreboard w-full flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2">
+    <div className="scoreboard w-full md:w-96 flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center">
 
       <div className="team-1 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4 border">
         <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
