@@ -58,7 +58,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   };
 
   return (
-    <div className='w-full lg:w-3/5 flex flex-2 items-start justify-center md:gap-8 p-2'>
+    <div className='w-full lg:w-3/5 flex flex-2 items-start justify-center md:gap-8'>
       <div className={`team-1 w-1/2 flex flex-col items-center justify-start gap-2 p-2 ${members1active && !noTeam1Members ? "pulse-border-blue rounded-2xl bg-blue-50" : "border-5 border-transparent"}`}>
         {team_1_members && team_1_members.length > 0 ? (
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center justify-start'>
@@ -67,9 +67,13 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
                 <div className={`flex flex-col items-center justify-center gap-2 ${members1active ? "hover:bg-gray-300 cursor-pointer" :""}  rounded-2xl p-2`}
                   onClick={() => handleTeam1Click(member.id)}>
                   <IconContext.Provider value={{ className: `text-sky-600 ${members1active ? "hover:text-sky-800" : ""}` }}>
-                    <div className='relative'>
+                    <div className='hidden md:block relative'>
                       <IoShirtOutline size={96} />
                       <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-4xl ${members1active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
+                    </div>
+                    <div className='md:hidden relative'>
+                      <IoShirtOutline size={72} />
+                      <p className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-3xl ${members1active ? "hover:text-gray-600" : ""}`}>{member.start_number}</p>
                     </div>
                   </IconContext.Provider>
                   <p className="text-base font-bold text-wrap">{member.name}</p>
