@@ -91,6 +91,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_1(teamOne);
+          await saveEventTeamMembers(eventId, team_1_name, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }
@@ -99,6 +100,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_2(teamTwo);
+          await saveEventTeamMembers(eventId, team_2_name, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
@@ -107,6 +109,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
           setTeam_1(teamOne);
+          await saveEventTeamMembers(eventId, team_1_name, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
       }
@@ -115,6 +118,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
           setTeam_2(teamTwo);
+          await saveEventTeamMembers(eventId, team_2_name, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
       }
@@ -123,6 +127,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
+          await saveEventTeamMembers(eventId, team_1_name, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
@@ -131,6 +136,7 @@ const HandBallGame: React.FC<HandBallGameProps> = ({ isUserCreator = false, matc
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_2(teamTwo);
+          await saveEventTeamMembers(eventId, team_2_name, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
       }}
