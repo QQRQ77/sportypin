@@ -1,4 +1,4 @@
-import { findEventCreatorId, getEventBaseInfo, getMatchInfo, getTeamMembers } from "@/lib/events.actions";
+import { findEventCreatorId, getEventBaseInfo, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { EventTeamMemberType, HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
@@ -18,21 +18,23 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
 
   const eventInfo = await getEventBaseInfo(event_id);
   
-  let itemInfo: HarmonogramItem | null = null
+  let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
   let team_2_members: EventTeamMemberType[] = [];
   try {
     itemInfo = await getMatchInfo(event_id, item_id);
-    if (itemInfo?.team_1) {
+    if (itemInfo && !itemInfo.team_1_players) {
       try {
-        team_1_members = await getTeamMembers(event_id, itemInfo.team_1) || [];
+        team_1_members = await getTeamMembers(event_id, itemInfo.team_1 || "") || [];
+        await saveHarmonogramItemTeamPlayers(event_id, item_id, 1, team_1_members);
       } catch (error) {
         console.error("Error fetching team 1 members:", error);
       }
     }
-    if (itemInfo?.team_2) {
+    if (itemInfo && !itemInfo.team_2_players) {
       try {
-        team_2_members = await getTeamMembers(event_id, itemInfo.team_2) || [];
+        team_2_members = await getTeamMembers(event_id, itemInfo.team_2 || "") || [];
+        await saveHarmonogramItemTeamPlayers(event_id, item_id, 2, team_2_members);
       } catch (error) {
         console.error("Error fetching team 2 members:", error);
       }

@@ -13,6 +13,10 @@
 // function saveNewParticipant
 // function saveClassification
 // function getEventBaseInfo
+// function getMatchInfo
+// function getTeamMembers
+// function saveEventTeamMembers
+
 
 'use server'
 
@@ -425,7 +429,6 @@ export async function getMatchInfo(eventId: string, matchId: string) {
     return matchInfo
   }
 
-  return null
 } 
 
 export async function getTeamMembers(eventId: string, teamName: string) {
@@ -507,5 +510,53 @@ export async function saveEventTeamMembers(eventId: string, teamName: string, ev
 
   throw new Error('No participants found for this event');
 } 
+
+export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: string, teamNumber: number, eventTeamMembers: EventTeamMemberType[]) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('harmonogram')
+    .eq('id', eventId)
+    .single();
+
+  if (error || !data) {
+    console.error('Error fetching event:', error);
+    throw new Error(error?.message || 'Failed to fetch event');
+  }
+
+  const { harmonogram } = data;
+
+  const updatedHarmonogram = harmonogram.map((item: HarmonogramItem) => {
+    if (item.id === itemId) {
+      if (teamNumber === 1) {
+        return {
+          ...item,
+          team_1_players: eventTeamMembers
+        };
+      } else if (teamNumber === 2) {
+        return {
+          ...item,
+          team_2_players: eventTeamMembers
+        };
+      }
+    }
+    return item;
+  });
+
+  const { error: updateError } = await supabase
+    .from('Events')
+    .update({ harmonogram: updatedHarmonogram })
+    .eq('id', eventId);
+
+  if (updateError) {
+    console.error('Error updating event team members:', updateError);
+    throw new Error(updateError.message || 'Failed to update event team members');
+  }
+
+  return true;
+}
+
+
 
 
