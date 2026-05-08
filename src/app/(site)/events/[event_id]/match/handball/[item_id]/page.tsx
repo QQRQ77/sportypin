@@ -22,7 +22,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   let team_1_members: EventTeamMemberType[] = [];
   let team_2_members: EventTeamMemberType[] = [];
   
-  try {itemInfo = await getMatchInfo(event_id, item_id);} 
+  try {itemInfo = await getMatchInfo(event_id, item_id); console.log("itemInfo:", itemInfo);} 
   catch (error) {
     console.error("Error fetching match info:", error);
   }
