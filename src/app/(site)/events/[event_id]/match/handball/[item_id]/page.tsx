@@ -33,10 +33,10 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         team_1_members = await getTeamMembers(event_id, itemInfo.team_1 || "") || [];
         const teamOnePlayersClean = team_1_members.map(member => ({
           ...member,
-          goals: member.goals || 0,
-          yellow_cards: member.yellowCards || 0,
-          red_cards: member.redCards || 0,
-          penalties: member.penalties || 0,
+          goals: 0,
+          yellow_cards: 0,
+          red_cards: 0,
+          penalties: 0,
         }));
         team_1_members = teamOnePlayersClean;
         await saveHarmonogramItemTeamPlayers(event_id, item_id, 1, teamOnePlayersClean);
@@ -52,10 +52,10 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         team_2_members = await getTeamMembers(event_id, itemInfo.team_2 || "") || [];
         const teamTwoPlayersClean = team_2_members.map(member => ({
           ...member,
-          goals: member.goals || 0,
-          yellow_cards: member.yellowCards || 0,
-          red_cards: member.redCards || 0,
-          penalties: member.penalties || 0,
+          goals: 0,
+          yellow_cards: 0,
+          red_cards: 0,
+          penalties: 0,
         }));
         team_2_members = teamTwoPlayersClean;
         await saveHarmonogramItemTeamPlayers(event_id, item_id, 2, teamTwoPlayersClean);
