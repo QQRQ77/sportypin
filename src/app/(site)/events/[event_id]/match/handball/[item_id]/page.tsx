@@ -34,12 +34,13 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         const teamOnePlayersClean = team_1_members.map(member => ({
           ...member,
           goals: 0,
-          yellow_cards: 0,
-          red_cards: 0,
+          yellowCards: 0,
+          redCards: 0,
           penalties: 0,
         }));
         team_1_members = teamOnePlayersClean;
         await saveHarmonogramItemTeamPlayers(event_id, item_id, 1, teamOnePlayersClean);
+
       } catch (error) {
         console.error("Error fetching team 1 members:", error);
       }
@@ -53,8 +54,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         const teamTwoPlayersClean = team_2_members.map(member => ({
           ...member,
           goals: 0,
-          yellow_cards: 0,
-          red_cards: 0,
+          yellowCards: 0,
+          redCards: 0,
           penalties: 0,
         }));
         team_2_members = teamTwoPlayersClean;
