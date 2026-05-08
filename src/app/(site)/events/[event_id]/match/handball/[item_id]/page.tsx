@@ -21,23 +21,49 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
   let team_2_members: EventTeamMemberType[] = [];
+  
+  try {itemInfo = await getMatchInfo(event_id, item_id);} 
+  catch (error) {
+    console.error("Error fetching match info:", error);
+  }
+
   try {
-    itemInfo = await getMatchInfo(event_id, item_id);
     if (itemInfo && !itemInfo.team_1_players) {
       try {
         team_1_members = await getTeamMembers(event_id, itemInfo.team_1 || "") || [];
-        await saveHarmonogramItemTeamPlayers(event_id, item_id, 1, team_1_members);
+        const teamOnePlayersClean = team_1_members.map(member => ({
+          ...member,
+          goals: member.goals || 0,
+          yellow_cards: member.yellowCards || 0,
+          red_cards: member.redCards || 0,
+          penalties: member.penalties || 0,
+        }));
+        team_1_members = teamOnePlayersClean;
+        await saveHarmonogramItemTeamPlayers(event_id, item_id, 1, teamOnePlayersClean);
       } catch (error) {
         console.error("Error fetching team 1 members:", error);
       }
+    } else if (itemInfo && itemInfo.team_1_players) {
+      team_1_members = itemInfo.team_1_players as EventTeamMemberType[];
     }
+
     if (itemInfo && !itemInfo.team_2_players) {
       try {
         team_2_members = await getTeamMembers(event_id, itemInfo.team_2 || "") || [];
-        await saveHarmonogramItemTeamPlayers(event_id, item_id, 2, team_2_members);
+        const teamTwoPlayersClean = team_2_members.map(member => ({
+          ...member,
+          goals: member.goals || 0,
+          yellow_cards: member.yellowCards || 0,
+          red_cards: member.redCards || 0,
+          penalties: member.penalties || 0,
+        }));
+        team_2_members = teamTwoPlayersClean;
+        await saveHarmonogramItemTeamPlayers(event_id, item_id, 2, teamTwoPlayersClean);
       } catch (error) {
         console.error("Error fetching team 2 members:", error);
       }
+    } else if (itemInfo && itemInfo.team_2_players) {
+      team_2_members = itemInfo.team_2_players as EventTeamMemberType[];
     }
 
   } catch (error) {
