@@ -4,14 +4,13 @@ import React, { useEffect } from 'react';
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
-import { EventTeamMemberType } from "@/types";
-import { saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
+import { EventTeamMemberType, HarmonogramItem } from "@/types";
+import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
 
 interface HandBallGameProps {
   eventId: string;
-  itemId: string;
+  itemData: HarmonogramItem;
   isUserCreator?: boolean;
-  matchTime: number;
   team_1_members?: EventTeamMemberType[];
   team_2_members?: EventTeamMemberType[];
 }
@@ -41,9 +40,12 @@ export const defaultGameSignals = {
 }
 
 const HandBallGame: React.FC<HandBallGameProps> = (
-  { isUserCreator = false, matchTime = 0, 
-    team_1_members, team_2_members,
-    eventId, itemId }) => {
+  { isUserCreator = false, itemData, 
+    eventId, team_1_members, team_2_members }) => {
+  
+  const matchTime 
+    = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
+
   
   const [team_1, setTeam_1] = React.useState(team_1_members || []);
   const [team_2, setTeam_2] = React.useState(team_2_members || []);
@@ -63,7 +65,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member))
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 1, teamOne);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          await saveHarmonogramItem(eventId, itemData?.id, itemData);
         }
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
@@ -78,7 +81,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 2, teamTwo);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
         }
         setPrevScore2(gameSignals.score2);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "" }))  ;
@@ -93,7 +96,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 1, teamOne);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }
@@ -102,7 +105,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 2, teamTwo);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
@@ -111,7 +114,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 1, teamOne);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
       }
@@ -120,7 +123,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 2, teamTwo);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
       }
@@ -129,7 +132,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 1, teamOne);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
@@ -138,7 +141,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemId, 2, teamTwo);
+          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
       }}

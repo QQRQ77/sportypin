@@ -1,6 +1,6 @@
 import { findEventCreatorId, getEventBaseInfo, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
-import { EventTeamMemberType, HarmonogramItem } from "@/types";
+import { EventTeamMemberType, harmonogramDefaultItem, HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Image from "next/image";
@@ -84,9 +84,6 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
     console.error("Error fetching team logo:", error);
   }
 
-  const matchTime 
-  = itemInfo ? Math.floor((new Date(`1970-01-01 ${itemInfo.end_time}`).getTime() - new Date(`1970-01-01 ${itemInfo.start_time}`).getTime()) / 1000) : 0;
-
   return (
     <div className="min-h-screen bg-gray-50 w-full flex flex-col items-center mt-5 mb-20 gap-5 text-center">
       <Link href={`/events/${event_id}`} className="text-blue-500 hover:underline w-66 border border-blue-500 rounded flex items-center gap-2 px-4 py-2 transition-colors">
@@ -126,9 +123,8 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
       </div>
       <HandballGame
         eventId={event_id}
-        itemId={item_id}
-        matchTime={matchTime}
         isUserCreator={isUserCreator} 
+        itemData={itemInfo || harmonogramDefaultItem}    
         team_1_members={team_1_members}
         team_2_members={team_2_members}
       />      

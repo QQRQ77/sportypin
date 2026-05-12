@@ -27,6 +27,7 @@ import { ClassificationItem, CreateEvent, EventTeamMemberType, HarmonogramItem, 
 import { formatAddressForGeocoding, getGeocodeFromAddressGoogle } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 
+//TODO:
 export async function createEvent(formData: CreateEvent) {
   const session = await auth();
   const creator = session.userId;
@@ -58,6 +59,7 @@ export async function createEvent(formData: CreateEvent) {
   return data[0];
 }
 
+//TODO:
 export async function getUpcomingEvents() {
   const supabase = createSupabaseClient();
   // Sortuj eventy według start_date rosnąco (od najwcześniejszego)
@@ -79,6 +81,7 @@ export async function getUpcomingEvents() {
   return data;
 }
 
+//TODO:
 export async function getPastEvents() {
   const supabase = createSupabaseClient();
   // Sortuj eventy według start_date rosnąco (od najwcześniejszego)
@@ -100,6 +103,7 @@ export async function getPastEvents() {
   return data;
 }
 
+//TODO:
 export async function getUserEvents() {
   const { userId } = await auth();
   if (!userId) {
@@ -123,6 +127,7 @@ export async function getUserEvents() {
   return data;
 }
 
+//TODO:
 export async function getObservedEvents() {
     const { userId } = await auth();
     if (!userId) {
@@ -150,6 +155,7 @@ export async function getObservedEvents() {
     return data;
 }
 
+//TODO:
 export async function ToggleEventFollower(eventId: string, followerId: string) {
   
   const supabase = createSupabaseClient();
@@ -186,6 +192,7 @@ export async function ToggleEventFollower(eventId: string, followerId: string) {
 
 }
 
+//TODO:
 export async function getEventById(eventId: string) {
   const supabase = createSupabaseClient();
 
@@ -210,6 +217,7 @@ export async function getEventById(eventId: string) {
 
 }
 
+//TODO:
 export async function updateEvent(formData: CreateEvent, eventId: string) {
   const session = await auth();
   const user = session.userId;
@@ -245,6 +253,7 @@ export async function updateEvent(formData: CreateEvent, eventId: string) {
   return data[0];
 }
 
+//TODO:
 // export async function reorderHarmonogram(eventId: string, newHarmonogram: HarmonogramItem[]) {
 //   const session = await auth();
 //   const user = session.userId;
@@ -261,6 +270,7 @@ export async function updateEvent(formData: CreateEvent, eventId: string) {
   
 // }
 
+//TODO:
 export async function findEventCreatorId(eventId: string) {
   const supabase = createSupabaseClient();
 
@@ -278,6 +288,7 @@ export async function findEventCreatorId(eventId: string) {
   return data.creator || "";
 }
 
+//TODO:
 export async function saveHarmonogram(eventId: string, harmonogram: HarmonogramItem[]) {
   const session = await auth();
   const user = session.userId;
@@ -306,7 +317,7 @@ export async function saveHarmonogram(eventId: string, harmonogram: HarmonogramI
   return "success";
 } 
 
-
+//TODO:
 export async function saveHarmonogramItem(eventId: string, itemId: string, updatedItem: HarmonogramItem ) {
   const session = await auth();
   const user = session.userId;
@@ -336,6 +347,7 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
   return data[0];
 }
 
+//TODO:
 export async function saveNewParticipant(eventId: string, participants: Participant[]) {
   const session = await auth();
   const user = session.userId;
@@ -364,6 +376,7 @@ export async function saveNewParticipant(eventId: string, participants: Particip
   return data;
 } 
 
+//TODO:
 export async function saveClassification(eventId: string, classification: ClassificationItem[]) {
   const session = await auth();
   const user = session.userId;
@@ -392,6 +405,7 @@ export async function saveClassification(eventId: string, classification: Classi
   return "success";
 }
 
+//TODO:
 export async function getEventBaseInfo(eventId: string) {
   const supabase = createSupabaseClient();
 
@@ -409,6 +423,7 @@ export async function getEventBaseInfo(eventId: string) {
   return data;
 } 
 
+//TODO:
 export async function getMatchInfo(eventId: string, matchId: string) {
   const supabase = createSupabaseClient();
 
@@ -432,6 +447,7 @@ export async function getMatchInfo(eventId: string, matchId: string) {
 
 } 
 
+//TODO:
 export async function getTeamMembers(eventId: string, teamName: string) {
   const supabase = createSupabaseClient();
 
@@ -469,6 +485,7 @@ export async function getTeamMembers(eventId: string, teamName: string) {
   return [];
 }
 
+//TODO:
 export async function saveEventTeamMembers(eventId: string, teamName: string, eventTeamMembers: EventTeamMemberType[]) {
   const supabase = createSupabaseClient();
 
@@ -512,6 +529,7 @@ export async function saveEventTeamMembers(eventId: string, teamName: string, ev
   throw new Error('No participants found for this event');
 } 
 
+//TODO:
 export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: string, teamNumber: number, eventTeamMembers: EventTeamMemberType[]) {
   const supabase = createSupabaseClient();
 
