@@ -342,7 +342,7 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
     .select('*');
 
   if (error || !data || data.length === 0) {
-    console.error("SZCZEGÓŁY BŁĘDU:", error?.message, error?.details, error?.hint);
+    console.error("SZCZEGÓŁY BŁĘDU:", error);
     throw new Error(error?.message || 'Failed to update harmonogram item');
   }
 
