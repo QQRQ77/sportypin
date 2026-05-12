@@ -56,7 +56,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [prevScore1, setPrevScore1] = React.useState(0);
   const [prevScore2, setPrevScore2] = React.useState(0);
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
-  const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: 0, score2: 0 });
+  const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
 
     useEffect(() => {
 
@@ -66,7 +66,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member))
           setTeam_1(teamOne);
           await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
-          await saveHarmonogramItem(eventId, itemData?.id, itemData);
+          await saveHarmonogramItem(eventId, itemData?.id, {...itemData, team_1_score: gameSignals.score1 + 1 });
         }
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
