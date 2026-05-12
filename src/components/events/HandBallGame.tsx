@@ -73,13 +73,11 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               setTeam_1(updatedTeamOne);
               
               try {
-                await Promise.all([
-                  saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, updatedTeamOne),
-                  saveHarmonogramItem(eventId, itemData?.id, { 
-                    ...itemData, 
-                    team_1_score: newScore 
-                  })
-                ]);
+                await saveHarmonogramItem(eventId, itemData?.id, { 
+                  ...itemData, 
+                  team_1_score: newScore,
+                  team_1_players: updatedTeamOne 
+                });
               } catch (error) {
                 console.error("Błąd podczas zapisu:", error);
               }
