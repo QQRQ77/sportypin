@@ -6,7 +6,8 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { createUser } from "@/lib/users.actions";
 import HandballGame from "@/components/events/HandBallGame";
-import { EventTeamMemberType, harmonogramDefaultItem, HarmonogramItem } from "@/types";
+import { EventTeamMemberType, HarmonogramItem } from "@/types";
+import { harmonogramDefaultItem } from "@/lib/defaultValues";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
