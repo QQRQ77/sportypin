@@ -62,7 +62,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       const handleGameSignalsChange = async () => {
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
+          console.log("warunek 1 spełniony")
             if (team_1.length > 0) {
+              console.log("warunek 2 spełniony")
               const newScore = (itemData?.team_1_score || 0) + 1;
               const updatedTeamOne = team_1.map((member) =>
                 member.id === gameSignals.scorer1
