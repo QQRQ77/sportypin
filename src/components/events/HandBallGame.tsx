@@ -73,6 +73,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               );
 
               setTeam_1(updatedTeamOne);
+
+              console.log("Zaktualizowana drużyna 1:", updatedTeamOne);
+              console.log("Nowy wynik drużyny 1:", newScore);
               
               try {
                 await saveHarmonogramItem(eventId, itemData?.id, { 
