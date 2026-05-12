@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
-import { saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
+import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
 import { EventTeamMemberType, HarmonogramItem } from '@/types';
 
 interface HandBallGameProps {
@@ -61,16 +61,33 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     useEffect(() => {
 
       const handleGameSignalsChange = async () => {
-      if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
-        if (team_1.length > 0) {
-          const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member))
-          setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
-          // await saveHarmonogramItem(eventId, itemData?.id, {...itemData, team_1_score: itemData.team_1_score ? itemData?.team_1_score + 1 : 1});
-        }
-        setPrevScore1(gameSignals.score1);
-        setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
-      }
+        if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
+            if (team_1.length > 0) {
+              const newScore = (itemData?.team_1_score || 0) + 1;
+              const updatedTeamOne = team_1.map((member) =>
+                member.id === gameSignals.scorer1
+                  ? { ...member, goals: (member.goals || 0) + 1 }
+                  : member
+              );
+
+              setTeam_1(updatedTeamOne);
+              
+              try {
+                await Promise.all([
+                  saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, updatedTeamOne),
+                  saveHarmonogramItem(eventId, itemData?.id, { 
+                    ...itemData, 
+                    team_1_score: newScore 
+                  })
+                ]);
+              } catch (error) {
+                console.error("Błąd podczas zapisu:", error);
+              }
+            }
+            
+            setPrevScore1(gameSignals.score1);
+            setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }));
+          }
 
       if (gameSignals.score1 < prevScore1) {
         setPrevScore1(gameSignals.score1);
