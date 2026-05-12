@@ -330,6 +330,8 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
       throw new Error("User is not event's creator");
     }
 
+  console.log("updatedItem in action", updatedItem) 
+   
   const supabase = createSupabaseClient();
 
   // Update the specific item in the harmonogram
