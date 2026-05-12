@@ -1,12 +1,12 @@
 import { findEventCreatorId, getEventBaseInfo, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
-import { EventTeamMemberType, harmonogramDefaultItem, HarmonogramItem } from "@/types";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { createUser } from "@/lib/users.actions";
 import HandballGame from "@/components/events/HandBallGame";
+import { EventTeamMemberType, harmonogramDefaultItem, HarmonogramItem } from "@/types";
 
 export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
 
