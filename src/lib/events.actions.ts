@@ -331,7 +331,7 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
     }
 
   console.log("updatedItem in action", updatedItem) 
-   
+
   const supabase = createSupabaseClient();
 
   // Update the specific item in the harmonogram
@@ -342,7 +342,7 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
     .select('*');
 
   if (error || !data || data.length === 0) {
-    console.error('Error updating harmonogram item:', error);
+    console.error("SZCZEGÓŁY BŁĘDU:", error?.message, error?.details, error?.hint);
     throw new Error(error?.message || 'Failed to update harmonogram item');
   }
 

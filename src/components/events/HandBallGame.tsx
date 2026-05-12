@@ -66,7 +66,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, goals: (member.goals || 0) + 1 } : member))
           setTeam_1(teamOne);
           await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
-          await saveHarmonogramItem(eventId, itemData?.id, {...itemData, team_1_score: itemData.team_1_score ? itemData?.team_1_score + 1 : 1});
+          saveHarmonogramItem(eventId, itemData?.id, {...itemData, team_1_score: itemData.team_1_score ? itemData?.team_1_score + 1 : 1});
         }
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
