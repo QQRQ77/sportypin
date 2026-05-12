@@ -329,24 +329,20 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
     if (user !== creator) {
       throw new Error("User is not event's creator");
     }
+  
+  const eventData = await getEventById(eventId);
+
+  if (!eventData || !eventData.harmonogram) {
+    throw new Error("Event or harmonogram not found");
+  }
+
+  const updatedHarmonogram = eventData.harmonogram.map((item: HarmonogramItem) => item.id === itemId ? updatedItem : item);
 
   console.log("updatedItem in action", updatedItem) 
 
-  const supabase = createSupabaseClient();
+  const result = await saveHarmonogram(eventId, updatedHarmonogram);
+  return result;
 
-  // Update the specific item in the harmonogram
-  const { data, error } = await supabase
-    .from('HarmonogramItems')
-    .update(updatedItem)
-    .eq('id', itemId)
-    .select('*');
-
-  if (error || !data || data.length === 0) {
-    console.error("SZCZEGÓŁY BŁĘDU:", error);
-    throw new Error(error?.message || 'Failed to update harmonogram item');
-  }
-
-  return data[0];
 }
 
 //TODO:
