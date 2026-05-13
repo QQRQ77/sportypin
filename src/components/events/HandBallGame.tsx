@@ -62,10 +62,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       const handleGameSignalsChange = async () => {
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
-          console.log("warunek 1 spełniony")
             if (team_1.length > 0) {
-              console.log("warunek 2 spełniony")
-              const newScore = (itemData?.team_1_score || 0) + 1;
               const updatedTeamOne = team_1.map((member) =>
                 member.id === gameSignals.scorer1
                   ? { ...member, goals: (member.goals || 0) + 1 }
@@ -73,14 +70,11 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               );
 
               setTeam_1(updatedTeamOne);
-
-              console.log("Zaktualizowana drużyna 1:", updatedTeamOne);
-              console.log("Nowy wynik drużyny 1:", newScore);
               
               try {
                 await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
-                  team_1_score: newScore,
+                  team_1_score: gameSignals.score1,
                   team_1_players: updatedTeamOne 
                 });
               } catch (error) {
