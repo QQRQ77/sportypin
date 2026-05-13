@@ -87,21 +87,45 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           }
 
       if (gameSignals.score1 < prevScore1) {
+        try {
+          await saveHarmonogramItem(eventId, itemData?.id, { 
+            ...itemData, 
+            team_1_score: gameSignals.score1,
+          });
+        } catch (error) {
+          console.error("Błąd podczas zapisu:", error);
+        }
         setPrevScore1(gameSignals.score1);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
       }
 
       if (gameSignals.score2 > prevScore2 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
-          const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
-          setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          const updatedTeamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
+          setTeam_2(updatedTeamTwo);
+           try {
+                await saveHarmonogramItem(eventId, itemData?.id, { 
+                  ...itemData, 
+                  team_2_score: gameSignals.score2,
+                  team_2_players: updatedTeamTwo 
+                });
+              } catch (error) {
+                console.error("Błąd podczas zapisu:", error);
+              }
         }
         setPrevScore2(gameSignals.score2);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "" }))  ;
       }
 
       if (gameSignals.score2 < prevScore2) {
+        try {
+          await saveHarmonogramItem(eventId, itemData?.id, { 
+            ...itemData, 
+            team_2_score: gameSignals.score2,
+          });
+        } catch (error) {
+          console.error("Błąd podczas zapisu:", error);
+        }
         setPrevScore2(gameSignals.score2);
         setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "" }))  ;
       }
