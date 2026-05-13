@@ -87,6 +87,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           }
 
       if (gameSignals.score1 < prevScore1) {
+        console.log("Odjęcie punktu team_1")
         try {
           await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
@@ -118,6 +119,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       }
 
       if (gameSignals.score2 < prevScore2) {
+        console.log("Odjęcie punktu team_2")
         try {
           await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
