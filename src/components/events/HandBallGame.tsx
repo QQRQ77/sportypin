@@ -56,6 +56,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [prevScore1, setPrevScore1] = React.useState(itemData?.team_1_score || 0);
   const [prevScore2, setPrevScore2] = React.useState(itemData?.team_2_score || 0);
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
+  const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
 
     useEffect(() => {
@@ -69,14 +70,18 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                   : member
               );
 
+              setDataBaseSubmission(true);
+
               setTeam_1(updatedTeamOne);
               
               try {
-                await saveHarmonogramItem(eventId, itemData?.id, { 
+                const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_1_score: gameSignals.score1,
                   team_1_players: updatedTeamOne 
                 });
+
+                if (result === "success") setDataBaseSubmission(false);
               } catch (error) {
                 console.error("Błąd podczas zapisu:", error);
               }
@@ -200,6 +205,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         team_1_score={gameSignals.score1} 
         team_2_score={gameSignals.score2} 
         isUserCreator={isUserCreator}
+        isDataBaseSubmissionInAction={dataBaseSubmission}
         team1active={score1active}
         team2active={score2active}
         members1active={members1active}
