@@ -311,7 +311,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
           {isUserCreator && 
             <div className="flex gap-2">
-              <button onClick={() => { if (!(team2active && !members2active && isDataBaseSubmissionInAction)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+              <button onClick={() => { if (!(team2active && !members2active && !isDataBaseSubmissionInAction)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
               <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
