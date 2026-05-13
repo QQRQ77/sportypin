@@ -53,8 +53,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [score2active, setScore2Active] = React.useState(true);
   const [members1active, setMembers1Active] = React.useState(false);
   const [members2active, setMembers2Active] = React.useState(false);
-  const [prevScore1, setPrevScore1] = React.useState(0);
-  const [prevScore2, setPrevScore2] = React.useState(0);
+  const [prevScore1, setPrevScore1] = React.useState(itemData?.team_1_score || 0);
+  const [prevScore2, setPrevScore2] = React.useState(itemData?.team_2_score || 0);
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
 
