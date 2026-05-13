@@ -107,14 +107,20 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       if (gameSignals.score2 > prevScore2 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
+          
           const updatedTeamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
+          
+          setDataBaseSubmission(true);
+
           setTeam_2(updatedTeamTwo);
            try {
-                await saveHarmonogramItem(eventId, itemData?.id, { 
+                const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_2_score: gameSignals.score2,
                   team_2_players: updatedTeamTwo 
                 });
+
+                if (result === "success") setDataBaseSubmission(false);
               } catch (error) {
                 console.error("Błąd podczas zapisu:", error);
               }
