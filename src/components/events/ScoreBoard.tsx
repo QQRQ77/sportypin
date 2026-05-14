@@ -82,8 +82,6 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         score2: prevSignals.score2,
       }));
     }
-
-
   };
 
   const handleTeam1ClickSub = () => {
@@ -305,7 +303,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <h2 className="text-7xl lg:text-9xl font-bold">{team_1_score}</h2>
           {isUserCreator && 
             <div className="flex gap-2">
-              <button onClick={() => { if (!(team1active && !members1active) { return; } handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+              <button onClick={() => { if (!(team1active && !members1active)) { return }; handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
               <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
