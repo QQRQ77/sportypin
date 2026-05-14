@@ -281,9 +281,9 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
         <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
           <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleYellowCard1Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleRedCard1Click} ></div>
         </div>
         <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
