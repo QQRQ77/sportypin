@@ -92,12 +92,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           }
 
       if (gameSignals.score1 < prevScore1) {
-        console.log("Odjęcie punktu team_1")
+        setDataBaseSubmission(true);
         try {
-          await saveHarmonogramItem(eventId, itemData?.id, { 
+          const result = await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
             team_1_score: gameSignals.score1,
           });
+          if (result === "success") setDataBaseSubmission(false);
         } catch (error) {
           console.error("Błąd podczas zapisu:", error);
         }
@@ -130,12 +131,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       }
 
       if (gameSignals.score2 < prevScore2) {
-        console.log("Odjęcie punktu team_2")
+
+        setDataBaseSubmission(true);
         try {
-          await saveHarmonogramItem(eventId, itemData?.id, { 
+          const result = await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
             team_2_score: gameSignals.score2,
           });
+          if (result === "success") setDataBaseSubmission(false);
         } catch (error) {
           console.error("Błąd podczas zapisu:", error);
         }
@@ -144,55 +147,67 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       }
 
       if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setDataBaseSubmission(true);
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
       }
 
       if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setDataBaseSubmission(true);
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
       
       if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setDataBaseSubmission(true);
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
       }
       
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setDataBaseSubmission(true);
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
       }
       
       if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
+        setDataBaseSubmission(true);
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
 
       if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
+        setDataBaseSubmission(true);
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_2(teamTwo);
-          await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
+          if (result === "success") setDataBaseSubmission(false);
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
       }}

@@ -571,7 +571,7 @@ export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: st
     throw new Error(updateError.message || 'Failed to update event team members');
   }
 
-  return true;
+  return "success";
 }
 
 
