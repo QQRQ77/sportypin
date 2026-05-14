@@ -31,6 +31,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
   const handleTeam1ClickAdd = (event: string) => {
+    if (isDataBaseSubmissionInAction) return
     if (event === "") {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -86,6 +87,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam1ClickSub = () => {
+    if (isDataBaseSubmissionInAction) return
+
     if (!(team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
@@ -100,6 +103,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickAdd = (event: string) => {
+    if (isDataBaseSubmissionInAction) return
+
     if (event === "") {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -151,6 +156,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickSub = () => {
+    if (isDataBaseSubmissionInAction) return
+
     if (!(team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
     setGameSignals((prevSignals) => ({
       ...defaultGameSignals,
@@ -173,6 +180,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty1Click = () => {
+    if (isDataBaseSubmissionInAction) return
+
     if (isPenaltyButtonActive === "disabled") {
       return;
     }
@@ -190,6 +199,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard1Click = () => {
+    if (isDataBaseSubmissionInAction) return
+
     if (isPenaltyButtonActive === "disabled") {
       return;
     }
@@ -207,9 +218,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard1Click = () => {
-    if (isPenaltyButtonActive === "disabled") {
-      return;
-    }
+    if (isDataBaseSubmissionInAction) return
+
+    if (isPenaltyButtonActive === "disabled") return;
+
     if (isPenaltyButtonActive === "redCard1") {
       resetPenaltyState();
       handleTeam1ClickAdd("");
@@ -224,9 +236,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty2Click = () => {
-    if (isPenaltyButtonActive === "disabled") {
-      return;
-    }
+    if (isDataBaseSubmissionInAction) return
+
+    if (isPenaltyButtonActive === "disabled") return;
+
     if (isPenaltyButtonActive === "penalty2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -241,9 +254,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard2Click = () => {
-    if (isPenaltyButtonActive === "disabled") {
-      return;
-    }
+    if (isDataBaseSubmissionInAction) return
+
+    if (isPenaltyButtonActive === "disabled") return;
+    
     if (isPenaltyButtonActive === "yellowCard2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -258,9 +272,10 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard2Click = () => {
-    if (isPenaltyButtonActive === "disabled") {
-      return;
-    }
+    if (isDataBaseSubmissionInAction) return
+
+    if (isPenaltyButtonActive === "disabled") return;
+
     if (isPenaltyButtonActive === "redCard2") {
       resetPenaltyState();
       handleTeam2ClickAdd("");
@@ -279,18 +294,18 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
 
       <div className="team-1 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
         <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
+          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
             onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleYellowCard1Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && isDataBaseSubmissionInAction ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
             onClick={handleRedCard1Click} ></div>
         </div>
         <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
           <h2 className="text-7xl lg:text-9xl font-bold">{team_1_score}</h2>
           {isUserCreator && 
             <div className="flex gap-2">
-              <button onClick={() => { if (!(team1active && !members1active && !isDataBaseSubmissionInAction)) { return; } handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+              <button onClick={() => { if (!(team1active && !members1active) { return; } handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
               <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
@@ -311,7 +326,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
           {isUserCreator && 
             <div className="flex gap-2">
-              <button onClick={() => { if (!(team2active && !members2active && !isDataBaseSubmissionInAction)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+              <button onClick={() => { if (!(team2active && !members2active)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
               <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
             </div>}
         </div>
