@@ -330,6 +330,8 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
       throw new Error("User is not event's creator");
     }
   
+  console.log("Score 1: ", updatedItem.team_1_score, "Score 2: ", updatedItem.team_2_score);
+  
   const eventData = await getEventById(eventId);
 
   if (!eventData || !eventData.harmonogram) {
