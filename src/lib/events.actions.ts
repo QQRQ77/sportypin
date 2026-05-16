@@ -338,11 +338,8 @@ export async function saveHarmonogramItem(eventId: string, itemId: string, updat
 
   const updatedHarmonogram = eventData.harmonogram.map((item: HarmonogramItem) => item.id === itemId ? updatedItem : item);
 
-  console.log("updatedItem in action", updatedItem) 
-
   const result = await saveHarmonogram(eventId, updatedHarmonogram);
-  return result;
-
+  if (result === "success") return "success";
 }
 
 //TODO:
