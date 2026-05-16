@@ -116,6 +116,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
           setTeam_2(updatedTeamTwo);
            try {
+                console.log("Zapisuję wynik i statystyki strzelca dla drużyny 2...", gameSignals.score2);
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_2_score: gameSignals.score2,
