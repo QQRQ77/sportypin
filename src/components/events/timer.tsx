@@ -2,7 +2,6 @@
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import { GameSygnals } from './HandBallGame';
 
 interface TimerProps {
   initialSeconds?: number;
