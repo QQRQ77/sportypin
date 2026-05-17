@@ -59,12 +59,15 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
 
-    useEffect(() => {
+  let updatedTeamOne: EventTeamMemberType[] = [];
+  let updatedTeamTwo: EventTeamMemberType[] = [];
+    
+  useEffect(() => {
 
       const handleGameSignalsChange = async () => {
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
             if (team_1.length > 0) {
-              const updatedTeamOne = team_1.map((member) =>
+              updatedTeamOne = team_1.map((member) =>
                 member.id === gameSignals.scorer1
                   ? { ...member, goals: (member.goals || 0) + 1 }
                   : member
@@ -79,7 +82,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_1_score: gameSignals.score1,
-                  team_1_players: updatedTeamOne 
+                  team_2_score: gameSignals.score2,
+                  team_1_players: updatedTeamOne, 
+                  team_2_players: updatedTeamTwo
                 });
 
                 if (result === "success") setDataBaseSubmission(false);
@@ -110,7 +115,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       if (gameSignals.score2 > prevScore2 && gameSignals.scorer2 !== "") {
         if (team_2.length > 0) {
           
-          const updatedTeamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
+          updatedTeamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, goals: (member.goals || 0) + 1 } : member))
           
           setDataBaseSubmission(true);
 
@@ -120,7 +125,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_2_score: gameSignals.score2,
-                  team_2_players: updatedTeamTwo 
+                  team_1_score: gameSignals.score1,
+                  team_2_players: updatedTeamTwo,
+                  team_1_players: updatedTeamOne,
                 });
 
                 if (result === "success") setDataBaseSubmission(false);
