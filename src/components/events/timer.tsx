@@ -35,13 +35,14 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
   const handleToggle = () => setIsRunning(!isRunning);
   const handleReset = () => {
     setIsRunning(false);
-    setSeconds(initialSeconds);
+    setSeconds(0);
   };
   const handleAddSecond = () => setSeconds((prev) => prev + 1);
   const handleSubtractSecond = () => setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
 
   return (
     <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
+      <div className='text-3xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
       {isUserCreator && 
