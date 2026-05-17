@@ -12,7 +12,7 @@ const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = ({
 }) => {
 
   return (
-    <section className='flex flex-col'>
+    <section className='flex flex-col items-center justify-center mx-auto'>
       <div className='flex flex-col'>
       {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
         gameTransmissionItems.map((item) => (
