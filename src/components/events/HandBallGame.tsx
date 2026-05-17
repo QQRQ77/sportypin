@@ -83,6 +83,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 {
                   id: createId(),
                   eventType: "goal",
+                  time: gameSignals.time,
                   playerId: gameSignals.scorer1,
                   eventTime: gameSignals.time,
                   score: `${gameSignals.score1}-${gameSignals.score2}`,
@@ -138,6 +139,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               {
                 id: createId(),
                 eventType: "goal",
+                time: gameSignals.time,
                 playerId: gameSignals.scorer2,
                 eventTime: gameSignals.time,
                 score: `${gameSignals.score1}-${gameSignals.score2}`,
@@ -190,7 +192,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer1,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -212,7 +214,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer2,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -234,7 +236,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer1,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -256,7 +258,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer2,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -278,7 +280,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer1,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -300,7 +302,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer2,
-              eventTime: gameSignals.time,
+              time: gameSignals.time,
               teamName: itemData?.team_2,
               team: 2
             }

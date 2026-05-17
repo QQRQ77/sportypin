@@ -238,6 +238,7 @@ export type GameTransmissionItem = {
       score?: string;
       team?: number;
       teamName?: string,
+      time?: number;
       eventDescription?: string,
       playerImageUrl?: string;
       teamLogoUrl?: string;
