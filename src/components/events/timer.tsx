@@ -9,17 +9,17 @@ interface TimerProps {
 }
 
 export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false }) => {
-  const [seconds, setSeconds] = useState(initialSeconds);
+  const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    if (isRunning && seconds > 0) {
+    if (isRunning && seconds < initialSeconds) {
       interval = setInterval(() => {
-        setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+        setSeconds((prev) => (prev < initialSeconds ? prev + 1 : initialSeconds));
       }, 1000);
-    } else if (seconds === 0) {
+    } else if (seconds === initialSeconds) {
       setIsRunning(false);
     }
 
