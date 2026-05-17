@@ -92,7 +92,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               ]);
 
               try {
-                console.log("Zapisuję wynik i statystyki strzelca dla drużyny 1...", gameSignals.score1);
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_1_score: gameSignals.score1,
@@ -134,8 +133,19 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setDataBaseSubmission(true);
 
           setTeam_2(updatedTeamTwo);
+          setGameTransmission((prevTransmission) => [
+              ...prevTransmission,
+              {
+                id: createId(),
+                eventType: "goal",
+                playerId: gameSignals.scorer2,
+                eventTime: gameSignals.time,
+                score: `${gameSignals.score1}-${gameSignals.score2}`,
+                teamName: itemData?.team_2,
+                team: 2
+              }
+            ]);
            try {
-                console.log("Zapisuję wynik i statystyki strzelca dla drużyny 2...", gameSignals.score1);
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
                   team_2_score: gameSignals.score2,
