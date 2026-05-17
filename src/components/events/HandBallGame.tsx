@@ -5,7 +5,9 @@ import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
-import { EventTeamMemberType, HarmonogramItem } from '@/types';
+import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem } from '@/types';
+import HandballGameTransmission from './Handball/HandballGameTransmission';
+import { createId } from "@paralleldrive/cuid2";
 
 interface HandBallGameProps {
   eventId: string;
@@ -18,14 +20,15 @@ interface HandBallGameProps {
 export type GameSygnals = {
   score1: number;
   score2: number;
-  scorer1: string | number;
-  scorer2: string | number;
+  scorer1: string;
+  scorer2: string;
   yellowCardsTeam1: number | string;
   yellowCardsTeam2: number | string;
   redCardsTeam1: number | string;
   redCardsTeam2: number | string;
   penaltyTeam1: number  | string;
   penaltyTeam2: number | string;
+  time: number;
 };
 
 export const defaultGameSignals = {
@@ -37,6 +40,7 @@ export const defaultGameSignals = {
     redCardsTeam2: 0,
     penaltyTeam1: 0,
     penaltyTeam2: 0,
+    time: 0,
 }
 
 const HandBallGame: React.FC<HandBallGameProps> = (
@@ -58,6 +62,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
   const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
+  const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
 
     useEffect(() => {
 
@@ -73,7 +78,19 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               setDataBaseSubmission(true);
 
               setTeam_1(updatedTeamOne);
-              
+              setGameTransmission((prevTransmission) => [
+                ...prevTransmission,
+                {
+                  id: createId(),
+                  eventType: "goal",
+                  playerId: gameSignals.scorer1,
+                  eventTime: gameSignals.time,
+                  score: `${gameSignals.score1}-${gameSignals.score2}`,
+                  teamName: itemData?.team_1,
+                  team: 1
+                }
+              ]);
+
               try {
                 console.log("Zapisuję wynik i statystyki strzelca dla drużyny 1...", gameSignals.score1);
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
@@ -224,7 +241,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} />
+      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} setGameSignals={setGameSignals} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
@@ -259,6 +276,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
       />
+      <HandballGameTransmission gameTransmissionItems={gameTransmission} />
     </>
   );
 };

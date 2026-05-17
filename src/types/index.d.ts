@@ -230,3 +230,16 @@ export type ClassificationItem = {
       logoUrl?: string;
 }
 
+export type GameTransmissionItem = {
+      id: string,
+      eventType: string,
+      playerId?: string,
+      eventTime?: number,
+      score?: string;
+      team?: number;
+      teamName?: string,
+      eventDescription?: string,
+      playerImageUrl?: string;
+      teamLogoUrl?: string;
+}
+

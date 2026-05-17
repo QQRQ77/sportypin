@@ -1,14 +1,16 @@
 'use client'
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { GameSygnals } from './HandBallGame';
 
 interface TimerProps {
   initialSeconds?: number;
   isUserCreator?: boolean;
+  setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, setGameSignals }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -18,6 +20,10 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
     if (isRunning && seconds < initialSeconds) {
       interval = setInterval(() => {
         setSeconds((prev) => (prev < initialSeconds ? prev + 1 : initialSeconds));
+        setGameSignals((prevSignals) => ({
+          ...prevSignals,
+          time: seconds + 1,
+        }));
       }, 1000);
     } else if (seconds === initialSeconds) {
       setIsRunning(false);
@@ -42,7 +48,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
   return (
     <div className="flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
-      <div className='text-3xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
+      <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
       {isUserCreator && 

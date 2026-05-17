@@ -29,7 +29,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   const noTeam1Members = !team_1_members || team_1_members.length === 0;
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
 
-  const handleTeam1Click = (memberId: string | number) => {
+  const handleTeam1Click = (memberId: string) => {
     if (members1active) { 
       setGameSignals((prevSignals) => ({
         ...prevSignals,
@@ -43,7 +43,7 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
     }
   };
 
-  const handleTeam2Click = (memberId: string | number) => {
+  const handleTeam2Click = (memberId: string) => {
     if (members2active) {
       setGameSignals((prevSignals) => ({
         ...prevSignals,
