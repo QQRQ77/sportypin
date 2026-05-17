@@ -29,10 +29,12 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
           </div>
         </div>
       )}
-      {transmissionItem.eventType === "redCard  " && (
+      {transmissionItem.eventType === "redCard" && (
         <div className='w-full flex flex-2 items-center'>
           <div className='flex justify-center items-center border-l-2 border-orange-900'>
-            <div className="w-4 h-6 bg-red-500 rounded"></div>
+            <div className='w-6 flex justify-center'>
+              <div className="w-4 h-6 bg-red-500 rounded"></div>
+            </div>
             {`${transmissionItem.teamName || ""}`}
           </div> 
         </div>
@@ -40,7 +42,9 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
       {transmissionItem.eventType === "yellowCard" && (
         <div className='w-full flex flex-2 items-center'>
           <div className='flex justify-center items-center border-l-2 border-orange-900'>
-            <div className="w-4 h-6 bg-yellow-300 rounded"></div>
+            <div className='w-6 flex justify-center'>
+              <div className="w-4 h-6 bg-yellow-300 rounded"></div>
+            </div>
             {`${transmissionItem.teamName || ""}`}
           </div> 
         </div>
