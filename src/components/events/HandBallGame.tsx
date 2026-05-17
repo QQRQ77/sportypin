@@ -184,6 +184,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_1(teamOne);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "yellowCard",
+              playerId: gameSignals.scorer1,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_1,
+              team: 1
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
           if (result === "success") setDataBaseSubmission(false);
         }
@@ -195,6 +206,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_2(teamTwo);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "yellowCard",
+              playerId: gameSignals.scorer2,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_2,
+              team: 2
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
           if (result === "success") setDataBaseSubmission(false);
         }
@@ -206,6 +228,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
           setTeam_1(teamOne);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "redCard",
+              playerId: gameSignals.scorer1,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_1,
+              team: 1
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
           if (result === "success") setDataBaseSubmission(false);
         }
@@ -217,6 +250,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
           setTeam_2(teamTwo);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "redCard",
+              playerId: gameSignals.scorer2,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_2,
+              team: 2
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
           if (result === "success") setDataBaseSubmission(false);
         }
@@ -228,6 +272,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "penalty",
+              playerId: gameSignals.scorer1,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_1,
+              team: 1
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne);
           if (result === "success") setDataBaseSubmission(false);
         }
@@ -239,6 +294,17 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_2(teamTwo);
+          setGameTransmission((prevTransmission) => [
+            ...prevTransmission,
+            {
+              id: createId(),
+              eventType: "penalty",
+              playerId: gameSignals.scorer2,
+              eventTime: gameSignals.time,
+              teamName: itemData?.team_2,
+              team: 2
+            }
+          ]);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo);
           if (result === "success") setDataBaseSubmission(false);
         }
