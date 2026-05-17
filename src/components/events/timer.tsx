@@ -7,10 +7,10 @@ import { GameSygnals } from './HandBallGame';
 interface TimerProps {
   initialSeconds?: number;
   isUserCreator?: boolean;
-  setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
+  setGameTime: Dispatch<SetStateAction<number>>;
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, setGameSignals }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, setGameTime }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -20,10 +20,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
     if (isRunning && seconds < initialSeconds) {
       interval = setInterval(() => {
         setSeconds((prev) => (prev < initialSeconds ? prev + 1 : initialSeconds));
-        setGameSignals((prevSignals) => ({
-          ...prevSignals,
-          time: seconds + 1,
-        }));
+        setGameTime(seconds + 1);
       }, 1000);
     } else if (seconds === initialSeconds) {
       setIsRunning(false);

@@ -62,6 +62,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
   const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
+  const [gameTime, setGameTime] = React.useState(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
 
     useEffect(() => {
@@ -83,9 +84,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 {
                   id: createId(),
                   eventType: "goal",
-                  time: gameSignals.time,
+                  time: gameTime,
                   playerId: gameSignals.scorer1,
-                  eventTime: gameSignals.time,
                   score: `${gameSignals.score1}-${gameSignals.score2}`,
                   teamName: itemData?.team_1,
                   team: 1
@@ -139,9 +139,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               {
                 id: createId(),
                 eventType: "goal",
-                time: gameSignals.time,
+                time: gameTime,
                 playerId: gameSignals.scorer2,
-                eventTime: gameSignals.time,
                 score: `${gameSignals.score1}-${gameSignals.score2}`,
                 teamName: itemData?.team_2,
                 team: 2
@@ -192,7 +191,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer1,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -214,7 +213,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer2,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -236,7 +235,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer1,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -258,7 +257,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer2,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -280,7 +279,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer1,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -302,7 +301,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer2,
-              time: gameSignals.time,
+              time: gameTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -319,7 +318,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} setGameSignals={setGameSignals} />
+      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} setGameTime={setGameTime} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
