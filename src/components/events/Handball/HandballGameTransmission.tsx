@@ -12,18 +12,17 @@ const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = ({
 }) => {
 
   return (
-    <section className='w-full flex flex-col items-center justify-center mx-auto'>
+    <section className='w-full flex items-center justify-center'>
       <div className='flex flex-col'>
-      {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
-        gameTransmissionItems.slice().reverse().map((item) => (
-          <TransmissionSingleItem key={item.id} transmissionItem={item} />
-        ))
-      ) : (
-        <div className='text-gray-500'>Brak transmisji</div>
-      )}
+        {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
+          gameTransmissionItems.slice().reverse().map((item) => (
+            <TransmissionSingleItem key={item.id} transmissionItem={item} />
+          ))
+        ) : (
+          <div className='text-gray-500'>Brak transmisji</div>
+        )}
       </div>
       <div className='bg-orange-600 text-white text-xl p-2 rounded-full border-2 border-orange-900'>Start meczu</div>
-      <JSONviewer data={gameTransmissionItems} />
     </section>
   );
 };
