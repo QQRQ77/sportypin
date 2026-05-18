@@ -21,7 +21,7 @@ const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = ({
           <div className='text-gray-500'>Brak transmisji</div>
         )}
       </div>
-      <div className='bg-orange-600 text-white text-xl p-2 rounded-full border-2 border-orange-900'>Start meczu</div>
+      <div className='bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>Start meczu</div>
     </section>
   );
 };

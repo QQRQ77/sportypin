@@ -32,10 +32,10 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
       )}
       {transmissionItem.eventType === "penalty" && (
         <div className={team_1 ? 'w-full h-10 flex items-center justify-end' : 'w-full h-10 flex items-center justify-start'}>
-          <div className='flex items-center gap-2'>
-            <div className='font-bold text-gray-700 w-10'>{formatTime(transmissionItem?.time || 0)}</div>
-            <PiNumberTwoFill size={24} /> 
-            {`${transmissionItem.teamName || ""}`}
+          <div className={`flex items-center gap-2 ${team_1 ? 'justif' : 'justify-start'}`}>
+            <div className={`font-bold text-gray-700 w-10 ${team_1 ? 'order-3' : 'order-1'}`}>{formatTime(transmissionItem?.time || 0)}</div>
+            <PiNumberTwoFill size={24} className={`order-2`}/> 
+            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.teamName || ""}`}</div>
           </div>
         </div>
       )}
