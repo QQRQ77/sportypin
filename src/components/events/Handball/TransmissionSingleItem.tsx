@@ -21,7 +21,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
     <>
       {transmissionItem.eventType === "goal" && (
         <div className='w-full flex items-center'>
-          <div className='flex justify-center items-center gap-2'>          
+          <div className='flex items-center gap-2'>          
             <div className='text-sm text-gray-700 w-10'>{formatTime(transmissionItem?.time || 0)}</div>
             <PiSoccerBallLight size={24}/> 
             {`${transmissionItem.teamName || ""}`}
@@ -30,7 +30,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
       )}
       {transmissionItem.eventType === "penalty" && (
         <div className='w-full flex items-center'>
-          <div className='flex justify-center items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <div className='text-sm text-gray-700 w-10'>{formatTime(transmissionItem?.time || 0)}</div>
             <PiNumberTwoFill size={24} /> 
             {`${transmissionItem.teamName || ""}`}
@@ -39,7 +39,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
       )}
       {transmissionItem.eventType === "redCard" && (
         <div className='w-full flex items-center'>
-          <div className='flex justify-center items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <div className='text-sm text-gray-700 w-10'>{formatTime(transmissionItem?.time || 0)}</div>
             <div className='w-6 flex justify-center'>
               <div className="w-4 h-6 bg-red-500 rounded"></div>
@@ -50,7 +50,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
       )}
       {transmissionItem.eventType === "yellowCard" && (
         <div className='w-full flex items-center'>
-          <div className='flex justify-center items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <div className='text-sm text-gray-700 w-10'>{formatTime(transmissionItem?.time || 0)}</div>
             <div className='w-6 flex justify-center'>
               <div className="w-4 h-6 bg-yellow-300 rounded"></div>
@@ -65,10 +65,10 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   return (
     <div className="transmission-single-item w-full flex items-center justify-center">
       <div className="w-1/2 flex justify-end border-r-2 border-orange-900">
-        {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-8' />}
+        {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-10' />}
       </div>
       <div className="w-1/2 flex justify-start border-l-2 border-orange-900">
-        {transmissionItem.team === 2 ? renderEvent() : <div className='w-full h-8' />}
+        {transmissionItem.team === 2 ? renderEvent() : <div className='w-full h-10' />}
       </div>
     </div>
   );
