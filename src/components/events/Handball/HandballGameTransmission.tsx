@@ -1,4 +1,3 @@
-import JSONviewer from '@/components/utils/JSONviewer';
 import { GameTransmissionItem } from '@/types';
 import React from 'react';
 import TransmissionSingleItem from './TransmissionSingleItem';
