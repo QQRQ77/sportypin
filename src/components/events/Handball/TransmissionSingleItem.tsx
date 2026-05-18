@@ -64,10 +64,10 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   return (
     <div className="transmission-single-item w-full flex items-center justify-center gap-2">
-      <div className="w-1/2 flex justify-start">
+      <div className="w-1/2 flex justify-start border-r-2 border-orange-900">
         {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-8' />}
       </div>
-      <div className="w-1/2 flex justify-end">
+      <div className="w-1/2 flex justify-end border-l-2 border-orange-900">
         {transmissionItem.team === 2 ? renderEvent() : <div className='w-full h-8' />}
       </div>
     </div>
