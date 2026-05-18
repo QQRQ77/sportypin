@@ -63,7 +63,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   );
 
   return (
-    <div className="transmission-single-item w-full flex items-center justify-center gap-2">
+    <div className="transmission-single-item w-full flex items-center justify-center gap-2 border-2 border-yellow-500">
       <div className="w-1/2 flex justify-start border-r-2 border-orange-900">
         {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-8' />}
       </div>

@@ -11,8 +11,8 @@ const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = ({
 }) => {
 
   return (
-    <section className='w-full flex items-center justify-center'>
-      <div className='flex flex-col'>
+    <section className='w-full flex flex-col items-center justify-center border-2'>
+      <div className='flex flex-col border-2 border-red-500'>
         {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
           gameTransmissionItems.slice().reverse().map((item) => (
             <TransmissionSingleItem key={item.id} transmissionItem={item} />
