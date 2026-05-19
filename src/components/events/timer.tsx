@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface TimerProps {
   initialSeconds?: number;
@@ -20,7 +20,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
       interval = setInterval(() => {
         setSeconds((prev) => {
           const nextSecond = prev + 1;
-          onTimeChange(nextSecond); // Informujemy referencję w rodzicu o nowym czasie
+          onTimeChange(nextSecond);
           return nextSecond;
         });
       }, 1000);
