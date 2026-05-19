@@ -143,6 +143,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 eventType: "goal",
                 time: gameTime,
                 playerId: gameSignals.scorer2,
+                playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
+                playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
                 score: `${gameSignals.score1}-${gameSignals.score2}`,
                 teamName: itemData?.team_2,
                 team: 2
@@ -193,6 +195,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer1,
+              playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
+              playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_1,
               team: 1
@@ -215,6 +219,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "yellowCard",
               playerId: gameSignals.scorer2,
+              playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
+              playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_2,
               team: 2
@@ -237,6 +243,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer1,
+              playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
+              playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_1,
               team: 1
@@ -259,6 +267,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "redCard",
               playerId: gameSignals.scorer2,
+              playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
+              playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_2,
               team: 2
@@ -281,6 +291,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer1,
+              playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
+              playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_1,
               team: 1
@@ -303,6 +315,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               id: createId(),
               eventType: "penalty",
               playerId: gameSignals.scorer2,
+              playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
+              playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
               time: gameTime,
               teamName: itemData?.team_2,
               team: 2
