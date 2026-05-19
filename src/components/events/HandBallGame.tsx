@@ -90,7 +90,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                   playerId: gameSignals.scorer1,
                   playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
                   playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-                  score: `${gameSignals.score1}-${gameSignals.score2}`,
+                  score: `${gameSignals.score1} : ${gameSignals.score2}`,
                   teamName: itemData?.team_1,
                   team: 1
                 }
@@ -147,7 +147,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 playerId: gameSignals.scorer2,
                 playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
                 playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-                score: `${gameSignals.score1}-${gameSignals.score2}`,
+                score: `${gameSignals.score1} : ${gameSignals.score2}`,
                 teamName: itemData?.team_2,
                 team: 2
               }
