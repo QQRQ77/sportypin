@@ -234,6 +234,8 @@ export type GameTransmissionItem = {
       id: string,
       eventType: string,
       playerId?: string,
+      playerName?: string,
+      playerNumber?: string | number,
       eventTime?: number,
       score?: string;
       team?: number;
