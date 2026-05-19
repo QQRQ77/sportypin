@@ -6,10 +6,10 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 interface TimerProps {
   initialSeconds?: number;
   isUserCreator?: boolean;
-  setGameTime: Dispatch<SetStateAction<number>>;
+  onTimeChange: (seconds: number) => void;
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, setGameTime }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -18,15 +18,18 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
     if (isRunning && seconds < initialSeconds) {
       interval = setInterval(() => {
-        setSeconds((prev) => (prev < initialSeconds ? prev + 1 : initialSeconds));
-        setGameTime(seconds + 1);
+        setSeconds((prev) => {
+          const nextSecond = prev + 1;
+          onTimeChange(nextSecond); // Informujemy referencję w rodzicu o nowym czasie
+          return nextSecond;
+        });
       }, 1000);
     } else if (seconds === initialSeconds) {
       setIsRunning(false);
     }
 
     return () => clearInterval(interval);
-  }, [isRunning, seconds]);
+  }, [isRunning, seconds, onTimeChange, initialSeconds]);
 
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);

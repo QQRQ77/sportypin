@@ -19,8 +19,6 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   
   const team_1 = transmissionItem.team === 1 
 
-  console.log("rendering item", transmissionItem)
-
   const renderEvent = () => (
     <>
       {transmissionItem.eventType === "goal" && (
@@ -28,7 +26,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
           <div className='flex items-center gap-2'>          
             <div className={`font-bold text-gray-700 w-10 ${team_1 ? 'order-3' : 'order-1'}`}>{formatTime(transmissionItem?.time || 0)}</div>
             <PiSoccerBallLight size={24} className={`order-2`}/> 
-            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} ({`#${transmissionItem.playerNumber || ""}`})</div>
+            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div> 
         </div>
       )}
@@ -37,7 +35,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
           <div className={`flex items-center gap-2 ${team_1 ? 'justif' : 'justify-start'}`}>
             <div className={`font-bold text-gray-700 w-10 ${team_1 ? 'order-3' : 'order-1'}`}>{formatTime(transmissionItem?.time || 0)}</div>
             <PiNumberTwoFill size={24} className={`order-2`}/> 
-            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} ({`#${transmissionItem.playerNumber || ""}`})</div>
+            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
         </div>
       )}
@@ -48,7 +46,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <div className='w-6 flex justify-center order-2'>
               <div className="w-4 h-6 bg-red-500 rounded"></div>
             </div>
-            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} ({`#${transmissionItem.playerNumber || ""}`})</div>
+            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div> 
         </div>
       )}
@@ -59,7 +57,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <div className='w-6 flex justify-center order-2'>
               <div className="w-4 h-6 bg-yellow-300 rounded"></div>
             </div>
-            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} ({`#${transmissionItem.playerNumber || ""}`})</div>
+            <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div> 
         </div>
       )}

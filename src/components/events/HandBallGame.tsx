@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
@@ -62,12 +62,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
   const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
-  const [gameTime, setGameTime] = React.useState(0);
+  const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
 
     useEffect(() => {
 
       const handleGameSignalsChange = async () => {
+        const currentMatchTime = gameTimeRef.current;
+
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
             if (team_1.length > 0) {
               const updatedTeamOne = team_1.map((member) =>
@@ -84,7 +86,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 {
                   id: createId(),
                   eventType: "goal",
-                  time: gameTime,
+                  time: currentMatchTime,
                   playerId: gameSignals.scorer1,
                   playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
                   playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
@@ -141,7 +143,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               {
                 id: createId(),
                 eventType: "goal",
-                time: gameTime,
+                time: currentMatchTime,
                 playerId: gameSignals.scorer2,
                 playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
                 playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
@@ -197,7 +199,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer1,
               playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
               playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -221,7 +223,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer2,
               playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
               playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -245,7 +247,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer1,
               playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
               playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -269,7 +271,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer2,
               playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
               playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -293,7 +295,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer1,
               playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
               playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_1,
               team: 1
             }
@@ -317,7 +319,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               playerId: gameSignals.scorer2,
               playerName: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.name || "",
               playerNumber: itemData?.team_2_players?.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: gameTime,
+              time: currentMatchTime,
               teamName: itemData?.team_2,
               team: 2
             }
@@ -334,7 +336,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} setGameTime={setGameTime} />
+      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} onTimeChange={(seconds) => { gameTimeRef.current = seconds; }} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
