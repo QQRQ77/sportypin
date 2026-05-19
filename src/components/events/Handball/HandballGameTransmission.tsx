@@ -25,4 +25,6 @@ const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = React.
   );
 }, (prevProps, nextProps) => (prevProps.gameTransmissionItems?.length ?? 0) === (nextProps.gameTransmissionItems?.length ?? 0));
 
+HandballGameTransmission.displayName = 'HandballGameTransmission';
+
 export default HandballGameTransmission;
