@@ -69,7 +69,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   return (
     <div className="transmission-single-item w-full flex items-center justify-center">
-      <div className="w-1/2 relative flex justify-end border-r-4 border-orange-900 pr-12">
+      <div className="w-1/2 h-16 relative flex justify-end border-r-4 border-orange-900 pr-12">
         {transmissionItem.eventType === "goal" ? 
         <div className="absolute flex items-center justify-center w-18 -right-9.5 top-1/2 h-8 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full font-semibold">{transmissionItem.score || ""}</div>
         : (transmissionItem.eventType === "endGame" ?
