@@ -21,6 +21,9 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   const renderEvent = () => (
     <>
+      {transmissionItem.eventType === "endGame" && (
+        <div className='bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>Koniec meczu</div> 
+      )}
       {transmissionItem.eventType === "goal" && (
         <div className={team_1 ? 'w-full h-10 flex items-center justify-end' : 'w-full h-10 flex items-center justify-start'}>
           <div className='flex items-center gap-2'>          
@@ -66,7 +69,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   return (
     <div className="transmission-single-item w-full flex items-center justify-center">
-      <div className="w-1/2 relative flex justify-end border-r-4 border-orange-900 pr-10">
+      <div className="w-1/2 relative flex justify-end border-r-4 border-orange-900 pr-12">
         {transmissionItem.eventType === "goal" ? 
         <div className="absolute flex items-center justify-center w-18 -right-9.5 top-1/2 h-8 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full font-semibold">{transmissionItem.score || ""}</div>
         : <div className="absolute -right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full" />

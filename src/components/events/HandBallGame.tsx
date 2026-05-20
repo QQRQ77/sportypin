@@ -8,6 +8,7 @@ import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers } from '@/lib/event
 import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem } from '@/types';
 import HandballGameTransmission from './Handball/HandballGameTransmission';
 import { createId } from "@paralleldrive/cuid2";
+import { Button } from '../ui/button';
 
 interface HandBallGameProps {
   eventId: string;
@@ -64,11 +65,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
   const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
+  const [endTimeVis, setEndTimeVis] = React.useState(false); 
 
     useEffect(() => {
 
       const handleGameSignalsChange = async () => {
         const currentMatchTime = gameTimeRef.current;
+
+        if (currentMatchTime === matchTime) setEndTimeVis(true);
 
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
             if (team_1.length > 0) {
@@ -338,6 +342,22 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     <>
       <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} onTimeChange={(seconds) => { gameTimeRef.current = seconds; }} />
       <h1 className="text-3xl font-bold">Wynik:</h1>
+      {endTimeVis ? 
+      <div className="w-full md:w-96 h-16 bg-gray-200 rounded flex items-center justify-center">
+        <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
+        <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
+        <div className="flex gap-4">
+          <Button onClick={() => setGameTransmission((prevTransmission) => [
+                ...prevTransmission,
+                {
+                  id: createId(),
+                  eventType: "endGame",
+                }
+              ])}> Tak </Button>
+          <Button onClick={() => setEndTimeVis(false)}> Nie </Button>
+        </div>
+      </div>
+       :
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
         noTeam2Members={!team_2 || team_2.length === 0} 
@@ -356,7 +376,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         isPenaltyButtonActive={isPenaltyButtonActive}
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
-        />
+        />}
       <MatchTeamsMembers 
         team_1_members={team_1}
         team_2_members={team_2}
