@@ -21,6 +21,9 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   const renderEvent = () => (
     <>
+      {transmissionItem.eventType === "endGame" && (
+        <div className='w-full h-10 flex items-center justify-center'></div>
+      )}
       {transmissionItem.eventType === "goal" && (
         <div className={team_1 ? 'w-full h-10 flex items-center justify-end' : 'w-full h-10 flex items-center justify-start'}>
           <div className='flex items-center gap-2'>          

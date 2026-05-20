@@ -356,11 +356,12 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 {
                   id: createId(),
                   eventType: "endGame",
+                  team: 1
                 }
               ])}>
             Tak 
           </Button>
-          <Button className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
+          <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
             Nie 
           </Button>
         </div>
