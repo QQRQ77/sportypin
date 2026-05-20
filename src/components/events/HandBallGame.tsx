@@ -346,11 +346,11 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       {endTimeVis ? 
-      <div className="w-full md:w-96 h-16 bg-gray-200 rounded flex flex-col items-center justify-center">
+      <div className="w-full md:w-96 bg-gray-200 rounded flex flex-col items-center justify-center">
         <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
         <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
         <div className="flex gap-4">
-          <Button size="lg" className="cursor-pointer"
+          <Button size="lg" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white"
             onClick={() => setGameTransmission((prevTransmission) => [
                 ...prevTransmission,
                 {
@@ -360,7 +360,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               ])}>
             Tak 
           </Button>
-          <Button className="cursor-pointer" onClick={() => setEndTimeVis(false)}>
+          <Button className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
             Nie 
           </Button>
         </div>
