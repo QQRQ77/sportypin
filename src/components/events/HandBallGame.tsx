@@ -67,12 +67,15 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
   const [endTimeVis, setEndTimeVis] = React.useState(false); 
 
-    useEffect(() => {
+  useEffect(() => {
+    if (gameTimeRef.current >= matchTime) {
+      setEndTimeVis(true);}
+    }, [gameTimeRef.current, matchTime])  
+    
+  useEffect(() => {
 
       const handleGameSignalsChange = async () => {
         const currentMatchTime = gameTimeRef.current;
-
-        if (currentMatchTime === matchTime) setEndTimeVis(true);
 
         if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
             if (team_1.length > 0) {
