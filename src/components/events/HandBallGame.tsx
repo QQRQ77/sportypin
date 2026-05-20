@@ -66,11 +66,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>([]);
   const [endTimeVis, setEndTimeVis] = React.useState(false); 
-
-  useEffect(() => {
-    if (gameTimeRef.current >= matchTime) {
-      setEndTimeVis(true);}
-    }, [gameTimeRef.current, matchTime])  
     
   useEffect(() => {
 
@@ -343,7 +338,12 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <Timer initialSeconds={matchTime} isUserCreator={isUserCreator} onTimeChange={(seconds) => { gameTimeRef.current = seconds; }} />
+      <Timer 
+        initialSeconds={matchTime} 
+        isUserCreator={isUserCreator} 
+        onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
+        setEndTimeVis={setEndTimeVis} 
+      />
       <h1 className="text-3xl font-bold">Wynik:</h1>
       {endTimeVis ? 
       <div className="w-full md:w-96 h-16 bg-gray-200 rounded flex items-center justify-center">

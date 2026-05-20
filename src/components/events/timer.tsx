@@ -1,15 +1,16 @@
 'use client'
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 interface TimerProps {
   initialSeconds?: number;
   isUserCreator?: boolean;
   onTimeChange: (seconds: number) => void;
+  setEndTimeVis: Dispatch<SetStateAction<boolean>>; 
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -21,6 +22,10 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
         setSeconds((prev) => {
           const nextSecond = prev + 1;
           onTimeChange(nextSecond);
+          if (nextSecond >= initialSeconds) {
+            setIsRunning(false);
+            setEndTimeVis(true);
+          }
           return nextSecond;
         });
       }, 1000);
