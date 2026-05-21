@@ -344,9 +344,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
         setEndTimeVis={setEndTimeVis} 
       />
-      <h1 className="text-3xl font-bold">Wynik:</h1>
       {endTimeVis ? 
-      <div className="w-full md:w-96 bg-gray-200 rounded flex flex-col items-center justify-center">
+      <div className="w-full md:w-9 rounded-xl flex flex-col items-center justify-center p-5 border-1">
         <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
         <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
         <div className="flex gap-4">
@@ -367,6 +366,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         </div>
       </div>
        :
+      <>
+      <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
         noTeam2Members={!team_2 || team_2.length === 0} 
@@ -385,7 +386,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         isPenaltyButtonActive={isPenaltyButtonActive}
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
-        />}
+        /></>}
       <MatchTeamsMembers 
         team_1_members={team_1}
         team_2_members={team_2}
