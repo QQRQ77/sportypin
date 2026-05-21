@@ -350,14 +350,21 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
         <div className="flex gap-4">
           <Button size="lg" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white"
-            onClick={() => setGameTransmission((prevTransmission) => [
+            onClick={() => {setGameTransmission((prevTransmission) => [
                 ...prevTransmission,
                 {
                   id: createId(),
                   eventType: "endGame",
                   team: 1
                 }
-              ])}>
+              ]);
+              setMembers1Active(false);
+              setMembers2Active(false);
+              setScore1Active(false);
+              setScore2Active(false);
+              setIsPenaltyButtonActive("");
+              setEndTimeVis(false);
+              }}>
             Tak 
           </Button>
           <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
