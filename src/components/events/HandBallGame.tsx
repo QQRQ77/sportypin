@@ -393,6 +393,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         isPenaltyButtonActive={isPenaltyButtonActive}
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
+        gameEnd={endTimeVis}
         /></>}
       <MatchTeamsMembers 
         team_1_members={team_1}

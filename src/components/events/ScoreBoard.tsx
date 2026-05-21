@@ -22,16 +22,18 @@ interface ScoreBoardProps {
   setMembers1Active: (active: boolean) => void;
   setMembers2Active: (active: boolean) => void;
   setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
+  gameEnd?: boolean;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
   team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
   members1active = true, members2active = true,
-  noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false,
+  noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, gameEnd = false,
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
   const handleTeam1ClickAdd = (event: string) => {
-    if (isDataBaseSubmissionInAction) return
+    if (gameEnd) return;
+    if (isDataBaseSubmissionInAction) return;
     if (event === "") {
       setGameSignals((prevSignals) => ({
         ...defaultGameSignals,
@@ -85,7 +87,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam1ClickSub = () => {
-    if (isDataBaseSubmissionInAction) return
+    if (gameEnd) return;
+    if (isDataBaseSubmissionInAction) return;
 
     if (!(team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
     setGameSignals((prevSignals) => ({
