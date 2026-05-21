@@ -345,7 +345,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setEndTimeVis={setEndTimeVis} 
       />
       {endTimeVis ? 
-      <div className="w-full md:w-9 rounded-xl flex flex-col items-center justify-center p-5 border-1">
+      <div className="w-full md:w-96 rounded-xl flex flex-col items-center justify-center p-5 border-1">
         <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
         <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
         <div className="flex gap-4">
