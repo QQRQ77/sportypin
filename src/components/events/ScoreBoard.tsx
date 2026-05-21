@@ -104,6 +104,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickAdd = (event: string) => {
+    if (gameEnd) return;
     if (isDataBaseSubmissionInAction) return
 
     if (event === "") {
@@ -157,6 +158,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleTeam2ClickSub = () => {
+    if (gameEnd) return;
     if (isDataBaseSubmissionInAction) return
 
     if (!(team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled"))) return;
@@ -181,6 +183,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty1Click = () => {
+    if (gameEnd) return
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") {
@@ -200,6 +203,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard1Click = () => {
+    if (gameEnd) return
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") {
@@ -219,6 +223,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard1Click = () => {
+    if (gameEnd) return 
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") return;
@@ -237,6 +242,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handlePenalty2Click = () => {
+    if (gameEnd) return
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") return;
@@ -255,6 +261,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   const handleYellowCard2Click = () => {
+    if (gameEnd) return
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") return;
@@ -273,6 +280,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
     const handleRedCard2Click = () => {
+    if (gameEnd) return  
     if (isDataBaseSubmissionInAction) return
 
     if (isPenaltyButtonActive === "disabled") return;
