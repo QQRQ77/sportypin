@@ -362,7 +362,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               setMembers2Active(false);
               setScore1Active(false);
               setScore2Active(false);
-              setIsPenaltyButtonActive("");
+              setIsPenaltyButtonActive("disabled");
               setEndTimeVis(false);
               }}>
             Tak 
