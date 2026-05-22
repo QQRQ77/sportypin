@@ -188,6 +188,7 @@ export type HarmonogramItem = {
       athlete_1_score?: number,
       athlete_2_score?: number,
       LP?: number,
+      gameTransmission?: GameTransmissionItem[];
 }
 
 export type Participant = {

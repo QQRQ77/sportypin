@@ -23,7 +23,7 @@
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { ClassificationItem, CreateEvent, EventTeamMemberType, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, CreateEvent, EventTeamMemberType, GameTransmissionItem, HarmonogramItem, Participant } from "@/types";
 import { formatAddressForGeocoding, getGeocodeFromAddressGoogle } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 
@@ -525,7 +525,7 @@ export async function saveEventTeamMembers(eventId: string, teamName: string, ev
 } 
 
 //TODO:
-export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: string, teamNumber: number, eventTeamMembers: EventTeamMemberType[]) {
+export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: string, teamNumber: number, eventTeamMembers: EventTeamMemberType[], gameTransmission?: GameTransmissionItem[]) {
   const supabase = createSupabaseClient();
 
   const { data, error } = await supabase
@@ -546,12 +546,14 @@ export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: st
       if (teamNumber === 1) {
         return {
           ...item,
-          team_1_players: eventTeamMembers
+          team_1_players: eventTeamMembers,
+          gameTransmission: gameTransmission,
         };
       } else if (teamNumber === 2) {
         return {
           ...item,
-          team_2_players: eventTeamMembers
+          team_2_players: eventTeamMembers,
+          gameTransmission: gameTransmission,
         };
       }
     }
