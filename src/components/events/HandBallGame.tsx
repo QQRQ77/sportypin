@@ -9,6 +9,8 @@ import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem } from '@/ty
 import HandballGameTransmission from './Handball/HandballGameTransmission';
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from '../ui/button';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Form } from "@/components/ui/form";
 
 interface HandBallGameProps {
   eventId: string;
@@ -51,6 +53,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const matchTime 
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
 
+  interface FormValues {}
+
+  const form = useForm<FormValues>();
   
   const [team_1, setTeam_1] = React.useState(team_1_members || []);
   const [team_2, setTeam_2] = React.useState(team_2_members || []);
@@ -72,51 +77,51 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       const handleGameSignalsChange = async () => {
         const currentMatchTime = gameTimeRef.current;
 
-        if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
-            if (team_1.length > 0) {
-              const updatedTeamOne = team_1.map((member) =>
-                member.id === gameSignals.scorer1
-                  ? { ...member, goals: (member.goals || 0) + 1 }
-                  : member
-              );
+      if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
+          if (team_1.length > 0) {
+            const updatedTeamOne = team_1.map((member) =>
+              member.id === gameSignals.scorer1
+                ? { ...member, goals: (member.goals || 0) + 1 }
+                : member
+            );
 
-              setDataBaseSubmission(true);
+            setDataBaseSubmission(true);
 
-              setTeam_1(updatedTeamOne);
-              setGameTransmission((prevTransmission) => [
-                ...prevTransmission,
-                {
-                  id: createId(),
-                  eventType: "goal",
-                  time: currentMatchTime,
-                  playerId: gameSignals.scorer1,
-                  playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
-                  playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-                  score: `${gameSignals.score1} : ${gameSignals.score2}`,
-                  teamName: itemData?.team_1,
-                  team: 1
-                }
-              ]);
-
-              try {
-                const result = await saveHarmonogramItem(eventId, itemData?.id, { 
-                  ...itemData, 
-                  team_1_score: gameSignals.score1,
-                  team_2_score: gameSignals.score2,
-                  team_1_players: updatedTeamOne,
-                  team_2_players: team_2,
-                  gameTransmission: gameTransmission,  
-                });
-
-                if (result === "success") setDataBaseSubmission(false);
-              } catch (error) {
-                console.error("Błąd podczas zapisu:", error);
+            setTeam_1(updatedTeamOne);
+            setGameTransmission((prevTransmission) => [
+              ...prevTransmission,
+              {
+                id: createId(),
+                eventType: "goal",
+                time: currentMatchTime,
+                playerId: gameSignals.scorer1,
+                playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
+                playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
+                score: `${gameSignals.score1} : ${gameSignals.score2}`,
+                teamName: itemData?.team_1,
+                team: 1
               }
+            ]);
+
+            try {
+              const result = await saveHarmonogramItem(eventId, itemData?.id, { 
+                ...itemData, 
+                team_1_score: gameSignals.score1,
+                team_2_score: gameSignals.score2,
+                team_1_players: updatedTeamOne,
+                team_2_players: team_2,
+                gameTransmission: gameTransmission,  
+              });
+
+              if (result === "success") setDataBaseSubmission(false);
+            } catch (error) {
+              console.error("Błąd podczas zapisu:", error);
             }
-            
-            setPrevScore1(gameSignals.score1);
-            setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }));
           }
+          
+          setPrevScore1(gameSignals.score1);
+          setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }));
+        }
 
       if (gameSignals.score1 < prevScore1) {
         setDataBaseSubmission(true);
@@ -336,7 +341,26 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       handleGameSignalsChange();
 
-    }, [gameSignals]);
+  }, [gameSignals]);
+
+  const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log("submit end game", data);
+    setGameTransmission((prevTransmission) => [
+      ...prevTransmission,
+      {
+        id: createId(),
+        eventType: "endGame",
+        team: 1
+      }
+    ]);
+    setMembers1Active(false);
+    setMembers2Active(false);
+    setScore1Active(false);
+    setScore2Active(false);
+    setIsPenaltyButtonActive("disabled");
+    setEndTimeVis(false);
+    await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, team_1, gameTransmission);
+  }
   
   return (
     <>
@@ -346,34 +370,26 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
         setEndTimeVis={setEndTimeVis} 
       />
-      {endTimeVis ? 
-      <div className="w-full md:w-96 rounded-xl flex flex-col items-center justify-center p-5 border-1">
-        <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
-        <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
-        <div className="flex gap-4">
-          <Button size="lg" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white"
-            onClick={() => {setGameTransmission((prevTransmission) => [
-                ...prevTransmission,
-                {
-                  id: createId(),
-                  eventType: "endGame",
-                  team: 1
-                }
-              ]);
-              setMembers1Active(false);
-              setMembers2Active(false);
-              setScore1Active(false);
-              setScore2Active(false);
-              setIsPenaltyButtonActive("disabled");
-              setEndTimeVis(false);
-              }}>
-            Tak 
-          </Button>
-          <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
-            Nie 
-          </Button>
-        </div>
-      </div>
+      {endTimeVis ?
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="w-full mb-2"
+        >
+          <div className="w-full md:w-96 rounded-xl flex flex-col items-center justify-center p-5 border-1">
+            <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
+            <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
+            <div className="flex gap-4">
+              <Button size="lg" type="submit" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white">
+                Tak 
+              </Button>
+              <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
+                Nie 
+              </Button>
+            </div>
+          </div>
+        </form>
+      </Form>
        :
       <>
       <h1 className="text-3xl font-bold">Wynik:</h1>
