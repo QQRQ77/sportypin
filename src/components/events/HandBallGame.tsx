@@ -354,6 +354,12 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("submit end game", data);
+    const gameEndDataTransmission = [...gameTransmission, {
+      id: createId(),
+      eventType: "endGame",
+      team: 1
+    }
+    ];
     setGameTransmission((prevTransmission) => [
       ...prevTransmission,
       {
@@ -362,13 +368,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         team: 1
       }
     ]);
+    
     setMembers1Active(false);
     setMembers2Active(false);
     setScore1Active(false);
     setScore2Active(false);
     setIsPenaltyButtonActive("disabled");
     setEndTimeVis(false);
-    await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, team_1, gameTransmission);
+    await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, team_1, gameEndDataTransmission);
   }
   
   return (
@@ -383,7 +390,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="w-full mb-2"
         >
           <div className="w-full md:w-96 rounded-xl flex flex-col items-center justify-center p-5 border-1">
             <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
