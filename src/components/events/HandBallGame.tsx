@@ -56,31 +56,24 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
 
   const form = useForm<FormValues>();
+
+  const endOfTheGame = itemData?.gameTransmission && itemData.gameTransmission.length > 0 && itemData.gameTransmission[itemData.gameTransmission.length - 1].eventType === "endGame";
   
   const [team_1, setTeam_1] = React.useState(team_1_members || []);
   const [team_2, setTeam_2] = React.useState(team_2_members || []);
-  const [score1active, setScore1Active] = React.useState(true);
-  const [score2active, setScore2Active] = React.useState(true);
-  const [members1active, setMembers1Active] = React.useState(false);
-  const [members2active, setMembers2Active] = React.useState(false);
+  const [score1active, setScore1Active] = React.useState(endOfTheGame ? false : true);
+  const [score2active, setScore2Active] = React.useState(endOfTheGame ? false : true);
+  const [members1active, setMembers1Active] = React.useState(endOfTheGame ? false : true);
+  const [members2active, setMembers2Active] = React.useState(endOfTheGame ? false : true);
   const [prevScore1, setPrevScore1] = React.useState(itemData?.team_1_score || 0);
   const [prevScore2, setPrevScore2] = React.useState(itemData?.team_2_score || 0);
-  const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState("");
+  const [isPenaltyButtonActive, setIsPenaltyButtonActive] = React.useState(endOfTheGame ? "disabled" : "");
   const [dataBaseSubmission, setDataBaseSubmission] = React.useState(false);
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
   const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>(itemData?.gameTransmission || []);
   const [endTimeVis, setEndTimeVis] = React.useState(false); 
     
-  if (itemData?.gameTransmission && itemData.gameTransmission.length > 0 && itemData.gameTransmission[itemData.gameTransmission.length - 1].eventType === "endGame") {
-    setMembers1Active(false);
-    setMembers2Active(false);
-    setScore1Active(false);
-    setScore2Active(false);
-    setIsPenaltyButtonActive("disabled");
-    setEndTimeVis(false);
-  }
-
   useEffect(() => {
 
       const handleGameSignalsChange = async () => {
