@@ -46,14 +46,14 @@ export const defaultGameSignals = {
     time: 0,
 }
 
+type FormValues = Record<string, unknown>;
+
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
     eventId, team_1_members, team_2_members }) => {
   
   const matchTime 
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
-
-  interface FormValues {}
 
   const form = useForm<FormValues>();
   
@@ -72,6 +72,15 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>(itemData?.gameTransmission || []);
   const [endTimeVis, setEndTimeVis] = React.useState(false); 
     
+  if (itemData?.gameTransmission && itemData.gameTransmission.length > 0 && itemData.gameTransmission[itemData.gameTransmission.length - 1].eventType === "endGame") {
+    setMembers1Active(false);
+    setMembers2Active(false);
+    setScore1Active(false);
+    setScore2Active(false);
+    setIsPenaltyButtonActive("disabled");
+    setEndTimeVis(false);
+  }
+
   useEffect(() => {
 
       const handleGameSignalsChange = async () => {
