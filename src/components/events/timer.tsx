@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
-import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from 'react';
 
 interface TimerProps {
   initialSeconds?: number;
@@ -13,6 +13,34 @@ interface TimerProps {
 export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+
+  
+  // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
+  const [isStuck, setIsStuck] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Jeśli nasz niewidzialny "strażnik" NIE jest widoczny na ekranie,
+        // to znaczy, że przewinęliśmy stronę w dół i timer stał się sticky.
+        setIsStuck(!entry.isIntersecting);
+      },
+      { 
+        // próg czułości: reaguj dokładnie na linii top-0
+        rootMargin: '-1px 0px 0px 0px', 
+        threshold: [0] 
+      }
+    );
+
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current);
+    }
+
+    return () => {
+      if (sentinelRef.current) observer.unobserve(sentinelRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -51,46 +79,50 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
   const handleSubtractSecond = () => setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
 
   return (
-    <div className="sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
-      <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
-      <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
-      
-      {isUserCreator && 
-      <div className="flex flex-col items-center gap-2">
-        {!isRunning ?
-        <PlayIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/>}
-                
-        <div className='flex gap-2'>
+    <>
+      <div ref={sentinelRef} className="h-px w-full bg-transparent" />
+      <div className={isStuck ? "sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl" : "flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl"}>
+        <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
+        <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
+        
+        {isUserCreator && 
+        <div className="flex flex-col items-center gap-2">
+          {!isRunning ?
+          <PlayIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/> : <PauseIcon onClick={handleToggle} className='w-14 h-14 cursor-pointer'/>}
+                  
+          <div className='flex gap-2'>
 
-          <button
-            onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
-          >
-            -1m
-          </button>
-          
-          <button
-            onClick={() => setSeconds((prev) => prev + 60)}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer mr-5"
-          >
-            +1m
-          </button>
+            <button
+              onClick={() => setSeconds((prev) => (prev > 60 ? prev - 60 : 0))}
+              className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer"
+            >
+              -1m
+            </button>
+            
+            <button
+              onClick={() => setSeconds((prev) => prev + 60)}
+              className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer mr-5"
+            >
+              +1m
+            </button>
 
-          <button
-            onClick={handleSubtractSecond}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
-          >
-            -1s
-          </button>
-          <button
-            onClick={handleAddSecond}
-            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
-          >
-            +1s
-          </button>
-        </div>
-        <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
-      </div>}
-    </div>
+            <button
+              onClick={handleSubtractSecond}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+            >
+              -1s
+            </button>
+            <button
+              onClick={handleAddSecond}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer"
+            >
+              +1s
+            </button>
+          </div>
+          <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
+        </div>}
+      </div>
+    </>
+    
   );
 };
