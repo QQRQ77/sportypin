@@ -373,7 +373,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <div className="relative w-full flex justify-end">
+      <div className="w-full flex justify-end">
         <Timer 
           initialSeconds={matchTime} 
           isUserCreator={isUserCreator} 
