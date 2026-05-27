@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
 import { defaultGameSignals, GameSygnals } from "./HandBallGame";
 
@@ -31,7 +31,34 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, gameEnd = false,
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
-  const handleTeam1ClickAdd = (event: string) => {
+  // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
+    const [isStuck, setIsStuck] = useState(false);
+    const sentinelRef = useRef<HTMLDivElement>(null);
+  
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          // Jeśli nasz niewidzialny "strażnik" NIE jest widoczny na ekranie,
+          // to znaczy, że przewinęliśmy stronę w dół i timer stał się sticky.
+          setIsStuck(!entry.isIntersecting);
+        },
+        { 
+          // próg czułości: reaguj dokładnie na linii top-0
+          rootMargin: '-1px 0px 0px 0px', 
+          threshold: [0] 
+        }
+      );
+  
+      if (sentinelRef.current) {
+        observer.observe(sentinelRef.current);
+      }
+  
+      return () => {
+        if (sentinelRef.current) observer.unobserve(sentinelRef.current);
+      };
+    }, []); 
+  
+    const handleTeam1ClickAdd = (event: string) => {
     if (gameEnd) return;
     if (isDataBaseSubmissionInAction) return;
     if (event === "") {
@@ -299,64 +326,67 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   };
 
   return (
-    <div className="scoreboard sticky top-0 left-0 z-50 w-full md:w-96 flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center">
+    <>
+      <div ref={sentinelRef} className="h-px w-full bg-transparent" />
+      <div className={isStuck ? "scoreboard sticky top-0 self-start z-50 w-full md:w-96 flex flex-3 bg-white border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center" : "scoreboard w-full md:w-96 flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center"}>
+        <div className="team-1 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
+          <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
+            <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
+              onClick={handlePenalty1Click} />
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+              onClick={handleYellowCard1Click} ></div>
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+              onClick={handleRedCard1Click} ></div>
+          </div>
+          <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
+            <h2 className="text-7xl lg:text-9xl font-bold">{team_1_score}</h2>
+            {isUserCreator && 
+              <div className="flex gap-2">
+                <button onClick={() => { if (!(team1active && !members1active)) { return }; handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+                <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
+              </div>}
+          </div>
+            <div className="md:hidden flex flex-row gap-2 items-center justify-center">
+            <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
+              onClick={handlePenalty1Click} />
+            <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+              onClick={handleYellowCard1Click} ></div>
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
+              onClick={handleRedCard1Click} ></div>
+          </div>
+        </div>
 
-      <div className="team-1 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
-        <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
-            onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
-            onClick={handleYellowCard1Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
-            onClick={handleRedCard1Click} ></div>
-        </div>
-        <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
-          <h2 className="text-7xl lg:text-9xl font-bold">{team_1_score}</h2>
-          {isUserCreator && 
-            <div className="flex gap-2">
-              <button onClick={() => { if (!(team1active && !members1active)) { return }; handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
-              <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
-            </div>}
-        </div>
+        <div className="flex justify-center items-start text-6xl lg:text-9xl font-bold w-8 lg:w-24">:</div>
+
+        <div className="team-2 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
+          <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
+            <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
+            {isUserCreator && 
+              <div className="flex gap-2">
+                <button onClick={() => { if (!(team2active && !members2active)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
+                <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
+              </div>}
+          </div>
+          <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
+            <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
+              onClick={handlePenalty2Click} />
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+              onClick={handleYellowCard2Click} ></div>
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+              onClick={handleRedCard2Click} ></div>
+          </div>
           <div className="md:hidden flex flex-row gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
-            onClick={handlePenalty1Click} />
-          <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
-            onClick={handleYellowCard1Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
-            onClick={handleRedCard1Click} ></div>
-        </div>
+            <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
+              onClick={handlePenalty2Click} />
+            <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+              onClick={handleYellowCard2Click} ></div>
+            <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
+              onClick={handleRedCard2Click} ></div>
+          </div>
+        </div> 
       </div>
-
-      <div className="flex justify-center items-start text-6xl lg:text-9xl font-bold w-8 lg:w-24">:</div>
-
-      <div className="team-2 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
-        <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
-          <h2 className="text-7xl lg:text-9xl font-bold">{team_2_score}</h2>
-          {isUserCreator && 
-            <div className="flex gap-2">
-              <button onClick={() => { if (!(team2active && !members2active)) { return; } handleTeam2ClickAdd("score"); }} className={`px-4 py-2 ${team2active && !members2active && !isDataBaseSubmissionInAction? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
-              <button onClick={handleTeam2ClickSub} className={`px-4 py-2 ${team2active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
-            </div>}
-        </div>
-        <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
-            onClick={handlePenalty2Click} />
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-            onClick={handleYellowCard2Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-            onClick={handleRedCard2Click} ></div>
-        </div>
-        <div className="md:hidden flex flex-row gap-2 items-center justify-center">
-          <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive  === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty2" ? "pulse-border-green" : "border-1 border-transparent"}`}
-            onClick={handlePenalty2Click} />
-          <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-            onClick={handleYellowCard2Click} ></div>
-          <div className={`w-8 h-12 ${isPenaltyButtonActive === "disabled" && !noTeam2Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-red-500 cursor-pointer hover:bg-red-400"} rounded  ${isPenaltyButtonActive === "redCard2" ? "pulse-border-green p-1" : "border-1 border-transparent"}`}
-            onClick={handleRedCard2Click} ></div>
-        </div>
-      </div> 
-    </div>
+    </>
+    
   );
 };
 

@@ -81,7 +81,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
   return (
     <>
       <div ref={sentinelRef} className="h-px w-full bg-transparent" />
-      <div className={isStuck ? "sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl" : "flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl"}>
+      <div className={isStuck ? "sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 bg-white rounded-xl" : "flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl"}>
         <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
         <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
         
