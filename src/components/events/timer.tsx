@@ -51,7 +51,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
   const handleSubtractSecond = () => setSeconds((prev) => (prev > 0 ? prev - 1 : 0));
 
   return (
-    <div className="sticky top-0 right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
+    <div className="sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl">
       <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
       <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
       
