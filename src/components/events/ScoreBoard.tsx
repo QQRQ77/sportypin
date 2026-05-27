@@ -328,7 +328,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   return (
     <>
       <div ref={sentinelRef} className="h-px w-full bg-transparent" />
-      <div className={isStuck ? "scoreboard sticky top-0 self-start z-50 w-full md:w-96 flex flex-3 bg-white border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center" : "scoreboard w-full md:w-96 flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center"}>
+      <div className={isStuck ? "scoreboard sticky top-0 self-start z-50 w-full md:w-96 ml-10 flex flex-3 bg-white border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center" : "scoreboard w-full md:w-96 flex flex-3 border-1 border-gray-300 rounded-xl pb-4 m-2 items-center justify-center"}>
         <div className="team-1 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
           <div className="hidden md:flex w-12 flex-col gap-2 items-center justify-center">
             <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members ? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
@@ -346,7 +346,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
                 <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
               </div>}
           </div>
-            <div className="md:hidden flex flex-row gap-2 items-center justify-center">
+          <div className="md:hidden flex flex-row gap-2 items-center justify-center">
             <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}
               onClick={handlePenalty1Click} />
             <div className={`w-8 h-12 mr-2 ${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "bg-gray-300" : "bg-yellow-300 cursor-pointer hover:bg-yellow-400"} rounded  ${isPenaltyButtonActive === "yellowCard1" ? "pulse-border-blue p-1" : "border-1 border-transparent"}`}
@@ -356,7 +356,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
         </div>
 
-        <div className="flex justify-center items-start text-6xl lg:text-9xl font-bold w-8 lg:w-24">:</div>
+        <div className="flex justify-start items-center text-6xl lg:text-9xl font-bold w-8 lg:w-24">:</div>
 
         <div className="team-2 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
           <div className="w-46 lg:w-52 flex flex-col items-center gap-4">
