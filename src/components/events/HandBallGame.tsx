@@ -373,14 +373,12 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   
   return (
     <>
-      <div className="w-full flex justify-end">
-        <Timer 
-          initialSeconds={matchTime} 
-          isUserCreator={isUserCreator} 
-          onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
-          setEndTimeVis={setEndTimeVis} 
-        />
-      </div>
+      <Timer 
+        initialSeconds={matchTime} 
+        isUserCreator={isUserCreator} 
+        onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
+        setEndTimeVis={setEndTimeVis} 
+      />
       {endTimeVis ?
       <Form {...form}>
         <form
