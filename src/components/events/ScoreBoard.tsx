@@ -356,7 +356,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
           </div>
         </div>
 
-        <div className="flex self-start text-6xl lg:text-9xl font-bold w-8 lg:w-24 border-2">:</div>
+        <div className="flex self-start text-6xl lg:text-9xl font-bold w-8 lg:w-24">:</div>
 
         <div className="team-2 flex flex-col md:flex-row md:flex-2 md:w-64 items-center gap-4">
           <div className="w-46 lg:w-52 flex flex-col items-center gap-4">

@@ -424,8 +424,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       <MatchTeamsMembers 
         team_1_members={team_1}
         team_2_members={team_2}
-        team1active={score1active}
-        team2active={score2active}
         members1active={members1active}
         members2active={members2active}
         setTeam1Active={setScore1Active}
