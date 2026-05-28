@@ -89,6 +89,21 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
             setDataBaseSubmission(true);
 
+            const updatedGameTransmission = [
+              ...gameTransmission,
+              {
+                id: createId(),
+                eventType: "goal",
+                time: currentMatchTime,
+                playerId: gameSignals.scorer1,
+                playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
+                playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
+                score: `${gameSignals.score1} : ${gameSignals.score2}`,
+                teamName: itemData?.team_1,
+                team: 1
+              }
+            ]
+
             setTeam_1(updatedTeamOne);
             setGameTransmission((prevTransmission) => [
               ...prevTransmission,
@@ -106,14 +121,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             ]);
 
             try {
-              console.log("gameTransmission: ", gameTransmission);
               const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                 ...itemData, 
                 team_1_score: gameSignals.score1,
                 team_2_score: gameSignals.score2,
                 team_1_players: updatedTeamOne,
                 team_2_players: team_2,
-                gameTransmission: gameTransmission,  
+                gameTransmission: updatedGameTransmission,  
               });
 
               if (result === "success") setDataBaseSubmission(false);
