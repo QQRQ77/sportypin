@@ -347,6 +347,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   }, [gameSignals]);
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
     const gameEndDataTransmission = [...gameTransmission, {
       id: createId(),
       eventType: "endGame",
