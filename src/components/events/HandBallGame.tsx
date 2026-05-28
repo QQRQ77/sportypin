@@ -106,6 +106,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             ]);
 
             try {
+              console.log("gameTransmission: ", gameTransmission);
               const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                 ...itemData, 
                 team_1_score: gameSignals.score1,
@@ -346,7 +347,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   }, [gameSignals]);
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log("submit end game", data);
     const gameEndDataTransmission = [...gameTransmission, {
       id: createId(),
       eventType: "endGame",
