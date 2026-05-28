@@ -27,10 +27,6 @@ const MatchTeamsMembers: React.FC<TeamsMembersProps> =
   const noTeam1Members = !team_1_members || team_1_members.length === 0;
   const noTeam2Members = !team_2_members || team_2_members.length === 0;
 
-  console.log("Team Members props: ", "team_1_members: ", team_1_members, "team_2_members: ", team_2_members);
-  console.log("Active states: ", "members1active: ", members1active, "members2active: ", members2active);   
-  console.log("No members states: ", "noTeam1Members: ", noTeam1Members, "noTeam2Members: ", noTeam2Members);
-
   const handleTeam1Click = (memberId: string) => {
     if (members1active) { 
       setGameSignals((prevSignals) => ({
