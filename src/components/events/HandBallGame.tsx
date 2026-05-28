@@ -105,20 +105,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             ]
 
             setTeam_1(updatedTeamOne);
-            setGameTransmission((prevTransmission) => [
-              ...prevTransmission,
-              {
-                id: createId(),
-                eventType: "goal",
-                time: currentMatchTime,
-                playerId: gameSignals.scorer1,
-                playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "",
-                playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-                score: `${gameSignals.score1} : ${gameSignals.score2}`,
-                teamName: itemData?.team_1,
-                team: 1
-              }
-            ]);
+            setGameTransmission(updatedGameTransmission);
 
             try {
               const result = await saveHarmonogramItem(eventId, itemData?.id, { 
@@ -163,8 +150,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setDataBaseSubmission(true);
 
           setTeam_2(updatedTeamTwo);
-          setGameTransmission((prevTransmission) => [
-              ...prevTransmission,
+
+          const updatedGameTransmission = [
+              ...gameTransmission,
               {
                 id: createId(),
                 eventType: "goal",
@@ -175,8 +163,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 score: `${gameSignals.score1} : ${gameSignals.score2}`,
                 teamName: itemData?.team_2,
                 team: 2
-              }
-            ]);
+              }]
+
+          setGameTransmission(updatedGameTransmission);
+
            try {
                 const result = await saveHarmonogramItem(eventId, itemData?.id, { 
                   ...itemData, 
@@ -184,7 +174,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                   team_1_score: gameSignals.score1,
                   team_2_players: updatedTeamTwo,
                   team_1_players: team_1, 
-                  gameTransmission: gameTransmission,  
+                  gameTransmission: updatedGameTransmission,  
                 });
 
                 if (result === "success") setDataBaseSubmission(false);
