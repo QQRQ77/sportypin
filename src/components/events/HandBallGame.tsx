@@ -96,8 +96,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 eventType: "goal",
                 time: currentMatchTime,
                 playerId: gameSignals.scorer1,
-                playerName: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.name || "John Doe",
-                playerNumber: itemData?.team_1_players?.find(player => player.id === gameSignals.scorer1)?.start_number || "99",
+                playerName: team_1.find(player => player.id === gameSignals.scorer1)?.name || "John Doe",
+                playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "99",
                 score: `${gameSignals.score1} : ${gameSignals.score2}`,
                 teamName: itemData?.team_1,
                 team: 1
