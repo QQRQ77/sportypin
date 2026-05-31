@@ -132,6 +132,21 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
         const updatedGameTransmission = [...gameTransmission];
         const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 1 ? index : acc, -1);
+        
+        const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
+        
+        let updatedTeamOne = team_1;
+
+        if (team_1.length > 0) {
+            updatedTeamOne = team_1.map((member) =>
+              member.id === teamMemberIdToSubtractGoal
+                ? { ...member, goals: (member.goals || 0) - 1 }
+                : member
+            );
+        }
+
+        setTeam_1(updatedTeamOne);
+
         if (lastGoalIndex !== -1) {
           updatedGameTransmission.splice(lastGoalIndex, 1);
         }
@@ -141,6 +156,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const result = await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
             team_1_score: gameSignals.score1,
+            team_2_score: gameSignals.score2,
+            team_1_players: updatedTeamOne,
+            team_2_players: team_2,
             gameTransmission: updatedGameTransmission,
           });
           if (result === "success") setDataBaseSubmission(false);
