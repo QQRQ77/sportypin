@@ -129,10 +129,19 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       if (gameSignals.score1 < prevScore1) {
         setDataBaseSubmission(true);
+
+        const updatedGameTransmission = [...gameTransmission];
+        const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 1 ? index : acc, -1);
+        if (lastGoalIndex !== -1) {
+          updatedGameTransmission.splice(lastGoalIndex, 1);
+        }
+        setGameTransmission(updatedGameTransmission);
+
         try {
           const result = await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
             team_1_score: gameSignals.score1,
+            gameTransmission: updatedGameTransmission,
           });
           if (result === "success") setDataBaseSubmission(false);
         } catch (error) {
@@ -189,10 +198,18 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       if (gameSignals.score2 < prevScore2) {
 
         setDataBaseSubmission(true);
+        const updatedGameTransmission = [...gameTransmission];
+        const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 2 ? index : acc, -1);
+        if (lastGoalIndex !== -1) {
+          updatedGameTransmission.splice(lastGoalIndex, 1);
+        }
+        setGameTransmission(updatedGameTransmission);
+        
         try {
           const result = await saveHarmonogramItem(eventId, itemData?.id, { 
             ...itemData, 
             team_2_score: gameSignals.score2,
+            gameTransmission: updatedGameTransmission,
           });
           if (result === "success") setDataBaseSubmission(false);
         } catch (error) {
