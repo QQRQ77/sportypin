@@ -89,11 +89,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             );
 
             const updatedEventParticipants = eventParticipants.map(participant => {
+              console.log("ID uczestnika:", participant.id, "ID drużyny 1:", itemData?.team_1_id);
               if (participant.id === itemData?.team_1_id) {
                 console.log("Znaleziono drużynę 1:", participant);
                 if (participant.eventTeamMembers) {
                   participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
                     if (member.id === gameSignals.scorer1) {
+                      console.log("Sprawdzanie zawodnika:", member);
                       return { ...member, goals: (member.goals || 0) + 1 };
                     }
                     return member;
