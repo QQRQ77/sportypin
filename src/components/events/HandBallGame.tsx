@@ -165,6 +165,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             );
         }
 
+        const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_1_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer1) {
+                      return { ...member, goals: (member.goals || 0) - 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+        try {
+          await saveNewParticipant(eventId, updatedEventParticipants);
+        } catch (error) {
+          console.error("Błąd podczas zapisu uczestników:", error);
+        }
+
         setTeam_1(updatedTeamOne);
 
         if (lastGoalIndex !== -1) {
@@ -197,6 +216,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setDataBaseSubmission(true);
 
           setTeam_2(updatedTeamTwo);
+          
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_2_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer2) {
+                      return { ...member, goals: (member.goals || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+        try {
+          await saveNewParticipant(eventId, updatedEventParticipants);
+        } catch (error) {
+          console.error("Błąd podczas zapisu uczestników:", error);
+        }
 
           const updatedGameTransmission = [
               ...gameTransmission,
@@ -251,6 +289,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         }
 
         setTeam_2(updatedTeamTwo);
+
+        const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_2_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer2) {
+                      return { ...member, goals: (member.goals || 0) - 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+        try {
+          await saveNewParticipant(eventId, updatedEventParticipants);
+        } catch (error) {
+          console.error("Błąd podczas zapisu uczestników:", error);
+        }
         
         if (lastGoalIndex !== -1) {
           updatedGameTransmission.splice(lastGoalIndex, 1);
@@ -280,6 +337,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_1(teamOne);
 
+        const updatedEventParticipants = eventParticipants.map(participant => {
+            if (participant.id === itemData?.participant_1_id) {
+              if (participant.eventTeamMembers ) {
+                participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                  if (member.id === gameSignals.scorer1) {
+                    return { ...member, yellowCards: (member.yellowCards || 0) + 1 };
+                  }
+                  return member;
+                });
+              }}
+            return participant;
+          });
+
+        try {
+          await saveNewParticipant(eventId, updatedEventParticipants);
+        } catch (error) {
+          console.error("Błąd podczas zapisu uczestników:", error);
+        }
+
           const updatedGameTransmission = [
             ...gameTransmission,
             {
@@ -306,6 +382,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, yellowCards: (member.yellowCards || 0) + 1 } : member));
           setTeam_2(teamTwo);
 
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_2_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer2) {
+                      return { ...member, yellowCards: (member.yellowCards || 0) + 1 };
+                    }
+                    return member;
+                  });
+              }}
+              return participant;
+            });
+
+          try {
+            await saveNewParticipant(eventId, updatedEventParticipants);
+          } catch (error) {
+            console.error("Błąd podczas zapisu uczestników:", error);
+          }
+
           const updatedGameTransmission = [
             ...gameTransmission,
             {
@@ -331,6 +426,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: 1 } : member));
           setTeam_1(teamOne);
+
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_1_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer1) {
+                      return { ...member, redCards: (member.redCards || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+          try {
+            await saveNewParticipant(eventId, updatedEventParticipants);
+          } catch (error) {
+            console.error("Błąd podczas zapisu uczestników:", error);
+          }
 
           const updatedGameTransmission = [
               ...gameTransmission,
@@ -359,6 +473,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, redCards: 1 } : member));
           setTeam_2(teamTwo);
 
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_2_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer2) {
+                      return { ...member, redCards: (member.redCards || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+          try {
+            await saveNewParticipant(eventId, updatedEventParticipants);
+          } catch (error) {
+            console.error("Błąd podczas zapisu uczestników:", error);
+          }
+
           const updatedGameTransmission = [
             ...gameTransmission,
             {
@@ -385,6 +518,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
 
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_1_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer1) {
+                      return { ...member, penalties: (member.penalties || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+          try {
+            await saveNewParticipant(eventId, updatedEventParticipants);
+          } catch (error) {
+            console.error("Błąd podczas zapisu uczestników:", error);
+          }
+
           const updatedGameTransmission = [
               ...gameTransmission,
               {
@@ -410,6 +562,25 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         if (team_2.length > 0) {
           const teamTwo = team_2.map((member) => (member.id === gameSignals.scorer2 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_2(teamTwo);
+
+          const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.participant_2_id) {
+                if (participant.eventTeamMembers ) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer2) {
+                      return { ...member, penalties: (member.penalties || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }}
+              return participant;
+            });
+
+          try {
+            await saveNewParticipant(eventId, updatedEventParticipants);
+          } catch (error) {
+            console.error("Błąd podczas zapisu uczestników:", error);
+          }
 
           const updatedGameTransmission = [
             ...gameTransmission,
