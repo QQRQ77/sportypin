@@ -65,7 +65,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
               </div>
               <HandballPlayerStatsDisplay displayDirection="row" goals={member.goals} penalties={member.penalties} yellowCards={member.yellowCards} redCards={member.redCards} />
             </div>
-          {isUserCreator && <>
+          {isUserCreator && <div className="flex items-center space-x-2">
             <div className="text-gray-500 hover:text-gray-800">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -105,7 +105,7 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
                 </TooltipContent>
               </Tooltip>
             </div>
-            </>}
+            </div>}
             </>
           )}
         </div>
