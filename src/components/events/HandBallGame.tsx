@@ -4,8 +4,8 @@ import React, { useEffect, useRef } from 'react';
 import { Timer } from "@/components/events/timer";
 import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
-import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers } from '@/lib/events.actions';
-import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem } from '@/types';
+import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers, saveNewParticipant } from '@/lib/events.actions';
+import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem, Participant } from '@/types';
 import HandballGameTransmission from './Handball/HandballGameTransmission';
 import { createId } from "@paralleldrive/cuid2";
 import { Button } from '../ui/button';
@@ -18,6 +18,7 @@ interface HandBallGameProps {
   isUserCreator?: boolean;
   team_1_members?: EventTeamMemberType[];
   team_2_members?: EventTeamMemberType[];
+  eventParticipants: Participant[];
 }
 
 export type GameSygnals = {
@@ -50,7 +51,7 @@ type FormValues = Record<string, unknown>;
 
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
-    eventId, team_1_members, team_2_members }) => {
+    eventId, team_1_members, team_2_members, eventParticipants }) => {
   
   const matchTime 
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
@@ -86,6 +87,26 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 ? { ...member, goals: (member.goals || 0) + 1 }
                 : member
             );
+
+            const updatedEventParticipants = eventParticipants.map(participant => {
+              if (participant.id === itemData?.team_1_id) {
+                if (participant.eventTeamMembers) {
+                  participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
+                    if (member.id === gameSignals.scorer1) {
+                      return { ...member, goals: (member.goals || 0) + 1 };
+                    }
+                    return member;
+                  });
+               }
+              }
+              return participant;
+            });
+
+            try {
+              await saveNewParticipant(eventId, updatedEventParticipants);
+            } catch (error) {
+              console.error("Błąd podczas zapisu uczestników:", error);
+            }  
 
             setDataBaseSubmission(true);
 

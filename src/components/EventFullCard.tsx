@@ -210,27 +210,26 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
         </section>
         
         {/* Uczestnicy     */}
-
         <section className="relative pt-4 border-t border-slate-300">
-        {(isUserCreator || (!isUserCreator && !isPast)) &&
-          <>
-          <div className="w-full flex justify-between">
-            <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
-            {isUserCreator && 
-              <div className="flex gap-4">
-                <Button className="cursor-pointer" onClick={()=>{setOpenParticipantsForm(prev => !prev)}}>{openParticipantsForm? "Zamknij" : "Dodaj"}</Button>  
-              </div>}
-          </div>
-          {openParticipantsForm && 
-            <AddParticipantForm
-              eventId={event.id} 
-              setItems={setParticipants} 
-              cathegories={event.cathegories}
-              participants={participants}/>}
-          </>}
-          {(classification.length === 0 || !isPast || isUserCreator) && 
-            <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
-          }
+          {(isUserCreator || (!isUserCreator && !isPast)) &&
+            <>
+            <div className="w-full flex justify-between">
+              <h2 className="mb-2 text-xl font-bold text-sky-600">Uczestnicy</h2>
+              {isUserCreator && 
+                <div className="flex gap-4">
+                  <Button className="cursor-pointer" onClick={()=>{setOpenParticipantsForm(prev => !prev)}}>{openParticipantsForm? "Zamknij" : "Dodaj"}</Button>  
+                </div>}
+            </div>
+            {openParticipantsForm && 
+              <AddParticipantForm
+                eventId={event.id} 
+                setItems={setParticipants} 
+                cathegories={event.cathegories}
+                participants={participants}/>}
+            </>}
+            {(classification.length === 0 || !isPast || isUserCreator) && 
+              <CompetitorsList participants={participants} isUserCreator={isUserCreator} eventId={event.id} setItems={setParticipants}/>
+            }
         </section>
 
         {/* Harmonogram */}

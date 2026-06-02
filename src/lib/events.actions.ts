@@ -17,6 +17,7 @@
 // function getTeamMembers
 // function saveEventTeamMembers
 // function saveHarmonogramItemTeamPlayers
+// function getEventParticipants
 
 
 'use server'
@@ -573,6 +574,29 @@ export async function saveHarmonogramItemTeamPlayers(eventId: string, itemId: st
   return "success";
 }
 
+//TODO:
+export async function getEventParticipants(eventId: string) {
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('participants')
+    .eq('id', eventId)
+    .single();
+  
+    if (error || !data) {
+    console.error('Error fetching team members:', error);
+    throw new Error(error?.message || 'Failed to fetch team members');
+  }
+
+  const { participants } = data;
+
+  if (participants && participants.length > 0) {
+    return participants
+  }
+
+  return [];
+}
 
 
 

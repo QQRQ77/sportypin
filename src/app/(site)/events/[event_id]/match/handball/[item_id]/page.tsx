@@ -1,4 +1,4 @@
-import { findEventCreatorId, getEventBaseInfo, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
+import { findEventCreatorId, getEventBaseInfo, getEventParticipants, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -18,6 +18,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
   const isUserCreator = userId ? await findEventCreatorId(event_id) === userId : false;
 
   const eventInfo = await getEventBaseInfo(event_id);
+  const eventParticipants = await getEventParticipants(event_id);
   
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
@@ -128,6 +129,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         itemData={itemInfo || harmonogramDefaultItem}    
         team_1_members={team_1_members}
         team_2_members={team_2_members}
+        eventParticipants={eventParticipants}
       />      
     </div>
   );
