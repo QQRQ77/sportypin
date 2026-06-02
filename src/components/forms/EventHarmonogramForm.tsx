@@ -84,10 +84,10 @@ interface HarmonogramFormProps {
 export const transformationParticipants = (participants?: Participant[]) => {
   if (!participants) return [];
   return participants.map(p => {
-  if (p.itemType === "zawodnik") return {name: `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim() || "", id: "", itemType: ""};
+  if (p.itemType === "zawodnik") return {name: `${p.start_number} - ${p.first_name} ${p.second_name || ""}`.trim() || "", id: "", itemType: "", participant_id: p.id || ""};
   if (p.itemType === "drużyna" || p.itemType === "zespół"){
-    return {name: p.team_name || p.name || "", id: p.team_id || "", itemType: p.itemType || ""};};
-  return {name: p.name || p.team_name || "", id: "", itemType: ""};
+    return {name: p.team_name || p.name || "", id: p.team_id || "", itemType: p.itemType || "", participant_id: p.id || ""};};
+  return {name: p.name || p.team_name || "", id: "", itemType: "", participant_id: ""};
   });
 }
   
@@ -162,7 +162,7 @@ export default function HarmonogramForm({
     },
   });
 
-  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string, itemType: string}[]>([]);
+  const [participantsToSelect, setParticipantsToSelect] = useState<{name: string, id: string, itemType: string, participant_id: string}[]>([]);
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
 
   const startTime = form.watch("start_time");
@@ -195,13 +195,10 @@ export default function HarmonogramForm({
     const submissionData: HarmonogramItem = {
       ...data,
       id: createId(),
-      // end_time: computedEnd,
     };
 
-    console.log("SubmissionData: ", submissionData);
-
     //sprawdzenie w participantToSelect czy uczestnik o takim "name" posiada team_id lub athlete_id i przypisanie ich do submissionData  
-    const participant_1 = participants ? participantsToSelect.find(p => p.name === data.team_1) : {name: "", id: "", itemType: ""};
+    const participant_1 = participants ? participantsToSelect.find(p => p.name === data.team_1) : {name: "", id: "", itemType: "", participant_id: ""};
     if (participant_1?.itemType === "drużyna" || participant_1?.itemType === "zespół") {
       submissionData.team_1_id = participant_1?.id;
     }
@@ -209,13 +206,17 @@ export default function HarmonogramForm({
       submissionData.athlete_1_id = participant_1?.id;
     }
 
-    const participant_2 = participants ? participantsToSelect.find(p => p.name === data.team_2) : {name: "", id: "", itemType: ""};
+    submissionData.participant_1_id = participant_1?.participant_id;
+
+    const participant_2 = participants ? participantsToSelect.find(p => p.name === data.team_2) : {name: "", id: "", itemType: "", participant_id: ""};
     if (participant_2?.itemType === "drużyna" || participant_2?.itemType === "zespół") {
       submissionData.team_2_id = participant_2?.id;
     }
     if (participant_2?.itemType === "zawodnik") {
       submissionData.athlete_2_id = participant_2?.id;
     }
+
+    submissionData.participant_2_id = participant_2?.participant_id;
 
     const newItems = [...items, submissionData];
     const sortedNewItems = sortByDate(newItems);
