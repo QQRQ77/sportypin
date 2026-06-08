@@ -52,7 +52,15 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiNumberTwoFill size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          <Button 
+            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+              ...defaultGameSignals,
+              score1: prevSignals.score1,
+              score2: prevSignals.score2,
+              [team_1 ? 'penaltyTeam1' : 'penaltyTeam2']: -2,
+              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+            }))} 
+            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "redCard" && (
@@ -64,7 +72,15 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div> 
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          <Button 
+            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+              ...defaultGameSignals,
+              score1: prevSignals.score1,
+              score2: prevSignals.score2,
+              [team_1 ? 'redCardTeam1' : 'redCardTeam2']: -2,
+              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+            }))}
+            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "yellowCard" && (
@@ -76,7 +92,15 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          <Button 
+            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+              ...defaultGameSignals,
+              score1: prevSignals.score1,
+              score2: prevSignals.score2,
+              [team_1 ? 'yellowCardTeam1' : 'yellowCardTeam2']: -2,
+              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+            }))}
+            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
     </>
