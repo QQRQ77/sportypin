@@ -32,7 +32,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiSoccerBallLight size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded'>Usuń</Button> 
+          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "penalty" && (
@@ -42,7 +42,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiNumberTwoFill size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded'>Usuń</Button> 
+          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "redCard" && (
@@ -54,7 +54,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div> 
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded'>Usuń</Button> 
+          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "yellowCard" && (
@@ -66,7 +66,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded'>Usuń</Button> 
+          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
     </>
