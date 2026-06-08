@@ -1,19 +1,21 @@
 import { GameTransmissionItem } from '@/types';
 import React from 'react';
 import TransmissionSingleItem from './TransmissionSingleItem';
+import { GameSygnals } from '../HandBallGame';
 
 interface HandballGameTransmissionProps {
   gameTransmissionItems?: GameTransmissionItem[];
+  setGameSignals?: React.Dispatch<React.SetStateAction<GameSygnals>>;
 }
 
-const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = React.memo(({ gameTransmissionItems }) => {
+const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = React.memo(({ gameTransmissionItems, setGameSignals }) => {
   
   return (
     <section className='w-full flex flex-col items-center justify-center'>
       <div className='w-full flex flex-col'>
         {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
           gameTransmissionItems.slice().reverse().map((item) => (
-            <TransmissionSingleItem key={item.id} transmissionItem={item} />
+            <TransmissionSingleItem key={item.id} transmissionItem={item} setGameSignals={setGameSignals} />
           ))
         ) : (
           <div className='text-gray-500'>Brak transmisji</div>

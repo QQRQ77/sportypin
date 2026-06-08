@@ -694,7 +694,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
       />
-      <HandballGameTransmission gameTransmissionItems={gameTransmission} />
+      <HandballGameTransmission 
+        gameTransmissionItems={gameTransmission}
+        setGameSignals={setGameSignals} 
+       />
     </>
   );
 };

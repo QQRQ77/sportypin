@@ -3,13 +3,16 @@ import { GameTransmissionItem } from '@/types';
 import React from 'react';
 import { PiSoccerBallLight } from "react-icons/pi";
 import { PiNumberTwoFill } from "react-icons/pi";
+import { defaultGameSignals, GameSygnals } from '../HandBallGame';
 
 interface TransmissionSingleItemProps {
   transmissionItem: GameTransmissionItem
+  setGameSignals?: React.Dispatch<React.SetStateAction<GameSygnals>>
 }
 
 const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   transmissionItem,
+  setGameSignals
 }) => {
 
   const formatTime = (totalSeconds: number): string => {
@@ -32,7 +35,14 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiSoccerBallLight size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          <Button 
+            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+              ...defaultGameSignals,
+              score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
+              score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
+              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+            }))} 
+            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
       )}
       {transmissionItem.eventType === "penalty" && (
