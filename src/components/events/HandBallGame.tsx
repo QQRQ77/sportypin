@@ -539,6 +539,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
       if (gameSignals.redCardsTeam1 == -2 && gameSignals.scorer1 !== "") {
         setDataBaseSubmission(true);
+        console.log("Removing red card for player:", gameSignals.scorer1);
         if (team_1.length > 0) {
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, redCards: (member.redCards || 0) - 1 } : member));
           setTeam_1(teamOne);
