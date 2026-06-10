@@ -41,6 +41,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
               score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+              transmissionItemId: transmissionItem.id || "",
             }))} 
             className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
@@ -59,6 +60,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               score2: prevSignals.score2,
               [team_1 ? 'penaltyTeam1' : 'penaltyTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+              transmissionItemId: transmissionItem.id || "",
             }))} 
             className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
@@ -79,6 +81,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               score2: prevSignals.score2,
               [team_1 ? 'redCardTeam1' : 'redCardTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+              transmissionItemId: transmissionItem.id || "",
             }))}
             className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>
@@ -99,6 +102,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               score2: prevSignals.score2,
               [team_1 ? 'yellowCardTeam1' : 'yellowCardTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+              transmissionItemId: transmissionItem.id || "",
             }))}
             className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
         </div>

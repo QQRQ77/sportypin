@@ -33,6 +33,7 @@ export type GameSygnals = {
   penaltyTeam1: number  | string;
   penaltyTeam2: number | string;
   time: number;
+  transmissionItemId?: string;
 };
 
 export const defaultGameSignals = {
@@ -45,6 +46,7 @@ export const defaultGameSignals = {
     penaltyTeam1: 0,
     penaltyTeam2: 0,
     time: 0,
+    transmissionItemId: ""
 }
 
 type FormValues = Record<string, unknown>;
@@ -401,24 +403,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.error("Błąd podczas zapisu uczestników:", error);
         }
 
-          const updatedGameTransmission = [
-            ...gameTransmission,
-            {
-              id: createId(),
-              eventType: "yellowCard",
-              playerId: gameSignals.scorer1,
-              playerName: team_1.find(player => player.id === gameSignals.scorer1)?.name || "",
-              playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_1,
-              team: 1
-            }
-          ]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
           setGameTransmission(updatedGameTransmission);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "" }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam1: 0, scorer1: "", transmissionItemId: "" }))  ;
       }
 
       if (gameSignals.yellowCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
@@ -491,24 +482,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             console.error("Błąd podczas zapisu uczestników:", error);
           }
 
-          const updatedGameTransmission = [
-            ...gameTransmission,
-            {
-              id: createId(),
-              eventType: "yellowCard",
-              playerId: gameSignals.scorer2,
-              playerName: team_2.find(player => player.id === gameSignals.scorer2)?.name || "",
-              playerNumber: team_2.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_2,
-              team: 2
-            }]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
           setGameTransmission(updatedGameTransmission);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "", transmissionItemId: "" }));
         }
       
       if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
@@ -582,25 +562,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             console.error("Błąd podczas zapisu uczestników:", error);
           }
 
-          const updatedGameTransmission = [
-              ...gameTransmission,
-              {
-              id: createId(),
-              eventType: "redCard",
-              playerId: gameSignals.scorer1,
-              playerName: team_1.find(player => player.id === gameSignals.scorer1)?.name || "",
-              playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_1,
-              team: 1
-            }]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
           setGameTransmission(updatedGameTransmission);
           
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "" }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam1: 0, scorer1: "", transmissionItemId: "" }))  ;
       }
       
       if (gameSignals.redCardsTeam2 == -1 && gameSignals.scorer2 !== "") {
@@ -673,24 +642,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             console.error("Błąd podczas zapisu uczestników:", error);
           }
 
-          const updatedGameTransmission = [
-            ...gameTransmission,
-            {
-              id: createId(),
-              eventType: "redCard",
-              playerId: gameSignals.scorer2,
-              playerName: team_2.find(player => player.id === gameSignals.scorer2)?.name || "",
-              playerNumber: team_2.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_2,
-              team: 2
-            }]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
           setGameTransmission(updatedGameTransmission);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "" }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, redCardsTeam2: 0, scorer2: "", transmissionItemId: "" }))  ;
       }
       
       if (gameSignals.penaltyTeam1 == -1 && gameSignals.scorer1 !== "") {
@@ -763,24 +721,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             console.error("Błąd podczas zapisu uczestników:", error);
           }
 
-          const updatedGameTransmission = [
-              ...gameTransmission,
-              {
-              id: createId(),
-              eventType: "penalty",
-              playerId: gameSignals.scorer1,
-              playerName: team_1.find(player => player.id === gameSignals.scorer1)?.name || "",
-              playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_1,
-              team: 1
-            }]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
           setGameTransmission(updatedGameTransmission);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "", transmissionItemId: "" }));
       }
 
       if (gameSignals.penaltyTeam2 == -1 && gameSignals.scorer2 !== "") {
@@ -853,24 +800,13 @@ const HandBallGame: React.FC<HandBallGameProps> = (
             console.error("Błąd podczas zapisu uczestników:", error);
           }
 
-          const updatedGameTransmission = [
-            ...gameTransmission,
-            {
-              id: createId(),
-              eventType: "penalty",
-              playerId: gameSignals.scorer2,
-              playerName: team_2.find(player => player.id === gameSignals.scorer2)?.name || "",
-              playerNumber: team_2.find(player => player.id === gameSignals.scorer2)?.start_number || "",
-              time: currentMatchTime,
-              teamName: itemData?.team_2,
-              team: 2
-            }]
+          const updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
           setGameTransmission(updatedGameTransmission);
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 2, teamTwo, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "" }));
+        setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "", transmissionItemId: "" }));
       }
       }
 
