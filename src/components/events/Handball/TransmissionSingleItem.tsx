@@ -79,7 +79,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               ...defaultGameSignals,
               score1: prevSignals.score1,
               score2: prevSignals.score2,
-              [team_1 ? 'redCardTeam1' : 'redCardTeam2']: -2,
+              [team_1 ? 'redCardsTeam1' : 'redCardsTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
               transmissionItemId: transmissionItem.id || "",
             }))}
@@ -100,7 +100,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               ...defaultGameSignals,
               score1: prevSignals.score1,
               score2: prevSignals.score2,
-              [team_1 ? 'yellowCardTeam1' : 'yellowCardTeam2']: -2,
+              [team_1 ? 'yellowCardsTeam1' : 'yellowCardsTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
               transmissionItemId: transmissionItem.id || "",
             }))}
