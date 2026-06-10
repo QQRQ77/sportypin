@@ -152,7 +152,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       if (gameSignals.score1 < prevScore1) {
         setDataBaseSubmission(true);
 
-        const updatedGameTransmission = [...gameTransmission];
+        let updatedGameTransmission = [...gameTransmission];
         const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 1 ? index : acc, -1);
         
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
@@ -188,9 +188,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
         setTeam_1(updatedTeamOne);
 
-        if (lastGoalIndex !== -1) {
-          updatedGameTransmission.splice(lastGoalIndex, 1);
-        }
+        updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
         setGameTransmission(updatedGameTransmission);
 
         try {
@@ -207,7 +206,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.error("Błąd podczas zapisu:", error);
         }
         setPrevScore1(gameSignals.score1);
-        setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "", transmissionItemId: "" }))  ;
       }
 
       if (gameSignals.score2 > prevScore2 && gameSignals.scorer2 !== "") {
@@ -276,7 +275,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       if (gameSignals.score2 < prevScore2) {
 
         setDataBaseSubmission(true);
-        const updatedGameTransmission = [...gameTransmission];
+        let updatedGameTransmission = [...gameTransmission];
         const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 2 ? index : acc, -1);
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
@@ -311,9 +310,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.error("Błąd podczas zapisu uczestników:", error);
         }
         
-        if (lastGoalIndex !== -1) {
-          updatedGameTransmission.splice(lastGoalIndex, 1);
-        }
+        updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
         setGameTransmission(updatedGameTransmission);
         
         try {
@@ -330,7 +328,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.error("Błąd podczas zapisu:", error);
         }
         setPrevScore2(gameSignals.score2);
-        setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "" }))  ;
+        setGameSignals((prevSignals) => ({ ...prevSignals, scorer2: "", transmissionItemId: "" }))  ;
       }
 
       if (gameSignals.yellowCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
