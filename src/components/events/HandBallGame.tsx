@@ -155,15 +155,12 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setDataBaseSubmission(true);
 
         let updatedGameTransmission = [...gameTransmission];
-        const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 1 ? index : acc, -1);
-        
-        const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
         let updatedTeamOne = team_1;
 
         if (team_1.length > 0) {
             updatedTeamOne = team_1.map((member) =>
-              member.id === teamMemberIdToSubtractGoal
+              member.id === gameSignals.scorer1
                 ? { ...member, goals: (member.goals || 0) - 1 }
                 : member
             );
