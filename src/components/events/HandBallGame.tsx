@@ -82,8 +82,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       const handleGameSignalsChange = async () => {
         const currentMatchTime = gameTimeRef.current;
 
-      console.log("Game signals changed:", gameSignals);
-
       if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
           if (team_1.length > 0) {
             const updatedTeamOne = team_1.map((member) =>
@@ -275,14 +273,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
         setDataBaseSubmission(true);
         let updatedGameTransmission = [...gameTransmission];
-        const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 2 ? index : acc, -1);
-        const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
+        // const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 2 ? index : acc, -1);
+        // const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
         let updatedTeamTwo = team_2;
 
         if (team_2.length > 0) {
             updatedTeamTwo = team_2.map((member) =>
-              member.id === teamMemberIdToSubtractGoal
+              member.id === gameSignals.scorer2
                 ? { ...member, goals: (member.goals || 0) - 1 }
                 : member
             );
