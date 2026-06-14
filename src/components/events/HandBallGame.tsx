@@ -159,6 +159,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 1 ? index : acc, -1);
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
+        if (gameSignals.scoreBoardGoalSubtaction) {
+          updatedGameTransmission = updatedGameTransmission.slice(lastGoalIndex, lastGoalIndex + 1);
+        }
+
         let updatedTeamOne = team_1;
 
         if (team_1.length > 0) {
@@ -191,10 +195,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setTeam_1(updatedTeamOne);
 
         updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
-
-        if (gameSignals.scoreBoardGoalSubtaction) {
-          updatedGameTransmission = updatedGameTransmission.filter(item => item.eventType === "goal" && item.team === 1).slice(0, -1);
-        }
 
         setGameTransmission(updatedGameTransmission);
 
@@ -285,6 +285,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         const lastGoalIndex = updatedGameTransmission.reduce((acc, item, index) => item.eventType === "goal" && item.team === 2 ? index : acc, -1);
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
+        if (gameSignals.scoreBoardGoalSubtaction) {
+          updatedGameTransmission = updatedGameTransmission.slice(lastGoalIndex, lastGoalIndex + 1);
+        }
+
         let updatedTeamTwo = team_2;
 
         if (team_2.length > 0) {
