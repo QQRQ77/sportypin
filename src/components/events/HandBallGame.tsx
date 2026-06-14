@@ -161,6 +161,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         
 
         if (gameSignals.scoreBoardGoalSubtaction) {
+          console.log("TEAM ONE GOAL SUBTRACTION TRIGGERED");
           updatedGameTransmission = updatedGameTransmission.splice(lastGoalIndex, 1);
         }
 
@@ -287,6 +288,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
         if (gameSignals.scoreBoardGoalSubtaction) {
+          console.log("TEAM TWO GOAL SUBTRACTION TRIGGERED");
           updatedGameTransmission = updatedGameTransmission.splice(lastGoalIndex, 1);
         }
 
