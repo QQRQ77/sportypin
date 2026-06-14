@@ -161,7 +161,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         
 
         if (gameSignals.scoreBoardGoalSubtaction) {
-          updatedGameTransmission = updatedGameTransmission.slice(lastGoalIndex, 1);
+          updatedGameTransmission = updatedGameTransmission.splice(lastGoalIndex, 1);
         }
 
         let updatedTeamOne = team_1;
@@ -287,7 +287,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         const teamMemberIdToSubtractGoal = updatedGameTransmission[lastGoalIndex] ? updatedGameTransmission[lastGoalIndex].playerId : null;
         
         if (gameSignals.scoreBoardGoalSubtaction) {
-          updatedGameTransmission = updatedGameTransmission.slice(lastGoalIndex, 1);
+          updatedGameTransmission = updatedGameTransmission.splice(lastGoalIndex, 1);
         }
 
         let updatedTeamTwo = team_2;
