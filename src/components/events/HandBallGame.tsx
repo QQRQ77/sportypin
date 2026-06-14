@@ -173,7 +173,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               if (participant.id === itemData?.participant_1_id) {
                 if (participant.eventTeamMembers ) {
                   participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
-                    if (member.id === gameSignals.scorer1) {
+                    if (member.id === (gameSignals.scoreBoardGoalSubtaction ? teamMemberIdToSubtractGoal : gameSignals.scorer1)) {
                       return { ...member, goals: (member.goals || 0) - 1 };
                     }
                     return member;
@@ -191,6 +191,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setTeam_1(updatedTeamOne);
 
         updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
+        if (gameSignals.scoreBoardGoalSubtaction) {
+          updatedGameTransmission = updatedGameTransmission.filter(item => item.eventType === "goal" && item.team === 1).slice(0, -1);
+        }
 
         setGameTransmission(updatedGameTransmission);
 
@@ -297,7 +301,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               if (participant.id === itemData?.participant_2_id) {
                 if (participant.eventTeamMembers ) {
                   participant.eventTeamMembers = participant.eventTeamMembers.map(member => {
-                    if (member.id === gameSignals.scorer2) {
+                    if (member.id === (gameSignals.scoreBoardGoalSubtaction ? teamMemberIdToSubtractGoal : gameSignals.scorer2)) {
                       return { ...member, goals: (member.goals || 0) - 1 };
                     }
                     return member;
@@ -313,6 +317,10 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         }
         
         updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
+        if (gameSignals.scoreBoardGoalSubtaction) {
+          updatedGameTransmission = updatedGameTransmission.filter(item => item.eventType === "goal" && item.team === 2).slice(0, -1);
+        }
 
         setGameTransmission(updatedGameTransmission);
         
