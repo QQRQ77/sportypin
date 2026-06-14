@@ -164,8 +164,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.log("TEAM ONE GOAL SUBTRACTION TRIGGERED");
           console.log("Last goal index:", lastGoalIndex);
           console.log("Game transmission before subtraction:", updatedGameTransmission);
-          updatedGameTransmission = updatedGameTransmission.splice(lastGoalIndex, 1);
-          console.log("Updated game transmission after subtraction:", updatedGameTransmission);
+          updatedGameTransmission = updatedGameTransmission.filter((_, index) => index !== lastGoalIndex);
         }
 
         let updatedTeamOne = team_1;
