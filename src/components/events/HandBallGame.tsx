@@ -198,7 +198,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
         setTeam_1(updatedTeamOne);
 
-        updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+        updatedGameTransmission = updatedGameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
         setGameTransmission(updatedGameTransmission);
 
@@ -325,7 +325,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           console.error("Błąd podczas zapisu uczestników:", error);
         }
         
-        updatedGameTransmission = gameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+        updatedGameTransmission = updatedGameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
 
         setGameTransmission(updatedGameTransmission);
         
