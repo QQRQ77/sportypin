@@ -221,11 +221,12 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-right">
                 <h2 className="text-lg mb-4">Ustawienia dla kategorii: <span className="font-bold text-xl">master M</span></h2>
-                <h2 className="text-lg">Podział czasu gry: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 minut</span>; przerwa: <span className="font-bold">10 minut</span></h2>
+                <h2 className="text-lg">Podział czasu gry: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 min.</span>; przerwa: <span className="font-bold">10 min.</span></h2>
                 <h2 className="text-lg">Punktacja: <span className="font-bold">3 punkty</span> za zwycięstwo, <span className="font-bold">1 punkt</span> za remis, <span className="font-bold">0 punktów</span> za porażkę</h2>
+                <h2 className="text-lg">W przypadku remisu, decyduje: dogrywka (2 x 5 minut), a jeśli nadal jest remis: rzuty karne</h2>
                 <h2 className="text-lg">Kary: </h2>
                   <div className="w-full ml-10 gap-2 flex flex-col justify-center items-left">
-                    <div><span className="font-bold">wykluczenie czasowe</span> - 2 minuty,</div> 
+                    <div><span className="font-bold">wykluczenie czasowe</span> - 2 min.,</div> 
                     <div><span className="font-bold">żółta kartka</span> - ostrzeżenie,</div> 
                     <div><span className="font-bold">czerwona kartka</span> - wykluczenie z meczu,</div> 
                     <div><span className="font-bold">dwie żółte kartki</span> - wykluczenie z meczu</div>
