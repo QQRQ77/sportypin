@@ -215,12 +215,12 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
               {isUserCreator && 
                 <div className="flex gap-4">
-                  <Button className="cursor-pointer" onClick={()=>{}}>"Edytuj"</Button>  
+                  <Button className="cursor-pointer" onClick={()=>{}}>Edytuj</Button>  
                 </div>}
             </div>
             <div className="w-full mb-2 flex flesx-col justify-center items-center">
                 <h1>Ustawienia dla kategorii: master M</h1>
-                <h2 className="text-lg">Podział meczy: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 minut</span>; przerwa: <span className="font-bold">10 minut</span></h2>
+                <h2 className="text-lg">Podział czasu gry: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 minut</span>; przerwa: <span className="font-bold">10 minut</span></h2>
                 <h2 className="text-lg">Punktacja: <span className="font-bold">3 punkty</span> za zwycięstwo, <span className="font-bold">1 punkt</span> za remis, <span className="font-bold">0 punktów</span> za porażkę</h2>
                 <h2 className="text-lg">Kary: <span className="font-bold">wykluczenie czasowe</span> - 2 minuty, <span className="font-bold">żółta kartka</span> - ostrzeżenie, <span className="font-bold">czerwona kartka</span> - wykluczenie z meczu, <span className="font-bold">dwie żółte kartki</span> - wykluczenie z meczu</h2>
             </div>
