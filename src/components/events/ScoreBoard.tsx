@@ -122,6 +122,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       ...defaultGameSignals,
       score1: prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0,
       score2: prevSignals.score2,
+      scoreBoardGoalSubtaction: true,
     }));
     setIsPenaltyButtonActive("");
     setTeam1Active(true);
@@ -193,6 +194,7 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
       ...defaultGameSignals,
       score2: prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0,
       score1: prevSignals.score1,
+      scoreBoardGoalSubtaction: true,
     }));
     setIsPenaltyButtonActive("");
     setTeam1Active(true);
