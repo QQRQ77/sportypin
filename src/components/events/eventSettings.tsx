@@ -1,9 +1,9 @@
 
 interface EventSettingsProps {
-  
+  props?: any;
 };
 
-const EventSettings: React.FC<EventSettingsProps> = () => {
+const EventSettings: React.FC<EventSettingsProps> = (props) => {
 
   return (
     <div className="">

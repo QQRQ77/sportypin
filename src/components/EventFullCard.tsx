@@ -216,7 +216,8 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               {isUserCreator && 
                 <div className="flex gap-4">
                   <Button className="cursor-pointer" onClick={()=>{}}>Edytuj</Button>  
-                </div>}
+                </div>
+              }
             </div>
             <div className="w-full mb-2 flex flesx-col justify-center items-center">
                 <h1>Ustawienia dla kategorii: master M</h1>
