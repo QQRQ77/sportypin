@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import SubmitButton from '@/components/ui/submitButton';
 
 // Schema for handball game settings
 const HandballGameSettingsSchema = z.object({
@@ -28,6 +29,8 @@ interface HandballGameSettingsFormProps {
 
 export default function HandballGameSettingsForm({eventId}: HandballGameSettingsFormProps) {
 
+  const [buttonSubmitting, setButtonSubmitting] = useState(false);
+
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
     defaultValues,
@@ -35,8 +38,10 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
   });
 
   const onSubmit = async (data: HandballGameSettings) => {
+    setButtonSubmitting(true);
     console.log('Submitting handball game settings:', data);
     console.log("Event ID:", eventId);
+    setButtonSubmitting(false);
   }
 
   return (
@@ -61,9 +66,13 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
           {form.formState.errors.halftimeMinutes && <span>{String(form.formState.errors.halftimeMinutes.message)}</span>}
         </div>
 
-        <button type="submit" disabled={form.formState.isSubmitting}>
-          Save
-        </button>
+        <div className="w-full flex justify-center mt-10">
+          <SubmitButton
+            isSubmitting={buttonSubmitting}
+            submittingText="Zapisywanie..."
+            baseText="Zapisz"
+          />
+        </div>
         {form.formState.isDirty && <span>Unsaved changes</span>}
       </form>
     </Form>
