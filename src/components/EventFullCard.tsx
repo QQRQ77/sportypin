@@ -21,6 +21,7 @@ import EventScores from "./EventScores";
 import ClassificationForm from "./forms/AddClassificationForm";
 import Classification from "./Classification";
 import HarmonogramSearchAndFilters from "./HarmonogramSearchandFilters";
+import HandballGameSettingsForm from "./events/Handball/handballGameSettingsForm";
 
 interface Props {
   event: Event;
@@ -220,7 +221,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               }
             </div>
             <div className="w-full mb-2 flex flex-col justify-center items-right">
-                <h2 className="text-lg mb-4">Ustawienia dla kategorii: <span className="font-bold text-xl">master M</span></h2>
+                <h2 className="text-lg mb-4">Kategoria: <span className="font-bold text-xl">master M</span></h2>
                 <h2 className="text-lg">Podział czasu gry: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 min.</span>; przerwa: <span className="font-bold">10 min.</span></h2>
                 <h2 className="text-lg">Punktacja: <span className="font-bold">3 punkty</span> za zwycięstwo, <span className="font-bold">1 punkt</span> za remis, <span className="font-bold">0 punktów</span> za porażkę</h2>
                 <h2 className="text-lg">W przypadku remisu, decyduje: dogrywka (2 x 5 minut), a jeśli nadal jest remis: rzuty karne</h2>
@@ -232,6 +233,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
                     <div><span className="font-bold">dwie żółte kartki</span> - wykluczenie z meczu</div>
                   </div>
             </div>
+            <HandballGameSettingsForm eventId={event.id}/>
         </section>
         
         {/* Uczestnicy     */}
