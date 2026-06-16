@@ -134,9 +134,9 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
             <p>min.</p>
           </div>
 
-        <div className="flex flex-col items-center gap-4 mt-4">
+        <div className="flex flex-col items-left gap-4 mt-4">
           <h2 className="text-lg">Punktacja:</h2>
-          <div className="flex flex-col items-center gap-4 ml-8">
+          <div className="flex flex-col items-left gap-4 ml-8">
             <div className="flex items-center gap-4">
               <p>wygrana:</p>
               <FormField
