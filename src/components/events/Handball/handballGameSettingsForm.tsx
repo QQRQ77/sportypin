@@ -45,6 +45,8 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
     mode: 'onBlur',
   });
 
+  const numOfPeriod = form.watch("periods")
+
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
     console.log('Submitting handball game settings:', data);
@@ -56,26 +58,26 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
         
-        <div className="flex gap-4">
-          <h2 className="text-lg">Podział czasu gry:</h2>
-          <FormField
-            control={form.control}
-            name="periods"
-            render={({ field }) => (
-              <FormItem className="w-32">
-                <FormLabel>Numer</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="np. 1 część, 2 połowy"
-                    className="shadow-xl"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-            </FormItem>
-          )}
-        />
-        </div>
+          <div className="flex gap-4">
+            <h2 className="text-lg">Podział czasu gry:</h2>
+            <FormField
+              control={form.control}
+              name="periods"
+              render={({ field }) => (
+                <FormItem className="w-32">
+                  <FormControl>
+                    <Input
+                      placeholder="np. 1 część, 2 połowy"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+              </FormItem>
+            )}
+            />
+            <p>{numOfPeriod === 1 ? 'część' : ''}{numOfPeriod === 2 ? 'połowy' : ''}{numOfPeriod === 3 ? 'tercje' : ''}{numOfPeriod === 4 ? 'kwarty' : ''}{numOfPeriod > 4 ? 'części' : ''}</p>
+          </div>
         
 
         <div>
