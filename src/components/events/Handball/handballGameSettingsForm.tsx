@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-// Schema for handball game settings
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
     .number({ invalid_type_error: 'Czas gry musi być liczbą' })
@@ -66,6 +65,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                 <FormItem className="w-32">
                   <FormControl>
                     <Input
+                      type="number"
                       placeholder="np. 1 część, 2 połowy"
                       className="shadow-xl"
                       {...field}
@@ -83,12 +83,6 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
           <label>Period Minutes</label>
           <input type="number" {...form.register('periodMinutes', { valueAsNumber: true })} />
           {form.formState.errors.periodMinutes && <span>{String(form.formState.errors.periodMinutes.message)}</span>}
-        </div>
-
-        <div>
-          <label>Periods</label>
-          <input type="number" {...form.register('periods', { valueAsNumber: true })} />
-          {form.formState.errors.periods && <span>{String(form.formState.errors.periods.message)}</span>}
         </div>
 
         <div>
