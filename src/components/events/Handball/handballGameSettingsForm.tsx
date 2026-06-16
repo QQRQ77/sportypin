@@ -22,7 +22,7 @@ const HandballGameSettingsSchema = z.object({
       .int()
       .nonnegative("Podaj liczbę od 1 do 10")
       .max(10, "Maksymalnie 10 części gry"),
-  halftimeMinutes: z.coerce
+  breakMinutes: z.coerce
       .number({ invalid_type_error: "Podaj liczbę"})
       .int()
       .nonnegative("Podaj liczbę większą lub równą 0")
