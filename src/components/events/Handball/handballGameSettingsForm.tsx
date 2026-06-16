@@ -22,7 +22,10 @@ const HandballGameSettingsSchema = z.object({
       .int()
       .nonnegative("Podaj liczbę od 1 do 10")
       .max(10, "Maksymalnie 10 części gry"),
-  halftimeMinutes: z.number().int().nonnegative().max(30),
+  halftimeMinutes: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę"})
+      .int()
+      .nonnegative("Podaj liczbę większą lub równą 0")
 });
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
@@ -30,7 +33,7 @@ export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
 const defaultValues: HandballGameSettings = {
   periodMinutes: 15,
   periods: 1,
-  halftimeMinutes: 0,
+  breakMinutes: 0,
 };
 
 interface HandballGameSettingsFormProps {
@@ -99,7 +102,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
             <p>przerwa:</p>
             <FormField
               control={form.control}
-              name="halftimeMinutes"
+              name="breakMinutes"
               render={({ field }) => (
                 <FormItem className="w-16">
                   <FormControl>
@@ -115,19 +118,6 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
             />
             <p>minut</p>
           </div>
-        
-
-        <div>
-          <label>Period Minutes</label>
-          <input type="number" {...form.register('periodMinutes', { valueAsNumber: true })} />
-          {form.formState.errors.periodMinutes && <span>{String(form.formState.errors.periodMinutes.message)}</span>}
-        </div>
-
-        <div>
-          <label>Halftime Minutes</label>
-          <input type="number" {...form.register('halftimeMinutes', { valueAsNumber: true })} />
-          {form.formState.errors.halftimeMinutes && <span>{String(form.formState.errors.halftimeMinutes.message)}</span>}
-        </div>
 
         <div className="w-full flex justify-center mt-10">
           <SubmitButton
