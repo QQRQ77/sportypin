@@ -17,7 +17,11 @@ const HandballGameSettingsSchema = z.object({
     .number({ invalid_type_error: 'Czas gry musi być liczbą' })
     .int()
     .positive(),
-  periods: z.number().int().positive().max(10),
+  periods: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę od 1 do 10" })
+      .int()
+      .nonnegative()
+      .max(10, "Maksymalnie 10 części gry"),
   halftimeMinutes: z.number().int().nonnegative().max(30),
 });
 
@@ -40,7 +44,6 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
     defaultValues,
-    mode: 'onBlur',
   });
 
   const numOfPeriod = form.watch("periods")
@@ -54,7 +57,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
 
   return (
     <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
         
           <div className="flex gap-4">
             <h2 className="text-lg">Podział czasu gry:</h2>
@@ -62,11 +65,10 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
               control={form.control}
               name="periods"
               render={({ field }) => (
-                <FormItem className="w-32">
+                <FormItem className="w-16">
                   <FormControl>
                     <Input
                       type="number"
-                      placeholder="np. 1 część, 2 połowy"
                       className="shadow-xl"
                       {...field}
                     />
