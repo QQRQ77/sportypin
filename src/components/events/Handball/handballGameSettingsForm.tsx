@@ -25,7 +25,19 @@ const HandballGameSettingsSchema = z.object({
   breakMinutes: z.coerce
       .number({ invalid_type_error: "Podaj liczbę"})
       .int()
-      .nonnegative("Podaj liczbę większą lub równą 0")
+      .nonnegative("Podaj liczbę większą lub równą 0"),
+  winPoints: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę"})
+      .int()
+      .nonnegative("Podaj liczbę większą lub równą 0"),
+  drawPoints: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę"})
+      .int()
+      .nonnegative("Podaj liczbę większą lub równą 0"),
+  lossPoints: z.coerce
+      .number({ invalid_type_error: "Podaj liczbę"})
+      .int()
+      .nonnegative("Podaj liczbę większą lub równą 0"),
 });
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
@@ -34,6 +46,9 @@ const defaultValues: HandballGameSettings = {
   periodMinutes: 15,
   periods: 1,
   breakMinutes: 0,
+  winPoints: 2,
+  drawPoints: 1,
+  lossPoints: 0,
 };
 
 interface HandballGameSettingsFormProps {
@@ -98,7 +113,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
               </FormItem>
             )}
             />
-            <p>minut,</p>
+            <p>min.,</p>
             <p>przerwa:</p>
             <FormField
               control={form.control}
@@ -116,8 +131,74 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                 </FormItem>
               )}
             />
-            <p>minut</p>
+            <p>min.</p>
           </div>
+
+        <div className="flex flex-col items-center gap-4 mt-4">
+          <h2 className="text-lg">Punktacja:</h2>
+          <div className="flex flex-col items-center gap-4 ml-8">
+            <div className="flex items-center gap-4">
+              <p>wygrana:</p>
+              <FormField
+              control={form.control}
+              name="winPoints"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                )}
+              />
+              <p>pkt</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <p>remis:</p>
+              <FormField
+              control={form.control}
+              name="drawPoints"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                )}
+              />
+              <p>pkt</p>
+            </div> 
+            <div className="flex items-center gap-4">
+              <p>przegrana:</p>
+              <FormField
+              control={form.control}
+              name="lossPoints"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                )}
+              />
+              <p>pkt</p>
+            </div>   
+          </div>
+        </div>
 
         <div className="w-full flex justify-center mt-10">
           <SubmitButton
