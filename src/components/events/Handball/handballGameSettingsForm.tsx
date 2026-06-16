@@ -20,7 +20,7 @@ const HandballGameSettingsSchema = z.object({
   periods: z.coerce
       .number({ invalid_type_error: "Podaj liczbę od 1 do 10" })
       .int()
-      .nonnegative()
+      .nonnegative("Podaj liczbę od 1 do 10")
       .max(10, "Maksymalnie 10 części gry"),
   halftimeMinutes: z.number().int().nonnegative().max(30),
 });
@@ -59,7 +59,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
         
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
             <h2 className="text-lg">Podział czasu gry:</h2>
             <FormField
               control={form.control}
@@ -78,6 +78,42 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
             )}
             />
             <p>{numOfPeriod == 1 ? 'część' : ''}{numOfPeriod == 2 ? 'połowy' : ''}{numOfPeriod == 3 ? 'tercje' : ''}{numOfPeriod == 4 ? 'kwarty' : ''}{numOfPeriod > 4 ? 'części' : ''}</p>
+            <p>x</p>
+            <FormField
+              control={form.control}
+              name="periodMinutes"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+              </FormItem>
+            )}
+            />
+            <p>minut,</p>
+            <p>przerwa:</p>
+            <FormField
+              control={form.control}
+              name="halftimeMinutes"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <p>minut</p>
           </div>
         
 
