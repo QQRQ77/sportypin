@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import { Form, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SubmitButton from '@/components/ui/submitButton';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 // Schema for handball game settings
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
-    .number({ invalid_type_error: 'Period minutes must be a number' })
+    .number({ invalid_type_error: 'Czas gry musi być liczbą' })
     .int()
-    .positive()
-    .max(60, 'Too long'),
+    .positive(),
   periods: z.number().int().positive().max(10),
   halftimeMinutes: z.number().int().nonnegative().max(30),
 });
@@ -18,9 +26,9 @@ const HandballGameSettingsSchema = z.object({
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
 
 const defaultValues: HandballGameSettings = {
-  periodMinutes: 30,
-  periods: 2,
-  halftimeMinutes: 10,
+  periodMinutes: 15,
+  periods: 1,
+  halftimeMinutes: 0,
 };
 
 interface HandballGameSettingsFormProps {
@@ -48,6 +56,28 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
         
+        <div className="flex gap-4">
+          <h2 className="text-lg">Podział czasu gry:</h2>
+          <FormField
+            control={form.control}
+            name="periods"
+            render={({ field }) => (
+              <FormItem className="w-32">
+                <FormLabel>Numer</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="np. 1 część, 2 połowy"
+                    className="shadow-xl"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+            </FormItem>
+          )}
+        />
+        </div>
+        
+
         <div>
           <label>Period Minutes</label>
           <input type="number" {...form.register('periodMinutes', { valueAsNumber: true })} />
