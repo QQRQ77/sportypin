@@ -77,7 +77,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
               </FormItem>
             )}
             />
-            <p>{numOfPeriod === 1 ? 'część' : ''}{numOfPeriod === 2 ? 'połowy' : ''}{numOfPeriod === 3 ? 'tercje' : ''}{numOfPeriod === 4 ? 'kwarty' : ''}{numOfPeriod > 4 ? 'części' : ''}</p>
+            <p>{numOfPeriod == 1 ? 'część' : ''}{numOfPeriod == 2 ? 'połowy' : ''}{numOfPeriod == 3 ? 'tercje' : ''}{numOfPeriod == 4 ? 'kwarty' : ''}{numOfPeriod > 4 ? 'części' : ''}</p>
           </div>
         
 
