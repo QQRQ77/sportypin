@@ -180,23 +180,22 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                 )}
               />
               <p>pkt</p>
-            </div>
-            {drawPoint == 0 && 
-              <FormField
-                  control={form.control}
-                  name="draw_rules"
-                  render={({ field }) => (
-                      <FormItem>
-                          <FormControl>
-                              <Input placeholder="Wpisz regułę rozczygającą mecz" {...field} />
-                          </FormControl>
-                          <FormDescription>
-                              W przypadku braku możliwości remisu (0 pkt.), podaj regułę rozczygającą mecz.
-                          </FormDescription>
-                          <FormMessage />
-                      </FormItem>
-                    )}
-              />} 
+            </div> 
+            <FormField
+                control={form.control}
+                name="draw_rules"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormControl>
+                            <Input placeholder="Wpisz regułę dla remisu (opcja)." {...field} />
+                        </FormControl>
+                        <FormDescription>
+                            Dodaj opcjonalną regułę rozczygającą mecz w przypadku remisu.
+                        </FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                  )}
+            />
             <div className="flex items-center gap-4">
               <p>przegrana:</p>
               <FormField
