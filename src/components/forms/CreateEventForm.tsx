@@ -41,7 +41,7 @@ const FormSchema = z.object({
   cathegories: z.array(
     z.string()
     .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
-    .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+    .max(100, "Nazwa kategorii są zbyt długa (maksymalnie 100 znaków).")
   ).optional(),
   start_date: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Data rozpoczęcia jest nieprawidłowa."}),

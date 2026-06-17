@@ -20,35 +20,40 @@ const HandballGameSettingsSchema = z.object({
     .int()
     .positive(),
   periods: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę od 1 do 10" })
-      .int()
-      .nonnegative("Podaj liczbę od 1 do 10")
-      .max(10, "Maksymalnie 10 części gry"),
+    .number({ invalid_type_error: "Podaj liczbę od 1 do 10" })
+    .int()
+    .nonnegative("Podaj liczbę od 1 do 10")
+    .max(10, "Maksymalnie 10 części gry"),
   breakMinutes: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę"})
-      .int()
-      .nonnegative("Podaj liczbę większą lub równą 0"),
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),
   winPoints: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę"})
-      .int()
-      .nonnegative("Podaj liczbę większą lub równą 0"),
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),
   drawPoints: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę"})
-      .int()
-      .nonnegative("Podaj liczbę większą lub równą 0"),
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),
   lossPoints: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę"})
-      .int()
-      .nonnegative("Podaj liczbę większą lub równą 0"),
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),
   penaltyTimeSeconds: z.coerce
-      .number({ invalid_type_error: "Podaj liczbę sekund"})
-      .int()
-      .nonnegative("Podaj liczbę większą lub równą 0"),        
+    .number({ invalid_type_error: "Podaj liczbę sekund"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),        
   draw_rules: z.string().optional(),
   penalties: z.array(
     z.string()
-    .min(1, "Nazwa kategorii są jest zbyt krótka (minimum 1 znak).")
-    .max(100, "Nazwa sportu są zbyt długa (maksymalnie 100 znaków).")
+    .min(1, "Opis kary są jest zbyt krótki (minimum 1 znak).")
+    .max(100, "Opis kary są zbyt długi (maksymalnie 100 znaków).")
+  ).optional(),
+  extraRules: z.array(
+    z.string()
+    .min(1, "Opis reguły są jest zbyt krótki (minimum 1 znak).")
+    .max(100, "Opis reguły są zbyt długi (maksymalnie 100 znaków).")
   ).optional(),
 });
 
@@ -64,6 +69,7 @@ const defaultValues: HandballGameSettings = {
   penaltyTimeSeconds: 120,
   draw_rules: "",
   penalties: [],
+  extraRules: [],
 };
 
 interface HandballGameSettingsFormProps {
@@ -74,7 +80,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
-  
+  const [extraRuleInput, setExtraRuleInput] = useState("");  
 
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
@@ -312,6 +318,75 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                     </FormControl>
                     <FormDescription>
                       Dodaj jedną lub więcej obowiązujących kar.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />  
+          </div>
+        </div>
+
+        <div className="flex flex-col items-left gap-4 mt-4">
+          <h2 className="text-lg">Dodatkowe zasady:</h2>
+          <div className="flex flex-col items-left gap-4 ml-8">
+            <FormField
+              control={form.control}
+              name="extraRules"
+              render={({ field }) => {
+                const extraRules = field.value || [];
+
+                const addExtraRule = () => {
+                  const trimmed = extraRuleInput.trim();
+                  if (trimmed.length >= 3 && !extraRules.includes(trimmed)) {
+                    field.onChange([...extraRules, trimmed]);
+                    setExtraRuleInput("");
+                  }
+                };
+
+                const removeExtraRule = (ruleToRemove: string) => {
+                  field.onChange(extraRules.filter((rule: string) => rule !== ruleToRemove));
+                };
+
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <div>
+                        <div className="flex gap-2 mb-2">
+                          <Input
+                            value={extraRuleInput}
+                            onChange={e => setExtraRuleInput(e.target.value)}
+                            placeholder="np. czerwona kartka - wykluczenie z meczu"
+                            onKeyDown={e => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                addExtraRule();
+                              }
+                            }}
+                          />
+                          <Button type="button" onClick={addExtraRule} disabled={extraRuleInput.trim().length < 3}>
+                            Dodaj
+                          </Button>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {extraRules.map((rule: string, idx: number) => (
+                            <span key={idx} className="">
+                              {rule}
+                              <button
+                                type="button"
+                                className="ml-1 text-red-500 hover:text-red-700"
+                                onClick={() => removeExtraRule(rule)}
+                                aria-label={`Usuń zasadę`}
+                              >
+                                ×
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </FormControl>
+                    <FormDescription>
+                      Dodaj jedną lub więcej obowiązujących zasad.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
