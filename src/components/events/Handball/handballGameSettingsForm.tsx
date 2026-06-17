@@ -6,6 +6,7 @@ import SubmitButton from '@/components/ui/submitButton';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -38,6 +39,7 @@ const HandballGameSettingsSchema = z.object({
       .number({ invalid_type_error: "Podaj liczbę"})
       .int()
       .nonnegative("Podaj liczbę większą lub równą 0"),
+  draw_rules: z.string().optional(),
 });
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
@@ -49,6 +51,7 @@ const defaultValues: HandballGameSettings = {
   winPoints: 2,
   drawPoints: 1,
   lossPoints: 0,
+  draw_rules: "",
 };
 
 interface HandballGameSettingsFormProps {
@@ -65,6 +68,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
   });
 
   const numOfPeriod = form.watch("periods")
+  const drawPoint = form.watch("drawPoints")
 
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
@@ -176,7 +180,23 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                 )}
               />
               <p>pkt</p>
-            </div> 
+            </div>
+            {drawPoint == 0 && 
+              <FormField
+                  control={form.control}
+                  name="draw_rules"
+                  render={({ field }) => (
+                      <FormItem>
+                          <FormControl>
+                              <Input placeholder="Wpisz regułę rozczygającą mecz" {...field} />
+                          </FormControl>
+                          <FormDescription>
+                              W przypadku braku możliwości remisu (0 pkt.), podaj regułę rozczygającą mecz.
+                          </FormDescription>
+                          <FormMessage />
+                      </FormItem>
+                    )}
+              />} 
             <div className="flex items-center gap-4">
               <p>przegrana:</p>
               <FormField
