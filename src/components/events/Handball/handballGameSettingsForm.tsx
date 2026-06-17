@@ -203,7 +203,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                             <Input placeholder="Wpisz regułę dla remisu (opcja)." {...field} />
                         </FormControl>
                         <FormDescription>
-                            Dodaj opcjonalną regułę rozczygającą mecz w przypadku remisu.
+                            Podaj opcjonalną regułę rozczygającą mecz w przypadku remisu.
                         </FormDescription>
                         <FormMessage />
                     </FormItem>
@@ -281,7 +281,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                           <Input
                             value={penaltyInput}
                             onChange={e => setPenaltyInput(e.target.value)}
-                            placeholder="Dodaj kategorię"
+                            placeholder="np. czerwona kartka - wykluczenie z meczu"
                             onKeyDown={e => {
                               if (e.key === "Enter") {
                                 e.preventDefault();
@@ -293,7 +293,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                             Dodaj
                           </Button>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-col gap-2">
                           {penalties.map((penalty: string, idx: number) => (
                             <span key={idx} className="">
                               {penalty}
@@ -311,7 +311,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                       </div>
                     </FormControl>
                     <FormDescription>
-                      Dodaj jeden lub więcej obowiązujących kar.
+                      Dodaj jedną lub więcej obowiązujących kar.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
