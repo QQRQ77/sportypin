@@ -115,7 +115,7 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
               control={form.control}
               name="cathegory"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="flex gap-4 items-center">
                   <FormLabel className='text-lg'>Zasady dla kategorii:</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
