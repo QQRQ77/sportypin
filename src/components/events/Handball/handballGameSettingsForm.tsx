@@ -79,6 +79,7 @@ const defaultValues: HandballGameSettings = {
   draw_rules: "",
   penalties: [],
   extraRules: [],
+  cathegory: "wszystkie",
 };
 
 interface HandballGameSettingsFormProps {
@@ -115,7 +116,7 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
               name="cathegory"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Zasady dla kategori</FormLabel>
+                  <FormLabel className='text-lg'>Zasady dla kategorii:</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="shadow-xl">
@@ -244,7 +245,7 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
                             <Input placeholder="Wpisz regułę dla remisu (opcja)." {...field} />
                         </FormControl>
                         <FormDescription>
-                            Podaj opcjonalną regułę rozczygającą mecz w przypadku remisu.
+                            Podaj opcjonalną regułę rozstrzygającą mecz w przypadku remisu.
                         </FormDescription>
                         <FormMessage />
                     </FormItem>
