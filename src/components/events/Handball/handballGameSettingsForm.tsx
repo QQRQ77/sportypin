@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EventRulesType } from '@/types';
+import { createId } from '@paralleldrive/cuid2';
 
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
@@ -89,7 +90,7 @@ interface HandballGameSettingsFormProps {
   setEventRules?: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
 }
 
-export default function HandballGameSettingsForm({eventId, cathegories}: HandballGameSettingsFormProps) {
+export default function HandballGameSettingsForm({eventId, cathegories, setEventRules}: HandballGameSettingsFormProps) {
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
@@ -106,6 +107,7 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
     setButtonSubmitting(true);
     console.log('Submitting handball game settings:', data);
     console.log("Event ID:", eventId);
+    setEventRules && setEventRules(prevRules => [...prevRules, { ...data, id: createId() }]);
     setButtonSubmitting(false);
   }
 
@@ -450,3 +452,5 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
     
   );
 }
+
+
