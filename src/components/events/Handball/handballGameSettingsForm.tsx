@@ -87,7 +87,7 @@ const defaultValues: HandballGameSettings = {
 interface HandballGameSettingsFormProps {
   eventId: string;
   cathegories?: string[];
-  setEventRules?: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
+  setEventRules: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
 }
 
 export default function HandballGameSettingsForm({eventId, cathegories, setEventRules}: HandballGameSettingsFormProps) {
@@ -107,7 +107,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
     setButtonSubmitting(true);
     console.log('Submitting handball game settings:', data);
     console.log("Event ID:", eventId);
-    setEventRules && setEventRules(prevRules => [...prevRules, { ...data, id: createId() }]);
+    setEventRules(prevRules => [...prevRules, { ...data, id: createId() }]);
     setButtonSubmitting(false);
   }
 
