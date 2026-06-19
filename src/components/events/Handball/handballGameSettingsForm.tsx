@@ -9,10 +9,18 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
@@ -55,6 +63,7 @@ const HandballGameSettingsSchema = z.object({
     .min(1, "Opis reguły są jest zbyt krótki (minimum 1 znak).")
     .max(100, "Opis reguły są zbyt długi (maksymalnie 100 znaków).")
   ).optional(),
+  cathegory: z.string().or(z.literal("")).optional(),
 });
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
@@ -74,9 +83,10 @@ const defaultValues: HandballGameSettings = {
 
 interface HandballGameSettingsFormProps {
   eventId: string;
+  cathegories?: string[];
 }
 
-export default function HandballGameSettingsForm({eventId}: HandballGameSettingsFormProps) {
+export default function HandballGameSettingsForm({eventId, cathegories}: HandballGameSettingsFormProps) {
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
@@ -99,6 +109,31 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
   return (
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+
+          <FormField
+              control={form.control}
+              name="cathegory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Zasady dla kategori</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Wybierz kategorię" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {cathegories && ["wszystkie", ...cathegories].map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
         
           <div className="flex items-center gap-4">
             <h2 className="text-lg">Podział czasu gry:</h2>
@@ -356,7 +391,7 @@ export default function HandballGameSettingsForm({eventId}: HandballGameSettings
                           <Input
                             value={extraRuleInput}
                             onChange={e => setExtraRuleInput(e.target.value)}
-                            placeholder="np. czerwona kartka - wykluczenie z meczu"
+                            placeholder="np. Mecz rozgrywany jest na boisku o wymiarach 40x20 metrów"
                             onKeyDown={e => {
                               if (e.key === "Enter") {
                                 e.preventDefault();

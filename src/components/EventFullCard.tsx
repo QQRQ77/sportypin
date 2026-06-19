@@ -233,7 +233,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
                     <div><span className="font-bold">dwie żółte kartki</span> - wykluczenie z meczu</div>
                   </div>
             </div>
-            <HandballGameSettingsForm eventId={event.id}/>
+            <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories}/>
         </section>
         
         {/* Uczestnicy     */}
