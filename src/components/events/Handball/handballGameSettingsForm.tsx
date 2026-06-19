@@ -317,6 +317,9 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
 
                 return (
                   <FormItem>
+                    <FormDescription className="text-black">
+                      Dodaj jedną lub więcej obowiązujących kar.
+                    </FormDescription>
                     <FormControl>
                       <div>
                         <div className="flex gap-2 mb-2">
@@ -352,9 +355,6 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
                         </div>
                       </div>
                     </FormControl>
-                    <FormDescription>
-                      Dodaj jedną lub więcej obowiązujących kar.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
@@ -386,6 +386,9 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
 
                 return (
                   <FormItem>
+                    <FormDescription className="text-black">
+                      Dodaj jedną lub więcej obowiązujących zasad.
+                    </FormDescription>
                     <FormControl>
                       <div>
                         <div className="flex gap-2 mb-2">
