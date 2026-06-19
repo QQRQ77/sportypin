@@ -13,10 +13,10 @@ const EventRules: React.FC<EventRulesProps> = ({ rules }) => {
           <div key={index} className="">
             <h2 className="text-lg mb-4">Kategoria: <span className="font-bold text-xl">{rule.cathegory || "wszystkie"}</span></h2>
             <h2 className="text-lg">Podział czasu gry: <span className="font-bold">{rule.periods || 2} </span><span>{rule.periods == 1 ? 'część' : ''}{rule.periods == 2 ? 'połowy' : ''}{rule.periods == 3 ? 'tercje' : ''}{rule.periods == 4 ? 'kwarty' : ''}{rule.periods && rule.periods > 4 ? 'części' : ''}</span>
-            x <span className="font-bold">{rule.periodMinutes} min.</span>; przerwa: <span className="font-bold">{rule.breakMinutes || 10} min.</span></h2>
+             x <span className="font-bold">{rule.periodMinutes} min. </span>- przerwa: <span className="font-bold">{rule.breakMinutes || 10} min.</span></h2>
             <h2 className="text-lg">Punktacja: <span className="font-bold">{rule.winPoints || 3} pkt.</span> za zwycięstwo, <span className="font-bold">{rule.drawPoints || 1} pkt.</span> za remis, <span className="font-bold">{rule.lossPoints || 0} pkt.</span> za porażkę</h2>
             <h2 className="text-lg">{rule.draw_rules || ""}</h2>
-            {(rule.penaltyTimeSeconds || rule.penalties) && <>
+            {((rule.penaltyTimeSeconds && rule.penaltyTimeSeconds > 0) || rule.penalties) && <>
               <h2 className="text-lg">Kary: </h2>
               <div className="w-full ml-10 gap-2 flex flex-col justify-center items-left">
                 {rule.penaltyTimeSeconds && (
