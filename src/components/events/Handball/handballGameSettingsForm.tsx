@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { EventRulesType } from '@/types';
 
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
@@ -85,6 +86,7 @@ const defaultValues: HandballGameSettings = {
 interface HandballGameSettingsFormProps {
   eventId: string;
   cathegories?: string[];
+  setEventRules?: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
 }
 
 export default function HandballGameSettingsForm({eventId, cathegories}: HandballGameSettingsFormProps) {
@@ -442,7 +444,7 @@ export default function HandballGameSettingsForm({eventId, cathegories}: Handbal
             baseText="Zapisz"
           />
         </div>
-        {form.formState.isDirty && <span>Unsaved changes</span>}
+
       </form>
     </Form>
     

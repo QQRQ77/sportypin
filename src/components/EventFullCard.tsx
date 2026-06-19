@@ -1,6 +1,6 @@
 "use client";
 import { Mail, Phone } from "lucide-react";
-import { ClassificationItem, Event, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, Event, EventRulesType, HarmonogramItem, Participant } from "@/types";
 import AutoSliderAndModal from "./AutosliderAndModal";
 import { toggleObserveEvent } from "@/lib/users.actions";
 import StarSolidIcon from "../../public/icons/star-solid";
@@ -22,6 +22,7 @@ import ClassificationForm from "./forms/AddClassificationForm";
 import Classification from "./Classification";
 import HarmonogramSearchAndFilters from "./HarmonogramSearchandFilters";
 import HandballGameSettingsForm from "./events/Handball/handballGameSettingsForm";
+import EventRules from "./events/EventRules";
 
 interface Props {
   event: Event;
@@ -37,6 +38,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [openChangeAllForm, setOpenChangeAllForm] = useState(false);
   const [openParticipantsForm, setOpenParticipantsForm] = useState(false)
   const [showClassificationForm, setShowClassificationForm] = useState(false)
+  const [eventRules, setEventRules] = useState<EventRulesType[]>(event.rules || []);
   const [harmonogramItems, addHarmonogramItems] = useState<HarmonogramItem[]>(event.harmonogram || []);
   const [participants, setParticipants ] = useState<Participant[]>(event.participants || []);
   const [classification, setClassification ] = useState<ClassificationItem[]>(event.classification || []);
@@ -216,24 +218,12 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
               {isUserCreator && 
                 <div className="flex gap-4">
-                  <Button className="cursor-pointer" onClick={()=>{}}>Edytuj</Button>  
+                  <Button className="cursor-pointer" onClick={()=>{}}>Dodaj</Button>  
                 </div>
               }
             </div>
-            <div className="w-full mb-2 flex flex-col justify-center items-right">
-                <h2 className="text-lg mb-4">Kategoria: <span className="font-bold text-xl">master M</span></h2>
-                <h2 className="text-lg">Podział czasu gry: <span className="font-bold">2 połowy</span> x <span className="font-bold">30 min.</span>; przerwa: <span className="font-bold">10 min.</span></h2>
-                <h2 className="text-lg">Punktacja: <span className="font-bold">3 punkty</span> za zwycięstwo, <span className="font-bold">1 punkt</span> za remis, <span className="font-bold">0 punktów</span> za porażkę</h2>
-                <h2 className="text-lg">W przypadku remisu, decyduje: dogrywka (2 x 5 minut), a jeśli nadal jest remis: rzuty karne</h2>
-                <h2 className="text-lg">Kary: </h2>
-                  <div className="w-full ml-10 gap-2 flex flex-col justify-center items-left">
-                    <div><span className="font-bold">wykluczenie czasowe</span> - 2 min.,</div> 
-                    <div><span className="font-bold">żółta kartka</span> - ostrzeżenie,</div> 
-                    <div><span className="font-bold">czerwona kartka</span> - wykluczenie z meczu,</div> 
-                    <div><span className="font-bold">dwie żółte kartki</span> - wykluczenie z meczu</div>
-                  </div>
-            </div>
-            <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories}/>
+            <EventRules rules={eventRules || []} />
+            <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories} setEventRules={setEventRules}/>
         </section>
         
         {/* Uczestnicy     */}

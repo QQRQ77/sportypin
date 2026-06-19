@@ -162,6 +162,7 @@ export type Event = {
     imageUrls?: string[];
     lat: number;
     lng: number;
+    rules?: EventRulesType[];
 };
 
 export type HarmonogramItem = {
@@ -247,5 +248,20 @@ export type GameTransmissionItem = {
       eventDescription?: string,
       playerImageUrl?: string;
       teamLogoUrl?: string;
+}
+
+export type EventRulesType = {
+  id?: string;
+  periodMinutes?: number;
+  periods?: number;
+  breakMinutes?: number;
+  winPoints?: number;
+  drawPoints?: number;
+  lossPoints?: number;
+  penaltyTimeSeconds?: number;
+  draw_rules?: string;
+  penalties?: string[];
+  extraRules?: string[];
+  cathegory?: string,
 }
 
