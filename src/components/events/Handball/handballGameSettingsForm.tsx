@@ -127,8 +127,8 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
 
   return (
     <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full p-4 rounded-lg shadow-lg bg-gray-200 border-1 border-gray-500">
+          <div className="text-lg w-full text-center font-bold mb-4">Dodaj zasady gry:</div>
           <FormField
               control={form.control}
               name="cathegory"
