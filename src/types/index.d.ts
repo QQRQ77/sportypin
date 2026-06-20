@@ -263,5 +263,8 @@ export type EventRulesType = {
   penalties?: string[];
   extraRules?: string[];
   cathegory?: string,
+  teamBreaksSeconds?: number;
+  numOfTeamBreaks?: number;
+  selectedPeriodForTeamBreak?: string;
 }
 
