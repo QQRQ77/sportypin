@@ -29,9 +29,9 @@ const EventRules: React.FC<EventRulesProps> = ({ rules }) => {
                 }
               </div>
             </>}
-            {rule.teamBreaksSeconds && rule.numOfTeamBreaks && <>
-              <h2 className="text-lg">Czas dla drużyny (przerwa w grze): <span className="font-bold">{rule.numOfTeamBreaks} </span> na <span className="font-bold">{rule.selectedPeriodForTeamBreak}</span> x <span className="font-bold">{rule.teamBreaksSeconds}</span> sek.</h2>
-            </>}
+            <>
+              <h2 className="text-lg">Czas dla drużyny (przerwa w grze): <span className="font-bold">{rule.numOfTeamBreaks || 0} </span> na <span className="font-bold">{rule.selectedPeriodForTeamBreak}</span> x <span className="font-bold">{rule.teamBreaksSeconds}</span> sek.</h2>
+            </>
             {rule.extraRules && rule.extraRules.length > 0 && <>
               <h2 className="text-lg">Dodatkowe zasady:</h2>
               <div className="w-full ml-10 gap-2 flex flex-col justify-center items-left">
