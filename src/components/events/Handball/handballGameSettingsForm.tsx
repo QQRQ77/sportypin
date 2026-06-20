@@ -120,7 +120,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
               name="cathegory"
               render={({ field }) => (
                 <FormItem className="flex gap-4 items-center">
-                  <FormLabel className='text-lg'>Zasady dla kategorii:</FormLabel>
+                  <FormLabel className='text-lg font-normal'>Zasady dla kategorii:</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="shadow-xl">
@@ -177,7 +177,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
             )}
             />
             <p>min.,</p>
-            
+
             {numOfPeriod > 1 && 
               <>
                 <p>przerwa:</p>
