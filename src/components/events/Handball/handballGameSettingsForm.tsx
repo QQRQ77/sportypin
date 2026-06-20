@@ -66,6 +66,17 @@ const HandballGameSettingsSchema = z.object({
     .max(100, "Opis reguły są zbyt długi (maksymalnie 100 znaków).")
   ).optional(),
   cathegory: z.string().or(z.literal("")).optional(),
+  numOfTeamBreaks: z.coerce
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0"),
+  teamBreaksSeconds: z.coerce
+    .number({ invalid_type_error: "Podaj liczbę"})
+    .int()
+    .nonnegative("Podaj liczbę większą lub równą 0")
+    .optional(),
+  selectedPeriodForTeamBreak: z.string().or(z.literal("")).optional(),
+
 });
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
@@ -82,6 +93,9 @@ const defaultValues: HandballGameSettings = {
   penalties: [],
   extraRules: [],
   cathegory: "wszystkie",
+  numOfTeamBreaks: 1,
+  teamBreaksSeconds: 60,
+  selectedPeriodForTeamBreak: "mecz",
 };
 
 interface HandballGameSettingsFormProps {
@@ -370,6 +384,68 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
             />  
           </div>
         </div>
+
+        <div className="flex items-center gap-4">
+            <h2 className="text-lg">Czas dla drużyny (przerwa w grze):</h2>
+            <FormField
+              control={form.control}
+              name="numOfTeamBreaks"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+              </FormItem>
+            )}
+            />
+            <p>na</p>
+            <FormField
+              control={form.control}
+              name="selectedPeriodForTeamBreak"
+              render={({ field }) => (
+                <FormItem className="flex gap-4 items-center">
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="shadow-xl">
+                        <SelectValue placeholder="Wybierz kategorię" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {["mecz", "połowę", "tercję", "kwartę", "część"].map((opt, idx) => (
+                        <SelectItem key={idx} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <p> x </p>
+            <FormField
+              control={form.control}
+              name="teamBreaksSeconds"
+              render={({ field }) => (
+                <FormItem className="w-16">
+                  <FormControl>
+                    <Input
+                      type="number"
+                      className="shadow-xl"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <p>sek.</p>
+          </div>
 
         <div className="flex flex-col items-left gap-4 mt-4">
           <h2 className="text-lg">Dodatkowe zasady:</h2>
