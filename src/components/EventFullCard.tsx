@@ -46,6 +46,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   // const [filterHarmonogramType, setFilterHarmonogramType] = useState<string>("wszystkie");
   const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
   const [filterHarmonogramParticipant, setFilterHarmonogramParticipant] = useState<string>("wszyscy");
+  const [showEventRulesForm, setShowEventRulesForm] = useState<boolean>(false);
 
   useEffect(() => {
     let filteredItems = event.harmonogram || [];
@@ -218,12 +219,14 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
               {isUserCreator && 
                 <div className="flex gap-4">
-                  <Button className="cursor-pointer" onClick={()=>{}}>Dodaj</Button>  
+                  <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
                 </div>
               }
             </div>
             <EventRules rules={eventRules || []} />
-            <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories} setEventRules={setEventRules}/>
+            {showEventRulesForm && (
+              <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories} setEventRules={setEventRules}/>
+            )}
         </section>
         
         {/* Uczestnicy     */}
