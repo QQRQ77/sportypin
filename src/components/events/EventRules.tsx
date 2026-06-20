@@ -10,7 +10,7 @@ const EventRules: React.FC<EventRulesProps> = ({ rules }) => {
     <section>
       <div className="w-full mb-2 flex flex-col justify-center items-right">
         {rules.map((rule, index) => (
-          <div key={index} className="">
+          <div key={index} className="mb-6 border-b-2 border-gray-300 pb-4">
             {(rule.cathegory && rule.cathegory !== "wszystkie") ? <h1 className="text-lg mb-4">Zasady dla kategorii: <span className="font-bold">{rule.cathegory}</span></h1> : <h1 className="text-lg mb-4">Zasady wspólne dla <span className="font-bold">wszystkich</span> kategorii</h1>}
             <h2 className="text-lg">Podział czasu gry: <span className="font-bold">{rule.periods || 2} </span><span>{rule.periods == 1 ? 'część' : ''}{rule.periods == 2 ? 'połowy' : ''}{rule.periods == 3 ? 'tercje' : ''}{rule.periods == 4 ? 'kwarty' : ''}{rule.periods && rule.periods > 4 ? 'części' : ''}</span>
             {" "}x <span className="font-bold">{rule.periodMinutes} min. </span>{rule.periods && rule.periods > 1 && <>{"- przerwa: "}<span className="font-bold">{rule.breakMinutes || 10} min.</span></>}</h2>
