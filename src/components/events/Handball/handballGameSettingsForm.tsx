@@ -116,6 +116,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   });
 
   const numOfPeriod = form.watch("periods")
+  const numOfBreaks = form.watch("numOfTeamBreaks")
 
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
@@ -403,48 +404,51 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
               </FormItem>
             )}
             />
-            <p>na</p>
-            <FormField
-              control={form.control}
-              name="selectedPeriodForTeamBreak"
-              render={({ field }) => (
-                <FormItem className="flex gap-4 items-center">
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="shadow-xl">
-                        <SelectValue placeholder="Wybierz kategorię" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {["mecz", "połowę", "tercję", "kwartę", "część"].map((opt, idx) => (
-                        <SelectItem key={idx} value={opt}>
-                          {opt}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p> x </p>
-            <FormField
-              control={form.control}
-              name="teamBreaksSeconds"
-              render={({ field }) => (
-                <FormItem className="w-16">
-                  <FormControl>
-                    <Input
-                      type="number"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p>sek.</p>
+            {numOfBreaks > 0 &&
+              <>
+                <p>na</p>
+                <FormField
+                  control={form.control}
+                  name="selectedPeriodForTeamBreak"
+                  render={({ field }) => (
+                    <FormItem className="flex gap-4 items-center">
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                          <SelectTrigger className="shadow-xl">
+                            <SelectValue placeholder="Wybierz kategorię" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {["mecz", "połowę", "tercję", "kwartę", "część"].map((opt, idx) => (
+                            <SelectItem key={idx} value={opt}>
+                              {opt}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <p> x </p>
+                <FormField
+                  control={form.control}
+                  name="teamBreaksSeconds"
+                  render={({ field }) => (
+                    <FormItem className="w-16">
+                      <FormControl>
+                        <Input
+                          type="number"
+                          className="shadow-xl"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <p>sek.</p>
+              </>}
           </div>
 
         <div className="flex flex-col items-left gap-4 mt-4">
@@ -508,9 +512,6 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                         </div>
                       </div>
                     </FormControl>
-                    <FormDescription>
-                      Dodaj jedną lub więcej obowiązujących zasad.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 );
