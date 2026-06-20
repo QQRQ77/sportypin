@@ -177,24 +177,28 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
             )}
             />
             <p>min.,</p>
-            <p>przerwa:</p>
-            <FormField
-              control={form.control}
-              name="breakMinutes"
-              render={({ field }) => (
-                <FormItem className="w-16">
-                  <FormControl>
-                    <Input
-                      type="number"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p>min.</p>
+            
+            {numOfPeriod > 1 && 
+              <>
+                <p>przerwa:</p>
+                <FormField
+                  control={form.control}
+                  name="breakMinutes"
+                  render={({ field }) => (
+                    <FormItem className="w-16">
+                      <FormControl>
+                        <Input
+                          type="number"
+                          className="shadow-xl"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <p>min.</p>
+              </>}
           </div>
 
         <div className="flex flex-col items-left gap-4 mt-4">
