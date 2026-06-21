@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 import HarmonogramForm from "./forms/EventHarmonogramForm";
 import StartAndEndTimeViewer from "./StartAndEndTimeViewer";
 import SortableHarmonogram from "./SortableHarmonogram";
@@ -47,6 +48,22 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
   const [filterHarmonogramCathegory, setFilterHarmonogramCathegory] = useState<string>("wszystkie");
   const [filterHarmonogramParticipant, setFilterHarmonogramParticipant] = useState<string>("wszyscy");
   const [showEventRulesForm, setShowEventRulesForm] = useState<boolean>(false);
+  
+  const rulesRef = useRef<HTMLElement | null>(null);
+
+  const handleCloseEventRulesForm = (val?: boolean | ((prev: boolean) => boolean)) => {
+    if (typeof val === "function") {
+      setShowEventRulesForm((prev) => {
+        const result = val(prev);
+        if (!result) setTimeout(() => rulesRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+        return result;
+      });
+    } else {
+      const next = Boolean(val);
+      setShowEventRulesForm(next);
+      if (!next) setTimeout(() => rulesRef.current?.scrollIntoView({ behavior: "smooth" }), 50);
+    }
+  };
 
   useEffect(() => {
     let filteredItems = event.harmonogram || [];
@@ -214,12 +231,13 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
         </section>
 
         {/* Ustawienia eventu     */}
-        <section className="relative pt-4 border-t border-slate-300">
-            <div className="w-full flex justify-left">
+
+        <section ref={rulesRef} className="rules relative pt-4 border-t border-slate-300">
+            <div className="w-full flex justify-start">
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
             </div>
             <EventRules rules={eventRules || []} />
-            <div className="w-full mb-2 flex justify-right">
+            <div className="w-full mb-2 flex justify-end">
               {isUserCreator && 
                   <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
               }
@@ -229,7 +247,8 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
                 eventId={event.id} 
                 cathegories={event.cathegories} 
                 setEventRules={setEventRules}
-                setCloseForm={setShowEventRulesForm}
+                setCloseForm={handleCloseEventRulesForm}
+                scrollToTop={handleCloseEventRulesForm}
               />
             )}
         </section>

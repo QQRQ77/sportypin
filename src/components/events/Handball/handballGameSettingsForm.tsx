@@ -103,9 +103,10 @@ interface HandballGameSettingsFormProps {
   cathegories?: string[];
   setEventRules: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
   setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
+  scrollToTop: () => void;
 }
 
-export default function HandballGameSettingsForm({eventId, cathegories, setEventRules, setCloseForm}: HandballGameSettingsFormProps) {
+export default function HandballGameSettingsForm({eventId, cathegories, setEventRules, setCloseForm, scrollToTop}: HandballGameSettingsFormProps) {
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
@@ -125,6 +126,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
     console.log("Event ID:", eventId);
     setEventRules(prevRules => [...prevRules, { ...data, id: createId() }]);
     setButtonSubmitting(false);
+    scrollToTop();
     setCloseForm(false);
   }
 
