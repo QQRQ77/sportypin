@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { EventRulesType } from '@/types';
 import { createId } from '@paralleldrive/cuid2';
+import { saveEventRule } from '@/lib/events.actions';
 
 const HandballGameSettingsSchema = z.object({
   periodMinutes: z
@@ -122,12 +123,15 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
 
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
-    console.log('Submitting handball game settings:', data);
-    console.log("Event ID:", eventId);
-    setEventRules(prevRules => [...prevRules, { ...data, id: createId() }]);
-    setButtonSubmitting(false);
-    scrollToTop();
-    setCloseForm(false);
+
+    const newRule: EventRulesType = { ...data, id: createId() };
+    setEventRules(prevRules => [...prevRules, newRule]);
+    const result = await saveEventRule(eventId, newRule);
+    
+    if (result === "success") {
+      scrollToTop();
+      setCloseForm(false);    
+    }
   }
 
   return (

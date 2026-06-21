@@ -18,13 +18,14 @@
 // function saveEventTeamMembers
 // function saveHarmonogramItemTeamPlayers
 // function getEventParticipants
+// function saveEventRule
 
 
 'use server'
 
 import { auth } from "@clerk/nextjs/server";
 import createSupabaseClient from "./supabase";
-import { ClassificationItem, CreateEvent, EventTeamMemberType, GameTransmissionItem, HarmonogramItem, Participant } from "@/types";
+import { ClassificationItem, CreateEvent, EventRulesType, EventTeamMemberType, GameTransmissionItem, HarmonogramItem, Participant } from "@/types";
 import { formatAddressForGeocoding, getGeocodeFromAddressGoogle } from "./maps";
 import { getUserObservedEventsIds } from "./users.actions";
 
@@ -598,5 +599,43 @@ export async function getEventParticipants(eventId: string) {
   return [];
 }
 
+//TODO:
+export async function saveEventRule(eventId: string, eventRule: EventRulesType) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+  }
+
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+
+  const supabase = createSupabaseClient();
+
+  const { data: rulesData, error: rulesError } = await supabase
+    .from('Events')
+    .select('eventRules')
+    .eq('id', eventId)
+    .single();
+  
+    if (rulesError || !rulesData) {
+    console.error('Error fetching event rules:', rulesError);
+    throw new Error(rulesError?.message || 'Failed to fetch event rules');}
+
+  const {data, error} = await supabase
+    .from('Events')
+    .update({ eventRules: [...(rulesData.eventRules || []), eventRule] })
+    .eq('id', eventId)
+    .select('eventRules');
+  
+  if (error || !data) {
+    console.error('Error saving event rule:', error);
+    throw new Error(error?.message || 'Failed to save event rule');
+  }
+
+  return "success";
+}
 
 
