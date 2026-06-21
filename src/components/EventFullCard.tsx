@@ -225,7 +225,12 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               }
             </div>
             {showEventRulesForm && (
-              <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories} setEventRules={setEventRules}/>
+              <HandballGameSettingsForm 
+                eventId={event.id} 
+                cathegories={event.cathegories} 
+                setEventRules={setEventRules}
+                setCloseForm={setShowEventRulesForm}
+              />
             )}
         </section>
         
