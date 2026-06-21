@@ -616,7 +616,7 @@ export async function saveEventRule(eventId: string, eventRule: EventRulesType) 
 
   const { data: rulesData, error: rulesError } = await supabase
     .from('Events')
-    .select('eventRules')
+    .select('rules')
     .eq('id', eventId)
     .single();
   
@@ -626,9 +626,9 @@ export async function saveEventRule(eventId: string, eventRule: EventRulesType) 
 
   const {data, error} = await supabase
     .from('Events')
-    .update({ eventRules: [...(rulesData.eventRules || []), eventRule] })
+    .update({ rules: [...(rulesData.rules || []), eventRule] })
     .eq('id', eventId)
-    .select('eventRules');
+    .select('rules');
   
   if (error || !data) {
     console.error('Error saving event rule:', error);
