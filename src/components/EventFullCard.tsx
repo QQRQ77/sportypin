@@ -215,15 +215,15 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
 
         {/* Ustawienia eventu     */}
         <section className="relative pt-4 border-t border-slate-300">
-            <div className="w-full flex justify-between">
+            <div className="w-full flex justify-left">
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
-              {isUserCreator && 
-                <div className="flex gap-4">
-                  <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
-                </div>
-              }
             </div>
             <EventRules rules={eventRules || []} />
+            <div className="w-full mb-2 flex justify-right">
+              {isUserCreator && 
+                  <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
+              }
+            </div>
             {showEventRulesForm && (
               <HandballGameSettingsForm eventId={event.id} cathegories={event.cathegories} setEventRules={setEventRules}/>
             )}
