@@ -114,8 +114,10 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   const [penaltyInput, setPenaltyInput] = useState("");
   const [extraRuleInput, setExtraRuleInput] = useState("");
   const [gameTimeActive, setGameTimeActive] = useState(true);  
-  const [pointsActive, setPointsActive] = useState(true);  
-
+  const [pointsActive, setPointsActive] = useState(true);
+  const [penaltiesActive, setPenaltiesActive] = useState(true);
+  const [teamBreakActive, setTeamBreakActive] = useState(true);
+  const [extraRulesActive, setExtraRulesActive] = useState(true);
 
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
@@ -331,24 +333,33 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
           </div>
         </div>
 
-        <div className="flex flex-col items-left gap-4 mt-4">
-          <h2 className="text-lg">Kary:</h2>
+        <div className={`flex flex-col items-left gap-4 mt-4 ${!teamBreakActive ? 'opacity-50' : ''}`}>
+          <div className={`flex items-center gap-4`}>
+            <h2 className="text-lg">Kary:</h2>
+            <Switch
+              className="data-[state=checked]:bg-emerald-300 data-[state=unchecked]:bg-slate-600 [&>span]:data-[state=checked]:bg-emerald-700"
+              aria-label="Aktywuj/Dezaktywuj kary"
+              checked={penaltiesActive}
+              onCheckedChange={setPenaltiesActive}
+            />
+          </div>
           <div className="flex flex-col items-left gap-4 ml-8">
             <div className="flex items-center gap-4">
               <p>Wykluczenie czasowe:</p>
               <FormField
-              control={form.control}
-              name="penaltyTimeSeconds"
-              render={({ field }) => (
-                <FormItem className="w-16">
-                  <FormControl>
-                    <Input
-                      type="number"
-                      className="shadow-xl"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                control={form.control}
+                name="penaltyTimeSeconds"
+                render={({ field }) => (
+                  <FormItem className="w-16">
+                    <FormControl>
+                      <Input
+                        disabled={!penaltiesActive} 
+                        type="number"
+                        className="shadow-xl"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
                 </FormItem>
                 )}
               />
@@ -381,6 +392,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                       <div>
                         <div className="flex gap-2 mb-2">
                           <Input
+                            disabled={!penaltiesActive}
                             value={penaltyInput}
                             onChange={e => setPenaltyInput(e.target.value)}
                             placeholder="np. czerwona kartka - wykluczenie z meczu"
@@ -420,7 +432,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className={`flex items-center gap-4 ${!teamBreakActive ? 'opacity-50' : ''}`}>
             <h2 className="text-lg">Czas dla drużyny (przerwa w grze):</h2>
             <FormField
               control={form.control}
@@ -429,6 +441,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!teamBreakActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
@@ -472,6 +485,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                     <FormItem className="w-16">
                       <FormControl>
                         <Input
+                          disabled={!teamBreakActive}
                           type="number"
                           className="shadow-xl"
                           {...field}
@@ -483,10 +497,24 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 />
                 <p>sek.</p>
               </>}
+              <Switch
+                className="data-[state=checked]:bg-emerald-300 data-[state=unchecked]:bg-slate-600 [&>span]:data-[state=checked]:bg-emerald-700"
+                aria-label="Aktywuj/Dezaktywuj czas dla drużyny"
+                checked={teamBreakActive}
+                onCheckedChange={setTeamBreakActive}
+              />
           </div>
 
-        <div className="flex flex-col items-left gap-4 mt-4">
-          <h2 className="text-lg">Dodatkowe zasady:</h2>
+        <div className={`flex flex-col items-left gap-4 mt-4 ${!extraRulesActive ? 'opacity-50' : ''}`}>
+          <div className={`flex items-center gap-4`}>
+            <h2 className="text-lg">Dodatkowe zasady:</h2>
+            <Switch
+              className="data-[state=checked]:bg-emerald-300 data-[state=unchecked]:bg-slate-600 [&>span]:data-[state=checked]:bg-emerald-700"
+              aria-label="Aktywuj/Dezaktywuj dodatkowe zasady"
+              checked={extraRulesActive}
+              onCheckedChange={setExtraRulesActive}
+            />
+          </div>
           <div className="flex flex-col items-left gap-4 ml-8">
             <FormField
               control={form.control}
@@ -515,6 +543,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                       <div>
                         <div className="flex gap-2 mb-2">
                           <Input
+                            disabled={!extraRulesActive}
                             value={extraRuleInput}
                             onChange={e => setExtraRuleInput(e.target.value)}
                             placeholder="np. Mecz rozgrywany jest na boisku o wymiarach 40x20 metrów"
