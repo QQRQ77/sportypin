@@ -142,7 +142,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
       draw_rules: pointsActive ? data.draw_rules : "",
       penalties: penaltiesActive ? data.penalties : [],
       extraRules: extraRulesActive ? data.extraRules : [],
-      cathegory: "wszystkie",
+      cathegory: data.cathegory,
       numOfTeamBreaks: teamBreakActive ? data.numOfTeamBreaks : 0,
       teamBreaksSeconds: teamBreakActive ? data.teamBreaksSeconds : 0,
       selectedPeriodForTeamBreak: teamBreakActive ? data.selectedPeriodForTeamBreak : "",
