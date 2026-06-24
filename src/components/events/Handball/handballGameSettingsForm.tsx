@@ -228,6 +228,10 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <p>min.</p>
               </>}
               <Switch
+                color="primary"
+                size="default"
+                className=""
+                aria-label="Aktywuj/Dezaktywuj podział czasu gry"
                 checked={gameTimeActive}
                 onCheckedChange={setGameTimeActive}
               />
