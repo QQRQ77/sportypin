@@ -130,6 +130,14 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
 
+    const isDataEmpty = !gameTimeActive && !pointsActive && !penaltiesActive && !extraRulesActive && !teamBreakActive && (data.penalties && data.penalties.length === 0) && (data.extraRules && data.extraRules.length === 0) 
+
+    if (isDataEmpty) {
+      scrollToTop();
+      setCloseForm(false); 
+      return
+    }
+
     const newRule: EventRulesType = {
       id: createId(), 
       periodMinutes: gameTimeActive ? data.periodMinutes : 0,
