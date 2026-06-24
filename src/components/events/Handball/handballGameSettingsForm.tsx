@@ -130,7 +130,24 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   const onSubmit = async (data: HandballGameSettings) => {
     setButtonSubmitting(true);
 
-    const newRule: EventRulesType = { ...data, id: createId() };
+    const newRule: EventRulesType = {
+      id: createId(), 
+      periodMinutes: gameTimeActive ? data.periodMinutes : 0,
+      periods: gameTimeActive ? data.periods : 0,
+      breakMinutes: gameTimeActive ? data.breakMinutes : 0,
+      winPoints: pointsActive ? data.winPoints : 0,
+      drawPoints: pointsActive ? data.drawPoints : 0,
+      lossPoints: pointsActive ? data.lossPoints : 0,
+      penaltyTimeSeconds: penaltiesActive ? data.penaltyTimeSeconds : 0,
+      draw_rules: pointsActive ? data.draw_rules : "",
+      penalties: penaltiesActive ? data.penalties : [],
+      extraRules: extraRulesActive ? data.extraRules : [],
+      cathegory: "wszystkie",
+      numOfTeamBreaks: teamBreakActive ? data.numOfTeamBreaks : 0,
+      teamBreaksSeconds: teamBreakActive ? data.teamBreaksSeconds : 0,
+      selectedPeriodForTeamBreak: teamBreakActive ? data.selectedPeriodForTeamBreak : "",
+    };
+
     setEventRules(prevRules => [...prevRules, newRule]);
     const result = await saveEventRule(eventId, newRule);
     
@@ -459,7 +476,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                   name="selectedPeriodForTeamBreak"
                   render={({ field }) => (
                     <FormItem className="flex gap-4 items-center">
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!teamBreakActive}>
                         <FormControl>
                           <SelectTrigger className="shadow-xl">
                             <SelectValue placeholder="Wybierz kategorię" />
