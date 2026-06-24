@@ -114,6 +114,8 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   const [penaltyInput, setPenaltyInput] = useState("");
   const [extraRuleInput, setExtraRuleInput] = useState("");
   const [gameTimeActive, setGameTimeActive] = useState(true);  
+  const [pointsActive, setPointsActive] = useState(true);  
+
 
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
@@ -235,8 +237,16 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
               />
           </div>
 
-        <div className="flex flex-col items-left gap-4 mt-4">
-          <h2 className="text-lg">Punktacja:</h2>
+        <div className={`flex flex-col items-left gap-4 mt-4 ${pointsActive ? "" : "opacity-50"}`}>
+          <div className={`flex items-center gap-4`}>
+            <h2 className="text-lg">Punktacja:</h2>
+            <Switch
+              className="data-[state=checked]:bg-emerald-300 data-[state=unchecked]:bg-slate-600 [&>span]:data-[state=checked]:bg-emerald-700"
+              aria-label="Aktywuj/Dezaktywuj punktację"
+              checked={pointsActive}
+              onCheckedChange={setPointsActive}
+            />
+          </div>
           <div className="flex flex-col items-left gap-4 ml-8">
             <div className="flex items-center gap-4">
               <p>wygrana:</p>
@@ -247,6 +257,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!pointsActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
@@ -267,6 +278,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!pointsActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
@@ -284,7 +296,9 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 render={({ field }) => (
                     <FormItem>
                         <FormControl>
-                            <Input placeholder="Wpisz regułę dla remisu (opcja)." {...field} />
+                            <Input
+                                disabled={!pointsActive}
+                                placeholder="Wpisz regułę dla remisu (opcja)." {...field} />
                         </FormControl>
                         <FormDescription>
                             Podaj opcjonalną regułę rozstrzygającą mecz w przypadku remisu.
@@ -302,6 +316,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!pointsActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
