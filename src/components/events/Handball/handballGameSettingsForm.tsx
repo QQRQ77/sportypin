@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -111,7 +112,8 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
-  const [extraRuleInput, setExtraRuleInput] = useState("");  
+  const [extraRuleInput, setExtraRuleInput] = useState("");
+  const [gameTimeActive, setGameTimeActive] = useState(true);  
 
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
@@ -163,15 +165,16 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
               )}
             />
         
-          <div className="flex items-center gap-4">
+          <div className={`flex items-center gap-4 ${gameTimeActive ? "" : "opacity-50"}`}>
             <h2 className="text-lg">Podział czasu gry:</h2>
             <FormField
               control={form.control}
-              name="periods"
+              name="periods"             
               render={({ field }) => (
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!gameTimeActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
@@ -190,6 +193,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 <FormItem className="w-16">
                   <FormControl>
                     <Input
+                      disabled={!gameTimeActive}
                       type="number"
                       className="shadow-xl"
                       {...field}
@@ -199,7 +203,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
               </FormItem>
             )}
             />
-            <p>min.,</p>
+            <p>min.</p>
 
             {numOfPeriod > 1 && 
               <>
@@ -211,6 +215,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                     <FormItem className="w-16">
                       <FormControl>
                         <Input
+                          disabled={!gameTimeActive}
                           type="number"
                           className="shadow-xl"
                           {...field}
@@ -222,6 +227,10 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
                 />
                 <p>min.</p>
               </>}
+              <Switch
+                checked={gameTimeActive}
+                onCheckedChange={setGameTimeActive}
+              />
           </div>
 
         <div className="flex flex-col items-left gap-4 mt-4">
