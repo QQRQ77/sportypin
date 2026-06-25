@@ -17,7 +17,7 @@ const EventRule: React.FC<EventRulesProps> = ({ rule, eventId, cathegories, setE
   
 return (
   <>
-    {openEventRuleForm ? 
+    {!openEventRuleForm ? 
     <>
       <div className='flex w-full justify-between items-center'>
         {(rule.cathegory && rule.cathegory !== "wszystkie") ? <h1 className="text-lg mb-4 font-normal">Zasady dla kategorii <span className="font-bold">{rule.cathegory}</span>:</h1> : <h1 className="text-lg mb-4 font-normal">Zasady wspólne dla <span className="font-bold">wszystkich</span> kategorii:</h1>}
