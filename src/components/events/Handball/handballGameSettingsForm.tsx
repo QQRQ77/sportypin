@@ -83,32 +83,16 @@ const HandballGameSettingsSchema = z.object({
 
 export type HandballGameSettings = z.infer<typeof HandballGameSettingsSchema>;
 
-const defaultValues: HandballGameSettings = {
-  periodMinutes: 15,
-  periods: 1,
-  breakMinutes: 0,
-  winPoints: 2,
-  drawPoints: 1,
-  lossPoints: 0,
-  penaltyTimeSeconds: 120,
-  draw_rules: "",
-  penalties: [],
-  extraRules: [],
-  cathegory: "wszystkie",
-  numOfTeamBreaks: 1,
-  teamBreaksSeconds: 60,
-  selectedPeriodForTeamBreak: "mecz",
-};
-
 interface HandballGameSettingsFormProps {
   eventId: string;
   cathegories?: string[];
   setEventRules: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
   setCloseForm: React.Dispatch<React.SetStateAction<boolean>>;
   scrollToTop: () => void;
+  rule?: EventRulesType
 }
 
-export default function HandballGameSettingsForm({eventId, cathegories, setEventRules, setCloseForm, scrollToTop}: HandballGameSettingsFormProps) {
+export default function HandballGameSettingsForm({eventId, cathegories, setEventRules, setCloseForm, scrollToTop, rule}: HandballGameSettingsFormProps) {
 
   const [buttonSubmitting, setButtonSubmitting] = useState(false);
   const [penaltyInput, setPenaltyInput] = useState("");
@@ -119,6 +103,24 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   const [teamBreakActive, setTeamBreakActive] = useState(true);
   const [extraRulesActive, setExtraRulesActive] = useState(true);
 
+  const defaultValues: HandballGameSettings = {
+    periodMinutes: rule?.periodMinutes || 15,
+    periods: rule?.periods || 1,
+    breakMinutes: rule?.breakMinutes || 0,
+    winPoints: rule?.winPoints || 2,
+    drawPoints: rule?.drawPoints || 1,
+    lossPoints: rule?.lossPoints || 0,
+    penaltyTimeSeconds: rule?.penaltyTimeSeconds || 120,
+    draw_rules: rule?.draw_rules || "",
+    penalties: rule?.penalties || [],
+    extraRules: rule?.extraRules || [],
+    cathegory: rule?.cathegory || "wszystkie",
+    numOfTeamBreaks: rule?.numOfTeamBreaks || 1,
+    teamBreaksSeconds: rule?.teamBreaksSeconds || 60,
+    selectedPeriodForTeamBreak: rule?.selectedPeriodForTeamBreak || "mecz",
+  };
+  
+  
   const form  = useForm<HandballGameSettings>({
     resolver: zodResolver(HandballGameSettingsSchema),
     defaultValues,

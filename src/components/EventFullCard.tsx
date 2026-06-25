@@ -236,7 +236,13 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
             <div className="w-full flex justify-start">
               <h2 className="mb-2 text-xl font-bold text-sky-600">Zasady:</h2>
             </div>
-            <EventRules rules={eventRules || []} />
+            <EventRules 
+              rules={eventRules || []}
+              eventId={event.id} 
+              cathegories={event.cathegories} 
+              setEventRules={setEventRules}
+              scrollToTop={handleCloseEventRulesForm} 
+            />
             <div className="w-full mb-2 flex justify-end">
               {isUserCreator && 
                   <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
