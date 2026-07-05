@@ -685,7 +685,8 @@ export async function deleteEventRule(eventId: string, eventRuleId: string) {
     const { data, error } = await supabase
       .from('Events')
       .update({ rules: updatedRules })
-      .eq('id', eventId);
+      .eq('id', eventId)
+      .select('rules');
 
     if (error || !data) {
       console.error('Error saving event rule:', error);

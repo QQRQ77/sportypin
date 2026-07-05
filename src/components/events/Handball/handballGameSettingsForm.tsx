@@ -30,7 +30,7 @@ const HandballGameSettingsSchema = z.object({
   periodMinutes: z
     .number({ invalid_type_error: 'Czas gry musi być liczbą' })
     .int()
-    .positive(),
+    .nonnegative("Podaj liczbę większą od 0"),
   periods: z.coerce
     .number({ invalid_type_error: "Podaj liczbę od 1 do 10" })
     .int()
@@ -159,10 +159,14 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
       saveAction: rule?.id ? "update" : "create"
     };
 
-    setEventRules(prevRules => [...prevRules, newRule]);
     const result = await saveEventRule(eventId, newRule);
     
     if (result === "success") {
+      setEventRules(prevRules => {
+        if (rule?.saveAction === "update") {
+          return prevRules.map(r => r.id === rule.id ? newRule : r);
+        } else {  return [...prevRules, newRule];}}
+      );
       scrollToTop();
       setButtonSubmitting(false);
       setCloseForm(false);    
