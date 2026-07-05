@@ -176,7 +176,13 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
   return (
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full p-4 rounded-lg shadow-lg bg-gray-100 border-1 border-gray-200">
-          <div className="text-lg w-full text-center font-bold mb-4">Dodaj zasady gry:</div>
+          <div className="w-full flex justify-between">
+            <div className='hidden md:block'></div>
+            <div className="text-lg w-full text-center font-bold mb-4">{`${rule?.id ? "Edytuj" : "Dodaj"} zasady gry:`}</div>
+            <Button type="button" onClick={() => setCloseForm(false)}>
+              Zamknij
+            </Button>
+          </div>
           <FormField
               control={form.control}
               name="cathegory"
