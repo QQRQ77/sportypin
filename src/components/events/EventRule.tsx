@@ -22,7 +22,7 @@ return (
       <div className='flex w-full justify-between items-center'>
         {(rule.cathegory && rule.cathegory !== "wszystkie") ? <h1 className="text-lg mb-4 font-normal">Zasady dla kategorii <span className="font-bold">{rule.cathegory}</span>:</h1> : <h1 className="text-lg mb-4 font-normal">Zasady wspólne dla <span className="font-bold">wszystkich</span> kategorii:</h1>}
         <div className='flex gap-4'>
-          <Button className="cursor-pointer" onClick={()=> {setOpenEventRuleForm(!openEventRuleForm)}}>"Edytuj"</Button>
+          <Button className="cursor-pointer" onClick={()=> {setOpenEventRuleForm(!openEventRuleForm)}}>Edytuj</Button>
           <Button className="cursor-pointer">Usuń</Button>
         </div>
       </div>
