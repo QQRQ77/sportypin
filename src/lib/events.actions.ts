@@ -630,12 +630,13 @@ export async function saveEventRule(eventId: string, eventRule: EventRulesType) 
     const { data, error } = await supabase
       .from('Events')
       .update({ rules: updatedRules })
-      .eq('id', eventId);
+      .eq('id', eventId)
+      .select('rules');
 
     if (error || !data) {
-    console.error('Error saving event rule:', error);
-    throw new Error(error?.message || 'Failed to save event rule');
-  }
+      console.error('Error saving event rule:', error);
+      throw new Error(error?.message || 'Failed to save event rule');
+    }
   }
 
   if (eventRule.saveAction === "create") {

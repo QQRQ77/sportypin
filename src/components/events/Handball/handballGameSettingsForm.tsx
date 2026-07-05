@@ -165,7 +165,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
     if (result === "success") {
       scrollToTop();
       setButtonSubmitting(false);
-      setCloseForm(true);    
+      setCloseForm(false);    
     }
   }
 
