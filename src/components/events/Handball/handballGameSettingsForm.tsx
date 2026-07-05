@@ -141,7 +141,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
     }
 
     const newRule: EventRulesType = {
-      id: createId(), 
+      id: rule?.id ? rule.id : createId(),
       periodMinutes: gameTimeActive ? data.periodMinutes : 0,
       periods: gameTimeActive ? data.periods : 0,
       breakMinutes: gameTimeActive ? data.breakMinutes : 0,
@@ -156,6 +156,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
       numOfTeamBreaks: teamBreakActive ? data.numOfTeamBreaks : 0,
       teamBreaksSeconds: teamBreakActive ? data.teamBreaksSeconds : 0,
       selectedPeriodForTeamBreak: teamBreakActive ? data.selectedPeriodForTeamBreak : "",
+      saveAction: rule?.id ? "update" : "create"
     };
 
     setEventRules(prevRules => [...prevRules, newRule]);

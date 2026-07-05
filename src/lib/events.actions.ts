@@ -19,6 +19,7 @@
 // function saveHarmonogramItemTeamPlayers
 // function getEventParticipants
 // function saveEventRule
+// function deleteEventRule
 
 
 'use server'
@@ -623,19 +624,73 @@ export async function saveEventRule(eventId: string, eventRule: EventRulesType) 
     if (rulesError || !rulesData) {
     console.error('Error fetching event rules:', rulesError);
     throw new Error(rulesError?.message || 'Failed to fetch event rules');}
-
-  const {data, error} = await supabase
-    .from('Events')
-    .update({ rules: [...(rulesData.rules || []), eventRule] })
-    .eq('id', eventId)
-    .select('rules');
   
-  if (error || !data) {
+  if (eventRule.saveAction === "update") {
+    const updatedRules = (rulesData.rules || []).map((rule: EventRulesType) => rule.id === eventRule.id ? eventRule : rule);
+    const { data, error } = await supabase
+      .from('Events')
+      .update({ rules: updatedRules })
+      .eq('id', eventId);
+
+    if (error || !data) {
     console.error('Error saving event rule:', error);
     throw new Error(error?.message || 'Failed to save event rule');
+  }
+  }
+
+  if (eventRule.saveAction === "create") {
+    const {data, error} = await supabase
+      .from('Events')
+      .update({ rules: [...(rulesData.rules || []), eventRule] })
+      .eq('id', eventId)
+      .select('rules');
+    
+    if (error || !data) {
+      console.error('Error saving event rule:', error);
+      throw new Error(error?.message || 'Failed to save event rule');
+    }
   }
 
   return "success";
 }
 
+//TODO:
+export async function deleteEventRule(eventId: string, eventRuleId: string) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+  }
+
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+
+  const supabase = createSupabaseClient();
+
+  const { data: rulesData, error: rulesError } = await supabase
+    .from('Events')
+    .select('rules')
+    .eq('id', eventId)
+    .single();
+  
+    if (rulesError || !rulesData) {
+    console.error('Error fetching event rules:', rulesError);
+    throw new Error(rulesError?.message || 'Failed to fetch event rules');}
+  
+    const updatedRules = (rulesData.rules || []).filter((rule: EventRulesType) => rule.id !== eventRuleId);
+    
+    const { data, error } = await supabase
+      .from('Events')
+      .update({ rules: updatedRules })
+      .eq('id', eventId);
+
+    if (error || !data) {
+      console.error('Error saving event rule:', error);
+      throw new Error(error?.message || 'Failed to save event rule');
+    }
+
+  return "success";
+}
 

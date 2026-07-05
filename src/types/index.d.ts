@@ -266,5 +266,6 @@ export type EventRulesType = {
   teamBreaksSeconds?: number;
   numOfTeamBreaks?: number;
   selectedPeriodForTeamBreak?: string;
+  saveAction?: "create" | "update";
 }
 
