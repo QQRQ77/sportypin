@@ -27,7 +27,7 @@ import { createId } from '@paralleldrive/cuid2';
 import { saveEventRule } from '@/lib/events.actions';
 
 const HandballGameSettingsSchema = z.object({
-  periodMinutes: z
+  periodMinutes: z.coerce
     .number({ invalid_type_error: 'Czas gry musi być liczbą' })
     .int()
     .nonnegative("Podaj liczbę większą od 0"),
