@@ -64,7 +64,8 @@ return (
         </div>
       </>}
       <>
-        {rule.numOfTeamBreaks != 0 && <h2 className="text-lg">Czas dla drużyny (przerwa w grze): <span className="font-bold">{rule.numOfTeamBreaks}</span>{(rule.numOfTeamBreaks && rule.numOfTeamBreaks > 0) ? <> na <span className="font-bold">{rule.selectedPeriodForTeamBreak}</span> x <span className="font-bold">{rule.teamBreaksSeconds}</span> sek.</> : ""}</h2>}
+        {rule.numOfTeamBreaks != 0 ? <h2 className="text-lg">Czas dla drużyny (przerwa w grze): <span className="font-bold">{rule.numOfTeamBreaks}</span>{(rule.numOfTeamBreaks && rule.numOfTeamBreaks > 0) ? <> na <span className="font-bold">{rule.selectedPeriodForTeamBreak}</span> x <span className="font-bold">{rule.teamBreaksSeconds}</span> sek.</> : ""}</h2>:
+        <h2 className="text-lg">Brak możliwości brania czasu dla drużyny (przerwa w grze).</h2>}
       </>
       {rule.extraRules && rule.extraRules.length > 0 && <>
         <h2 className="text-lg">Dodatkowe zasady:</h2>
