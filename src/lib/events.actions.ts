@@ -601,6 +601,23 @@ export async function getEventParticipants(eventId: string) {
 }
 
 //TODO:
+export async function fetchEventRules(eventId: string) {
+  const supabase = createSupabaseClient();
+  const { data, error } = await supabase
+    .from('Events')
+    .select('rules')
+    .eq('id', eventId)
+    .single();
+  
+  if (error || !data) {
+    console.error('Error fetching event rules:', error);
+    throw new Error(error?.message || 'Failed to fetch event rules');
+  }
+
+  return data.rules || [];
+}
+
+//TODO:
 export async function saveEventRule(eventId: string, eventRule: EventRulesType) {
   const session = await auth();
   const user = session.userId;

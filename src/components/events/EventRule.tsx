@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { EventRulesType } from '@/types';
 import { Button } from '../ui/button';
 import HandballGameSettingsForm from './Handball/handballGameSettingsForm';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Form } from "@/components/ui/form";
+import { deleteEventRule, fetchEventRules } from '@/lib/events.actions';
 
 interface EventRulesProps {
   rule: EventRulesType;
@@ -11,9 +14,21 @@ interface EventRulesProps {
   scrollToTop: () => void;
 }
 
+type FormValues = Record<string, unknown>;
+
 const EventRule: React.FC<EventRulesProps> = ({ rule, eventId, cathegories, setEventRules, scrollToTop }) => {
   
   const [openEventRuleForm, setOpenEventRuleForm] = useState(false)
+
+  const form = useForm<FormValues>();
+  
+  const handleSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
+    await deleteEventRule(eventId, rule.id);
+    const updatedRules = await fetchEventRules(eventId);
+    setEventRules(updatedRules);
+    scrollToTop();
+  }
   
 return (
   <>
@@ -23,7 +38,11 @@ return (
         {(rule.cathegory && rule.cathegory !== "wszystkie") ? <h1 className="text-lg mb-4 font-normal">Zasady dla kategorii <span className="font-bold">{rule.cathegory}</span>:</h1> : <h1 className="text-lg mb-4 font-normal">Zasady wspólne dla <span className="font-bold">wszystkich</span> kategorii:</h1>}
         <div className='flex gap-4'>
           <Button className="cursor-pointer" onClick={()=> {setOpenEventRuleForm(!openEventRuleForm)}}>Edytuj</Button>
-          <Button className="cursor-pointer">Usuń</Button>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleSubmit)}>
+              <Button type="submit" className="cursor-pointer">Usuń</Button>
+            </form>
+          </Form>
         </div>
       </div>
       {rule.periods != 0 && <h2 className="text-lg">Czas gry: <span className="font-bold">{rule.periods} </span><span>{rule.periods == 1 ? 'część' : ''}{rule.periods == 2 ? 'połowy' : ''}{rule.periods == 3 ? 'tercje' : ''}{rule.periods == 4 ? 'kwarty' : ''}{rule.periods && rule.periods > 4 ? 'części' : ''}</span>

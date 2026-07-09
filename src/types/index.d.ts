@@ -251,7 +251,7 @@ export type GameTransmissionItem = {
 }
 
 export type EventRulesType = {
-  id?: string;
+  id: string;
   periodMinutes?: number;
   periods?: number;
   breakMinutes?: number;
