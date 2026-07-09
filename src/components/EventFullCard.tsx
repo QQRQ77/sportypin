@@ -245,8 +245,8 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               
             />
             <div className="w-full mb-2 flex justify-end">
-              {isUserCreator && 
-                  <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{showEventRulesForm ? "Zamknij" : "Dodaj"}</Button>  
+              {!showEventRulesForm && isUserCreator && 
+                <Button className="cursor-pointer" onClick={()=>{setShowEventRulesForm(!showEventRulesForm)}}>{"Dodaj"}</Button>  
               }
             </div>
             {showEventRulesForm && (
