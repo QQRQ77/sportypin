@@ -242,7 +242,7 @@ export default function EventCard({ event, isUserFollowing = false, isUserCreato
               cathegories={event.cathegories} 
               setEventRules={setEventRules}
               scrollToTop={handleCloseEventRulesForm} 
-              
+              isUserCreator={isUserCreator}
             />
             <div className="w-full mb-2 flex justify-end">
               {!showEventRulesForm && isUserCreator && 

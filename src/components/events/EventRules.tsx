@@ -7,9 +7,10 @@ interface EventRulesProps {
   cathegories?: string[];
   setEventRules: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
   scrollToTop: () => void;
+  isUserCreator?: boolean;
 }
 
-const EventRules: React.FC<EventRulesProps> = ({ rules, eventId, cathegories, setEventRules, scrollToTop }) => {
+const EventRules: React.FC<EventRulesProps> = ({ rules, eventId, cathegories, setEventRules, scrollToTop, isUserCreator = false }) => {
   
   return (
     <section>
@@ -22,6 +23,7 @@ const EventRules: React.FC<EventRulesProps> = ({ rules, eventId, cathegories, se
               cathegories={cathegories} 
               setEventRules={setEventRules}
               scrollToTop={scrollToTop}
+              isUserCreator={isUserCreator}
             />
           </div>
         ))}

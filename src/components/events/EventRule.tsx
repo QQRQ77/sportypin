@@ -12,11 +12,12 @@ interface EventRulesProps {
   cathegories?: string[];
   setEventRules: React.Dispatch<React.SetStateAction<EventRulesType[]>>;
   scrollToTop: () => void;
+  isUserCreator?: boolean;
 }
 
 type FormValues = Record<string, unknown>;
 
-const EventRule: React.FC<EventRulesProps> = ({ rule, eventId, cathegories, setEventRules, scrollToTop }) => {
+const EventRule: React.FC<EventRulesProps> = ({ rule, eventId, cathegories, setEventRules, scrollToTop, isUserCreator = false }) => {
   
   const [openEventRuleForm, setOpenEventRuleForm] = useState(false)
 
@@ -36,14 +37,16 @@ return (
     <>
       <div className='flex w-full justify-between items-center'>
         {(rule.cathegory && rule.cathegory !== "wszystkie") ? <h1 className="text-lg mb-4 font-normal">Zasady dla kategorii <span className="font-bold">{rule.cathegory}</span>:</h1> : <h1 className="text-lg mb-4 font-normal">Zasady wspólne dla <span className="font-bold">wszystkich</span> kategorii:</h1>}
-        <div className='flex gap-4'>
-          <Button className="cursor-pointer" onClick={()=> {setOpenEventRuleForm(!openEventRuleForm)}}>Edytuj</Button>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
-              <Button type="submit" className="cursor-pointer">Usuń</Button>
-            </form>
-          </Form>
-        </div>
+        {isUserCreator &&
+          <div className='flex gap-4'>
+            <Button className="cursor-pointer" onClick={()=> {setOpenEventRuleForm(!openEventRuleForm)}}>Edytuj</Button>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <Button type="submit" className="cursor-pointer">Usuń</Button>
+              </form>
+            </Form>
+          </div>
+        }
       </div>
       {rule.periods != 0 && <h2 className="text-lg">Czas gry: <span className="font-bold">{rule.periods} </span><span>{rule.periods == 1 ? 'część' : ''}{rule.periods == 2 ? 'połowy' : ''}{rule.periods == 3 ? 'tercje' : ''}{rule.periods == 4 ? 'kwarty' : ''}{rule.periods && rule.periods > 4 ? 'części' : ''}</span>
       {" "}x <span className="font-bold">{rule.periodMinutes} min. </span>{rule.periods && rule.periods > 1 && <>{"- przerwa: "}<span className="font-bold">{rule.breakMinutes || 10} min.</span></>}</h2>}
