@@ -9,9 +9,10 @@ import HandballGame from "@/components/events/HandBallGame";
 import { EventTeamMemberType, HarmonogramItem } from "@/types";
 import { harmonogramDefaultItem } from "@/lib/defaultValues";
 
-export default async function HandballMatchPage({ params }: { params: Promise<{ event_id: string, item_id: string }> }) {
+export default async function HandballMatchPage({ params, searchParams }: { params: Promise<{ event_id: string, item_id: string }>; searchParams: Promise<{ item_LP?: string }> }) {
 
   const { event_id, item_id } = await params;
+  const { item_LP } = await searchParams;
 
   const { userId } = await auth();
   if ( userId ) {await createUser()}
@@ -96,7 +97,7 @@ export default async function HandballMatchPage({ params }: { params: Promise<{ 
         <h1 className="text-3xl font-bold">{eventInfo.name}</h1>
         <h1 className="text-3xl font-bold">{eventInfo.city}</h1>
         <h2 className="text-2xl font-semibold">{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
-        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${itemInfo.LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
+        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${item_LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
       <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start max-h-min">
         <div className="w-full flex flex-col items-center justify-center gap-5 relative">
