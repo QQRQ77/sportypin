@@ -19,6 +19,7 @@ interface HandBallGameProps {
   team_1_members?: EventTeamMemberType[];
   team_2_members?: EventTeamMemberType[];
   eventParticipants: Participant[];
+  teamBreaks?: number;
 }
 
 export type GameSygnals = {
@@ -55,7 +56,7 @@ type FormValues = Record<string, unknown>;
 
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
-    eventId, team_1_members, team_2_members, eventParticipants }) => {
+    eventId, team_1_members, team_2_members, eventParticipants, teamBreaks = 0 }) => {
   
   const matchTime 
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
@@ -882,7 +883,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       <h1 className="text-3xl font-bold">Wynik:</h1>
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
-        noTeam2Members={!team_2 || team_2.length === 0} 
+        noTeam2Members={!team_2 || team_2.length === 0}
+        teamBreaks={teamBreaks} 
         team_1_score={gameSignals.score1} 
         team_2_score={gameSignals.score2} 
         isUserCreator={isUserCreator}

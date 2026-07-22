@@ -1,4 +1,4 @@
-import { findEventCreatorId, getEventBaseInfo, getEventParticipants, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
+import { fetchEventRules, findEventCreatorId, getEventBaseInfo, getEventParticipants, getMatchInfo, getTeamMembers, saveHarmonogramItemTeamPlayers } from "@/lib/events.actions";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { createUser } from "@/lib/users.actions";
 import HandballGame from "@/components/events/HandBallGame";
-import { EventTeamMemberType, HarmonogramItem } from "@/types";
+import { EventRulesType, EventTeamMemberType, HarmonogramItem } from "@/types";
 import { harmonogramDefaultItem } from "@/lib/defaultValues";
 
 export default async function HandballMatchPage({ params, searchParams }: { params: Promise<{ event_id: string, item_id: string }>; searchParams: Promise<{ item_LP?: string }> }) {
@@ -20,7 +20,10 @@ export default async function HandballMatchPage({ params, searchParams }: { para
 
   const eventInfo = await getEventBaseInfo(event_id);
   const eventParticipants = await getEventParticipants(event_id);
-  
+  const eventRules: EventRulesType[] = await fetchEventRules(event_id);
+
+  let teamTimeNumber: number = 0;
+
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
   let team_2_members: EventTeamMemberType[] = [];
@@ -28,6 +31,22 @@ export default async function HandballMatchPage({ params, searchParams }: { para
   try {itemInfo = await getMatchInfo(event_id, item_id)} 
   catch (error) {
     console.error("Error fetching match info:", error);
+  }
+
+  // Przeszukać eventRules, aby znaleźć zasady dla tego meczu, jeśli istnieją i kategoria jest określona i pasuje do kategorii meczu
+  if (itemInfo && itemInfo.cathegory) {
+    if (eventRules && eventRules.length > 0) {
+      const matchingRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === itemInfo?.cathegory);
+      if (matchingRule?.numOfTeamBreaks && matchingRule?.numOfTeamBreaks > 0) {
+        teamTimeNumber = matchingRule?.numOfTeamBreaks || 0;
+      }
+      if (teamTimeNumber === 0) {
+        const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
+        if (commonRule?.numOfTeamBreaks && commonRule?.numOfTeamBreaks > 0) {
+          teamTimeNumber = commonRule?.numOfTeamBreaks || 0;
+        }
+      }
+    }
   }
 
   try {
@@ -97,7 +116,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         <h1 className="text-3xl font-bold">{eventInfo.name}</h1>
         <h1 className="text-3xl font-bold">{eventInfo.city}</h1>
         <h2 className="text-2xl font-semibold">{new Date(eventInfo.start_date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: '2-digit' })}</h2>
-        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold">{itemInfo ? `${item_LP}` : ""}</span>{"   "}rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
+        <h1 className="text-2xl font-normal"> Mecz nr: <span className="font-bold mr-4">{itemInfo ? `${item_LP}` : ""}</span>rozpoczęcie: <span className="font-bold">{itemInfo ? itemInfo.start_time : ""}</span>{"   "}koniec: <span className="font-bold">{itemInfo ? itemInfo.end_time : ""}</span></h1>        
       </div>
       <div className="w-full lg:w-1/2 h-52 flex flex-2 items-start max-h-min">
         <div className="w-full flex flex-col items-center justify-center gap-5 relative">
@@ -130,6 +149,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         itemData={itemInfo || harmonogramDefaultItem}    
         team_1_members={team_1_members}
         team_2_members={team_2_members}
+        teamBreaks={teamTimeNumber}
         eventParticipants={eventParticipants}
       />      
     </div>
