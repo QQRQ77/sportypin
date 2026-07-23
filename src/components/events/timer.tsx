@@ -13,7 +13,7 @@ interface TimerProps {
   teamBreaksSeconds?: number; 
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 60 }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0 }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);

@@ -20,6 +20,7 @@ interface HandBallGameProps {
   team_2_members?: EventTeamMemberType[];
   eventParticipants: Participant[];
   teamBreaks?: number;
+  teamBreaksSeconds?: number;
 }
 
 export type GameSygnals = {
@@ -56,7 +57,7 @@ type FormValues = Record<string, unknown>;
 
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
-    eventId, team_1_members, team_2_members, eventParticipants, teamBreaks = 0 }) => {
+    eventId, team_1_members, team_2_members, eventParticipants, teamBreaks = 0, teamBreaksSeconds = 0 }) => {
   
   const matchTime 
     = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
@@ -858,7 +859,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         isUserCreator={isUserCreator} 
         onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
         setEndTimeVis={setEndTimeVis}
-        teamBreaks={teamBreaks}  
+        teamBreaks={teamBreaks}
+        teamBreaksSeconds={teamBreaksSeconds}
       />
       {endTimeVis ?
       <Form {...form}>

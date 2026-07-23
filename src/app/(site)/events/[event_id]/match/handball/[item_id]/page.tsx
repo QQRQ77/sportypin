@@ -23,6 +23,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
   const eventRules: EventRulesType[] = await fetchEventRules(event_id);
 
   let teamTimeNumber: number = 0;
+  let teamTimeSeconds: number = 0; // Default value, can be overridden by rules
 
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
@@ -40,10 +41,19 @@ export default async function HandballMatchPage({ params, searchParams }: { para
       if (matchingRule?.numOfTeamBreaks && matchingRule?.numOfTeamBreaks > 0) {
         teamTimeNumber = matchingRule?.numOfTeamBreaks || 0;
       }
+      if (matchingRule?.teamBreaksSeconds && matchingRule?.teamBreaksSeconds > 0) {
+        teamTimeSeconds = matchingRule?.teamBreaksSeconds || 0;
+      }
       if (teamTimeNumber === 0) {
         const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
         if (commonRule?.numOfTeamBreaks && commonRule?.numOfTeamBreaks > 0) {
           teamTimeNumber = commonRule?.numOfTeamBreaks || 0;
+        }
+      }
+      if (teamTimeSeconds === 0) {
+        const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
+        if (commonRule?.teamBreaksSeconds && commonRule?.teamBreaksSeconds > 0) {
+          teamTimeSeconds = commonRule?.teamBreaksSeconds || 0;
         }
       }
     }
@@ -151,6 +161,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         team_2_members={team_2_members}
         teamBreaks={teamTimeNumber}
         eventParticipants={eventParticipants}
+        teamBreaksSeconds={teamTimeSeconds}
       />      
     </div>
   );
