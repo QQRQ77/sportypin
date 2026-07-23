@@ -84,6 +84,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
       }, 1000);
     } else if (breakSeconds === 0) {
       setIsRunning(false);
+      setBreakSeconds(teamBreaksSeconds); // Reset break time after it ends
     }
 
     return () => clearInterval(interval);
