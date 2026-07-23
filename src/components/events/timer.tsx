@@ -9,12 +9,15 @@ interface TimerProps {
   isUserCreator?: boolean;
   onTimeChange: (seconds: number) => void;
   setEndTimeVis: Dispatch<SetStateAction<boolean>>;
-  teamBreaks?: number; 
+  teamBreaks?: number;
+  teamBreaksSeconds?: number; 
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0 }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 60 }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);
+  const [isBreakRunning, setIsBreakRunning] = useState(false);
 
   
   // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
@@ -65,6 +68,26 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
     return () => clearInterval(interval);
   }, [isRunning, seconds, onTimeChange, initialSeconds]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isBreakRunning && breakSeconds > 0) {
+      interval = setInterval(() => {
+        setBreakSeconds((prev) => {
+          const nextSecond = prev - 1;
+          if (nextSecond === 0) {
+            setIsBreakRunning(false);
+          }
+          return nextSecond;
+        });
+      }, 1000);
+    } else if (breakSeconds === 0) {
+      setIsRunning(false);
+    }
+
+    return () => clearInterval(interval);
+  }, [ isBreakRunning, breakSeconds ]);
 
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -126,7 +149,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
               {teamBreaks > 0 && (
                 <div className="flex items-center gap-1 mt-2">
                   <SiTvtime size={24} className="text-gray-600" />
-                  <span className="text-lg font-semibold">{teamBreaks}</span>
+                  <div className="text-xl font-bold font-mono">{formatTime(breakSeconds)}</div>
                 </div>
               )}
             </div>
@@ -135,7 +158,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
               {teamBreaks > 0 && (
                 <div className="flex items-center gap-1 mt-2">
                   <SiTvtime size={24} className="text-gray-600" />
-                  <span className="text-lg font-semibold">{teamBreaks}</span>
+                  <div className="text-xl font-bold font-mono">{formatTime(breakSeconds)}</div>
                 </div>
               )}
             </div>
