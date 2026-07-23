@@ -144,28 +144,15 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
               +1s
             </button>
           </div>
-          <div className='w-full flex justify-between items-center'>
-            <div>
-              {teamBreaks > 0 && (
-                <div className="flex items-center gap-1 mt-2">
-                  <SiTvtime size={24} className="text-gray-600" />
-                  <div className="text-xl font-bold font-mono">{formatTime(breakSeconds)}</div>
-                </div>
-              )}
+          <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
+          {teamBreaks > 0 && (
+            <div className="flex items-center gap-1 mt-2">
+              <SiTvtime size={32} className="text-gray-600" />
+              <div className="text-2xl font-bold font-mono">{formatTime(breakSeconds)}</div>
             </div>
-            <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
-            <div>
-              {teamBreaks > 0 && (
-                <div className="flex items-center gap-1 mt-2">
-                  <SiTvtime size={24} className="text-gray-600" />
-                  <div className="text-xl font-bold font-mono">{formatTime(breakSeconds)}</div>
-                </div>
-              )}
-            </div>
-          </div>
+          )}
         </div>}
       </div>
     </>
-    
   );
 };
