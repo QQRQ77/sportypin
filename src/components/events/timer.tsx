@@ -146,7 +146,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           </div>
           <ArrowPathRoundedSquareIcon onClick={handleReset} className="m-2 h-10 w-10 cursor-pointer border border-gray-300 rounded-full"/>
           {teamBreaks > 0 && (
-            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => setIsBreakRunning(true)}>
+            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false);}}>
               <SiTvtime size={32} className="text-gray-600" />
               <div className="text-2xl font-bold font-mono">{formatTime(breakSeconds)}</div>
             </div>
