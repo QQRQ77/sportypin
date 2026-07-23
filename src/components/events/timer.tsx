@@ -121,7 +121,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
               +1s
             </button>
           </div>
-          <div className='w full flex justify-between items-center'>
+          <div className='w-full flex justify-between items-center'>
             <div>
               {teamBreaks > 0 && (
                 <div className="flex items-center gap-1 mt-2">
