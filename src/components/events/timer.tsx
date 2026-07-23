@@ -96,7 +96,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  const handleToggle = () => setIsRunning(!isRunning);
+  const handleToggle = () => {setIsRunning(!isRunning); if (isRunning) {setIsBreakRunning(false), setBreakSeconds(teamBreaksSeconds)};};
   const handleReset = () => {
     setIsRunning(false);
     setSeconds(0);
