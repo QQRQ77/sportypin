@@ -90,6 +90,13 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
     return () => clearInterval(interval);
   }, [ isBreakRunning, breakSeconds ]);
 
+  useEffect(() => {
+    if (isRunning) {
+      setIsBreakRunning(false); 
+      setBreakSeconds(teamBreaksSeconds);
+    };
+  }, [teamBreaksSeconds, isRunning]);
+
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
@@ -98,10 +105,6 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
   const handleToggle = () => {
     setIsRunning(!isRunning); 
-    if (isRunning) {
-      setIsBreakRunning(false); 
-      setBreakSeconds(teamBreaksSeconds)
-    };
   };
   
   const handleReset = () => {
