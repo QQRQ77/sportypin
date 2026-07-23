@@ -857,7 +857,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         initialSeconds={matchTime} 
         isUserCreator={isUserCreator} 
         onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
-        setEndTimeVis={setEndTimeVis} 
+        setEndTimeVis={setEndTimeVis}
+        teamBreaks={teamBreaks}  
       />
       {endTimeVis ?
       <Form {...form}>
@@ -884,7 +885,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       <ScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
         noTeam2Members={!team_2 || team_2.length === 0}
-        teamBreaks={teamBreaks} 
         team_1_score={gameSignals.score1} 
         team_2_score={gameSignals.score2} 
         isUserCreator={isUserCreator}

@@ -3,7 +3,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
 import { defaultGameSignals, GameSygnals } from "./HandBallGame";
-import { SiTvtime } from "react-icons/si";
 
 interface ScoreBoardProps {
   isPenaltyButtonActive?: string;
@@ -24,14 +23,13 @@ interface ScoreBoardProps {
   setMembers2Active: (active: boolean) => void;
   setGameSignals: Dispatch<SetStateAction<GameSygnals>>;
   gameEnd?: boolean;
-  teamBreaks?: number;
 }
 
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
   team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
   members1active = true, members2active = true,
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, gameEnd = false,
-  setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive, teamBreaks = 0 }) => {
+  setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
   // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
     const [isStuck, setIsStuck] = useState(false);
@@ -348,13 +346,8 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
               <div className="flex gap-2">
                 <button onClick={() => { if (!(team1active && !members1active)) { return }; handleTeam1ClickAdd("score"); }} className={`px-4 py-2 ${team1active && !members1active && !isDataBaseSubmissionInAction ? 'bg-green-600 hover:bg-green-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>+</button>
                 <button onClick={handleTeam1ClickSub} className={`px-4 py-2 ${team1active && (isPenaltyButtonActive === "" || isPenaltyButtonActive === "disabled") && !isDataBaseSubmissionInAction ? 'bg-red-600 hover:bg-red-700 cursor-pointer' : 'bg-gray-400'} text-white text-3xl rounded`}>-</button>
-              </div>}
-            {teamBreaks > 0 && (
-              <div className="flex items-center gap-1 mt-2">
-                <SiTvtime size={24} className="text-gray-600" />
-                <span className="text-lg font-semibold">{teamBreaks}</span>
               </div>
-            )}
+            }
           </div>
           <div className={`md:hidden flex flex-row gap-2 items-center justify-center ${isStuck? "bg-white" : ""}`}>
             <PiNumberTwoFill size={48} className={`${isPenaltyButtonActive === "disabled" && !noTeam1Members && !isDataBaseSubmissionInAction? "text-gray-300" : "text-gray-400 cursor-pointer hover:text-gray-500"} ${isPenaltyButtonActive === "penalty1" ? "pulse-border-blue" : "border-1 border-transparent"}`}

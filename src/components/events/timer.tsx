@@ -2,15 +2,17 @@
 
 import { ArrowPathRoundedSquareIcon, PauseIcon, PlayIcon } from '@heroicons/react/20/solid';
 import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from 'react';
+import { SiTvtime } from 'react-icons/si';
 
 interface TimerProps {
   initialSeconds?: number;
   isUserCreator?: boolean;
   onTimeChange: (seconds: number) => void;
-  setEndTimeVis: Dispatch<SetStateAction<boolean>>; 
+  setEndTimeVis: Dispatch<SetStateAction<boolean>>;
+  teamBreaks?: number; 
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0 }) => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -119,7 +121,25 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
               +1s
             </button>
           </div>
-          <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
+          <div className='w full flex justify-between items-center'>
+            <div>
+              {teamBreaks > 0 && (
+                <div className="flex items-center gap-1 mt-2">
+                  <SiTvtime size={24} className="text-gray-600" />
+                  <span className="text-lg font-semibold">{teamBreaks}</span>
+                </div>
+              )}
+            </div>
+            <ArrowPathRoundedSquareIcon onClick={handleReset} className="h-10 w-10 cursor-pointer"/>
+            <div>
+              {teamBreaks > 0 && (
+                <div className="flex items-center gap-1 mt-2">
+                  <SiTvtime size={24} className="text-gray-600" />
+                  <span className="text-lg font-semibold">{teamBreaks}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>}
       </div>
     </>
