@@ -6,10 +6,10 @@ type PenaltyTimersProps = {
   setPenaltyTable?: React.Dispatch<React.SetStateAction<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
 };
 
-const PenaltyTimers: React.FC<PenaltyTimersProps> = ({ penaltyTimeSeconds = 0, penaltyTable = [{ playerId: "", playerNumber: "", time: 0, teamNumber: 0 }], setPenaltyTable }) => {
+const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable}) => {
 
-  console.log("penaltyTable in PenaltyTimers:", penaltyTable);
-  console.log("penaltyTimeSeconds in PenaltyTimers:", penaltyTimeSeconds);
+  const penaltyForTeam1 = penaltyTable?.filter(penalty => penalty.teamNumber === 1);
+  const penaltyForTeam2 = penaltyTable?.filter(penalty => penalty.teamNumber === 2);
   
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -17,24 +17,31 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({ penaltyTimeSeconds = 0, p
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
+  if (!penaltyTable || penaltyTable.length === 0) return (<></>);
+
   return (
-    <div className="penalty-timers w-full flex justify-center items-center gap-5">
+    <div className="penalty-timers w-full flex flex-col justify-center items-center gap-5">
       <h1 className="text-3xl font-bold">Kary:</h1>
-      {penaltyTable && penaltyTable.length > 0 ? (
-        <ul className="flex flex-col gap-2">
-          {penaltyTable.map((penalty, index) => (
-            <li key={index} className="flex gap-2 items-center">
-              <span className="font-bold">Gracz: {penalty.playerNumber}</span>
-              <span className="font-mono">Czas: {formatTime(penalty.time)}</span>
-              <span className="font-bold">Drużyna: {penalty.teamNumber}</span>
-            </li>
+      <div className="w-full flex justify-center items-center gap-5">
+        <div className="team-1-penalties flex flex-col items-center gap-2">
+          <h2 className="text-xl font-semibold">Drużyna 1</h2>
+          {penaltyForTeam1?.map((penalty, index) => (
+            <div key={index} className="penalty-item flex items-center gap-2">
+              <span className="player-number font-bold">#{penalty.playerNumber}</span>
+              <span className="penalty-time">{formatTime(penalty.time)}</span>
+            </div>
           ))}
-        </ul>
-      ) : (
-        <p>Brak kar w tym momencie.</p>
-      )}
-      <h2 onClick={() => setPenaltyTable && setPenaltyTable([])}>Wyczyść kary</h2>
-      <h2 onClick={() => setPenaltyTable && setPenaltyTable(penaltyTable)}>Kary:</h2>
+        </div>
+        <div className="team-2-penalties flex flex-col items-center gap-2">
+          <h2 className="text-xl font-semibold">Drużyna 2</h2>
+          {penaltyForTeam2?.map((penalty, index) => (
+            <div key={index} className="penalty-item flex items-center gap-2">
+              <span className="player-number font-bold">#{penalty.playerNumber}</span>
+              <span className="penalty-time">{formatTime(penalty.time)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
