@@ -24,6 +24,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
 
   let teamTimeNumber: number = 0;
   let teamTimeSeconds: number = 0; // Default value, can be overridden by rules
+  let penaltyTimeSeconds: number = 0; // Default value, can be overridden by rules
 
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
@@ -44,6 +45,9 @@ export default async function HandballMatchPage({ params, searchParams }: { para
       if (matchingRule?.teamBreaksSeconds && matchingRule?.teamBreaksSeconds > 0) {
         teamTimeSeconds = matchingRule?.teamBreaksSeconds || 0;
       }
+      if (matchingRule?.penaltyTimeSeconds && matchingRule?.penaltyTimeSeconds > 0) {
+        penaltyTimeSeconds = matchingRule?.penaltyTimeSeconds || 0;
+      }
       if (teamTimeNumber === 0) {
         const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
         if (commonRule?.numOfTeamBreaks && commonRule?.numOfTeamBreaks > 0) {
@@ -54,6 +58,12 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
         if (commonRule?.teamBreaksSeconds && commonRule?.teamBreaksSeconds > 0) {
           teamTimeSeconds = commonRule?.teamBreaksSeconds || 0;
+        }
+      }
+      if (penaltyTimeSeconds === 0) {
+        const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
+        if (commonRule?.penaltyTimeSeconds && commonRule?.penaltyTimeSeconds > 0) {
+          penaltyTimeSeconds = commonRule?.penaltyTimeSeconds || 0;
         }
       }
     }
@@ -162,6 +172,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         teamBreaks={teamTimeNumber}
         eventParticipants={eventParticipants}
         teamBreaksSeconds={teamTimeSeconds}
+        penaltyTimeSeconds={penaltyTimeSeconds}
       />      
     </div>
   );

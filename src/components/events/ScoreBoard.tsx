@@ -28,7 +28,8 @@ interface ScoreBoardProps {
 const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
   team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
   members1active = true, members2active = true,
-  noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, gameEnd = false,
+  noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, 
+  gameEnd = false,
   setTeam1Active, setTeam2Active, setMembers1Active, setMembers2Active, setGameSignals, setIsPenaltyButtonActive }) => {
   
   // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
