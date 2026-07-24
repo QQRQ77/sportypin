@@ -22,9 +22,8 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable}) => {
   return (
     <div className="penalty-timers w-full flex flex-col justify-center items-center gap-5">
       <h1 className="text-3xl font-bold">Kary:</h1>
-      <div className="w-full flex justify-center items-center gap-5">
-        <div className="team-1-penalties flex flex-col items-center gap-2">
-          <h2 className="text-xl font-semibold">Drużyna 1</h2>
+      <div className="w-full flex justify-center items-center gap-10">
+        <div className="team-1-penalties flex flex-col items-start gap-2">
           {penaltyForTeam1?.map((penalty, index) => (
             <div key={index} className="penalty-item flex items-center gap-2">
               <span className="player-number font-bold">#{penalty.playerNumber}</span>
@@ -32,8 +31,7 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable}) => {
             </div>
           ))}
         </div>
-        <div className="team-2-penalties flex flex-col items-center gap-2">
-          <h2 className="text-xl font-semibold">Drużyna 2</h2>
+        <div className="team-2-penalties flex flex-col items-start gap-2">
           {penaltyForTeam2?.map((penalty, index) => (
             <div key={index} className="penalty-item flex items-center gap-2">
               <span className="player-number font-bold">#{penalty.playerNumber}</span>
