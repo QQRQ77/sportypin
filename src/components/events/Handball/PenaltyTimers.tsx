@@ -1,4 +1,5 @@
 import React from 'react';
+import SinglePenaltyTimer from './SinglePenaltyTimer';
 
 type PenaltyTimersProps = {
   penaltyTimeSeconds?: number;
@@ -25,18 +26,12 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable}) => {
       <div className="w-full flex justify-center items-center gap-10">
         <div className="team-1-penalties flex flex-col items-start gap-2">
           {penaltyForTeam1?.map((penalty, index) => (
-            <div key={index} className="penalty-item flex items-center gap-2">
-              <span className="player-number font-bold">#{penalty.playerNumber}</span>
-              <span className="penalty-time">{formatTime(penalty.time)}</span>
-            </div>
+            <SinglePenaltyTimer key={index} penalty={penalty} />
           ))}
         </div>
         <div className="team-2-penalties flex flex-col items-start gap-2">
           {penaltyForTeam2?.map((penalty, index) => (
-            <div key={index} className="penalty-item flex items-center gap-2">
-              <span className="player-number font-bold">#{penalty.playerNumber}</span>
-              <span className="penalty-time">{formatTime(penalty.time)}</span>
-            </div>
+            <SinglePenaltyTimer key={index} penalty={penalty} />
           ))}
         </div>
       </div>
