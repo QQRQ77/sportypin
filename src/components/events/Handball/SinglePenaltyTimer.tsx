@@ -15,9 +15,10 @@ const formatTime = (totalSeconds: number): string => {
 const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penaltyTimeSeconds = 0 }) => {
   return (
     <div className="single-penalty-timer flex items-center gap-2">
-      <h3>#{penalty.playerNumber}</h3>
+      <h3 className="text-lg font-bold">#{penalty.playerNumber}</h3>
       <p>{formatTime(penalty.time)}</p>
-      <p>{formatTime(penaltyTimeSeconds)}</p>
+      <p className="text-lg font-medium mx-3">-</p>
+      <p>{formatTime(penalty.time + penaltyTimeSeconds)}</p>
     </div>
   );
 };
