@@ -673,6 +673,15 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const teamOne = team_1.map((member) => (member.id === gameSignals.scorer1 ? { ...member, penalties: (member.penalties || 0) + 1 } : member));
           setTeam_1(teamOne);
 
+        const newPenaltyItem = {
+          playerId: gameSignals.scorer1,
+          playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
+          time: currentMatchTime,
+          teamNumber: 1,
+        };
+        
+        setPenaltyTable(prev => [...prev, newPenaltyItem]);
+
           const updatedEventParticipants = eventParticipants.map(participant => {
               if (participant.id === itemData?.participant_1_id) {
                 if (participant.eventTeamMembers ) {
@@ -709,13 +718,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           const result = await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, teamOne, updatedGameTransmission);
           if (result === "success") setDataBaseSubmission(false);
         }
-        const newPenaltyItem = {
-          playerId: gameSignals.scorer1,
-          playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
-          time: currentMatchTime,
-          teamNumber: 1,
-        };
-        setPenaltyTable(prev => [...prev, newPenaltyItem]);
+
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam1: 0, scorer1: "" }));
       }
 
