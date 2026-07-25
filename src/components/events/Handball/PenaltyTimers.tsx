@@ -11,12 +11,6 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable}) => {
 
   const penaltyForTeam1 = penaltyTable?.filter(penalty => penalty.teamNumber === 1);
   const penaltyForTeam2 = penaltyTable?.filter(penalty => penalty.teamNumber === 2);
-  
-  const formatTime = (totalSeconds: number): string => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const secs = totalSeconds % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  };
 
   if (!penaltyTable || penaltyTable.length === 0) return (<></>);
 
