@@ -9,10 +9,10 @@ type PenaltyTimersProps = {
   setPenaltyTable?: React.Dispatch<React.SetStateAction<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
 };
 
-const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeSeconds = 0}) => {
+const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeSeconds = 0, setPenaltyTable}) => {
 
-  const [penaltyForTeam1, setPenaltyForTeam1] = React.useState<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[] | undefined>(penaltyTable?.filter(penalty => penalty.teamNumber === 1));
-  const [penaltyForTeam2, setPenaltyForTeam2] = React.useState<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[] | undefined>(penaltyTable?.filter(penalty => penalty.teamNumber === 2));
+  const penaltyForTeam1 = penaltyTable?.filter(penalty => penalty.teamNumber === 1);
+  const penaltyForTeam2 = penaltyTable?.filter(penalty => penalty.teamNumber === 2);
 
   if (!penaltyTable || penaltyTable.length === 0) return (<></>);
 
@@ -25,7 +25,11 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
             <div className="flex gap-2 justify-center items-center" key={index}>            
               <SinglePenaltyTimer penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
               <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 transition-colors duration-300 cursor-pointer"
-                onClick={() => {setPenaltyForTeam1(prev => prev?.filter((_, i) => i !== index));}}
+                onClick={() => {
+                  if (setPenaltyTable) {
+                    setPenaltyTable(prev => prev?.filter((item) => item.playerId !== penalty.playerId && item.time !== penalty.time && item.teamNumber !== penalty.teamNumber));
+                  }
+                }}
               >
                 <FaRegTimesCircle />
               </Button>
@@ -37,7 +41,11 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
             <div className="flex gap-2 justify-center items-center" key={index}>            
               <SinglePenaltyTimer penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
               <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 transition-colors duration-300 cursor-pointer"
-                onClick={() => {setPenaltyForTeam2(prev => prev?.filter((_, i) => i !== index));}}
+                onClick={() => {
+                  if (setPenaltyTable) {
+                    setPenaltyTable(prev => prev?.filter((item) => item.playerId !== penalty.playerId && item.time !== penalty.time && item.teamNumber !== penalty.teamNumber));
+                  }
+                }}
               >
                 <FaRegTimesCircle />
               </Button>
