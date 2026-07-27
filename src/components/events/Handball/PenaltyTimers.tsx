@@ -37,7 +37,7 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
             <div className="flex gap-2 justify-center items-center" key={index}>            
               <SinglePenaltyTimer penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
               <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 transition-colors duration-300 cursor-pointer"
-                onClick={() => {}}
+                onClick={() => {setPenaltyForTeam2(prev => prev?.filter((_, i) => i !== index));}}
               >
                 <FaRegTimesCircle />
               </Button>
