@@ -17,6 +17,7 @@ const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penalt
   
   const [penaltySeconds, setPenaltySeconds] = useState(penaltyTimeSeconds);
   const [isPenaltyRunning, setIsPenaltyRunning] = useState(isMainClockRunning && penaltySeconds > 0);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -33,23 +34,28 @@ const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penalt
       }, 1000);
     } else if (penaltySeconds === 0) {
       setIsPenaltyRunning(false);
+      setIsVisible(false);
     }
 
     return () => clearInterval(interval);
   }, [ isPenaltyRunning, penaltySeconds ]);  
   
   return (
-    <div className="single-penalty-timer flex items-center gap-2">
-      <h3 className='text-lg font-bold h-max'>#{penalty.playerNumber}</h3>
-      <div className="flex flex-col justify-center items-center gap-2">
-        <div className='flex items-center gap-2'>
-          <p>{formatTime(penalty.time)}</p>
-          <p>-</p>
-          <p>{formatTime(penalty.time + penaltyTimeSeconds)}</p>
-        </div>
-        <div className='font-bold text-lg'>{formatTime(penaltySeconds)}</div>
-      </div>
-    </div>
+    <>
+      {isVisible && 
+          <div className="single-penalty-timer flex items-center gap-2">
+            <h3 className='text-lg font-bold h-max'>#{penalty.playerNumber}</h3>
+            <div className="flex flex-col justify-center items-center gap-2">
+              <div className='flex items-center gap-2'>
+                <p>{formatTime(penalty.time)}</p>
+                <p>-</p>
+                <p>{formatTime(penalty.time + penaltyTimeSeconds)}</p>
+              </div>
+              <div className='font-bold text-lg'>{formatTime(penaltySeconds)}</div>
+            </div>
+          </div>
+        }
+    </>
   );
 };
 
