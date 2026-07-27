@@ -1,5 +1,7 @@
 import React from 'react';
 import SinglePenaltyTimer from './SinglePenaltyTimer';
+import { Button } from '@/components/ui/button';
+import { FaRegTimesCircle } from "react-icons/fa";
 
 type PenaltyTimersProps = {
   penaltyTimeSeconds?: number;
@@ -15,17 +17,31 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
   if (!penaltyTable || penaltyTable.length === 0) return (<></>);
 
   return (
-    <div className="penalty-timers w-full flex flex-col justify-center items-center gap-10 border">
+    <div className="penalty-timers w-full flex flex-col justify-center items-start gap-10">
       <h1 className="text-3xl font-bold">Kary:</h1>
       <div className="w-full flex justify-center items-center gap-10">
         <div className="team-1-penalties w-40 flex flex-col items-start justify-center gap-2">
           {penaltyForTeam1?.map((penalty, index) => (
-            <SinglePenaltyTimer key={index} penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
+            <div className="flex gap-2 justify-center items-center" key={index}>            
+              <SinglePenaltyTimer penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
+              <Button variant="outline" size="sm"
+                onClick={() => {}}
+              >
+                <FaRegTimesCircle />
+              </Button>
+            </div>
           ))}
         </div>
         <div className="team-2-penalties w-40 flex flex-col items-start justify-center gap-2">
           {penaltyForTeam2?.map((penalty, index) => (
-            <SinglePenaltyTimer key={index} penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
+            <div className="flex gap-2 justify-center items-center" key={index}>            
+              <SinglePenaltyTimer penalty={penalty} penaltyTimeSeconds={penaltyTimeSeconds} />
+              <Button variant="outline" size="sm"
+                onClick={() => {}}
+              >
+                <FaRegTimesCircle />
+              </Button>
+            </div>
           ))}
         </div>
       </div>
