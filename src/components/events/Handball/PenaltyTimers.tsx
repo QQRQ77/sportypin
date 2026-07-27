@@ -15,7 +15,7 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
   if (!penaltyTable || penaltyTable.length === 0) return (<></>);
 
   return (
-    <div className="penalty-timers w-full flex flex-col justify-center items-center gap-5">
+    <div className="penalty-timers w-full flex flex-col justify-center items-center gap-10 border">
       <h1 className="text-3xl font-bold">Kary:</h1>
       <div className="w-full flex justify-center items-center gap-10">
         <div className="team-1-penalties w-40 flex flex-col items-start justify-center gap-2">
