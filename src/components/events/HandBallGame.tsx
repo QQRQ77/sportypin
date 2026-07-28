@@ -83,7 +83,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>(itemData?.gameTransmission || []);
   const [endTimeVis, setEndTimeVis] = React.useState(false); 
-  const [penaltyTable, setPenaltyTable] = React.useState<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>([]);
+  const [penaltyTable, setPenaltyTable] = React.useState<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>([]);
     
   useEffect(() => {
 
@@ -674,6 +674,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setTeam_1(teamOne);
 
         const newPenaltyItem = {
+          penaltyId: createId(),
           playerId: gameSignals.scorer1,
           playerNumber: team_1.find(player => player.id === gameSignals.scorer1)?.start_number || "",
           time: currentMatchTime,
@@ -763,6 +764,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setTeam_2(teamTwo);
           
           const newPenaltyItem = {
+            penaltyId: createId(),
             playerId: gameSignals.scorer2,
             playerNumber: team_2.find(player => player.id === gameSignals.scorer2)?.start_number || "",
             time: currentMatchTime,

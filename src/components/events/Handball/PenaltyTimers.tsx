@@ -5,8 +5,8 @@ import { FaRegTimesCircle } from "react-icons/fa";
 
 type PenaltyTimersProps = {
   penaltyTimeSeconds?: number;
-  penaltyTable?: { playerId: string; playerNumber: string | number; time: number; teamNumber: number }[];
-  setPenaltyTable?: React.Dispatch<React.SetStateAction<{ playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
+  penaltyTable?: { penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[];
+  setPenaltyTable?: React.Dispatch<React.SetStateAction<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
 };
 
 const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeSeconds = 0, setPenaltyTable}) => {
@@ -27,7 +27,7 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
               <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 transition-colors duration-300 cursor-pointer"
                 onClick={() => {
                   if (setPenaltyTable) {
-                    setPenaltyTable(prev => prev?.filter((item) => item.playerId !== penalty.playerId && item.time !== penalty.time && item.teamNumber !== penalty.teamNumber));
+                    setPenaltyTable(prev => prev?.filter((item) => item.penaltyId !== penalty.penaltyId));
                   }
                 }}
               >
@@ -43,7 +43,7 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
               <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 transition-colors duration-300 cursor-pointer"
                 onClick={() => {
                   if (setPenaltyTable) {
-                    setPenaltyTable(prev => prev?.filter((item) => item.playerId !== penalty.playerId && item.time !== penalty.time && item.teamNumber !== penalty.teamNumber));
+                    setPenaltyTable(prev => prev?.filter((item) => item.penaltyId !== penalty.penaltyId));
                   }
                 }}
               >

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 type SinglePenaltyTimerProps = {
-  penalty: { playerId: string; playerNumber: string | number; time: number; teamNumber: number };
+  penalty: { penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number };
   penaltyTimeSeconds?: number;
   isMainClockRunning?: boolean;
 };
