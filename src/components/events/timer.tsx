@@ -12,7 +12,7 @@ interface TimerProps {
   teamBreaks?: number;
   teamBreaksSeconds?: number;
   timerRunning?: boolean;
-  setTimerRunning?: Dispatch<SetStateAction<boolean>>; 
+  setTimerRunning: Dispatch<SetStateAction<boolean>>; 
 }
 
 export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, 
@@ -60,7 +60,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           onTimeChange(nextSecond);
           if (nextSecond >= initialSeconds) {
             setIsRunning(false);
-            setTimerRunning && setTimerRunning(false);
+            setTimerRunning(false);
             setEndTimeVis(true);
           }
           return nextSecond;
@@ -68,7 +68,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
       }, 1000);
     } else if (seconds === initialSeconds) {
       setIsRunning(false);
-      setTimerRunning && setTimerRunning(false);
+      setTimerRunning(false);
     }
 
     return () => clearInterval(interval);
@@ -89,7 +89,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
       }, 1000);
     } else if (breakSeconds === 0) {
       setIsRunning(true);
-      setTimerRunning && setTimerRunning(true);
+      setTimerRunning(true);
       setBreakSeconds(teamBreaksSeconds); // Reset break time after it ends
     }
 
@@ -111,12 +111,12 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
   const handleToggle = () => {
     setIsRunning(!isRunning); 
-    setTimerRunning && setTimerRunning(!isRunning);
+    setTimerRunning(!isRunning);
   };
   
   const handleReset = () => {
     setIsRunning(false);
-    setTimerRunning && setTimerRunning(false);
+    setTimerRunning(false);
     setBreakSeconds(teamBreaksSeconds);
     setIsBreakRunning(false);
     setSeconds(0);
@@ -167,7 +167,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           </div>
           <ArrowPathRoundedSquareIcon onClick={handleReset} className="m-2 h-10 w-10 cursor-pointer border border-gray-300 rounded-full"/>
           {teamBreaks > 0 && (
-            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false); setTimerRunning && setTimerRunning(false);}}>
+            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false); setTimerRunning(false);}}>
               <SiTvtime size={32} className="text-gray-600" />
               <div className="text-2xl font-bold font-mono">{formatTime(breakSeconds)}</div>
             </div>
