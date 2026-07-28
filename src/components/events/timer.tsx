@@ -10,12 +10,15 @@ interface TimerProps {
   onTimeChange: (seconds: number) => void;
   setEndTimeVis: Dispatch<SetStateAction<boolean>>;
   teamBreaks?: number;
-  teamBreaksSeconds?: number; 
+  teamBreaksSeconds?: number;
+  timerRunning?: boolean;
+  setTimerRunning?: Dispatch<SetStateAction<boolean>>; 
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0 }) => {
+export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, 
+  onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0, timerRunning = false, setTimerRunning }) => {
   const [seconds, setSeconds] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(timerRunning);
   const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);
   const [isBreakRunning, setIsBreakRunning] = useState(false);
 
@@ -57,6 +60,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           onTimeChange(nextSecond);
           if (nextSecond >= initialSeconds) {
             setIsRunning(false);
+            setTimerRunning && setTimerRunning(false);
             setEndTimeVis(true);
           }
           return nextSecond;
@@ -64,6 +68,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
       }, 1000);
     } else if (seconds === initialSeconds) {
       setIsRunning(false);
+      setTimerRunning && setTimerRunning(false);
     }
 
     return () => clearInterval(interval);
@@ -83,7 +88,8 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
         });
       }, 1000);
     } else if (breakSeconds === 0) {
-      setIsRunning(false);
+      setIsRunning(true);
+      setTimerRunning && setTimerRunning(true);
       setBreakSeconds(teamBreaksSeconds); // Reset break time after it ends
     }
 
@@ -105,10 +111,14 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
 
   const handleToggle = () => {
     setIsRunning(!isRunning); 
+    setTimerRunning && setTimerRunning(!isRunning);
   };
   
   const handleReset = () => {
     setIsRunning(false);
+    setTimerRunning && setTimerRunning(false);
+    setBreakSeconds(teamBreaksSeconds);
+    setIsBreakRunning(false);
     setSeconds(0);
   };
   const handleAddSecond = () => setSeconds((prev) => prev + 1);
@@ -157,7 +167,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           </div>
           <ArrowPathRoundedSquareIcon onClick={handleReset} className="m-2 h-10 w-10 cursor-pointer border border-gray-300 rounded-full"/>
           {teamBreaks > 0 && (
-            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false);}}>
+            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false); setTimerRunning && setTimerRunning(false);}}>
               <SiTvtime size={32} className="text-gray-600" />
               <div className="text-2xl font-bold font-mono">{formatTime(breakSeconds)}</div>
             </div>

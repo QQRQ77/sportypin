@@ -5,6 +5,7 @@ type SinglePenaltyTimerProps = {
   setPenaltyTable?: React.Dispatch<React.SetStateAction<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
   penaltyTimeSeconds?: number;
   isMainClockRunning?: boolean;
+  isTimerRunning?: boolean;
 };
 
 
@@ -14,15 +15,15 @@ const formatTime = (totalSeconds: number): string => {
     return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penaltyTimeSeconds = 0, isMainClockRunning = true, setPenaltyTable }) => {
+const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penaltyTimeSeconds = 0, isMainClockRunning = true, isTimerRunning = false, setPenaltyTable }) => {
   
   const [penaltySeconds, setPenaltySeconds] = useState(penaltyTimeSeconds);
-  const [isPenaltyRunning, setIsPenaltyRunning] = useState(isMainClockRunning && penaltySeconds > 0);
+  const [isPenaltyRunning, setIsPenaltyRunning] = useState(isMainClockRunning && penaltySeconds > 0 && isTimerRunning);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    if (isPenaltyRunning && penaltySeconds > 0) {
+    if (isPenaltyRunning && isTimerRunning && penaltySeconds > 0) {
       interval = setInterval(() => {
         setPenaltySeconds((prev) => {
           const nextSecond = prev - 1;
@@ -40,7 +41,7 @@ const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penalt
     }
 
     return () => clearInterval(interval);
-  }, [ isPenaltyRunning, penaltySeconds ]);  
+  }, [ isPenaltyRunning, penaltySeconds, isTimerRunning, setPenaltyTable, penalty.penaltyId ]);  
   
   return (
     <>
