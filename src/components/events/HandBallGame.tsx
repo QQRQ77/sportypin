@@ -933,7 +933,11 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         gameEnd={endTimeVis}
         />
       </>}
-      <PenaltyTimers penaltyTable={penaltyTable} setPenaltyTable={setPenaltyTable} penaltyTimeSeconds={penaltyTimeSeconds} isTimerRunning={isTimerRunning} />
+      <PenaltyTimers 
+        penaltyTable={penaltyTable} 
+        setPenaltyTable={setPenaltyTable} 
+        penaltyTimeSeconds={penaltyTimeSeconds} 
+        isTimerRunning={isTimerRunning} />
       <MatchTeamsMembers 
         team_1_members={team_1}
         team_2_members={team_2}
