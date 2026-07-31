@@ -17,6 +17,8 @@ const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeS
 
   if (!penaltyTable || penaltyTable.length === 0) return (<></>);
 
+  console.log("isTimerRunning from PenaltyTimers:", isTimerRunning);
+
   return (
     <div className="penalty-timers w-full flex flex-col justify-center items-center gap-10">
       <h1 className="text-3xl font-bold">Kary:</h1>
