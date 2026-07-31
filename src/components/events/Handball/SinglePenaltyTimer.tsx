@@ -17,32 +17,27 @@ const formatTime = (totalSeconds: number): string => {
 const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penaltyTimeSeconds = 0, isTimerRunning, setPenaltyTable }) => {
   
   const [penaltySeconds, setPenaltySeconds] = useState(penaltyTimeSeconds);
-  const [isPenaltyRunning, setIsPenaltyRunning] = useState(penaltySeconds > 0 && isTimerRunning);
+  // const [isPenaltyRunning, setIsPenaltyRunning] = useState(penaltySeconds > 0 && isTimerRunning);
 
   useEffect(() => {
     console.log("isTimerRunning from SinglePenaltyTimer:", isTimerRunning);
-    console.log("isPenaltyRunning from SinglePenaltyTimer:", isPenaltyRunning);
     let interval: NodeJS.Timeout;
 
-    if (isPenaltyRunning && isTimerRunning && penaltySeconds > 0) {
+    if (isTimerRunning && penaltySeconds > 0) {
       interval = setInterval(() => {
         setPenaltySeconds((prev) => {
           const nextSecond = prev - 1;
-          if (nextSecond === 0) {
-            setIsPenaltyRunning(false);
-          }
           return nextSecond;
         });
       }, 1000);
     } else if (penaltySeconds === 0) {
-      setIsPenaltyRunning(false);
       if (setPenaltyTable) {
         setPenaltyTable(prev => prev?.filter((item) => item.penaltyId !== penalty.penaltyId));
       }
     }
 
     return () => clearInterval(interval);
-  }, [ isPenaltyRunning, penaltySeconds, isTimerRunning, setPenaltyTable, penalty.penaltyId ]);  
+  }, [ penaltySeconds, isTimerRunning, setPenaltyTable, penalty.penaltyId ]);  
   
   return (
     <>
