@@ -21,6 +21,7 @@ const SinglePenaltyTimer: React.FC<SinglePenaltyTimerProps> = ({ penalty, penalt
 
   useEffect(() => {
     console.log("isTimerRunning from SinglePenaltyTimer:", isTimerRunning);
+    console.log("isPenaltyRunning from SinglePenaltyTimer:", isPenaltyRunning);
     let interval: NodeJS.Timeout;
 
     if (isPenaltyRunning && isTimerRunning && penaltySeconds > 0) {
