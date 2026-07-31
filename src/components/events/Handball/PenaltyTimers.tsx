@@ -5,12 +5,12 @@ import { FaRegTimesCircle } from "react-icons/fa";
 
 type PenaltyTimersProps = {
   penaltyTimeSeconds?: number;
-  isTimerRunning?: boolean;
+  isTimerRunning: boolean;
   penaltyTable?: { penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[];
   setPenaltyTable?: React.Dispatch<React.SetStateAction<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>>;
 };
 
-const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeSeconds = 0, isTimerRunning = false, setPenaltyTable}) => {
+const PenaltyTimers: React.FC<PenaltyTimersProps> = ({penaltyTable, penaltyTimeSeconds = 0, isTimerRunning, setPenaltyTable}) => {
 
   const penaltyForTeam1 = penaltyTable?.filter(penalty => penalty.teamNumber === 1);
   const penaltyForTeam2 = penaltyTable?.filter(penalty => penalty.teamNumber === 2);
