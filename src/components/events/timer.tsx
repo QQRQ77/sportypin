@@ -5,7 +5,6 @@ import React, { useState, useEffect, Dispatch, SetStateAction, useRef } from 're
 import { SiTvtime } from 'react-icons/si';
 
 interface TimerProps {
-  initialSeconds?: number;
   isUserCreator?: boolean;
   onTimeChange: (seconds: number) => void;
   setEndTimeVis: Dispatch<SetStateAction<boolean>>;
@@ -13,10 +12,15 @@ interface TimerProps {
   teamBreaksSeconds?: number;
   timerRunning?: boolean;
   setTimerRunning: Dispatch<SetStateAction<boolean>>; 
+  periodMinutes?: number;
+  periods?: number;
 }
 
-export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreator = false, 
-  onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0, timerRunning = false, setTimerRunning }) => {
+export const Timer: React.FC<TimerProps> = ({ isUserCreator = false, 
+  onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0, timerRunning = false, setTimerRunning,
+  periodMinutes = 0, periods = 0
+  }) => {
+
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(timerRunning);
   const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);
@@ -53,12 +57,12 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    if (isRunning && seconds < initialSeconds) {
+    if (isRunning && seconds < periodMinutes * 60 * periods) {
       interval = setInterval(() => {
         setSeconds((prev) => {
           const nextSecond = prev + 1;
           onTimeChange(nextSecond);
-          if (nextSecond >= initialSeconds) {
+          if (nextSecond >= periodMinutes * 60 * periods) {
             setIsRunning(false);
             setTimerRunning(false);
             setEndTimeVis(true);
@@ -66,13 +70,13 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
           return nextSecond;
         });
       }, 1000);
-    } else if (seconds === initialSeconds) {
+    } else if (seconds === periodMinutes * 60 * periods) {
       setIsRunning(false);
       setTimerRunning(false);
     }
 
     return () => clearInterval(interval);
-  }, [isRunning, seconds, onTimeChange, initialSeconds]);
+  }, [isRunning, seconds, onTimeChange, periodMinutes, periods, setEndTimeVis, setTimerRunning]);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -127,7 +131,7 @@ export const Timer: React.FC<TimerProps> = ({ initialSeconds = 300, isUserCreato
     <>
       <div ref={sentinelRef} className="h-px w-full bg-transparent" />
       <div className={isStuck ? "sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 bg-white rounded-xl" : "flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl"}>
-        <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(initialSeconds)}</span></div>
+        <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{formatTime(periodMinutes * 60 * periods)}</span></div>
         <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
         
         {isUserCreator && 

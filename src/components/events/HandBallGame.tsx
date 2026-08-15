@@ -23,6 +23,8 @@ interface HandBallGameProps {
   teamBreaks?: number;
   teamBreaksSeconds?: number;
   penaltyTimeSeconds?: number;
+  periodMinutes?: number;
+  periods?: number;
 }
 
 export type GameSygnals = {
@@ -60,11 +62,9 @@ type FormValues = Record<string, unknown>;
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
     eventId, team_1_members, team_2_members, eventParticipants, 
-    teamBreaks = 0, teamBreaksSeconds = 0, penaltyTimeSeconds = 0 }) => {
+    teamBreaks = 0, teamBreaksSeconds = 0, penaltyTimeSeconds = 0, periodMinutes = 0, periods = 0
+  }) => {
   
-  const matchTime 
-    = itemData ? Math.floor((new Date(`1970-01-01 ${itemData.end_time}`).getTime() - new Date(`1970-01-01 ${itemData.start_time}`).getTime()) / 1000) : 0;
-
   const form = useForm<FormValues>();
 
   const endOfTheGame = itemData?.gameTransmission && itemData.gameTransmission.length > 0 && itemData.gameTransmission[itemData.gameTransmission.length - 1].eventType === "endGame";
@@ -883,7 +883,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   return (
     <>
       <Timer 
-        initialSeconds={matchTime} 
         isUserCreator={isUserCreator} 
         onTimeChange={(seconds) => { gameTimeRef.current = seconds; }}
         setEndTimeVis={setEndTimeVis}
@@ -891,6 +890,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         teamBreaksSeconds={teamBreaksSeconds}
         timerRunning={isTimerRunning}
         setTimerRunning={setIsTimerRunning}
+        periodMinutes={periodMinutes}
+        periods={periods}
       />
       {endTimeVis ?
       <Form {...form}>
