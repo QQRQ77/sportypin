@@ -859,20 +859,26 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     console.log(data);
     let gameEndDataTransmission = [...gameTransmission];
     if (endTimeVis === periods) {
-    gameEndDataTransmission = [...gameTransmission, {
-      id: createId(),
-      eventType: "endGame",
-      team: 1
-    }
-    ];
-    setGameTransmission((prevTransmission) => [
-      ...prevTransmission,
-      {
+      gameEndDataTransmission = [...gameTransmission, {
         id: createId(),
         eventType: "endGame",
         team: 1
       }
-    ]);
+      ];
+      setGameTransmission((prevTransmission) => [
+        ...prevTransmission,
+        {
+          id: createId(),
+          eventType: "endGame",
+          team: 1
+        }
+      ]);
+    
+      setMembers1Active(false);
+      setMembers2Active(false);
+      setScore1Active(false);
+      setScore2Active(false);
+      setIsPenaltyButtonActive("disabled");
     }
 
     if (endTimeVis < periods) {
@@ -892,11 +898,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
       ]);
     }
     
-    setMembers1Active(false);
-    setMembers2Active(false);
-    setScore1Active(false);
-    setScore2Active(false);
-    setIsPenaltyButtonActive("disabled");
     setEndTimeVis(0);
     await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, team_1, gameEndDataTransmission);
   }
