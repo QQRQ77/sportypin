@@ -22,14 +22,12 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
   periodMinutes = 0, periods = 0, breakMinutes = 0
   }) => {
 
-  //TODO: Delete console.log after testing
-  console.log(breakMinutes);  
-
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(timerRunning);
-  const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);
-  const [isBreakRunning, setIsBreakRunning] = useState(false);
-
+  const [teamBreakSeconds, setTeamBreakSeconds] = useState(teamBreaksSeconds);
+  const [isTeamBreakRunning, setIsTeamBreakRunning] = useState(false);
+  const [gameBreakSeconds, setGameBreakSeconds] = useState(breakMinutes * 60);
+  const [isGameBreakRunning, setIsGameBreakRunning] = useState(false);
   
   // STATYSTYKA STICKY: Tutaj przechowujemy informację, czy element się przykleił
   const [isStuck, setIsStuck] = useState(false);
@@ -61,11 +59,21 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
+    for (let i = 1; i <= periods; i++) {
+
+    }
     if (isRunning && seconds < periodMinutes * 60 * periods) {
       interval = setInterval(() => {
         setSeconds((prev) => {
           const nextSecond = prev + 1;
           onTimeChange(nextSecond);
+          for (let i = 1; i < periods; i++) {
+            if (nextSecond === periodMinutes * 60 * i) {
+              setIsRunning(false);
+              setTimerRunning(false);
+              setIsGameBreakRunning(true);
+            }
+          }
           if (nextSecond >= periodMinutes * 60 * periods) {
             setIsRunning(false);
             setTimerRunning(false);
@@ -85,30 +93,53 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
   useEffect(() => {
     let interval: NodeJS.Timeout;
 
-    if (isBreakRunning && breakSeconds > 0) {
+    if (isTeamBreakRunning && teamBreakSeconds > 0) {
       interval = setInterval(() => {
-        setBreakSeconds((prev) => {
+        setTeamBreakSeconds((prev) => {
           const nextSecond = prev - 1;
           if (nextSecond === 0) {
-            setIsBreakRunning(false);
+            setIsTeamBreakRunning(false);
           }
           return nextSecond;
         });
       }, 1000);
-    } else if (breakSeconds === 0) {
+    } else if (teamBreakSeconds === 0) {
       setIsRunning(false);
-      setBreakSeconds(teamBreaksSeconds); // Reset break time after it ends
+      setTeamBreakSeconds(teamBreaksSeconds); // Reset break time after it ends
     }
 
     return () => clearInterval(interval);
-  }, [ isBreakRunning, breakSeconds ]);
+  }, [ isTeamBreakRunning, teamBreakSeconds ]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isGameBreakRunning && gameBreakSeconds > 0) {
+      interval = setInterval(() => {
+        setGameBreakSeconds((prev) => {
+          const nextSecond = prev - 1;
+          if (nextSecond === 0) {
+            setIsGameBreakRunning(false);
+          }
+          return nextSecond;
+        });
+      }, 1000);
+    } else if (gameBreakSeconds === 0) {
+      setIsRunning(false);
+      setGameBreakSeconds(gameBreakSeconds); // Reset break time after it ends
+    }
+
+    return () => clearInterval(interval);
+  }, [ isGameBreakRunning, gameBreakSeconds ]);
 
   useEffect(() => {
     if (isRunning) {
-      setIsBreakRunning(false); 
-      setBreakSeconds(teamBreaksSeconds);
+      setIsTeamBreakRunning(false); 
+      setTeamBreakSeconds(teamBreaksSeconds);
+      setIsGameBreakRunning(false);
+      setGameBreakSeconds(breakMinutes * 60);
     };
-  }, [teamBreaksSeconds, isRunning]);
+  }, [teamBreaksSeconds, isRunning, breakMinutes, gameBreakSeconds]);
 
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
@@ -124,8 +155,8 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
   const handleReset = () => {
     setIsRunning(false);
     setTimerRunning(false);
-    setBreakSeconds(teamBreaksSeconds);
-    setIsBreakRunning(false);
+    setTeamBreakSeconds(teamBreaksSeconds);
+    setIsTeamBreakRunning(false);
     setSeconds(0);
   };
   const handleAddSecond = () => setSeconds((prev) => prev + 1);
@@ -137,6 +168,12 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
       <div className={isStuck ? "sticky top-0 self-end right-0 z-50 flex flex-col items-center gap-4 p-6 border-1 border-gray-300 bg-white rounded-xl" : "flex flex-col items-center gap-4 p-6 border-1 border-gray-300 rounded-xl"}>
         <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{periods} x {formatTime(periodMinutes * 60)}</span></div>
         <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
+        {isGameBreakRunning && (
+            <div className="flex items-center gap-1 mt-2">
+              <h1>Przerwa:</h1>
+              <div className="text-2xl font-bold font-mono">{formatTime(gameBreakSeconds)}</div>
+            </div>
+          )}
         
         {isUserCreator && 
         <div className="flex flex-col items-center gap-2">
@@ -174,9 +211,9 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
           </div>
           <ArrowPathRoundedSquareIcon onClick={handleReset} className="m-2 h-10 w-10 cursor-pointer border border-gray-300 rounded-full"/>
           {teamBreaks > 0 && (
-            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsBreakRunning(true); setIsRunning(false); setTimerRunning(false);}}>
+            <div className="flex items-center gap-1 mt-2 cursor-pointer" onClick={() => {setIsTeamBreakRunning(true); setIsRunning(false); setTimerRunning(false);}}>
               <SiTvtime size={32} className="text-gray-600" />
-              <div className="text-2xl font-bold font-mono">{formatTime(breakSeconds)}</div>
+              <div className="text-2xl font-bold font-mono">{formatTime(teamBreakSeconds)}</div>
             </div>
           )}
         </div>}
