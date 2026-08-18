@@ -25,6 +25,7 @@ interface HandBallGameProps {
   penaltyTimeSeconds?: number;
   periodMinutes?: number;
   periods?: number;
+  breakMinutes?: number;
 }
 
 export type GameSygnals = {
@@ -62,7 +63,7 @@ type FormValues = Record<string, unknown>;
 const HandBallGame: React.FC<HandBallGameProps> = (
   { isUserCreator = false, itemData, 
     eventId, team_1_members, team_2_members, eventParticipants, 
-    teamBreaks = 0, teamBreaksSeconds = 0, penaltyTimeSeconds = 0, periodMinutes = 0, periods = 0
+    teamBreaks = 0, teamBreaksSeconds = 0, penaltyTimeSeconds = 0, periodMinutes = 0, periods = 0, breakMinutes = 0
   }) => {
   
   const form = useForm<FormValues>();
@@ -892,6 +893,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setTimerRunning={setIsTimerRunning}
         periodMinutes={periodMinutes}
         periods={periods}
+        breakMinutes={breakMinutes}
       />
       {endTimeVis ?
       <Form {...form}>

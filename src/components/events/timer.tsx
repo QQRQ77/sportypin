@@ -14,11 +14,12 @@ interface TimerProps {
   setTimerRunning: Dispatch<SetStateAction<boolean>>; 
   periodMinutes?: number;
   periods?: number;
+  breakMinutes?: number;
 }
 
 export const Timer: React.FC<TimerProps> = ({ isUserCreator = false, 
   onTimeChange, setEndTimeVis, teamBreaks = 0, teamBreaksSeconds = 0, timerRunning = false, setTimerRunning,
-  periodMinutes = 0, periods = 0
+  periodMinutes = 0, periods = 0, breakMinutes = 0
   }) => {
 
   const [seconds, setSeconds] = useState(0);
