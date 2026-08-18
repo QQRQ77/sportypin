@@ -27,6 +27,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
   let penaltyTimeSeconds: number = 0; // Default value, can be overridden by rules
   let periodMinutes: number = 0;
   let periods: number = 0;
+  let breakMinutes: number = 0; // Default value, can be overridden by rules
 
   let itemInfo: HarmonogramItem | undefined;
   let team_1_members: EventTeamMemberType[] = [];
@@ -59,6 +60,10 @@ export default async function HandballMatchPage({ params, searchParams }: { para
       if (matchingRule?.periodMinutes && matchingRule?.periodMinutes > 0) {
         periodMinutes = matchingRule?.periodMinutes || 0;
       }
+       if (matchingRule?.breakMinutes && matchingRule?.breakMinutes > 0) {
+        breakMinutes = matchingRule?.breakMinutes || 0;
+      }
+      
       if (teamTimeNumber === 0) {
         const commonRule: EventRulesType | undefined = eventRules.find(rule => rule.cathegory === "wszystkie");
         if (commonRule?.numOfTeamBreaks && commonRule?.numOfTeamBreaks > 0) {
@@ -186,6 +191,7 @@ export default async function HandballMatchPage({ params, searchParams }: { para
         penaltyTimeSeconds={penaltyTimeSeconds}
         periodMinutes={periodMinutes}
         periods={periods}
+        breakMinutes={breakMinutes}
       />      
     </div>
   );

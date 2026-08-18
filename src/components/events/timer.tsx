@@ -169,9 +169,9 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
         <div className='text-xl font-mono'>Czas gry: <span className="font-bold">{periods} x {formatTime(periodMinutes * 60)}</span></div>
         <div className="text-6xl font-bold font-mono">{formatTime(seconds)}</div>
         {isGameBreakRunning && (
-            <div className="flex items-center gap-1 mt-2">
-              <h1>Przerwa:</h1>
-              <div className="text-2xl font-bold font-mono">{formatTime(gameBreakSeconds)}</div>
+            <div className="flex items-center gap-2 mt-2">
+              <h2>Przerwa:</h2>
+              <div className="text-3xl font-bold font-mono">{formatTime(gameBreakSeconds)}</div>
             </div>
           )}
         
