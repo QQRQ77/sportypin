@@ -16,7 +16,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 }) => {
 
   console.log("transmissionItem in TransmissionSingleItem:", transmissionItem);
-  
+
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
@@ -26,11 +26,14 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   const eventTypePeriod = transmissionItem.eventType.startsWith('endPeriod_');
   const numberOfPeriods = transmissionItem.eventType.split('_')[1];
 
+  console.log("eventTypePeriod in TransmissionSingleItem:", eventTypePeriod);
+  console.log("numberOfPeriods in TransmissionSingleItem:", numberOfPeriods);
+
   const team_1 = transmissionItem.team === 1 
 
   const renderEvent = () => (
     <>
-      {transmissionItem.eventType === "endGame" && (
+      {(transmissionItem.eventType === "endGame" || eventTypePeriod) && (
         <div className='w-full h-10 flex items-center justify-center'></div>
       )}
       {transmissionItem.eventType === "goal" && (
