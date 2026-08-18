@@ -179,7 +179,7 @@ export default function HandballGameSettingsForm({eventId, cathegories, setEvent
           <div className="w-full flex justify-between">
             <div className='hidden md:block'></div>
             <div className="text-lg w-full text-center font-bold mb-4">{`${rule?.id ? "Edytuj" : "Dodaj"} zasady gry:`}</div>
-            <div>
+            <div className="flex gap-2">
               <SubmitButton
                 isSubmitting={buttonSubmitting}
                 submittingText="Zapisywanie..."
