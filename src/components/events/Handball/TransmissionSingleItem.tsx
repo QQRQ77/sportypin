@@ -125,11 +125,37 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
         <div className="absolute flex items-center justify-center w-18 -right-9.5 top-1/2 h-8 -translate-y-1/2 
           border-4 border-orange-900 bg-white rounded-full font-semibold">{transmissionItem.score || ""}</div>
           : (eventTypePeriod ?
-            <div className='absolute flex justify-center items-center -right-20 h-12 -top-2 w-40
-            bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>{`Przerwa nr ${numberOfPeriods}`}</div>
+            <div className='absolute flex justify-center items-center gap-2 -right-20 h-12 -top-2 w-40
+            bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
+              <div>{`Przerwa nr ${numberOfPeriods}`}</div>
+              <Button 
+                onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                  ...defaultGameSignals,
+                  score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
+                  score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
+                  [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                  transmissionItemId: transmissionItem.id || "",
+                }))} 
+                className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
+                Usuń
+              </Button> 
+            </div>
             : transmissionItem.eventType === "endGame" ? (
-          <div className='absolute flex justify-center items-center -right-20 h-12 -top-2 w-40
-           bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>Koniec meczu</div>)
+          <div className='absolute flex justify-center items-center gap-2 -right-20 h-12 -top-2 w-40
+           bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
+            <div>Koniec meczu</div>
+            <Button 
+              onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                ...defaultGameSignals,
+                score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
+                score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
+                [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                transmissionItemId: transmissionItem.id || "",
+              }))}  
+              className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
+              Usuń
+            </Button>  
+          </div>)
           : <div className="absolute -right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full" />)
         }
         {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-10' />}
