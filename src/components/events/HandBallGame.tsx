@@ -87,8 +87,6 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [isTimerRunning, setIsTimerRunning] = React.useState(false)
   const [penaltyTable, setPenaltyTable] = React.useState<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>([]);
     
-  console.log("isTimerRunning from HandBallGame:", isTimerRunning);
-  
   useEffect(() => {
 
       const handleGameSignalsChange = async () => {

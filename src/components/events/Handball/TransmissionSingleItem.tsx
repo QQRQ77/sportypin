@@ -24,9 +24,6 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   const eventTypePeriod = transmissionItem.eventType.startsWith('endPeriod_');
   const numberOfPeriods = transmissionItem.eventType.split('_')[1];
 
-  console.log("eventTypePeriod:", eventTypePeriod);
-  console.log("numberOfPeriods:", numberOfPeriods);
-
   const team_1 = transmissionItem.team === 1 
 
   const renderEvent = () => (
@@ -120,9 +117,14 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
     <div className="transmission-single-item w-full flex items-center justify-center">
       <div className="w-1/2 h-16 relative flex justify-end items-center border-r-4 border-orange-900 pr-12">
         {transmissionItem.eventType === "goal" ? 
-        <div className="absolute flex items-center justify-center w-18 -right-9.5 top-1/2 h-8 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full font-semibold">{transmissionItem.score || ""}</div>
-        : (transmissionItem.eventType === "endGame" ?
-          <div className='absolute flex justify-center items-center -right-20 h-12 -top-2 w-40 bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>Koniec meczu</div>
+        <div className="absolute flex items-center justify-center w-18 -right-9.5 top-1/2 h-8 -translate-y-1/2 
+          border-4 border-orange-900 bg-white rounded-full font-semibold">{transmissionItem.score || ""}</div>
+        : (transmissionItem.eventType === "endGame" ? (eventTypePeriod ?
+          <div className='absolute flex justify-center items-center -right-20 h-12 -top-2 w-40
+           bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>{`Przerwa nr ${numberOfPeriods}`}</div>
+          : 
+          <div className='absolute flex justify-center items-center -right-20 h-12 -top-2 w-40
+           bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>Koniec meczu</div>)
         : <div className="absolute -right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full" />)
         }
         {transmissionItem.team === 1 ? renderEvent() : <div className='w-full h-10' />}
