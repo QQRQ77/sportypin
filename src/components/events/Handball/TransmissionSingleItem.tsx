@@ -15,6 +15,8 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   setGameSignals
 }) => {
 
+  console.log("transmissionItem in TransmissionSingleItem:", transmissionItem);
+  
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
