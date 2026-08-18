@@ -83,7 +83,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
   const [gameSignals, setGameSignals] = React.useState<GameSygnals>({ ...defaultGameSignals, score1: itemData?.team_1_score || 0, score2: itemData?.team_2_score || 0 });
   const gameTimeRef = useRef(0);
   const [gameTransmission, setGameTransmission] = React.useState<GameTransmissionItem[]>(itemData?.gameTransmission || []);
-  const [endTimeVis, setEndTimeVis] = React.useState(false); 
+  const [endTimeVis, setEndTimeVis] = React.useState(0); 
   const [isTimerRunning, setIsTimerRunning] = React.useState(false)
   const [penaltyTable, setPenaltyTable] = React.useState<{ penaltyId: string; playerId: string; playerNumber: string | number; time: number; teamNumber: number }[]>([]);
     
@@ -877,7 +877,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     setScore1Active(false);
     setScore2Active(false);
     setIsPenaltyButtonActive("disabled");
-    setEndTimeVis(false);
+    setEndTimeVis(0);
     await saveHarmonogramItemTeamPlayers(eventId, itemData?.id, 1, team_1, gameEndDataTransmission);
   }
   
@@ -895,7 +895,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         periods={periods}
         breakMinutes={breakMinutes}
       />
-      {endTimeVis ?
+      {endTimeVis === periods ?
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -907,7 +907,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
               <Button size="lg" type="submit" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white">
                 Tak 
               </Button>
-              <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(false)}>
+              <Button size="lg" className="cursor-pointer bg-red-500 hover:bg-red-600 text-white" onClick={() => setEndTimeVis(0)}>
                 Nie 
               </Button>
             </div>
@@ -935,7 +935,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals={setGameSignals} 
         isPenaltyButtonActive={isPenaltyButtonActive}
         setIsPenaltyButtonActive={setIsPenaltyButtonActive}
-        gameEnd={endTimeVis}
+        gameEnd={endTimeVis === periods ? true : false}
         />
       </>}
       <PenaltyTimers 

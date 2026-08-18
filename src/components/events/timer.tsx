@@ -7,7 +7,7 @@ import { SiTvtime } from 'react-icons/si';
 interface TimerProps {
   isUserCreator?: boolean;
   onTimeChange: (seconds: number) => void;
-  setEndTimeVis: Dispatch<SetStateAction<boolean>>;
+  setEndTimeVis: Dispatch<SetStateAction<number>>;
   teamBreaks?: number;
   teamBreaksSeconds?: number;
   timerRunning?: boolean;
@@ -72,12 +72,13 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
               setIsRunning(false);
               setTimerRunning(false);
               setIsGameBreakRunning(true);
+              setEndTimeVis(i);
             }
           }
           if (nextSecond >= periodMinutes * 60 * periods) {
             setIsRunning(false);
             setTimerRunning(false);
-            setEndTimeVis(true);
+            setEndTimeVis(periods);
           }
           return nextSecond;
         });
