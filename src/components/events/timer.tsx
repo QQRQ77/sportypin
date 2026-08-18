@@ -22,6 +22,9 @@ export const Timer: React.FC<TimerProps> = ({ isUserCreator = false,
   periodMinutes = 0, periods = 0, breakMinutes = 0
   }) => {
 
+  //TODO: Delete console.log after testing
+  console.log(breakMinutes);  
+
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(timerRunning);
   const [breakSeconds, setBreakSeconds] = useState(teamBreaksSeconds);
