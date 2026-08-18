@@ -857,7 +857,9 @@ const HandBallGame: React.FC<HandBallGameProps> = (
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
-    const gameEndDataTransmission = [...gameTransmission, {
+    let gameEndDataTransmission = [...gameTransmission];
+    if (endTimeVis === periods) {
+    gameEndDataTransmission = [...gameTransmission, {
       id: createId(),
       eventType: "endGame",
       team: 1
@@ -871,6 +873,24 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         team: 1
       }
     ]);
+    }
+
+    if (endTimeVis < periods) {
+      gameEndDataTransmission = [...gameTransmission, {
+        id: createId(),
+        eventType: `endPeriod_${endTimeVis}`,
+        team: 1
+      }
+      ];
+      setGameTransmission((prevTransmission) => [
+        ...prevTransmission,
+        {
+          id: createId(),
+          eventType: `endPeriod_${endTimeVis}`,
+          team: 1
+        }
+      ]);
+    }
     
     setMembers1Active(false);
     setMembers2Active(false);
@@ -895,14 +915,14 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         periods={periods}
         breakMinutes={breakMinutes}
       />
-      {endTimeVis === periods ?
+      {endTimeVis ?
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
         >
           <div className="w-full md:w-96 rounded-xl flex flex-col items-center justify-center p-5 border-1">
-            <div className="text-red-500 font-bold text-xl">Czas gry minął!</div>
-            <div className="text-gray-700 text-xl">Czy zakończyć mecz?</div>
+            <div className="text-red-500 font-bold text-xl">{`Czas minął!`}</div>
+            <div className="text-gray-700 text-xl">{`Czy zakończyć ${endTimeVis === periods ? 'mecz' : 'tą cześć gry'}?`}</div>
             <div className="flex gap-4">
               <Button size="lg" type="submit" className="cursor-pointer bg-green-700 hover:bg-green-800 text-white">
                 Tak 

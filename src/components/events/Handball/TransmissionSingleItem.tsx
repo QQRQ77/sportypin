@@ -20,7 +20,13 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
     const secs = totalSeconds % 60;
     return `${String(minutes)}'${String(secs)}''`;
     };
-  
+
+  const eventTypePeriod = transmissionItem.eventType.startsWith('endPeriod_');
+  const numberOfPeriods = transmissionItem.eventType.split('_')[1];
+
+  console.log("eventTypePeriod:", eventTypePeriod);
+  console.log("numberOfPeriods:", numberOfPeriods);
+
   const team_1 = transmissionItem.team === 1 
 
   const renderEvent = () => (
