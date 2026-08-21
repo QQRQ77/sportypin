@@ -42,6 +42,7 @@ export type GameSygnals = {
   time: number;
   transmissionItemId?: string;
   scoreBoardGoalSubtaction?: boolean;
+  eraseEndOrPauseTransmissionItem? : boolean;
 };
 
 export const defaultGameSignals = {
@@ -55,7 +56,8 @@ export const defaultGameSignals = {
     penaltyTeam2: 0,
     time: 0,
     transmissionItemId: "",
-    scoreBoardGoalSubtaction: false
+    scoreBoardGoalSubtaction: false,
+    eraseEndOrPauseTransmissionItem: false
 }
 
 type FormValues = Record<string, unknown>;
@@ -89,8 +91,8 @@ const HandBallGame: React.FC<HandBallGameProps> = (
     
   useEffect(() => {
 
-      const handleGameSignalsChange = async () => {
-        const currentMatchTime = gameTimeRef.current;
+    const handleGameSignalsChange = async () => {
+      const currentMatchTime = gameTimeRef.current;
 
       if (gameSignals.score1 > prevScore1 && gameSignals.scorer1 !== "") {
           if (team_1.length > 0) {
@@ -159,6 +161,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
           setGameSignals((prevSignals) => ({ ...prevSignals, scorer1: "" }));
         }
 
+      
       if (gameSignals.score1 < prevScore1) {
         setDataBaseSubmission(true);
 
@@ -474,6 +477,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "" }));
         }
       
+      
       if (gameSignals.yellowCardsTeam2 == -2 && gameSignals.scorer2 !== "") {
         setDataBaseSubmission(true);
         if (team_2.length > 0) {
@@ -507,6 +511,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, yellowCardsTeam2: 0, scorer2: "", transmissionItemId: "" }));
         }
+      
       
       if (gameSignals.redCardsTeam1 == -1 && gameSignals.scorer1 !== "") {
         setDataBaseSubmission(true);
@@ -847,9 +852,31 @@ const HandBallGame: React.FC<HandBallGameProps> = (
         }
         setGameSignals((prevSignals) => ({ ...prevSignals, penaltyTeam2: 0, scorer2: "", transmissionItemId: "" }));
       }
-      }
 
-      handleGameSignalsChange();
+      if (gameSignals.eraseEndOrPauseTransmissionItem && gameSignals.transmissionItemId) {
+        setDataBaseSubmission(true);
+
+        let updatedGameTransmission = [...gameTransmission];
+        updatedGameTransmission = updatedGameTransmission.filter(item => item.id !== gameSignals.transmissionItemId);
+
+        setGameTransmission(updatedGameTransmission);
+
+        try {
+          const result = await saveHarmonogramItem(eventId, itemData?.id, { 
+            ...itemData, 
+            gameTransmission: updatedGameTransmission,
+          });
+          if (result === "success") setDataBaseSubmission(false);
+        } catch (error) {
+          console.error("Błąd podczas zapisu:", error);
+        }
+
+        setGameSignals((prevSignals) => ({ ...prevSignals, transmissionItemId: "", eraseEndOrPauseTransmissionItem: false }));
+      }
+      
+    }
+
+    handleGameSignalsChange();
 
   }, [gameSignals]);
 

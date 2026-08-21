@@ -131,10 +131,10 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               <Button 
                 onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
                   ...defaultGameSignals,
-                  score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
-                  score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
-                  [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                  score1: prevSignals.score1,
+                  score2: prevSignals.score2,
                   transmissionItemId: transmissionItem.id || "",
+                  eraseEndOrPauseTransmissionItem: true
                 }))} 
                 className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
                 Usuń
@@ -147,10 +147,10 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <Button 
               onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
                 ...defaultGameSignals,
-                score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
-                score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
-                [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                score1: prevSignals.score1,
+                score2: prevSignals.score2,
                 transmissionItemId: transmissionItem.id || "",
+                eraseEndOrPauseTransmissionItem: true
               }))}  
               className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
               Usuń
