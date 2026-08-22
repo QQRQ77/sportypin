@@ -15,8 +15,6 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   setGameSignals
 }) => {
 
-  console.log("transmissionItem in TransmissionSingleItem:", transmissionItem);
-
   const formatTime = (totalSeconds: number): string => {
     const minutes = Math.floor(totalSeconds / 60);
     const secs = totalSeconds % 60;
@@ -25,9 +23,6 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
 
   const eventTypePeriod = transmissionItem.eventType.startsWith('endPeriod_');
   const numberOfPeriods = transmissionItem.eventType.split('_')[1];
-
-  console.log("eventTypePeriod in TransmissionSingleItem:", eventTypePeriod);
-  console.log("numberOfPeriods in TransmissionSingleItem:", numberOfPeriods);
 
   const team_1 = transmissionItem.team === 1 
 
@@ -145,13 +140,14 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
            bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
             <div>Koniec meczu</div>
             <Button 
-              onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+              onClick={() => {setGameSignals && setGameSignals((prevSignals) => ({
                 ...defaultGameSignals,
                 score1: prevSignals.score1,
                 score2: prevSignals.score2,
                 transmissionItemId: transmissionItem.id || "",
                 eraseEndOrPauseTransmissionItem: true
-              }))}  
+                }));
+              }}  
               className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
               Usuń
             </Button>  

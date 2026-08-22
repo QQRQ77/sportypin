@@ -713,3 +713,56 @@ export async function deleteEventRule(eventId: string, eventRuleId: string) {
   return "success";
 }
 
+//TODO: Znajdź w harmonogramie mecz o podanym itemId, dodaj wynik meczu i zapisz harmonogram
+
+export async function saveMatchResult(eventId: string, itemId: string, team1Score: number, team2Score: number) {
+  const session = await auth();
+  const user = session.userId;
+  if (!user) {
+      throw new Error("User not authenticated");
+  }
+
+  const creator = await findEventCreatorId(eventId);
+  if (user !== creator) {
+    throw new Error("User is not event's creator");
+  }
+
+  const supabase = createSupabaseClient();
+
+  const { data, error } = await supabase
+    .from('Events')
+    .select('harmonogram')
+    .eq('id', eventId)
+    .single();
+  
+  if (error || !data) {
+    console.error('Error fetching event harmonogram:', error);
+    throw new Error(error?.message || 'Failed to fetch event harmonogram');
+  }
+
+  const { harmonogram } = data;
+
+  const updatedHarmonogram = harmonogram.map((item: HarmonogramItem) => {
+    if (item.id === itemId) {
+      return {
+        ...item,
+        team_1_score: team1Score,
+        team_2_score: team2Score,
+        score: `${team1Score} : ${team2Score}`,
+      };
+    }
+    return item;
+  });
+
+  const { error: updateError } = await supabase
+    .from('Events')
+    .update({ harmonogram: updatedHarmonogram })
+    .eq('id', eventId);
+
+  if (updateError) {
+    console.error('Error saving match result:', updateError);
+    throw new Error(updateError.message || 'Failed to save match result');
+  }
+
+  return "success";
+}

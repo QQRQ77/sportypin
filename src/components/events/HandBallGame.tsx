@@ -146,6 +146,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
                 ...itemData, 
                 team_1_score: gameSignals.score1,
                 team_2_score: gameSignals.score2,
+                score: `${gameSignals.score1} : ${gameSignals.score2}`,
                 team_1_players: updatedTeamOne,
                 team_2_players: team_2,
                 gameTransmission: updatedGameTransmission,  
