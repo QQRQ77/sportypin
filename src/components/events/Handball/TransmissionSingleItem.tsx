@@ -140,7 +140,7 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
            bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
             <div>Koniec meczu</div>
             <Button 
-              onClick={() => {setGameSignals && setGameSignals((prevSignals) => ({
+              onClick={() => {setGameSignals?.((prevSignals) => ({
                 ...defaultGameSignals,
                 score1: prevSignals.score1,
                 score2: prevSignals.score2,
