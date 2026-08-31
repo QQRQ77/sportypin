@@ -17,7 +17,9 @@ export default async function HandballMatchPage({ params, searchParams }: { para
   if ( userId ) {await createUser()}
 
   const eventInfo = await getEventBaseInfo(event_id);
-  // const eventParticipants = await getEventParticipants(event_id);
+  const eventParticipants = await getEventParticipants(event_id);
+
+  console.log("Event Participants:", eventParticipants);
 
   let itemInfo: HarmonogramItem | undefined;
 
