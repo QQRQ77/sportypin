@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { PiNumberTwoFill } from "react-icons/pi";
-import { defaultGameSignals, GameSygnals } from "./HandBallGame";
+import { defaultGameSignals, GameSygnals } from "../HandBallGame";
 
 interface ScoreBoardProps {
   isPenaltyButtonActive?: string;
@@ -25,7 +25,7 @@ interface ScoreBoardProps {
   gameEnd?: boolean;
 }
 
-const ScoreBoard: React.FC<ScoreBoardProps> = ({ 
+const HandballScoreBoard: React.FC<ScoreBoardProps> = ({ 
   team_1_score, team_2_score, isUserCreator = false, team1active = true, team2active = true, 
   members1active = true, members2active = true,
   noTeam1Members = false, noTeam2Members = false, isPenaltyButtonActive = "", isDataBaseSubmissionInAction = false, 
@@ -394,4 +394,4 @@ const ScoreBoard: React.FC<ScoreBoardProps> = ({
   );
 };
 
-export default ScoreBoard;
+export default HandballScoreBoard;

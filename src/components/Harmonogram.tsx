@@ -72,7 +72,7 @@ export default function Harmonogram({eventId, items, participantSelected}: Harmo
                     onClick={e => {
                       e.preventDefault();
                       e.stopPropagation();
-                      router.push(`/events/${eventId}/match/${matchSport}/${item.id}?item_LP=${item.LP}`);
+                      router.push(`/events/${eventId}/match/${matchSport}/review/${item.id}?item_LP=${item.LP}`);
                       }}
                     aria-label="Transmisja"
                   >

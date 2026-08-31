@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Timer } from "@/components/events/timer";
-import ScoreBoard from "@/components/events/ScoreBoard";
 import MatchTeamsMembers from "@/components/events/teamsMembers";
 import { saveHarmonogramItem, saveHarmonogramItemTeamPlayers, saveNewParticipant } from '@/lib/events.actions';
 import { EventTeamMemberType, GameTransmissionItem, HarmonogramItem, Participant } from '@/types';
@@ -12,6 +11,7 @@ import { Button } from '../ui/button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Form } from "@/components/ui/form";
 import PenaltyTimers from './Handball/PenaltyTimers';
+import HandballScoreBoard from './Handball/HandballScoreBoard';
 
 interface HandBallGameProps {
   eventId: string;
@@ -967,7 +967,7 @@ const HandBallGame: React.FC<HandBallGameProps> = (
        :
       <>
       <h1 className="text-3xl font-bold">Wynik:</h1>
-      <ScoreBoard
+      <HandballScoreBoard
         noTeam1Members={!team_1 || team_1.length === 0}
         noTeam2Members={!team_2 || team_2.length === 0}
         team_1_score={gameSignals.score1} 
