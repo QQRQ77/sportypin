@@ -8,11 +8,13 @@ import { defaultGameSignals, GameSygnals } from '../HandBallGame';
 interface TransmissionSingleItemProps {
   transmissionItem: GameTransmissionItem
   setGameSignals?: React.Dispatch<React.SetStateAction<GameSygnals>>
+  isUserCreator?: boolean
 }
 
 const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
   transmissionItem,
-  setGameSignals
+  setGameSignals,
+  isUserCreator = false
 }) => {
 
   const formatTime = (totalSeconds: number): string => {
@@ -38,15 +40,17 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiSoccerBallLight size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button 
-            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
-              ...defaultGameSignals,
-              score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
-              score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
-              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
-              transmissionItemId: transmissionItem.id || "",
-            }))} 
-            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          {isUserCreator && 
+            <Button 
+              onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                ...defaultGameSignals,
+                score1: team_1 ? (prevSignals.score1 - 1 >= 0 ? prevSignals.score1 - 1 : 0) : prevSignals.score1,
+                score2: team_1 ? prevSignals.score2 : (prevSignals.score2 - 1 >= 0 ? prevSignals.score2 - 1 : 0),
+                [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                transmissionItemId: transmissionItem.id || "",
+              }))} 
+              className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button>
+          }
         </div>
       )}
       {transmissionItem.eventType === "penalty" && (
@@ -56,16 +60,18 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <PiNumberTwoFill size={24} className={`order-2`}/> 
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button 
-            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
-              ...defaultGameSignals,
-              score1: prevSignals.score1,
-              score2: prevSignals.score2,
-              [team_1 ? 'penaltyTeam1' : 'penaltyTeam2']: -2,
-              [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
-              transmissionItemId: transmissionItem.id || "",
-            }))} 
-            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          {isUserCreator &&
+            <Button 
+              onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                ...defaultGameSignals,
+                score1: prevSignals.score1,
+                score2: prevSignals.score2,
+                [team_1 ? 'penaltyTeam1' : 'penaltyTeam2']: -2,
+                [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
+                transmissionItemId: transmissionItem.id || "",
+              }))} 
+              className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button>
+          }
         </div>
       )}
       {transmissionItem.eventType === "redCard" && (
@@ -76,17 +82,19 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               <div className="w-4 h-6 bg-red-500 rounded"></div>
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
-          </div> 
-          <Button 
-            onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
-              ...defaultGameSignals,
-              score1: prevSignals.score1,
-              score2: prevSignals.score2,
+          </div>
+          {isUserCreator && (
+            <Button 
+              onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                ...defaultGameSignals,
+                score1: prevSignals.score1,
+                score2: prevSignals.score2,
               [team_1 ? 'redCardsTeam1' : 'redCardsTeam2']: -2,
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
               transmissionItemId: transmissionItem.id || "",
             }))}
             className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+          )}
         </div>
       )}
       {transmissionItem.eventType === "yellowCard" && (
@@ -98,7 +106,8 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             </div>
             <div className={`${team_1 ? 'order-1' : 'order-3'}`}>{`${transmissionItem.playerName || ""}`} <span className='font-bold'>{`#${transmissionItem.playerNumber || ""}`}</span></div>
           </div>
-          <Button 
+          {isUserCreator && 
+            <Button 
             onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
               ...defaultGameSignals,
               score1: prevSignals.score1,
@@ -107,7 +116,8 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
               [team_1 ? 'scorer1' : 'scorer2']: transmissionItem.playerId || "",
               transmissionItemId: transmissionItem.id || "",
             }))}
-            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button> 
+            className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>Usuń</Button>
+          }
         </div>
       )}
     </>
@@ -123,34 +133,38 @@ const TransmissionSingleItem: React.FC<TransmissionSingleItemProps> = ({
             <div className='absolute flex justify-center items-center gap-2 -right-30 h-12 -top-2 w-60
             bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
               <div>{`Przerwa nr ${numberOfPeriods}`}</div>
-              <Button 
-                onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
-                  ...defaultGameSignals,
-                  score1: prevSignals.score1,
-                  score2: prevSignals.score2,
-                  transmissionItemId: transmissionItem.id || "",
-                  eraseEndOrPauseTransmissionItem: true
-                }))} 
-                className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
-                Usuń
-              </Button> 
+              {isUserCreator && 
+                <Button 
+                  onClick={() => setGameSignals && setGameSignals((prevSignals) => ({
+                    ...defaultGameSignals,
+                    score1: prevSignals.score1,
+                    score2: prevSignals.score2,
+                    transmissionItemId: transmissionItem.id || "",
+                    eraseEndOrPauseTransmissionItem: true
+                  }))} 
+                  className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
+                  Usuń
+                </Button>
+              }
             </div>
             : transmissionItem.eventType === "endGame" ? (
           <div className='absolute flex justify-center items-center gap-2 -right-30 h-12 -top-2 w-60
            bg-orange-600 text-white text-xl p-2 rounded-full border-4 border-orange-900'>
             <div>Koniec meczu</div>
-            <Button 
-              onClick={() => {setGameSignals?.((prevSignals) => ({
-                ...defaultGameSignals,
-                score1: prevSignals.score1,
-                score2: prevSignals.score2,
-                transmissionItemId: transmissionItem.id || "",
-                eraseEndOrPauseTransmissionItem: true
-                }));
-              }}  
-              className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
-              Usuń
-            </Button>  
+            {isUserCreator &&
+              <Button 
+                onClick={() => {setGameSignals?.((prevSignals) => ({
+                  ...defaultGameSignals,
+                  score1: prevSignals.score1,
+                  score2: prevSignals.score2,
+                  transmissionItemId: transmissionItem.id || "",
+                  eraseEndOrPauseTransmissionItem: true
+                  }));
+                }}  
+                className='ml-4 px-2 py-1 bg-red-500 text-white rounded-xl cursor-pointer'>
+                Usuń
+              </Button>
+            }
           </div>)
           : <div className="absolute -right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 border-4 border-orange-900 bg-white rounded-full" />)
         }

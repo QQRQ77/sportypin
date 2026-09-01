@@ -6,16 +6,17 @@ import { GameSygnals } from '../HandBallGame';
 interface HandballGameTransmissionProps {
   gameTransmissionItems?: GameTransmissionItem[];
   setGameSignals?: React.Dispatch<React.SetStateAction<GameSygnals>>;
+  isUserCreator?: boolean;
 }
 
-const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = React.memo(({ gameTransmissionItems, setGameSignals }) => {
+const HandballGameTransmission: React.FC<HandballGameTransmissionProps> = React.memo(({ gameTransmissionItems, setGameSignals, isUserCreator = false }) => {
   
   return (
     <section className='w-full flex flex-col items-center justify-center'>
       <div className='w-full flex flex-col'>
         {gameTransmissionItems && gameTransmissionItems.length > 0 ? (
           gameTransmissionItems.slice().reverse().map((item) => (
-            <TransmissionSingleItem key={item.id} transmissionItem={item} setGameSignals={setGameSignals} />
+            <TransmissionSingleItem key={item.id} transmissionItem={item} setGameSignals={setGameSignals} isUserCreator={isUserCreator} />
           ))
         ) : (
           <div className='text-gray-500'>Brak transmisji</div>

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { ChevronDoubleLeftIcon } from "@heroicons/react/20/solid";
 import { getTeamLogoByTeamId } from "@/lib/teams.actions";
 import HandballGameReviewTeamMembers from "@/components/events/Handball/HandballGameReviewTeamMembers";
+import HandballGameTransmission from "@/components/events/Handball/HandballGameTransmission";
 
 export default async function HandballMatchPage({ params, searchParams }: { params: Promise<{ event_id: string, item_id: string }>; searchParams: Promise<{ item_LP?: string }> }) {
 
@@ -94,6 +95,9 @@ export default async function HandballMatchPage({ params, searchParams }: { para
       <HandballGameReviewTeamMembers
         team_1_members={itemInfo?.team_1_players}
         team_2_members={itemInfo?.team_2_players}
+      />
+      <HandballGameTransmission 
+        gameTransmissionItems={itemInfo?.gameTransmission}
       />
     </div>
   )
