@@ -82,7 +82,8 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
               <p>Zawodnicy</p>
             </TooltipContent>
           </Tooltip>
-          
+        </div>
+        {isUserCreator && <>
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -103,8 +104,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
               <p>Dodaj zawodników</p>
             </TooltipContent>
           </Tooltip>
-        </div>
-        {isUserCreator && <>
+
         <div className="text-gray-500 hover:text-gray-800">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -126,6 +126,7 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
             </TooltipContent>
           </Tooltip>
         </div>
+        
         <div className="text-gray-500 hover:text-gray-800">
           <Tooltip>
             <TooltipTrigger asChild>
