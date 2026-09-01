@@ -12,7 +12,7 @@ interface EventTeamMemberProps {
   isUserCreator?: boolean;
   eventId: string;
   lp?: number;
-  setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
+  setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
   member: EventTeamMemberType;
   participant?: Participant;
   participants?: Participant[]; 
@@ -35,7 +35,9 @@ const EventTeamMember: React.FC<EventTeamMemberProps> = ({eventId, participant, 
           }
           return p;
         });
-        setItems(newParticipants);
+        if (setItems) {
+          setItems(newParticipants);
+        }
         await saveNewParticipant(eventId, newParticipants);
       }
     };

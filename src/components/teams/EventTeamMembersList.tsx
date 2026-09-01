@@ -8,7 +8,7 @@ interface EventTeamMembersListProps {
   isUserCreator?: boolean;
   participant?: Participant;
   participants?: Participant[];
-  setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
+  setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
 }
 
 export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUserCreator = false, eventId, participant, participants, setItems }) => {

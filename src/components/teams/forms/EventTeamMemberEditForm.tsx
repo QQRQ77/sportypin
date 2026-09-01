@@ -31,7 +31,7 @@ interface Props {
     participant: Participant;
     participants: Participant[];
     onClose?: (show: boolean) => void;
-    setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
+    setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
 export function EventTeamMemberEditForm({member, participants, participant, eventId, onClose = () => {}, setItems}: Props) {
@@ -76,7 +76,9 @@ export function EventTeamMemberEditForm({member, participants, participant, even
                 : ci
             );
     
-        setItems(newParticipants);
+        if (setItems) {
+          setItems(newParticipants);
+        }
     
         await saveNewParticipant(eventId, newParticipants);
 

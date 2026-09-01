@@ -5,8 +5,9 @@ import CompetitorEditForm from "./forms/CompetitorEditForm";
 import EventParticipantTypeTeam from "./teams/EventParticipantTypeTeam";
 import EventParticipantTypeAthlete from "./athletes/EventParticipantTypeAthlete";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
-import { UsersIcon, PencilSquareIcon, TrashIcon, ChevronDoubleDownIcon } from "@heroicons/react/20/solid";
+import { UsersIcon, PencilSquareIcon, TrashIcon, ChevronDoubleDownIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { saveNewParticipant } from "@/lib/events.actions";
+import { useRouter } from "next/navigation";
 
 interface CompetitorSingleItemProps {
   isUserCreator?: boolean;
@@ -24,6 +25,9 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
   
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [showTeamMembers, setShowTeamMembers] = useState<boolean>(false);
+  
+  const router = useRouter();
+  
 
   const deleteItem = async (id: string) => {
       if (participants) {
@@ -76,6 +80,27 @@ const CompetitorSingleItem: React.FC<CompetitorSingleItemProps> = (
             </TooltipTrigger>
             <TooltipContent>
               <p>Zawodnicy</p>
+            </TooltipContent>
+          </Tooltip>
+          
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  router.push(`/events/${eventId}/teamMembers/${participant?.id}`);
+                }}
+                aria-label="Dodaj zawodników"
+              >
+                <div className="flex flex-row items-center">
+                  <PlusIcon className="w-7 h-7 cursor-pointer scale-x-[-1] -mr-2 hover:text-black" />
+                  <UsersIcon className="w-6 h-6 cursor-pointer text-black" />
+                </div>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Dodaj zawodników</p>
             </TooltipContent>
           </Tooltip>
         </div>

@@ -37,7 +37,7 @@ interface Props {
     eventId: string;
     participant?: Participant;
     participants?: Participant[];
-    setItems: React.Dispatch<React.SetStateAction<Participant[]>>;
+    setItems?: React.Dispatch<React.SetStateAction<Participant[]>>;
   }
 
 export function AddEventTeamMember({participant, participants = [], setItems, eventId}: Props) {
@@ -66,7 +66,9 @@ export function AddEventTeamMember({participant, participants = [], setItems, ev
       ci.id === participant?.id ? {...participant, eventTeamMembers: [...(participant?.eventTeamMembers || []), cleanedData] } : ci
     );
 
-    setItems(newParticipants);
+    if (setItems) {
+      setItems(newParticipants);
+    }
 
     await saveNewParticipant(eventId, newParticipants);
 
