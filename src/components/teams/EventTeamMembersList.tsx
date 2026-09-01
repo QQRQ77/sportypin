@@ -1,3 +1,5 @@
+'use client';
+
 import { Participant } from '@/types';
 import { AddEventTeamMember } from './forms/AddEventTeamMemeber';
 import EventTeamMember from './EventTeamMember';
