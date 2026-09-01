@@ -20,7 +20,7 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
           <ul className="w-full">
             {team_1_members.map((member) => (
               <li key={member.id} className="text-lg font-medium flex flex-row items-start justify-start gap-2">
-                <div className="w-72">{member.name} ({member.start_number})</div>
+                <div className="w-72 flex flex-row">{member.name} <IoShirtOutline size={20} /> {member.start_number}</div>
                 <HandBallPlayerStatsDisplay
                   displayDirection="row"
                   goals={member.goals}
@@ -40,7 +40,7 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
           <ul className="w-full">
             {team_2_members.map((member) => (
               <li key={member.id} className="text-lg font-medium flex flex-row items-start justify-start gap-2">
-                <div className="w-72">{member.name} <IoShirtOutline size={16} /> {member.start_number}</div>
+                <div className="w-72 flex flex-row">{member.name} <IoShirtOutline size={20} /> {member.start_number}</div>
                 <HandBallPlayerStatsDisplay
                   displayDirection="row"
                   goals={member.goals}
