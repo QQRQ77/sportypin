@@ -17,7 +17,6 @@ export const EventTeamMembersList: React.FC<EventTeamMembersListProps> = ({ isUs
   
   const [activeMemberId, setActiveMemberId] = useState<string>("");
 
-  console.log("participants in EventTeamMembersList:", participants);
   console.log("participant in EventTeamMembersList:", participant);
   
   return (
