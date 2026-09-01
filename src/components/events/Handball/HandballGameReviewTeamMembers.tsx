@@ -1,6 +1,7 @@
 import { EventTeamMemberType } from '@/types';
 import React from 'react';
 import HandBallPlayerStatsDisplay from './HandBallPlayerStatsDisplay';
+import { IoShirtOutline } from "react-icons/io5";
 
 interface HandballGameReviewTeamMembersProps {
   team_1_members?: EventTeamMemberType[];
@@ -12,8 +13,6 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
   team_2_members,
 }) => {
 
-
-  
   return (
     <div className="handball-game-review-team-members w-full lg:w-3/5 flex flex-2 items-start justify-center md:gap-8">
       <div className="team-1 w-1/2 flex flex-col items-start justify-start gap-2 p-2 border-5 border-transparent">
@@ -41,7 +40,7 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
           <ul className="w-full">
             {team_2_members.map((member) => (
               <li key={member.id} className="text-lg font-medium flex flex-row items-start justify-start gap-2">
-                <div className="w-72">{member.name} ({member.start_number})</div>
+                <div className="w-72">{member.name} <IoShirtOutline size={16} /> {member.start_number}</div>
                 <HandBallPlayerStatsDisplay
                   displayDirection="row"
                   goals={member.goals}
