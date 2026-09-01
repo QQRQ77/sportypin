@@ -26,8 +26,8 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
                   displayDirection="row"
                   goals={member.goals}
                   penalties={member.penalties}
-                  yellowCards={member.yellow_cards}
-                  redCards={member.red_cards}
+                  yellowCards={member.yellowCards}
+                  redCards={member.redCards}
                 />
               </li>
             ))}
@@ -46,8 +46,8 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
                   displayDirection="row"
                   goals={member.goals}
                   penalties={member.penalties}
-                  yellowCards={member.yellow_cards}
-                  redCards={member.red_cards}
+                  yellowCards={member.yellowCards}
+                  redCards={member.redCards}
                 />
               </li>
             ))}
