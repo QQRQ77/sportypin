@@ -20,7 +20,7 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
         {team_1_members && team_1_members.length > 0 ? (
           <ul className="w-full">
             {team_1_members.map((member) => (
-              <li key={member.id} className="text-lg font-medium flex flex-row items-center justify-start gap-2">
+              <li key={member.id} className="text-lg font-medium flex flex-row items-start justify-start gap-2">
                 <div className="w-72">{member.name}</div>
                 <HandBallPlayerStatsDisplay
                   displayDirection="row"
@@ -40,7 +40,7 @@ const HandballGameReviewTeamMembers: React.FC<HandballGameReviewTeamMembersProps
         {team_2_members && team_2_members.length > 0 ? (
           <ul className="w-full">
             {team_2_members.map((member) => (
-              <li key={member.id} className="text-lg font-medium flex flex-row items-center justify-start gap-2">
+              <li key={member.id} className="text-lg font-medium flex flex-row items-start justify-start gap-2">
                 <div className="w-72">{member.name}</div>
                 <HandBallPlayerStatsDisplay
                   displayDirection="row"
