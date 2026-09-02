@@ -23,15 +23,15 @@ return (
   <>      
     <div className="w-full flex flex-col items-center gap-5">
       <h1 className="text-3xl font-bold">{eventInfo.name}</h1>
-      <h1 className="text-3xl font-bold">{eventInfo.city}</h1>
+      <h1 className="text-3xl font-semibold">{eventInfo.city}</h1>
       <h1 className="text-4xl font-bold">{participant.team_name || participant.name}</h1>
       {teamLogoURL && (
         <Link href={`/teams/${participant.team_id}`}>
           <Image
             src={teamLogoURL}
             alt={`${participant.team_name} logo`}
-            width={50}
-            height={50}
+            width={100}
+            height={100}
             className="object-contain rounded cursor-pointer hover:border-2 hover:border-gray-600"
           />
         </Link>
