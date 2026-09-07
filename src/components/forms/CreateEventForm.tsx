@@ -383,7 +383,7 @@ export default function CreateEventForm({ eventToEdit }: Props) {
                                   Dodaj
                                 </Button>
                               </div>
-                              <div className="flex flex-wrap gap-2">
+                              <div className="flex flex-col gap-2">
                                 {cathegories.map((cathegory: string, idx: number) => (
                                   <span key={idx} className="flex items-center bg-gray-200 px-2 py-1 rounded">
                                     {cathegory}
